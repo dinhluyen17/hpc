@@ -26,7 +26,7 @@ import {Util} from "../base/Util.js"
  */
 class GatePainting {}
 
-const GATE_SYMBOL_FONT = '16px sans-serif';
+const GATE_SYMBOL_FONT = '17px sans-serif';
 
 GatePainting.paintOutline = args => {
     if (args.isInToolbox) {
@@ -70,7 +70,7 @@ GatePainting.MAKE_HIGHLIGHTED_DRAWER =
     (toolboxFillColor = Config.GATE_FILL_COLOR, normalFillColor = Config.GATE_FILL_COLOR) => args => {
         // Phu: DrawGate
         GatePainting.paintBackground(args, toolboxFillColor, normalFillColor);
-        // GatePainting.paintOutline(args);
+        GatePainting.paintOutline(args);
         GatePainting.paintResizeTab(args);
         GatePainting.paintGateSymbol(args);
     };

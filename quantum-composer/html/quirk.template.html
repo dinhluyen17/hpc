@@ -108,63 +108,70 @@
                 </div>
               </div>
             </div>
-            <div id="gateGrid" style="z-index: 1;   height: 300px; overflow-y: scroll;">
-              <div class="px-12 pb-12 flex flex-wrap gap-8">
-                <span data-state="closed">
-                  <svg viewBox="0 0 32 32" xmlns="http://www.w3.org/2000/svg" width="32" height="32"
-                    class="block select-none" data-testid="CatalogItem-h" style="cursor: grab;">
-                    <rect x="0" y="0" width="32" height="32"
-                      style="fill: rgb(250, 77, 86); stroke-width: 0; stroke: transparent; paint-order: stroke;">
-                    </rect>
-                    <text x="16" y="16" dy=".3em"
-                      style="font-family: &quot;IBM Plex Sans&quot;, sans-serif; font-size: 16px; font-style: normal; fill: rgb(0, 0, 0); font-weight: 400; text-anchor: middle;">H
-                    </text>
-                  </svg>
-                </span>
+            <div id="gateGrid" style="z-index: 1; height: 300px; padding-left: 10px; overflow-y: scroll;">
+              <div id="gateGridDiv" class="px-12 pb-12 flex flex-wrap gap-8">
               </div>
             </div>
             <div id="gateList" class="Accordion px-12 pb-12"
-              style="display: none; z-index: 1; position: absolute; padding: 8px; top: 120px; left: 0; width: 220px; height: 300px; overflow-y: scroll;">
-              <div data-state="open" class="AccordionItem pb-8">
-                <h3 data-state="open" class="AccordionHeader">
-                  <button type="button" aria-controls="radix-45" aria-expanded="true" data-state="open" id="radix-46"
-                    class="AccordionTrigger" data-radix-collection-item="">Hadamard
-                    <svg focusable="false" preserveAspectRatio="xMidYMid meet" xmlns="http://www.w3.org/2000/svg"
-                      fill="currentColor" aria-hidden="true" width="20" height="20" viewBox="0 0 32 32"
-                      class="AccordionTriggerIcon">
-                      <path d="M16 22L6 12 7.4 10.6 16 19.2 24.6 10.6 26 12z">
-                      </path>
-                    </svg>
-                  </button>
-                </h3>
-                <div data-state="open" id="radix-45" role="region" aria-labelledby="radix-46" class="AccordionContent"
-                  style="--radix-accordion-content-height:var(--radix-collapsible-content-height); --radix-accordion-content-width:var(--radix-collapsible-content-width); transition-duration: 0s; animation-name: none; --radix-collapsible-content-height:30.3906px; --radix-collapsible-content-width:232px;">
-                  <div class="AccordionContentInner">
-                    <div class="flex flex-col gap-4">
-                      <span data-state="closed">
-                        <div class="flex items-center select-none gap-4 hover:bg-hover-ui" style="cursor: grab;">
-                          <svg viewBox="0 0 32 32" xmlns="http://www.w3.org/2000/svg" class="block" width="22.4"
-                            height="22.4" data-testid="CatalogItem-h">
-                            <rect x="0" y="0" width="32" height="32"
-                              style="fill: rgb(250, 77, 86); stroke-width: 0; stroke: transparent; paint-order: stroke;">
-                            </rect>
-                            <text x="16" y="16" dy=".3em"
-                              style="font-family: &quot;IBM Plex Sans&quot;, sans-serif; font-size: 16px; font-style: normal; fill: rgb(0, 0, 0); font-weight: 400; text-anchor: middle;">H</text>
-                          </svg>
-                          <div class="text-body-short-01">
-                            Hadamard
-                          </div>
-                        </div>
-                      </span>
-                    </div>
-                  </div>
-                </div>
-              </div>
+              style="display: none; z-index: 1; padding: 10px; height: 300px; overflow-y: scroll;">              
             </div>
 
           </div>
           <canvas id="drawCanvas" style="z-index: 3;">
           </canvas>
+          <div id="gateMenu" style="position: absolute; top: 0px; left: 0px; width: 120px; z-index: 1000; display: none;">
+            <div role="toolbar" aria-orientation="horizontal" dir="ltr" class="Toolbar theme-variant border border-decorative-01"
+              tabindex="-1" data-orientation="horizontal" style="outline: none;">
+              <span data-state="closed" class="TooltipTrigger">
+                <button type="button" aria-label="Show info" class="ToolbarItemButton" tabindex="-1" data-orientation="horizontal"
+                  data-radix-collection-item="" style="pointer-events: auto;">
+                  <svg focusable="false" preserveAspectRatio="xMidYMid meet" xmlns="http://www.w3.org/2000/svg"
+                    fill="currentColor" width="20" height="20" viewBox="0 0 32 32" aria-hidden="true">
+                    <path
+                      d="M17 22L17 14 13 14 13 16 15 16 15 22 12 22 12 24 20 24 20 22 17 22zM16 8a1.5 1.5 0 101.5 1.5A1.5 1.5 0 0016 8z">
+                    </path>
+                    <path d="M16,30A14,14,0,1,1,30,16,14,14,0,0,1,16,30ZM16,4A12,12,0,1,0,28,16,12,12,0,0,0,16,4Z">
+                    </path>
+                  </svg>
+                </button>
+              </span>
+              <div data-orientation="vertical" aria-orientation="vertical" role="separator" class="ToolbarSeparator"></div>
+              <span data-state="closed" class="TooltipTrigger">
+                <button type="button" aria-label="Copy" class="ToolbarItemButton" tabindex="-1" data-orientation="horizontal"
+                  data-radix-collection-item="" style="pointer-events: auto;">
+                  <svg focusable="false" preserveAspectRatio="xMidYMid meet" xmlns="http://www.w3.org/2000/svg"
+                    fill="currentColor" width="20" height="20" viewBox="0 0 32 32" aria-hidden="true">
+                    <path d="M28,10V28H10V10H28m0-2H10a2,2,0,0,0-2,2V28a2,2,0,0,0,2,2H28a2,2,0,0,0,2-2V10a2,2,0,0,0-2-2Z">
+                    </path>
+                    <path d="M4,18H2V4A2,2,0,0,1,4,2H18V4H4Z"></path>
+                  </svg>
+                </button>
+              </span>
+              <span data-state="closed" class="TooltipTrigger">
+                <button type="button" aria-label="Paste" class="ToolbarItemButton" tabindex="-1" data-orientation="horizontal"
+                  data-radix-collection-item="" style="pointer-events: auto;">
+                  <svg focusable="false" preserveAspectRatio="xMidYMid meet" xmlns="http://www.w3.org/2000/svg"
+                    fill="currentColor" width="20" height="20" viewBox="0 0 32 32" aria-hidden="true">
+                    <path d="M26,20H17.83l2.58-2.59L19,16l-5,5,5,5,1.41-1.41L17.83,22H26v8h2V22A2,2,0,0,0,26,20Z"></path>
+                    <path
+                      d="M23.71,9.29l-7-7A1,1,0,0,0,16,2H6A2,2,0,0,0,4,4V28a2,2,0,0,0,2,2h8V28H6V4h8v6a2,2,0,0,0,2,2h6v2h2V10A1,1,0,0,0,23.71,9.29ZM16,4.41,21.59,10H16Z">
+                    </path>
+                  </svg>
+                </button>
+              </span>
+              <div data-orientation="vertical" aria-orientation="vertical" role="separator" class="ToolbarSeparator"></div>
+              <span data-state="closed" class="TooltipTrigger">
+                <button type="button" aria-label="Delete" class="ToolbarItemButton" tabindex="-1" data-orientation="horizontal"
+                  data-radix-collection-item="" style="pointer-events: auto;">
+                  <svg focusable="false" preserveAspectRatio="xMidYMid meet" xmlns="http://www.w3.org/2000/svg"
+                    fill="currentColor" width="20" height="20" viewBox="0 0 32 32" aria-hidden="true">
+                    <path d="M12 12H14V24H12zM18 12H20V24H18z"></path>
+                    <path d="M4 6V8H6V28a2 2 0 002 2H24a2 2 0 002-2V8h2V6zM8 28V8H24V28zM12 2H20V4H12z"></path>
+                  </svg>
+                </button>
+              </span>
+            </div>
+          </div>
         </div>
         <div class="flex-1 min-h-0">
           <div class="split flex min-h-0 max-h-full h-full" data-tourid="composer-visualizations">
@@ -225,13 +232,18 @@
   </div>
   <script>
     document.getElementById('noscript-div').style.display = 'none';
+    
     function handleGroupOnClicked() {
       document.getElementById("gateList").style.display = 'block';
-      document.getElementById("gateGrid").style.display = 'none';
+      document.getElementById("gateGrid").style.display = 'none';      
     }
+  
     function handleGroupOffClicked() {
       document.getElementById("gateList").style.display = 'none';
       document.getElementById("gateGrid").style.display = 'block';
+    }
+    function grabGate(gate) {
+      document.GRAB_GATE = gate;
     }
   </script>
 

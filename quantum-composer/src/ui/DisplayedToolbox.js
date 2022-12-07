@@ -149,7 +149,7 @@ class DisplayedToolbox {
      */
     findGateAt(pt) {
         // Phu: Find gate at point ==> Use for drag & drop
-        if (pt === undefined) {
+        if (pt === undefined) {            
             return undefined;
         }
         for (let groupIndex = 0; groupIndex < this.toolboxGroups.length; groupIndex++) {
@@ -157,9 +157,9 @@ class DisplayedToolbox {
             for (let gateIndex = 0; gateIndex < group.gates.length; gateIndex++) {
                 let gate = group.gates[gateIndex];
                 let rect = this.gateDrawRect(groupIndex, gateIndex);
-                // Phu: Change logic to test ==> Need check later
+                // Phu: Change logic
                 // if (gate !== undefined && rect.containsPoint(pt)) {
-                if (gate !== undefined && groupIndex == 0 && gateIndex == 0 && pt.y > 100 && pt.x < 200) {
+                if (gate !== undefined && gate.symbol == document.GRAB_GATE) {
                     return {groupIndex, gateIndex, gate, rect};
                 }
             }

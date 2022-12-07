@@ -1603,7 +1603,9 @@
         .AccordionItem:focus {
             outline: none
         }
-
+        .AccordionContentInner{
+            padding:.25rem
+        }
         #dragCanvas {
             position: absolute;
             z-index: 9;

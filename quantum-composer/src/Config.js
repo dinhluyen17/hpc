@@ -33,7 +33,7 @@ Config.MIN_COL_COUNT = 5;
 Config.URL_CIRCUIT_PARAM_KEY = 'circuit';
 
 // Gate background colors.
-Config.GATE_FILL_COLOR = '#991549';
+Config.GATE_FILL_COLOR = 'white';
 Config.HIGHLIGHTED_GATE_FILL_COLOR = '#17A7FB';
 Config.TIME_DEPENDENT_HIGHLIGHT_COLOR = '#FFC';
 
@@ -78,7 +78,7 @@ Config.TOOLBOX_MARGIN_Y = 80;
  * (e.g. the error box might not fit, or the gate tips might get squashed)
  * @type {number}
  */
-Config.MINIMUM_CANVAS_HEIGHT = 400;
+Config.MINIMUM_CANVAS_HEIGHT = 408;
 
 Config.SUPPRESSED_GLSL_WARNING_PATTERNS = [];
 
@@ -86,7 +86,7 @@ Config.SUPPRESSED_GLSL_WARNING_PATTERNS = [];
 Config.DEFAULT_FILL_COLOR = 'white';
 Config.DEFAULT_STROKE_COLOR = 'black';
 Config.DEFAULT_TEXT_COLOR = 'black';
-Config.DEFAULT_FONT_SIZE = 12;
+Config.DEFAULT_FONT_SIZE = 13;
 Config.DEFAULT_FONT_FAMILY = 'sans-serif';
 Config.DEFAULT_STROKE_THICKNESS = 1;
 

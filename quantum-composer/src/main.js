@@ -47,6 +47,8 @@ import {GatePainting} from "./draw/GatePainting.js"
 import {GATE_CIRCUIT_DRAWER} from "./ui/DisplayedCircuit.js"
 import {GateColumn} from "./circuit/GateColumn.js";
 import {Point} from "./math/Point.js";
+import {initGateViews} from "./ui/initGateViews.js";
+
 initSerializer(
     GatePainting.LABEL_DRAWER,
     GatePainting.MATRIX_DRAWER,
@@ -255,6 +257,7 @@ watchDrags(canvasDiv,
 
 // Middle-click to delete a gate.
 canvasDiv.addEventListener('mousedown', ev => {
+    document.GRAB_GATE = undefined;
     if (!isMiddleClicking(ev)) {
         return;
     }
@@ -289,6 +292,7 @@ canvasDiv.addEventListener('mousemove', ev => {
     }
 });
 canvasDiv.addEventListener('mouseleave', () => {
+    document.GRAB_GATE = undefined;
     if (!displayed.get().hand.isBusy()) {
         let newHand = displayed.get().hand.withPos(undefined);
         let newInspector = displayed.get().withHand(newHand);
@@ -297,6 +301,7 @@ canvasDiv.addEventListener('mouseleave', () => {
 });
 
 let obsIsAnyOverlayShowing = new ObservableSource();
+initGateViews();
 initUrlCircuitSync(revision);
 initExports(revision, mostRecentStats, obsIsAnyOverlayShowing.observable());
 initForge(revision, obsIsAnyOverlayShowing.observable());

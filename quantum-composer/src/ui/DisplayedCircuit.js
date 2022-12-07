@@ -62,7 +62,8 @@ class DisplayedCircuit {
         /**
          * @type {!number}
          */
-        this.top = top;
+        // Phu: change top of circuit
+        this.top = 70;//top;
         /**
          * @type {!CircuitDefinition}
          */
@@ -134,10 +135,12 @@ class DisplayedCircuit {
      * @returns {!number}
      */
     desiredWidth(forTooltip=false) {
-        if (forTooltip) {
-            return this.opRect(this.circuitDefinition.columns.length - 1).right() + CIRCUIT_OP_LEFT_SPACING;
-        }
-        return this._rectForSuperpositionDisplay().right() + 101;
+        // Phu: change desire width
+        //if (forTooltip) {
+        //  return this.opRect(this.circuitDefinition.columns.length - 1).right() + CIRCUIT_OP_LEFT_SPACING;
+        //}
+        // return this._rectForSuperpositionDisplay().right() + 101;
+        return this.opRect(this.circuitDefinition.columns.length - 1).right() + CIRCUIT_OP_LEFT_SPACING;
     }
 
     /**
@@ -355,7 +358,7 @@ class DisplayedCircuit {
 
         if (!forTooltip) {
             // Phu: disable draw output
-            // this._drawOutputDisplays(painter, stats, hand);
+            this._drawOutputDisplays(painter, stats, hand);
             // this._drawHintLabels(painter, stats);
         }
 
@@ -386,7 +389,7 @@ class DisplayedCircuit {
                     painter.fillRect(rect, Config.HIGHLIGHTED_GATE_FILL_COLOR);
                 }
                 // Phu: draw label for wire
-                painter.print(`|${v}⟩`, 250, y, 'right', 'middle', 'black', '14px sans-serif', 20, Config.WIRE_SPACING);
+                painter.print(`|${v}⟩`, 250, y, 'right', 'middle', '#646464', '14px sans-serif', 20, Config.WIRE_SPACING);
             }
         }
 
@@ -416,7 +419,8 @@ class DisplayedCircuit {
                     }
                     lastX = x;
                 }
-            }).thenStroke('black');
+                // Phu: Edit color for wire
+            }).thenStroke('#B4B4B4');
         }
         painter.ctx.restore();
         if (this._extraWireStartIndex !== undefined && this.circuitDefinition.numWires === Config.MAX_WIRE_COUNT) {
@@ -536,6 +540,12 @@ class DisplayedCircuit {
             painter.noteTouchBlocker({rect: gateRect, cursor: 'pointer'});
             if (gate.canChangeInSize()) {
                 painter.noteTouchBlocker({rect: GatePainting.rectForResizeTab(gateRect), cursor: 'ns-resize'});
+            }
+            if (isHighlighted) {
+                const element = document.getElementById('gateMenu');
+                element.style.display = 'block';
+                element.style.left = gateRect.x + "px";
+                element.style.top = (gateRect.y - 50) + "px";                
             }
             drawer(new GateDrawParams(
                 painter,
@@ -1306,15 +1316,16 @@ class DisplayedCircuit {
             }
         }
 
-        let bottom = this.wireRect(numWire-1).bottom();
-        let x = this.opRect(chanceCol - 1).x;
-        painter.printParagraph(
-            "Local wire states\n(Chance/Bloch)",
-            new Rect(x, bottom+4, 190, 40),
-            new Point(0.5, 0),
-            'gray');
+        // Phu: disable draw matrix output
+        // let bottom = this.wireRect(numWire-1).bottom();
+        // let x = this.opRect(chanceCol - 1).x;
+        // painter.printParagraph(
+        //     "Local wire states\n(Chance/Bloch)",
+        //     new Rect(x, bottom+4, 190, 40),
+        //     new Point(0.5, 0),
+        //     'gray');
 
-        this._drawOutputSuperpositionDisplay(painter, stats, hand);
+        // this._drawOutputSuperpositionDisplay(painter, stats, hand);
     }
 
     /**
