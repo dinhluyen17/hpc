@@ -24,17 +24,17 @@ function initUndoRedo(revision, obsIsAnyOverlayShowing) {
         document.getElementById('export-div')
     ];
 
-    const undoButton = /** @type {!HTMLButtonElement} */ document.getElementById('undo-button');
-    const redoButton = /** @type {!HTMLButtonElement} */ document.getElementById('redo-button');
-    const loadDataButton = /** @type {!HTMLButtonElement} */ document.getElementById('load-data');
+    //const undoButton = /** @type {!HTMLButtonElement} */ document.getElementById('undo-button');
+    //const redoButton = /** @type {!HTMLButtonElement} */ document.getElementById('redo-button');
+    //const loadDataButton = /** @type {!HTMLButtonElement} */ document.getElementById('load-data');
     // Phu: Undo, redo
     // revision.latestActiveCommit().zipLatest(obsIsAnyOverlayShowing, (_, b) => b).subscribe(anyShowing => {
     //     undoButton.disabled = revision.isAtBeginningOfHistory() || anyShowing;
     //     redoButton.disabled = revision.isAtEndOfHistory() || anyShowing;
     // });
 
-    undoButton.addEventListener('click', () => revision.undo());
-    redoButton.addEventListener('click', () => revision.redo());
+    //undoButton.addEventListener('click', () => revision.undo());
+    //redoButton.addEventListener('click', () => revision.redo());
     
     document.addEventListener("keydown", e => {
         // Don't capture keystrokes while menus are showing.
