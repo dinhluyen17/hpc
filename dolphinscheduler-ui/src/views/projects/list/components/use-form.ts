@@ -32,7 +32,7 @@ export function useForm(
   const resetForm = () => {
     variables.model = {
       projectName: '',
-      projectType: '',
+      type: '',
       description: '',
       userName: (userStore.getUserInfo as UserInfoRes).userName
     }
@@ -42,7 +42,7 @@ export function useForm(
     projectFormRef: ref(),
     model: {
       projectName: '',
-      projectType: '',
+      type: '',
       description: '',
       userName: (userStore.getUserInfo as UserInfoRes).userName
     },
@@ -57,11 +57,11 @@ export function useForm(
           }
         }
       },
-      projectType: {
+      type: {
         required: true,
         trigger: ['input', 'blur'],
         validator() {
-          if (variables.model.projectType === '') {
+          if (variables.model.type === '') {
             return new Error(t('project.list.project_type_tips'))
           }
         }
@@ -92,9 +92,10 @@ export function useForm(
     if (variables.saving) return
     variables.saving = true
     try {
+      console.log(variables.model);
       await createProject(variables.model)
       variables.saving = false
-      resetForm()
+      // resetForm()
       ctx.emit('confirmModal', props.showModalRef)
     } catch (err) {
       variables.saving = false

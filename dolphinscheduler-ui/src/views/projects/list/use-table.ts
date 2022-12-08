@@ -96,6 +96,11 @@ export function useTable() {
           )
       },
       {
+        title: t('project.list.project_type'),
+        key: 'type',
+        ...COLUMN_WIDTH_CONFIG['type']
+      },
+      {
         title: t('project.list.owned_users'),
         key: 'userName',
         ...COLUMN_WIDTH_CONFIG['userName']

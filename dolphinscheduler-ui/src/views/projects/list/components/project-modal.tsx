@@ -55,12 +55,12 @@ const ProjectModal = defineComponent({
     const cancelModal = () => {
       if (props.statusRef === 0) {
         variables.model.projectName = ''
-        variables.model.projectType = ''
+        variables.model.type = ''
         variables.model.description = ''
       } else {
         variables.model.userName = props.row.userName
         variables.model.projectName = props.row.name
-        variables.model.projectType = props.row.type
+        variables.model.type = props.row.type
         variables.model.description = props.row.description
       }
       ctx.emit('cancelModal', props.showModalRef)
@@ -77,14 +77,14 @@ const ProjectModal = defineComponent({
       () => {
         if (props.statusRef === 0) {
           variables.model.projectName = ''
-          variables.model.projectType = ''
+          variables.model.type = ''
           variables.model.userName = (
             userStore.getUserInfo as UserInfoRes
           ).userName
           variables.model.description = ''
         } else {
           variables.model.projectName = props.row.name
-          variables.model.projectType = props.row.type
+          variables.model.type = props.row.type
           variables.model.userName = props.row.userName
           variables.model.description = props.row.description
         }
@@ -95,7 +95,7 @@ const ProjectModal = defineComponent({
       () => props.row,
       () => {
         variables.model.projectName = props.row.name
-        variables.model.projectType = props.row.type
+        variables.model.type = props.row.type
         variables.model.userName = props.row.userName
         variables.model.description = props.row.description
       }
@@ -151,7 +151,7 @@ const ProjectModal = defineComponent({
           <NFormItem label={t('project.list.project_type')} path='type'>
             <NSelect
               options={selectOptions}
-              v-model={[this.model.projectType, 'value']}
+              v-model={[this.model.type, 'value']}
               placeholder={t('project.list.project_type_tips')}
             />
           </NFormItem>
