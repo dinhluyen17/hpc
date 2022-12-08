@@ -22,7 +22,7 @@ import {
   toRefs,
   watch
 } from 'vue'
-import { NForm, NFormItem, NInput } from 'naive-ui'
+import { NForm, NFormItem, NInput, NSelect } from 'naive-ui'
 import { useForm } from './use-form'
 import Modal from '@/components/modal'
 import { useUserStore } from '@/store/user/user'
@@ -55,10 +55,12 @@ const ProjectModal = defineComponent({
     const cancelModal = () => {
       if (props.statusRef === 0) {
         variables.model.projectName = ''
+        variables.model.projectType = ''
         variables.model.description = ''
       } else {
         variables.model.userName = props.row.userName
         variables.model.projectName = props.row.name
+        variables.model.projectType = props.row.type
         variables.model.description = props.row.description
       }
       ctx.emit('cancelModal', props.showModalRef)
@@ -75,12 +77,14 @@ const ProjectModal = defineComponent({
       () => {
         if (props.statusRef === 0) {
           variables.model.projectName = ''
+          variables.model.projectType = ''
           variables.model.userName = (
             userStore.getUserInfo as UserInfoRes
           ).userName
           variables.model.description = ''
         } else {
           variables.model.projectName = props.row.name
+          variables.model.projectType = props.row.type
           variables.model.userName = props.row.userName
           variables.model.description = props.row.description
         }
@@ -91,6 +95,7 @@ const ProjectModal = defineComponent({
       () => props.row,
       () => {
         variables.model.projectName = props.row.name
+        variables.model.projectType = props.row.type
         variables.model.userName = props.row.userName
         variables.model.description = props.row.description
       }
@@ -100,6 +105,17 @@ const ProjectModal = defineComponent({
   },
   render() {
     const { t } = this
+    const selectOptions = [
+      {
+        label: "Default Project",
+        value: '0'
+      },
+      {
+        label: "Quantum Project",
+        value: '1'
+      }
+    ];
+
     return (
       <Modal
         title={
@@ -130,6 +146,13 @@ const ProjectModal = defineComponent({
               disabled={true}
               v-model={[this.model.userName, 'value']}
               placeholder={t('project.list.username_tips')}
+            />
+          </NFormItem>
+          <NFormItem label={t('project.list.project_type')} path='type'>
+            <NSelect
+              options={selectOptions}
+              v-model={[this.model.projectType, 'value']}
+              placeholder={t('project.list.project_type_tips')}
             />
           </NFormItem>
           <NFormItem
