@@ -55,7 +55,7 @@ initSerializer(
     GATE_CIRCUIT_DRAWER,
     GatePainting.LOCATION_INDEPENDENT_GATE_DRAWER);
 
-const canvasDiv = document.getElementById("canvasDiv");
+const canvasDiv = document.getElementById("app");
 
 //noinspection JSValidateTypes
 /** @type {!HTMLCanvasElement} */
@@ -65,8 +65,8 @@ const dragCanvas = document.getElementById("dragCanvas");
 if (!canvas) {
     throw new Error("Couldn't find 'drawCanvas'");
 }
-canvas.width = canvasDiv.clientWidth;
-canvas.height = window.innerHeight*0.9;
+//canvas.width = canvasDiv.clientWidth;
+//canvas.height = window.innerHeight*0.9;
 let haveLoaded = false;
 const semiStableRng = (() => {
     const target = {cur: new RestartableRng()};
@@ -103,7 +103,7 @@ revision.latestActiveCommit().subscribe(jsonText => {
  */
 let desiredCanvasSizeFor = curInspector => {
     return {
-        w: Math.max(canvasDiv.clientWidth, curInspector.desiredWidth()),
+        w: curInspector.desiredWidth(),
         h: curInspector.desiredHeight()
     };
 };
@@ -173,6 +173,17 @@ displayed.observable().subscribe(() => redrawThrottle.trigger());
 /** @type {undefined|!string} */
 let clickDownGateButtonKey = undefined;
 canvasDiv.addEventListener('click', ev => {
+    if (document.HIGHLIGHT_GATE) {
+        const gateRect = document.HIGHLIGHT_GATE.gateRect;
+        const element = document.getElementById('gateMenu');
+        element.style.display = 'block';
+        element.style.left = gateRect.x + "px";
+        element.style.top = (gateRect.y - 50) + "px";
+    }
+    else {
+        const element = document.getElementById('gateMenu');
+        element.style.display = 'none';
+    }
     let pt = eventPosRelativeTo(ev, canvasDiv);
     let curInspector = displayed.get();
     if (curInspector.tryGetHandOverButtonKey() !== clickDownGateButtonKey) {
@@ -293,6 +304,7 @@ canvasDiv.addEventListener('mousemove', ev => {
 });
 canvasDiv.addEventListener('mouseleave', () => {
     document.GRAB_GATE = undefined;
+    document.HIGHLIGHT_GATE = undefined;
     if (!displayed.get().hand.isBusy()) {
         let newHand = displayed.get().hand.withPos(undefined);
         let newInspector = displayed.get().withHand(newHand);

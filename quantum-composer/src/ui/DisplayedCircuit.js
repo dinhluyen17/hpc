@@ -36,7 +36,7 @@ import {paintBlochSphereDisplay} from "../gates/BlochSphereDisplay.js"
 /** @type {!number} */
 let CIRCUIT_OP_HORIZONTAL_SPACING = 10;
 /** @type {!number} */
-let CIRCUIT_OP_LEFT_SPACING = 350;
+let CIRCUIT_OP_LEFT_SPACING = 50;
 
 const SUPERPOSITION_GRID_LABEL_SPAN = 50;
 
@@ -140,7 +140,7 @@ class DisplayedCircuit {
         //  return this.opRect(this.circuitDefinition.columns.length - 1).right() + CIRCUIT_OP_LEFT_SPACING;
         //}
         // return this._rectForSuperpositionDisplay().right() + 101;
-        return this.opRect(this.circuitDefinition.columns.length - 1).right() + CIRCUIT_OP_LEFT_SPACING;
+        return this.opRect(this.circuitDefinition.columns.length - 1).right() + CIRCUIT_OP_LEFT_SPACING + 200;
     }
 
     /**
@@ -152,7 +152,7 @@ class DisplayedCircuit {
         if (wireIndex < 0) {
             throw new DetailedError("Bad wireIndex", {wireIndex});
         }
-        return new Rect(350, this.top + Config.WIRE_SPACING * wireIndex, Infinity, Config.WIRE_SPACING);
+        return new Rect(50, this.top + Config.WIRE_SPACING * wireIndex, Infinity, Config.WIRE_SPACING);
     }
 
     /**
@@ -215,7 +215,7 @@ class DisplayedCircuit {
      */
     // Phu: find column for drag and drop
     findOpHalfColumnAt(p) {
-        if (p.x < 250 || p.y < this.top || p.y > this.top + this.desiredHeight()) {
+        if (p.x < 0 || p.y < this.top || p.y > this.top + this.desiredHeight()) {
             return undefined;
         }
 
@@ -352,6 +352,7 @@ class DisplayedCircuit {
         if (showWires) {
             this._drawWires(painter, !forTooltip, hand);
         }
+        document.HIGHLIGHT_GATE = undefined;
         for (let col = 0; col < this.circuitDefinition.columns.length; col++) {
             this._drawColumn(painter, this.circuitDefinition.columns[col], col, hand, stats);
         }
@@ -389,7 +390,7 @@ class DisplayedCircuit {
                     painter.fillRect(rect, Config.HIGHLIGHTED_GATE_FILL_COLOR);
                 }
                 // Phu: draw label for wire
-                painter.print(`|${v}⟩`, 250, y, 'right', 'middle', '#646464', '14px sans-serif', 20, Config.WIRE_SPACING);
+                painter.print(`|${v}⟩`, 50, y, 'right', 'middle', '#646464', '14px sans-serif', 20, Config.WIRE_SPACING);
             }
         }
 
@@ -403,7 +404,7 @@ class DisplayedCircuit {
                 let wireRect = this.wireRect(row);
                 let y = Math.round(wireRect.center().y - 0.5) + 0.5;
                 // Phu: change wire label x
-                let lastX = showLabels ? 250 : 50;
+                let lastX = showLabels ? 50 : 50;
                 //noinspection ForLoopThatDoesntUseLoopVariableJS
                 for (let col = 0;
                         showLabels ? lastX < painter.canvas.width : col <= this.circuitDefinition.columns.length;
@@ -535,17 +536,13 @@ class DisplayedCircuit {
 
             let {isHighlighted, isResizeShowing, isResizeHighlighted} =
                 this._highlightStatusAt(col, row, hand.hoverPoints());
-
+            if (isHighlighted && hand.heldRow != row && hand.heldColumn != col) {
+                document.HIGHLIGHT_GATE = {row, col, gateRect};                 
+            }
             let drawer = gate.customDrawer || GatePainting.DEFAULT_DRAWER;
             painter.noteTouchBlocker({rect: gateRect, cursor: 'pointer'});
             if (gate.canChangeInSize()) {
                 painter.noteTouchBlocker({rect: GatePainting.rectForResizeTab(gateRect), cursor: 'ns-resize'});
-            }
-            if (isHighlighted) {
-                const element = document.getElementById('gateMenu');
-                element.style.display = 'block';
-                element.style.left = gateRect.x + "px";
-                element.style.top = (gateRect.y - 50) + "px";                
             }
             drawer(new GateDrawParams(
                 painter,
@@ -1023,7 +1020,7 @@ class DisplayedCircuit {
     // Phu: draw wire
     _wireInitialStateClickableRect(wire) {
         let r = this.wireRect(wire);
-        r.x = 350;
+        r.x = 50;
         r.y += 5;
         r.w = 30;
         r.h -= 10;
