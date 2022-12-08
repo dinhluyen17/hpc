@@ -106,6 +106,11 @@ export function useDataList() {
             icon: renderIcon(FundProjectionScreenOutlined)
           },
           {
+            label: t('menu.project_circuit'),
+            key: `/projects/${projectCode}/circuit`,
+            icon: renderIcon(FundProjectionScreenOutlined)
+          },
+          {
             label: t('menu.workflow'),
             key: 'workflow',
             icon: renderIcon(PartitionOutlined),
