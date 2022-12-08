@@ -1,0 +1,6 @@
+.idea
+.mvn
+logs
+gc.log
+target
+testFile.txt
