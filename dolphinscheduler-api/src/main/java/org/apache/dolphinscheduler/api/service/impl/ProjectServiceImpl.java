@@ -96,7 +96,7 @@ public class ProjectServiceImpl extends BaseServiceImpl implements ProjectServic
      */
     @Override
     @Transactional
-    public Result createProject(User loginUser, String name, String desc) {
+    public Result createProject(User loginUser, String name, String desc, Integer type) {
         Result result = new Result();
 
         checkDesc(result, desc);
@@ -123,6 +123,7 @@ public class ProjectServiceImpl extends BaseServiceImpl implements ProjectServic
                     .name(name)
                     .code(CodeGenerateUtils.getInstance().genCode())
                     .description(desc)
+                    .type(type)
                     .userId(loginUser.getId())
                     .userName(loginUser.getUserName())
                     .createTime(now)
