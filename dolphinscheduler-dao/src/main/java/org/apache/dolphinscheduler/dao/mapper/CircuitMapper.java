@@ -48,4 +48,6 @@ public interface CircuitMapper extends BaseMapper<Circuit> {
                                       @Param("keyword") String keyword,
                                       @Param("criteria") String criteria,
                                       @Param("direction") String direction);
+
+    int duplicate(@Param("id") int id);
 }

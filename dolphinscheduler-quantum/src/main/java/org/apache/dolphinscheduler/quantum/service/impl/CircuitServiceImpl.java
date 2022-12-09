@@ -39,7 +39,7 @@ import java.text.MessageFormat;
 import java.util.*;
 
 /**
- * users service impl
+ * circuit service impl
  */
 @Service
 public class CircuitServiceImpl extends BaseServiceImpl implements CircuitService {
@@ -53,13 +53,6 @@ public class CircuitServiceImpl extends BaseServiceImpl implements CircuitServic
     @Transactional(rollbackFor = Exception.class)
     public Map<String, Object> create(Integer userId, String name, String description, String json, String qasm, String qiskit, Integer projectCode) {
         Map<String, Object> result = new HashMap<>();
-
-        // check all user params
-//        String msg = this.checkUserParams(userName, userPassword, email, phone);
-//        if (!StringUtils.isEmpty(msg)) {
-//            putMsg(result, Status.REQUEST_PARAMS_NOT_VALID_ERROR, msg);
-//            return result;
-//        }
 
         Circuit circuit = new Circuit();
         circuit.setUserId(userId);
@@ -83,12 +76,6 @@ public class CircuitServiceImpl extends BaseServiceImpl implements CircuitServic
         return result;
     }
 
-    /**
-     * query user by id
-     *
-     * @param id id
-     * @return user info
-     */
     @Override
     public Map<String, Object> get(Integer id) {
         Map<String, Object> result = new HashMap<>();
@@ -117,7 +104,7 @@ public class CircuitServiceImpl extends BaseServiceImpl implements CircuitServic
     }
 
     @Override
-    public Map<String, Object> update(int id, String name, String description, String json, String qasm, String qiskit, Integer projectCode) throws IOException {
+    public Map<String, Object> update(Integer id, String name, String description, String json, String qasm, String qiskit, Integer projectCode) throws IOException {
         Map<String, Object> result = new HashMap<>();
         result.put(Constants.STATUS, false);
 
@@ -128,18 +115,6 @@ public class CircuitServiceImpl extends BaseServiceImpl implements CircuitServic
             return result;
         }
         if (StringUtils.isNotEmpty(name)) {
-//            if (!CheckUtils.checkUserName(userName)) {
-//                logger.warn("Parameter userName check failed.");
-//                putMsg(result, Status.REQUEST_PARAMS_NOT_VALID_ERROR, userName);
-//                return result;
-//            }
-
-//            User tempUser = circuitMapper.queryByUserNameAccurately(userName);
-//            if (tempUser != null && tempUser.getId() != userId) {
-//                logger.warn("User name already exists, userName:{}.", tempUser.getUserName());
-//                putMsg(result, Status.USER_NAME_EXIST);
-//                return result;
-//            }
             circuit.setName(name);
         }
 
@@ -206,6 +181,16 @@ public class CircuitServiceImpl extends BaseServiceImpl implements CircuitServic
         res.put("failed", failedRes);
         putMsg(result, Status.SUCCESS);
         result.put(Constants.DATA_LIST, res);
+        return result;
+    }
+
+    @Override
+    @Transactional(rollbackFor = Exception.class)
+    public Map<String, Object> duplicate(Integer id) {
+        Map<String, Object> result = new HashMap<>();
+        Integer newId = circuitMapper.duplicate(id);
+        result.put(Constants.DATA_LIST, newId);
+        putMsg(result, Status.SUCCESS);
         return result;
     }
 }

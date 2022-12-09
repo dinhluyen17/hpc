@@ -162,10 +162,20 @@ public class CircuitController extends BaseController {
     @ResponseStatus(HttpStatus.OK)
     @ApiException(DELETE_USER_BY_ID_ERROR)
     @AccessLogAnnotation
-    public Result delete(@Parameter(hidden = true) @RequestAttribute(value = Constants.SESSION_USER) User loginUser,
-                         @RequestParam(value = "ids") List<Integer> ids) throws Exception {
+    public Result delete(@RequestParam(value = "ids") List<Integer> ids) throws Exception {
         Map<String, Object> result = circuitService.delete(ids);
         return returnDataList(result);
     }
 
+    @Operation(summary = "duplicate", description = "DUPLICATE_CIRCUIT_NOTES")
+    @Parameters({
+            @Parameter(name = "id", description = "ID", required = true, schema = @Schema(implementation = Integer.class))
+    })
+    @PostMapping(value = "/duplicate")
+    @ResponseStatus(HttpStatus.OK)
+    @ApiException(GET_USER_INFO_ERROR)
+    public Result duplicateCircuit(@RequestParam(value = "id") Integer id) {
+        Map<String, Object> result = circuitService.duplicate(id);
+        return returnDataList(result);
+    }
 }
