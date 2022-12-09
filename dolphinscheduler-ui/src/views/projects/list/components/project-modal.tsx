@@ -24,6 +24,7 @@ import {
 } from 'vue'
 import { NForm, NFormItem, NInput, NSelect } from 'naive-ui'
 import { useForm } from './use-form'
+import { selectOptionsType } from './use-options-type'
 import Modal from '@/components/modal'
 import { useUserStore } from '@/store/user/user'
 import type { UserInfoRes } from '@/service/modules/users/types'
@@ -105,16 +106,6 @@ const ProjectModal = defineComponent({
   },
   render() {
     const { t } = this
-    const selectOptions = [
-      {
-        label: "Default Project",
-        value: '0'
-      },
-      {
-        label: "Quantum Project",
-        value: '1'
-      }
-    ];
 
     return (
       <Modal
@@ -150,7 +141,7 @@ const ProjectModal = defineComponent({
           </NFormItem>
           <NFormItem label={t('project.list.project_type')} path='type'>
             <NSelect
-              options={selectOptions}
+              options={selectOptionsType}
               v-model={[this.model.type, 'value']}
               placeholder={t('project.list.project_type_tips')}
             />
