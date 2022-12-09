@@ -321,8 +321,8 @@ export function useDataList() {
   }
 
   const changeMenuWithTypeOption = (state: any) => {
-    const projectCode = route.params.projectCode || ''
     const projectType = route.params.projectType || ''
+    const projectCode = route.params.projectCode || ''
 
     state.menuOptions = [
       {
@@ -337,12 +337,12 @@ export function useDataList() {
         children: [
           {
             label: t('menu.project_overview'),
-            key: `/projects/${projectCode}/${projectType}`,
+            key: `/projects/${projectType}/${projectCode}`,
             icon: renderIcon(FundProjectionScreenOutlined)
           },
           {
             label: t('menu.project_circuit'),
-            key: `/projects/${projectCode}/${projectType}/circuit`,
+            key: `/projects/${projectType}/${projectCode}/circuit`,
             icon: renderIcon(ApiOutlined)
           }
         ]

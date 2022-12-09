@@ -92,10 +92,9 @@ export function useForm(
     if (variables.saving) return
     variables.saving = true
     try {
-      console.log(variables.model);
       await createProject(variables.model)
       variables.saving = false
-      // resetForm()
+      resetForm()
       ctx.emit('confirmModal', props.showModalRef)
     } catch (err) {
       variables.saving = false

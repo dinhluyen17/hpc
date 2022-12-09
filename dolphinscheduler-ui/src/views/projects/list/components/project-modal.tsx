@@ -51,6 +51,8 @@ const ProjectModal = defineComponent({
   setup(props, ctx) {
     const { variables, t, handleValidate } = useForm(props, ctx)
 
+    console.log(props.statusRef);
+
     const userStore = useUserStore()
 
     const cancelModal = () => {
@@ -102,6 +104,8 @@ const ProjectModal = defineComponent({
       }
     )
 
+    console.log(props);
+
     return { ...toRefs(variables), t, cancelModal, confirmModal, trim }
   },
   render() {
@@ -143,6 +147,7 @@ const ProjectModal = defineComponent({
             <NSelect
               options={selectOptionsType}
               v-model={[this.model.type, 'value']}
+              disabled={this.statusRef !== 0}
               placeholder={t('project.list.project_type_tips')}
             />
           </NFormItem>

@@ -54,7 +54,7 @@ export default {
       }
     },
     {
-      path: '/projects/:projectCode/:projectType',
+      path: '/projects/:projectType/:projectCode',
       name: 'projects-quantum-overview',
       component: components['projects-overview'],
       meta: {
@@ -65,7 +65,7 @@ export default {
       }
     },
     {
-      path: '/projects/:projectCode/:projectType/circuit',
+      path: '/projects/:projectType/:projectCode/circuit',
       name: 'projects-circuit',
       component: components['projects-circuit'],
       meta: {
@@ -76,7 +76,7 @@ export default {
       }
     },
     {
-      path: '/projects/:projectCode/:projectType/circuit/:circuitId',
+      path: '/projects/:projectType/:projectCode/circuit/:circuitId',
       name: 'projects-circuit-item',
       component: components['projects-circuit-item'],
       meta: {

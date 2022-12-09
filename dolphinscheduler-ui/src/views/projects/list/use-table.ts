@@ -86,7 +86,7 @@ export function useTable() {
                 if (row.type === 0 || row.type === null) {
                   router.push({ path: `/projects/${row.code}` })
                 } else {
-                  router.push({ path: `/projects/${row.code}/${row.type}` })
+                  router.push({ path: `/projects/${row.type}/${row.code}` })
                 }
               }
             },
