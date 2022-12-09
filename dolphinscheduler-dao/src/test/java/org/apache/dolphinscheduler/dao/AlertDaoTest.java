@@ -37,7 +37,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 @ActiveProfiles(ProfileType.H2)
 @ExtendWith(MockitoExtension.class)
-@SpringBootApplication(scanBasePackageClasses = DaoConfiguration.class)
+(scanBasePackageClasses = DaoConfiguration.class)
 @SpringBootTest(classes = DaoConfiguration.class)
 @Transactional
 @Rollback
