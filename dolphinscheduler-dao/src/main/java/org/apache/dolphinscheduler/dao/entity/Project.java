@@ -69,6 +69,8 @@ public class Project {
      */
     private String description;
 
+    private Integer type;
+
     /**
      * create time
      */
