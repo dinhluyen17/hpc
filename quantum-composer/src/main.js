@@ -87,6 +87,7 @@ const semiStableRng = (() => {
 const displayed = new ObservableValue(
     DisplayedInspector.empty(new Rect(0, 0, canvas.clientWidth, canvas.clientHeight)));
 const mostRecentStats = new ObservableValue(CircuitStats.EMPTY);
+
 /** @type {!Revision} */
 let revision = Revision.startingAt(displayed.get().snapshot());
 
@@ -186,6 +187,39 @@ canvasDiv.addEventListener('click', ev => {
     //     const element = document.getElementById('gateMenu');
     //     element.style.display = 'none';
     // }
+    let qHeight = mostRecentStats.get().finalState.height();
+    let qStates = [];
+    for (let i = 0; i < qHeight; i++){
+        qStates[i] = Util.bin(i,mostRecentStats.get().circuitDefinition.numWires);
+    }
+    let qProb = [];
+    for (let i = 0; i < mostRecentStats.get().finalState._buffer.length; i++) {
+        let x = mostRecentStats.get().finalState._buffer;
+        let y = x[i];
+        let z = x[i + 1];
+        if (i % 2 == 0){
+            let k = i/2;
+            let j = Math.pow(y,2) + Math.pow(z, 2);
+            qProb[k] = (j*100).toFixed(4);
+        }
+    }
+    const stateObj = qStates.map((str, index)=>
+        ({
+           id: index, State: qStates[index]
+        }))
+    const probObj = qProb.map((str, index) => ({
+        id: index, Probability: qProb[index]
+    }))
+    const data = stateObj.map((e,i)=>{
+        let temp = probObj.find(el => el.id === e.id)
+            e.id = temp.Probability
+            e.Probability = e.id
+            delete e.id
+        document.getElementById("stateBarChart").innerHTML ="";
+        return e;
+    })
+    let barData = data;
+    document.D3_FUNCTION.test(barData);
     let pt = eventPosRelativeTo(ev, canvasDiv);
     let curInspector = displayed.get();
     if (curInspector.tryGetHandOverButtonKey() !== clickDownGateButtonKey) {
