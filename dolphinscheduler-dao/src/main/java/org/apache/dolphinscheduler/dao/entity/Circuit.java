@@ -48,4 +48,6 @@ public class Circuit {
     private Date createTime;
 
     private Date updateTime;
+
+    private Integer projectCode;
 }

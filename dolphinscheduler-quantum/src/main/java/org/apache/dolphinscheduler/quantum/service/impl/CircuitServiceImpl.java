@@ -19,27 +19,15 @@ package org.apache.dolphinscheduler.quantum.service.impl;
 
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
-import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
-import org.apache.dolphinscheduler.api.dto.resources.ResourceComponent;
 import org.apache.dolphinscheduler.api.enums.Status;
-import org.apache.dolphinscheduler.api.exceptions.ServiceException;
-import org.apache.dolphinscheduler.api.service.UsersService;
 import org.apache.dolphinscheduler.api.service.impl.BaseServiceImpl;
-import org.apache.dolphinscheduler.api.utils.CheckUtils;
 import org.apache.dolphinscheduler.api.utils.PageInfo;
 import org.apache.dolphinscheduler.api.utils.Result;
 import org.apache.dolphinscheduler.common.constants.Constants;
-import org.apache.dolphinscheduler.common.enums.AuthorizationType;
-import org.apache.dolphinscheduler.common.enums.Flag;
-import org.apache.dolphinscheduler.common.enums.UserType;
-import org.apache.dolphinscheduler.common.utils.EncryptionUtils;
-import org.apache.dolphinscheduler.common.utils.PropertyUtils;
-import org.apache.dolphinscheduler.dao.entity.*;
-import org.apache.dolphinscheduler.dao.mapper.*;
-import org.apache.dolphinscheduler.dao.utils.ResourceProcessDefinitionUtils;
+import org.apache.dolphinscheduler.dao.entity.Circuit;
+import org.apache.dolphinscheduler.dao.mapper.CircuitMapper;
 import org.apache.dolphinscheduler.quantum.service.CircuitService;
-import org.apache.dolphinscheduler.service.storage.StorageOperate;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -49,9 +37,6 @@ import org.springframework.transaction.annotation.Transactional;
 import java.io.IOException;
 import java.text.MessageFormat;
 import java.util.*;
-import java.util.stream.Collectors;
-
-import static org.apache.dolphinscheduler.api.constants.ApiFuncIdentificationConstant.USER_MANAGER;
 
 /**
  * users service impl
@@ -66,7 +51,7 @@ public class CircuitServiceImpl extends BaseServiceImpl implements CircuitServic
 
     @Override
     @Transactional(rollbackFor = Exception.class)
-    public Map<String, Object> create(Integer userId, String name, String description, String json, String qasm, String qiskit) {
+    public Map<String, Object> create(Integer userId, String name, String description, String json, String qasm, String qiskit, Integer projectCode) {
         Map<String, Object> result = new HashMap<>();
 
         // check all user params
@@ -86,6 +71,8 @@ public class CircuitServiceImpl extends BaseServiceImpl implements CircuitServic
         Date date = new Date();
         circuit.setCreateTime(date);
         circuit.setUpdateTime(date);
+        circuit.setUpdateTime(date);
+        circuit.setProjectCode(projectCode);
 
         // save user
         circuitMapper.insert(circuit);
@@ -130,7 +117,7 @@ public class CircuitServiceImpl extends BaseServiceImpl implements CircuitServic
     }
 
     @Override
-    public Map<String, Object> update(int id, String name, String description, String json, String qasm, String qiskit) throws IOException {
+    public Map<String, Object> update(int id, String name, String description, String json, String qasm, String qiskit, Integer projectCode) throws IOException {
         Map<String, Object> result = new HashMap<>();
         result.put(Constants.STATUS, false);
 
@@ -171,6 +158,9 @@ public class CircuitServiceImpl extends BaseServiceImpl implements CircuitServic
         Date now = new Date();
         circuit.setUpdateTime(now);
         // updateProcessInstance user
+        if (projectCode != null) {
+            circuit.setProjectCode(projectCode);
+        }
         int update = circuitMapper.updateById(circuit);
         if (update > 0) {
             logger.info("Circuit is updated and id is :{}.", id);

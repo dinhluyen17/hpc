@@ -28,13 +28,13 @@ import java.util.Map;
  */
 public interface CircuitService {
 
-    Map<String, Object> create(Integer userId, String name, String description, String json, String qasm, String qiskit);
+    Map<String, Object> create(Integer userId, String name, String description, String json, String qasm, String qiskit, Integer projectCode);
 
     Map<String, Object> get(Integer id);
 
     Result search(Integer userId, String keyword, String criteria, String direction, Integer pageNo, Integer pageSize);
 
-    Map<String, Object> update(int id, String name, String description, String json, String qasm, String qiskit) throws IOException;
+    Map<String, Object> update(int id, String name, String description, String json, String qasm, String qiskit, Integer projectCode) throws IOException;
 
     Map<String, Object> delete(List<Integer> ids) throws IOException;
 }

@@ -74,7 +74,8 @@ public class CircuitController extends BaseController {
             @Parameter(name = "description", description = "DESCRIPTION", schema = @Schema(implementation = String.class)),
             @Parameter(name = "json", description = "JSON", schema = @Schema(implementation = String.class)),
             @Parameter(name = "qasm", description = "QASM", schema = @Schema(implementation = String.class)),
-            @Parameter(name = "qiskit", description = "QISKIT", schema = @Schema(implementation = String.class))
+            @Parameter(name = "qiskit", description = "QISKIT", schema = @Schema(implementation = String.class)),
+            @Parameter(name = "projectCode", description = "PROJECT_CODE", schema = @Schema(implementation = String.class))
     })
     @PostMapping(value = "/create")
     @ResponseStatus(HttpStatus.CREATED)
@@ -85,10 +86,11 @@ public class CircuitController extends BaseController {
                                 @RequestParam(value = "description", required = false) String description,
                                 @RequestParam(value = "json", required = false) String json,
                                 @RequestParam(value = "qasm", required = false) String qasm,
-                                @RequestParam(value = "qiskit", required = false) String qiskit) throws Exception {
+                                @RequestParam(value = "qiskit", required = false) String qiskit,
+                                @RequestParam(value = "projectCode", required = false) Integer projectCode) throws Exception {
         Integer userId = loginUser.getId();
         Map<String, Object> result =
-                circuitService.create(userId, name, description, json, qasm, qiskit);
+                circuitService.create(userId, name, description, json, qasm, qiskit, projectCode);
         return returnDataList(result);
     }
 
@@ -133,7 +135,8 @@ public class CircuitController extends BaseController {
             @Parameter(name = "description", description = "DESCRIPTION", allowEmptyValue = true, schema = @Schema(implementation = String.class)),
             @Parameter(name = "json", description = "JSON", allowEmptyValue = true, schema = @Schema(implementation = String.class)),
             @Parameter(name = "qasm", description = "QASM", allowEmptyValue = true, schema = @Schema(implementation = String.class)),
-            @Parameter(name = "qiskit", description = "QISKIT", allowEmptyValue = true, schema = @Schema(implementation = String.class))
+            @Parameter(name = "qiskit", description = "QISKIT", allowEmptyValue = true, schema = @Schema(implementation = String.class)),
+            @Parameter(name = "projectCode", description = "PROJECT_CODE", allowEmptyValue = true, schema = @Schema(implementation = Integer.class))
     })
     @PatchMapping(value = "/update")
     @ResponseStatus(HttpStatus.OK)
@@ -143,9 +146,10 @@ public class CircuitController extends BaseController {
                          @RequestParam(value = "description", required = false) String description,
                          @RequestParam(value = "json", required = false) String json,
                          @RequestParam(value = "qasm", required = false) String qasm,
-                         @RequestParam(value = "qiskit", required = false) String qiskit) throws Exception {
+                         @RequestParam(value = "qiskit", required = false) String qiskit,
+                         @RequestParam(value = "projectCode", required = false) Integer projectCode) throws Exception {
         Map<String, Object> result =
-                circuitService.update(id, name, description, json, qasm, qiskit);
+                circuitService.update(id, name, description, json, qasm, qiskit, projectCode);
         return returnDataList(result);
     }
 
