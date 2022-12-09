@@ -24,7 +24,7 @@ import {
 } from 'vue'
 import { NForm, NFormItem, NInput, NSelect } from 'naive-ui'
 import { useForm } from './use-form'
-import { selectOptionsType } from './use-options-type'
+import { selectOptionsType, DEFAULT_PROJECT, QUANTUM_PROJECT } from '../constans/project-types'
 import Modal from '@/components/modal'
 import { useUserStore } from '@/store/user/user'
 import type { UserInfoRes } from '@/service/modules/users/types'
@@ -61,7 +61,7 @@ const ProjectModal = defineComponent({
       } else {
         variables.model.userName = props.row.userName
         variables.model.projectName = props.row.name
-        variables.model.type = props.row.type
+        variables.model.type = props.row.type === 0 || props.row.type === null ? DEFAULT_PROJECT : QUANTUM_PROJECT
         variables.model.description = props.row.description
       }
       ctx.emit('cancelModal', props.showModalRef)
@@ -85,7 +85,7 @@ const ProjectModal = defineComponent({
           variables.model.description = ''
         } else {
           variables.model.projectName = props.row.name
-          variables.model.type = props.row.type === 0 || props.row.type === null ? 'Default Project' : 'Quantum Project'
+          variables.model.type = props.row.type === 0 || props.row.type === null ? DEFAULT_PROJECT : QUANTUM_PROJECT
           variables.model.userName = props.row.userName
           variables.model.description = props.row.description
         }
@@ -96,7 +96,7 @@ const ProjectModal = defineComponent({
       () => props.row,
       () => {
         variables.model.projectName = props.row.name
-        variables.model.type = props.row.type === 0 || props.row.type === null ? 'Default Project' : 'Quantum Project'
+        variables.model.type = props.row.type === 0 || props.row.type === null ? DEFAULT_PROJECT : QUANTUM_PROJECT
         variables.model.userName = props.row.userName
         variables.model.description = props.row.description
       }
