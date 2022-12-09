@@ -64,40 +64,13 @@
     </div>
   </div>
 
-
-
   <!-- Primary content -->
-  <div id="inspectorDiv" style="display: none">
-    <!-- Buttons -->
-    <div style="margin: 5px; display: none;">
-      <button id="menu-button" style="min-width: 50px; min-height: 30px;">Menu</button>
-      &nbsp;
-      &nbsp;
-      <button id="export-button" style="min-width: 50px; min-height: 30px;">Export</button>
-      &nbsp;
-      &nbsp;
-      <button id="clear-circuit-button" style="min-width: 50px; min-height: 30px;">Clear Circuit</button>
-      <button id="clear-all-button" style="min-width: 50px; min-height: 30px;">Clear ALL</button>
-      &nbsp;
-      &nbsp;
-      &nbsp;
-      &nbsp;
-      <button id="gate-forge-button" style="min-width: 50px; min-height: 30px;">Make Gate</button>
-      &nbsp;
-      &nbsp;
-      &nbsp;
-      &nbsp;
-      <button id="load-data" style="min-width: 50px; min-height: 30px;">Load Data</button>
-      <span style="color:#BBB">Version 2.3</span>
-    </div>
 
-    <!-- Circuit drawing area -->
+  <!-- Circuit drawing area -->
 
+  <!-- INCLUDE EXPORT PART -->
 
-    <!-- INCLUDE EXPORT PART -->
-
-    <!-- INCLUDE FORGE PART -->
-  </div>
+  <!-- INCLUDE FORGE PART -->
 
   <!-- INCLUDE MENU PART -->
 
@@ -109,16 +82,6 @@
   </div>
   <script>
     document.getElementById('noscript-div').style.display = 'none';
-    
-    function handleGroupOnClicked() {
-      document.getElementById("gateList").style.display = 'block';
-      document.getElementById("gateGrid").style.display = 'none';      
-    }
-  
-    function handleGroupOffClicked() {
-      document.getElementById("gateList").style.display = 'none';
-      document.getElementById("gateGrid").style.display = 'block';
-    }
     function grabGate(gate) {
       document.GRAB_GATE = gate;
     }

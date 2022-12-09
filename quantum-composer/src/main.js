@@ -82,7 +82,6 @@ const semiStableRng = (() => {
 
 //noinspection JSValidateTypes
 /** @type {!HTMLDivElement} */
-const inspectorDiv = document.getElementById("inspectorDiv");
 
 /** @type {ObservableValue.<!DisplayedInspector>} */
 const displayed = new ObservableValue(
@@ -173,17 +172,17 @@ displayed.observable().subscribe(() => redrawThrottle.trigger());
 /** @type {undefined|!string} */
 let clickDownGateButtonKey = undefined;
 canvasDiv.addEventListener('click', ev => {
-    if (document.HIGHLIGHT_GATE) {
-        const gateRect = document.HIGHLIGHT_GATE.gateRect;
-        const element = document.getElementById('gateMenu');
-        element.style.display = 'block';
-        element.style.left = gateRect.x + "px";
-        element.style.top = (gateRect.y - 50) + "px";
-    }
-    else {
-        const element = document.getElementById('gateMenu');
-        element.style.display = 'none';
-    }
+    // if (document.HIGHLIGHT_GATE) {
+    //     const gateRect = document.HIGHLIGHT_GATE.gateRect;
+    //     const element = document.getElementById('gateMenu');
+    //     element.style.display = 'block';
+    //     element.style.left = gateRect.x + "px";
+    //     element.style.top = (gateRect.y - 50) + "px";
+    // }
+    // else {
+    //     const element = document.getElementById('gateMenu');
+    //     element.style.display = 'none';
+    // }
     let pt = eventPosRelativeTo(ev, canvasDiv);
     let curInspector = displayed.get();
     if (curInspector.tryGetHandOverButtonKey() !== clickDownGateButtonKey) {
@@ -315,11 +314,11 @@ canvasDiv.addEventListener('mouseleave', () => {
 let obsIsAnyOverlayShowing = new ObservableSource();
 initGateViews();
 initUrlCircuitSync(revision);
-initExports(revision, mostRecentStats, obsIsAnyOverlayShowing.observable());
-initForge(revision, obsIsAnyOverlayShowing.observable());
-initUndoRedo(revision, obsIsAnyOverlayShowing.observable());
-initClear(revision, obsIsAnyOverlayShowing.observable());
-initMenu(revision, obsIsAnyOverlayShowing.observable());
+//initExports(revision, mostRecentStats, obsIsAnyOverlayShowing.observable());
+//initForge(revision, obsIsAnyOverlayShowing.observable());
+//initUndoRedo(revision, obsIsAnyOverlayShowing.observable());
+//initClear(revision, obsIsAnyOverlayShowing.observable());
+//initMenu(revision, obsIsAnyOverlayShowing.observable());
 initTitleSync(revision);
 obsForgeIsShowing.
     zipLatest(obsExportsIsShowing, (e1, e2) => e1 || e2).
@@ -333,7 +332,6 @@ obsForgeIsShowing.
 // If the webgl initialization is going to fail, don't fail during the module loading phase.
 haveLoaded = true;
 setTimeout(() => {
-    inspectorDiv.style.display = 'block';
     redrawNow();
     document.getElementById("loading-div").style.display = 'none';
     document.getElementById("close-menu-button").style.display = 'block';
