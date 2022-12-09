@@ -85,7 +85,7 @@ const ProjectModal = defineComponent({
           variables.model.description = ''
         } else {
           variables.model.projectName = props.row.name
-          variables.model.type = props.row.type
+          variables.model.type = props.row.type === 0 || props.row.type === null ? 'Default Project' : 'Quantum Project'
           variables.model.userName = props.row.userName
           variables.model.description = props.row.description
         }
@@ -96,7 +96,7 @@ const ProjectModal = defineComponent({
       () => props.row,
       () => {
         variables.model.projectName = props.row.name
-        variables.model.type = props.row.type
+        variables.model.type = props.row.type === 0 || props.row.type === null ? 'Default Project' : 'Quantum Project'
         variables.model.userName = props.row.userName
         variables.model.description = props.row.description
       }
