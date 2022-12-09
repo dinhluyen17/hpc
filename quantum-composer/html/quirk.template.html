@@ -28,17 +28,34 @@
     <div class="content">
       <div class="gate-area">
         <div class="gate-area-header">
-          <input type="text" class="gate-area-header-search" id="gate-area-header-search">
-          <button class="gate-area-header-btn" id="gate-area-header-list-btn">List</button>
-          <button class="gate-area-header-btn" id="gate-area-header-grid-btn">Grid</button>
-          <button class="gate-area-header-btn" id="gate-area-header-close-btn">X</button>
+          <input type="text" class="gate-area-header-search" id="searchKws" onchange="handleSearch()">
+          <button class="gate-area-header-btn" onclick="handleGroupOnClicked()">List</button>
+          <button class="gate-area-header-btn" onclick="handleGroupOffClicked()">Grid</button>
+          <button class="gate-area-header-btn" onclick="handleClear()">X</button>
         </div>
         <div class="gate-area-body">
-          <label class="gate-area-body-section-label">Common gates</label>
-          <div class="gate-area-body-common-gates" id="common-gates">          
+          <label class="gate-area-body-section-label">Commons gates</label>
+          <div class="gate-area-body-common-gates">
+            <div class="gateList">
+              <div id="common-gates">
+              </div> 
+            </div>
+            <div class="gateGrid" style="display: none;">
+              <div id="common-gates-grid">
+              </div> 
+            </div>
+                       
           </div>
           <label class="gate-area-body-section-label">Advanced gates</label>
-          <div class="gate-area-body-advanced-gates" id="advanced-gates">
+          <div class="gate-area-body-advanced-gates">
+            <div class="gateList">
+              <div id="advanced-gates">
+              </div>   
+            </div>
+            <div class="gateGrid" style="display: none;">
+              <div id="advanced-gates-grid">
+              </div>   
+            </div>
           </div>
         </div>
       </div>
@@ -141,8 +158,40 @@
   </script>
   <script>
     document.getElementById('noscript-div').style.display = 'none';
+    
+    function handleGroupOnClicked() {
+      const gateList = document.querySelectorAll('.gateList')
+      const gateGrid = document.querySelectorAll('.gateGrid')
+      gateList.forEach(item => {
+        item.style.display = 'block'
+      })      
+      gateGrid.forEach(item => {
+        item.style.display = 'none'
+      })
+    }
+  
+    function handleGroupOffClicked() {
+      const gateList = document.querySelectorAll('.gateList')
+      const gateGrid = document.querySelectorAll('.gateGrid')
+      gateList.forEach(item => {
+        item.style.display = 'none'
+      })      
+      gateGrid.forEach(item => {
+        item.style.display = 'block'
+      })
+    }
+    
     function grabGate(gate) {
       document.GRAB_GATE = gate;
+    }
+
+    function handleSearch() {
+      let search = document.getElementById("searchKws").textContent;
+      console.log("search ", search);
+    }
+
+    function handleClear() {
+      document.getElementById("searchKws").innerHTML = "";
     }
   </script>
 
