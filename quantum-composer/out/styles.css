@@ -77,7 +77,6 @@ body {
     flex-direction: column;
     width: 300px;
     border: 1px solid #373737;
-    margin: 10px;
 }
 
 .gate-area-header {
@@ -116,16 +115,20 @@ body {
     margin: 10px 5px 10px 5px;
     border: 1px solid #373737;
     flex: 1;
+    overflow-y: scroll;    
     display: flex;
-    flex-direction: column;
+    flex-direction: row;
+    flex-wrap: wrap;
 }
 
 .gate-area-body-advanced-gates {
     margin: 10px 5px 10px 5px;
     border: 1px solid #373737;
     flex: 1;
+    overflow-y: scroll;    
     display: flex;
-    flex-direction: column;
+    flex-direction: row;
+    flex-wrap: wrap;
 }
 
 .content .circuit-area {
@@ -134,7 +137,6 @@ body {
     flex-direction: column;
 }
 .circuit-area-header {
-    margin-top: 10px;
     height: 50px;
     display: flex;
     flex-direction: row;
@@ -153,9 +155,6 @@ body {
     border: 1px solid #373737;
     overflow-x: scroll;
     overflow-y: scroll;
-    max-height: calc(100vh - 60px - 200px - 50px - 30px);/* - Header - Chart - curcuit header - margin*/
-    width: calc(100vw - 300px - 300px);
-    display: inline-block;
 }
 .circuit-area-chart {
     position: relative;
@@ -163,7 +162,7 @@ body {
     margin-top: 10px;
     border: 1px solid #373737;
 }
-.circuit-area-chart-close-btn {
+#circuit-area-chart-close-btn {
     position: absolute;
     top: 0px;
     right: 0px;
@@ -173,35 +172,17 @@ body {
 .content .code-area {   
     position: relative; 
     width: 300px;
-    margin-top: 10px;
-    margin-left: 10px;
     border: 1px solid #373737;
 }
-.code-area-close-btn {
+#code-area-close-btn {
     position: absolute;
     top: 0px;
     left: 0px;
     width: 44px;
     height: 44px;    
 }
-#common-gates {
-    overflow-y: scroll;
-    max-height: calc((100vh - 60px - 10px - 50px - 32px - 40px)/2); /* - header - margin - searchbox - section - margin*/
-    display: flex;
-    flex-direction: row;
-    flex-wrap: wrap;
-}
-
-#advanced-gates {
-    overflow-y: scroll;
-    max-height: calc((100vh - 60px - 10px - 50px - 32px - 40px)/2); /* - header - margin - searchbox - section - margin*/
-    display: flex;
-    flex-direction: row;
-    flex-wrap: wrap;
-}
 
 #dragCanvas {
     position: absolute;
     z-index: 9;
 }
-

@@ -27,21 +27,17 @@
     <div class="content">
       <div class="gate-area">
         <div class="gate-area-header">
-          <input type="text" class="gate-area-header-search">
-          <button class="gate-area-header-btn">List</button>
-          <button class="gate-area-header-btn">Grid</button>
-          <button class="gate-area-header-btn">X</button>
+          <input type="text" class="gate-area-header-search" id="gate-area-header-search">
+          <button class="gate-area-header-btn" id="gate-area-header-list-btn">List</button>
+          <button class="gate-area-header-btn" id="gate-area-header-grid-btn">Grid</button>
+          <button class="gate-area-header-btn" id="gate-area-header-close-btn">X</button>
         </div>
         <div class="gate-area-body">
-          <label class="gate-area-body-section-label">Commons gates</label>
-          <div class="gate-area-body-common-gates">
-            <div id="common-gates">
-            </div>              
+          <label class="gate-area-body-section-label">Common gates</label>
+          <div class="gate-area-body-common-gates" id="common-gates">          
           </div>
           <label class="gate-area-body-section-label">Advanced gates</label>
-          <div class="gate-area-body-advanced-gates">
-            <div id="advanced-gates">
-            </div>   
+          <div class="gate-area-body-advanced-gates" id="advanced-gates">
           </div>
         </div>
       </div>
@@ -51,15 +47,15 @@
           <button class="circuit-area-header-btn">Redo</button>
           <button class="circuit-area-header-btn">Clear</button>
         </div>        
-        <div class="circuit-area-body">
+        <div class="circuit-area-body" id="circuit-area-body">
           <canvas id="drawCanvas"></canvas>
         </div>
         <div class="circuit-area-chart">
-          <button class="circuit-area-chart-close-btn">X</button>
+          <button id="circuit-area-chart-close-btn">X</button>
         </div>
       </div>
       <div class="code-area">
-        <button class="code-area-close-btn">X</button>
+        <button id="code-area-close-btn">X</button>
       </div>
     </div>
   </div>
