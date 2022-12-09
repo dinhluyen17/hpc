@@ -54,7 +54,18 @@ export default {
       }
     },
     {
-      path: '/projects/:projectCode/circuit',
+      path: '/projects/:projectCode/:projectType',
+      name: 'projects-quantum-overview',
+      component: components['projects-overview'],
+      meta: {
+        title: '项目概览',
+        activeMenu: 'projects',
+        showSide: true,
+        auth: []
+      }
+    },
+    {
+      path: '/projects/:projectCode/:projectType/circuit',
       name: 'projects-circuit',
       component: components['projects-circuit'],
       meta: {
@@ -65,7 +76,7 @@ export default {
       }
     },
     {
-      path: '/projects/:projectCode/circuit/:circuitId',
+      path: '/projects/:projectCode/:projectType/circuit/:circuitId',
       name: 'projects-circuit-item',
       component: components['projects-circuit-item'],
       meta: {
