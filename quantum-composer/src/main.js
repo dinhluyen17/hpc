@@ -175,18 +175,7 @@ displayed.observable().subscribe(() => redrawThrottle.trigger());
 
 /** @type {undefined|!string} */
 let clickDownGateButtonKey = undefined;
-canvasDiv.addEventListener('click', ev => {
-    // if (document.HIGHLIGHT_GATE) {
-    //     const gateRect = document.HIGHLIGHT_GATE.gateRect;
-    //     const element = document.getElementById('gateMenu');
-    //     element.style.display = 'block';
-    //     element.style.left = gateRect.x + "px";
-    //     element.style.top = (gateRect.y - 50) + "px";
-    // }
-    // else {
-    //     const element = document.getElementById('gateMenu');
-    //     element.style.display = 'none';
-    // }
+let stateBarCalc = () =>{
     let qHeight = mostRecentStats.get().finalState.height();
     let qStates = [];
     for (let i = 0; i < qHeight; i++){
@@ -205,21 +194,36 @@ canvasDiv.addEventListener('click', ev => {
     }
     const stateObj = qStates.map((str, index)=>
         ({
-           id: index, State: qStates[index]
+            id: index, State: qStates[index]
         }))
     const probObj = qProb.map((str, index) => ({
         id: index, Probability: qProb[index]
     }))
     const data = stateObj.map((e,i)=>{
         let temp = probObj.find(el => el.id === e.id)
-            e.id = temp.Probability
-            e.Probability = e.id
-            delete e.id
+        e.id = temp.Probability
+        e.Probability = e.id
+        delete e.id
         document.getElementById("stateBarChart").innerHTML ="";
         return e;
     })
     let barData = data;
-    document.D3_FUNCTION.test(barData);
+    return barData;
+}
+document.D3_FUNCTION.init(stateBarCalc());
+canvasDiv.addEventListener('click', ev => {
+    // if (document.HIGHLIGHT_GATE) {
+    //     const gateRect = document.HIGHLIGHT_GATE.gateRect;
+    //     const element = document.getElementById('gateMenu');
+    //     element.style.display = 'block';
+    //     element.style.left = gateRect.x + "px";
+    //     element.style.top = (gateRect.y - 50) + "px";
+    // }
+    // else {
+    //     const element = document.getElementById('gateMenu');
+    //     element.style.display = 'none';
+    // }
+    document.D3_FUNCTION.test(stateBarCalc());
     let pt = eventPosRelativeTo(ev, canvasDiv);
     let curInspector = displayed.get();
     if (curInspector.tryGetHandOverButtonKey() !== clickDownGateButtonKey) {
