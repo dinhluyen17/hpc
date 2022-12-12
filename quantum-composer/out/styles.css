@@ -151,6 +151,7 @@ body {
 .circuit-area-chart {
     position: relative;
     height: 200px;
+    width: 100%;
     margin-top: 10px;
     border: 1px solid #373737;
 }
@@ -198,4 +199,20 @@ body {
 #dragCanvas {
     position: absolute;
     z-index: 9;
+}
+
+#stateBarChart {
+    width: 1200px;
+    overflow: scroll;
+}
+.circuit-area-chart .barTooltip {
+    background: #b0c4de;
+    border: 0;
+    border-radius: 8px;
+    height: 50px;
+    padding: 12px;
+    pointer-events: none;
+    position: absolute;
+    text-align: center;
+    width: 155px;
 }

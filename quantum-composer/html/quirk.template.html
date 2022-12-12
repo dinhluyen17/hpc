@@ -95,26 +95,13 @@
   <div id="noscript-div" class="noscript-warning">
     You appear to have JavaScript blocked. And Quirk is made out of JavaScript... :(
   </div>
-  <style>
-    .tooltip {
-      background: #b0c4de;
-      border: 0;
-      border-radius: 8px;
-      height: 40px;
-      padding: 12px;
-      pointer-events: none;
-      position: absolute;
-      text-align: center;
-      width: 150px;
-    }
-  </style>
-  <script src='https://d3js.org/d3.v4.min.js'></script>
+  <script src='./dist/d3.min.js'></script>
   <script>
     document.D3_FUNCTION = {
       init: (barData) => {
         let margin = {top: 30, right: 30, bottom: 70, left: 60},
                 width = 460 - margin.left - margin.right,
-                height = 400 - margin.top - margin.bottom;
+                height = 190 - margin.top - margin.bottom;
         let svg = d3.select("#stateBarChart")
                 .append("svg")
                 .attr("width", width + margin.left + margin.right)
@@ -152,12 +139,12 @@
                 .text("Probability(%)")
       }
       ,
-      test: (barData) => {
+      bar: (barData) => {
         let margin = {top: 30, right: 30, bottom: 70, left: 60},
-                width = 1500,
-                height = 400;
+                width = (barData.length * 15) - margin.left - margin.right,
+                height = 190 - margin.top - margin.bottom;
         let svg = d3.select("#stateBarChart");
-        svg.exit().remove();
+        svg.selectAll("*").remove();
         svg = d3.select("#stateBarChart")
                 .append("svg")
                 .attr("width", width + margin.left + margin.right)
@@ -177,7 +164,7 @@
         svg.append("text")
                 .attr("class","x label")
                 .attr("text-anchor","end")
-                .attr("dy", "2.5rem")
+                .attr("dy", 2.5 + (Math.sqrt(barData.length)/10 - .45) +"rem")
                 .attr("x", width)
                 .attr("y", height)
                 .text("Computational basis states")
@@ -194,7 +181,7 @@
                 .attr("transform","rotate(-90)")
                 .text("Probability(%)")
         const tooltip = d3.select("#stateBarChart").append("div")
-                .attr("class","tooltip")
+                .attr("class","barTooltip")
                 .style("opacity", 0)
         svg.selectAll("mybar")
                 .data(barData)
@@ -209,7 +196,7 @@
                   tooltip.transition().duration(200).style("opacity",.9);
                   tooltip.html(`State: <span>${d.State}</span><br>Probability: <span>${d.Probability}% </span>`)
                           .style('left', `${d3.event.layerX}px`)
-                          .style('top', `${(d3.event.layerY - 28)}px`);
+                          .style('top', `${d3.event.layerY}px`);
                 })
                 .on("mouseout",()=>tooltip.transition().duration(500).style("opacity",0))
         svg.selectAll("rect")
