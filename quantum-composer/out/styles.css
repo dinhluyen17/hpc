@@ -113,7 +113,8 @@ body {
 }
 .gate-area-body-common-gates {
     margin: 10px 5px 10px 5px;
-    border: 1px solid #373737;
+    /* border: 1px solid #373737; */
+    border: 1px solid red;
     flex: 1;
     overflow-y: scroll;    
     display: flex;
@@ -180,6 +181,31 @@ body {
     left: 0px;
     width: 44px;
     height: 44px;    
+}
+#common-gates {
+    overflow-y: scroll;
+    max-height: calc((100vh - 60px - 10px - 50px - 32px - 40px)/2); /* - header - margin - searchbox - section - margin*/
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+}
+
+#common-gates-grid {
+    overflow-y: scroll;
+    max-height: calc((100vh - 60px - 10px - 50px - 32px - 40px)/2); /* - header - margin - searchbox - section - margin*/
+}
+
+#advanced-gates {
+    overflow-y: scroll;
+    max-height: calc((100vh - 60px - 10px - 50px - 32px - 40px)/2); /* - header - margin - searchbox - section - margin*/
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+}
+
+#advanced-gates-grid {
+    overflow-y: scroll;
+    max-height: calc((100vh - 60px - 10px - 50px - 32px - 40px)/2); /* - header - margin - searchbox - section - margin*/
 }
 
 #dragCanvas {
