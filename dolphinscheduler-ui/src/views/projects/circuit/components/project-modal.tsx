@@ -54,12 +54,20 @@ const ProjectModal = defineComponent({
 
     const cancelModal = () => {
       if (props.statusRef === 0) {
-        variables.model.projectName = ''
+        variables.model.name = ''
         variables.model.description = ''
+        variables.model.json = ''
+        variables.model.qasm = ''
+        variables.model.qiskit = ''
+        variables.model.projectCode = null
       } else {
         variables.model.userName = props.row.userName
-        variables.model.projectName = props.row.name
+        variables.model.name = props.row.name
         variables.model.description = props.row.description
+        variables.model.json = props.row.json
+        variables.model.qasm = props.row.qasm
+        variables.model.qiskit = props.row.qiskit
+        variables.model.projectCode = props.row.projectCode
       }
       ctx.emit('cancelModal', props.showModalRef)
     }
@@ -74,15 +82,23 @@ const ProjectModal = defineComponent({
       () => props.statusRef,
       () => {
         if (props.statusRef === 0) {
-          variables.model.projectName = ''
+          variables.model.name = ''
+          variables.model.description = ''
+          variables.model.json = ''
+          variables.model.qasm = ''
+          variables.model.qiskit = ''
+          variables.model.projectCode = null
           variables.model.userName = (
             userStore.getUserInfo as UserInfoRes
           ).userName
-          variables.model.description = ''
         } else {
-          variables.model.projectName = props.row.name
-          variables.model.userName = props.row.userName
+          variables.model.name = props.row.name
           variables.model.description = props.row.description
+          variables.model.json = props.row.json
+          variables.model.qasm = props.row.qasm
+          variables.model.qiskit = props.row.qiskit
+          variables.model.projectCode = props.row.projectCode
+          variables.model.userName = props.row.userName
         }
       }
     )
@@ -90,9 +106,13 @@ const ProjectModal = defineComponent({
     watch(
       () => props.row,
       () => {
-        variables.model.projectName = props.row.name
-        variables.model.userName = props.row.userName
+        variables.model.name = props.row.name
         variables.model.description = props.row.description
+        variables.model.json = props.row.json
+        variables.model.qasm = props.row.qasm
+        variables.model.qiskit = props.row.qiskit
+        variables.model.projectCode = props.row.projectCode
+        variables.model.userName = props.row.userName
       }
     )
 
@@ -110,17 +130,17 @@ const ProjectModal = defineComponent({
         show={this.showModalRef}
         onConfirm={this.confirmModal}
         onCancel={this.cancelModal}
-        confirmDisabled={!this.model.projectName || !this.model.userName}
+        confirmDisabled={!this.model.name || !this.model.userName}
         confirmClassName='btn-submit'
         cancelClassName='btn-cancel'
         confirmLoading={this.saving}
       >
-        <NForm rules={this.rules} ref='projectFormRef'>
-          <NFormItem label={t('project.list.project_name')} path='projectName'>
+        <NForm rules={this.rules} ref='circuitFormRef'>
+          <NFormItem label={t('circuit.name')} path='name'>
             <NInput
               allowInput={this.trim}
-              v-model={[this.model.projectName, 'value']}
-              placeholder={t('project.list.project_tips')}
+              v-model={[this.model.name, 'value']}
+              placeholder={t('circuit.circuit_name_tips')}
               class='input-project-name'
             />
           </NFormItem>
@@ -140,6 +160,47 @@ const ProjectModal = defineComponent({
               allowInput={this.trim}
               v-model={[this.model.description, 'value']}
               type='textarea'
+              placeholder={t('project.list.description_tips')}
+            />
+          </NFormItem>
+          <NFormItem
+            label={t('project.list.project_description')}
+            path='json'
+          >
+            <NInput
+              allowInput={this.trim}
+              v-model={[this.model.description, 'value']}
+              placeholder={t('project.list.description_tips')}
+            />
+          </NFormItem>
+          <NFormItem
+            label={t('project.list.project_description')}
+            path='qasm'
+          >
+            <NInput
+              allowInput={this.trim}
+              v-model={[this.model.description, 'value']}
+              placeholder={t('project.list.description_tips')}
+            />
+          </NFormItem>
+          <NFormItem
+            label={t('project.list.project_description')}
+            path='qiskit'
+          >
+            <NInput
+              allowInput={this.trim}
+              v-model={[this.model.description, 'value']}
+              placeholder={t('project.list.description_tips')}
+            />
+          </NFormItem>
+          <NFormItem
+            label={t('project.list.project_description')}
+            path='projectCode'
+          >
+            <NInput
+              allowInput={this.trim}
+              v-model={[this.model.description, 'value']}
+              disabled={true}
               placeholder={t('project.list.description_tips')}
             />
           </NFormItem>

@@ -15,8 +15,6 @@
  * limitations under the License.
  */
 
-import { ProjectsReq } from "../projects/types"
-
 interface GetReq {
   id: number
 }
@@ -36,12 +34,14 @@ interface CircuitReq {
   qiskit: string
 }
 
-interface UpdateCircuitReq extends ProjectsReq {
-  id: number
-  name?: string
-  description?: string
+interface UpdateCircuitReq {
+  name: string
+  description: string
   json: string
+  qasm: string
   qiskit: string
+  userName: string
+  projectCode: number | null
 }
 
 interface CircuitList {

@@ -20,7 +20,7 @@ import { reactive, ref, SetupContext } from 'vue'
 import { useUserStore } from '@/store/user/user'
 import type { FormRules } from 'naive-ui'
 import type { UserInfoRes } from '@/service/modules/users/types'
-import { createProject, updateProject } from '@/service/modules/projects'
+import { createCircuit, updateCircuit } from '@/service/modules/circuits'
 
 export function useForm(
   props: any,
@@ -31,36 +31,35 @@ export function useForm(
 
   const resetForm = () => {
     variables.model = {
-      projectName: '',
+      name: '',
       description: '',
+      json: '',
+      qasm: '',
+      qiskit: '',
+      projectCode: null,
       userName: (userStore.getUserInfo as UserInfoRes).userName
     }
   }
 
   const variables = reactive({
-    projectFormRef: ref(),
+    circuitFormRef: ref(),
     model: {
-      projectName: '',
+      name: '',
       description: '',
+      json: '',
+      qasm: '',
+      qiskit: '',
+      projectCode: null,
       userName: (userStore.getUserInfo as UserInfoRes).userName
     },
     saving: false,
     rules: {
-      projectName: {
+      name: {
         required: true,
         trigger: ['input', 'blur'],
         validator() {
-          if (variables.model.projectName === '') {
-            return new Error(t('project.list.project_tips'))
-          }
-        }
-      },
-      userName: {
-        required: true,
-        trigger: ['input', 'blur'],
-        validator() {
-          if (variables.model.userName === '') {
-            return new Error(t('project.list.username_tips'))
+          if (variables.model.name === '') {
+            return new Error(t('circuit.circuit_name_tips'))
           }
         }
       }
@@ -68,7 +67,7 @@ export function useForm(
   })
 
   const handleValidate = (statusRef: number) => {
-    variables.projectFormRef.validate((errors: any) => {
+    variables.circuitFormRef.validate((errors: any) => {
       if (!errors) {
         statusRef === 0 ? submitProjectModal() : updateProjectModal()
       } else {
@@ -81,7 +80,9 @@ export function useForm(
     if (variables.saving) return
     variables.saving = true
     try {
-      await createProject(variables.model)
+      console.log(variables.model);
+
+      await createCircuit(variables.model)
       variables.saving = false
       resetForm()
       ctx.emit('confirmModal', props.showModalRef)
@@ -94,7 +95,7 @@ export function useForm(
     if (variables.saving) return
     variables.saving = true
     try {
-      await updateProject(variables.model, props.row.code)
+      await updateCircuit(variables.model, props.row.code)
       variables.saving = false
       resetForm()
       ctx.emit('confirmModal', props.showModalRef)
