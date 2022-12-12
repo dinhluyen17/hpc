@@ -51,8 +51,6 @@ const ProjectModal = defineComponent({
   setup(props, ctx) {
     const { variables, t, handleValidate } = useForm(props, ctx)
 
-    console.log(props.statusRef);
-
     const userStore = useUserStore()
 
     const cancelModal = () => {
@@ -103,8 +101,6 @@ const ProjectModal = defineComponent({
         variables.model.description = props.row.description
       }
     )
-
-    console.log(props);
 
     return { ...toRefs(variables), t, cancelModal, confirmModal, trim }
   },

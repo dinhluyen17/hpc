@@ -15,6 +15,8 @@
  * limitations under the License.
  */
 
+import { ProjectsReq } from "../projects/types"
+
 interface GetReq {
   id: number
 }
@@ -66,7 +68,6 @@ interface CircuitRes {
 export {
   GetReq,
   ListReq,
-  ListIdReq,
   CircuitReq,
   UpdateCircuitReq,
   CircuitRes,

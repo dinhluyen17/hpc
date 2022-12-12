@@ -38,7 +38,7 @@ import {
   DefaultTableWidth
 } from '@/common/column-width-config'
 import type { Router } from 'vue-router'
-import type { CircuitRes } from '@/service/modules/circuits/types'
+import type { CircuitList, CircuitRes } from '@/service/modules/circuits/types'
 import { DeleteOutlined, EditOutlined } from '@vicons/antd'
 
 export function useTable() {
@@ -60,7 +60,7 @@ export function useTable() {
             ? variables.page - 1
             : variables.page,
         searchVal: variables.searchVal
-      })
+      }, null)
     })
   }
 
@@ -86,7 +86,6 @@ export function useTable() {
                   name: 'projects-circuit-item',
                   params: { circuitId: row.id }
                 })
-                //router.push({ path: `/circuit/${row.id}` })
               }
             },
             {
@@ -204,7 +203,7 @@ export function useTable() {
     loadingRef: ref(false)
   })
 
-  const getTableData = (params: any, projectCode: number) => {
+  const getTableData = (params: any, projectCode: string | string[] | null) => {
     if (variables.loadingRef) return
     variables.loadingRef = true
     const { state } = useAsyncState(
@@ -223,7 +222,13 @@ export function useTable() {
             ...item
           }
         }) as any
-        variables.tableData = variables.tableData.filter((circuit) => circuit.projectCode === projectCode) as any
+        if (projectCode !== null) {
+          variables.tableData = variables.tableData.filter((circuit: CircuitList) => {
+            if (typeof projectCode === 'string') {
+              return circuit.projectCode === parseInt(projectCode)
+            }
+          }) as any
+        }
         variables.loadingRef = false
       }),
       {}

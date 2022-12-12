@@ -49,7 +49,7 @@ const list = defineComponent({
         pageSize: variables.pageSize,
         pageNo: variables.page,
         keyword: variables.searchVal
-      }, parseInt(route.params.projectCode))
+      }, route.params.projectCode)
     }
 
     const handleModalChange = () => {

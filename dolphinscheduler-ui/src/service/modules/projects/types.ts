@@ -54,6 +54,7 @@ interface ProjectList {
   defCount: number
   instRunningCount: number
   type: number
+  projectCode: number
 }
 
 interface ProjectRes {
