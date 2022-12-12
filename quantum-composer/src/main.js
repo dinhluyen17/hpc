@@ -354,7 +354,7 @@ initSizeViews(canvasDiv);
 initUrlCircuitSync(revision);
 //initExports(revision, mostRecentStats, obsIsAnyOverlayShowing.observable());
 //initForge(revision, obsIsAnyOverlayShowing.observable());
-//initUndoRedo(revision, obsIsAnyOverlayShowing.observable());
+initUndoRedo(revision, obsIsAnyOverlayShowing.observable());
 //initClear(revision, obsIsAnyOverlayShowing.observable());
 //initMenu(revision, obsIsAnyOverlayShowing.observable());
 initTitleSync(revision);

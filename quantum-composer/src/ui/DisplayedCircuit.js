@@ -390,7 +390,7 @@ class DisplayedCircuit {
                     painter.fillRect(rect, Config.HIGHLIGHTED_GATE_FILL_COLOR);
                 }
                 // Phu: draw label for wire
-                painter.print(`|${v}⟩`, CIRCUIT_OP_LEFT_SPACING, y, 'right', 'middle', '#646464', '14px sans-serif', 20, Config.WIRE_SPACING);
+                painter.print(`|${v}⟩`, 40, y, 'right', 'middle', '#646464', '14px sans-serif', 20, Config.WIRE_SPACING);
             }
         }
 
