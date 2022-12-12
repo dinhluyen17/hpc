@@ -26,7 +26,7 @@ import {Hand} from "../ui/Hand.js"
 import {Painter} from "../draw/Painter.js"
 import {Rect} from "../math/Rect.js"
 import {Serializer} from "../circuit/Serializer.js"
-
+import {viewState} from "./viewState.js"
 class DisplayedInspector {
     /**
      * @param {!Rect} drawArea
@@ -120,8 +120,8 @@ class DisplayedInspector {
         elmnt.style.display = 'block'
         let gate = this.hand.heldGate;
         let pos = this.hand.pos.minus(this.hand.holdOffset);
-        elmnt.style.top = pos.y + 'px';
-        elmnt.style.left = pos.x + 'px';
+        elmnt.style.top = (pos.y + viewState.getInstance().canvasBoundingRect.clientY) + 'px';
+        elmnt.style.left = (pos.x + viewState.getInstance().canvasBoundingRect.clientX) + 'px';
         let rect = new Rect(
             0,
             0,

@@ -63,7 +63,7 @@ class DisplayedCircuit {
          * @type {!number}
          */
         // Phu: change top of circuit
-        this.top = 70;//top;
+        this.top = 50;//top;
         /**
          * @type {!CircuitDefinition}
          */
@@ -140,7 +140,7 @@ class DisplayedCircuit {
         //  return this.opRect(this.circuitDefinition.columns.length - 1).right() + CIRCUIT_OP_LEFT_SPACING;
         //}
         // return this._rectForSuperpositionDisplay().right() + 101;
-        return this.opRect(this.circuitDefinition.columns.length - 1).right() + CIRCUIT_OP_LEFT_SPACING + 200;
+        return Math.max(this.opRect(this.circuitDefinition.columns.length - 1).right() + CIRCUIT_OP_LEFT_SPACING + 250, 500);
     }
 
     /**
@@ -152,7 +152,7 @@ class DisplayedCircuit {
         if (wireIndex < 0) {
             throw new DetailedError("Bad wireIndex", {wireIndex});
         }
-        return new Rect(50, this.top + Config.WIRE_SPACING * wireIndex, Infinity, Config.WIRE_SPACING);
+        return new Rect(CIRCUIT_OP_LEFT_SPACING, this.top + Config.WIRE_SPACING * wireIndex, Infinity, Config.WIRE_SPACING);
     }
 
     /**
@@ -390,7 +390,7 @@ class DisplayedCircuit {
                     painter.fillRect(rect, Config.HIGHLIGHTED_GATE_FILL_COLOR);
                 }
                 // Phu: draw label for wire
-                painter.print(`|${v}⟩`, 50, y, 'right', 'middle', '#646464', '14px sans-serif', 20, Config.WIRE_SPACING);
+                painter.print(`|${v}⟩`, CIRCUIT_OP_LEFT_SPACING, y, 'right', 'middle', '#646464', '14px sans-serif', 20, Config.WIRE_SPACING);
             }
         }
 
@@ -404,7 +404,7 @@ class DisplayedCircuit {
                 let wireRect = this.wireRect(row);
                 let y = Math.round(wireRect.center().y - 0.5) + 0.5;
                 // Phu: change wire label x
-                let lastX = showLabels ? 50 : 50;
+                let lastX = CIRCUIT_OP_LEFT_SPACING;
                 //noinspection ForLoopThatDoesntUseLoopVariableJS
                 for (let col = 0;
                         showLabels ? lastX < painter.canvas.width : col <= this.circuitDefinition.columns.length;
@@ -1020,7 +1020,7 @@ class DisplayedCircuit {
     // Phu: draw wire
     _wireInitialStateClickableRect(wire) {
         let r = this.wireRect(wire);
-        r.x = 50;
+        r.x = CIRCUIT_OP_LEFT_SPACING;
         r.y += 5;
         r.w = 30;
         r.h -= 10;

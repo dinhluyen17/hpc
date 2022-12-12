@@ -15,7 +15,9 @@
  */
 
 import {Point} from "../math/Point.js"
-
+import {
+    viewState
+} from "../ui/viewState.js";
 const ALLOW_REGRAB_WATCHDOG_TIME_MS = 5000;
 const MOUSE_ID = "mouse!";
 
@@ -37,8 +39,7 @@ let isMiddleClicking = ev => ev.which === 2;
  * @returns {!Point}
  */
 function eventPosRelativeTo(ev, element) {
-    let b = element.getBoundingClientRect();
-    return new Point(ev.clientX - b.left, ev.clientY - b.top);
+    return new Point(ev.clientX - viewState.getInstance().canvasBoundingRect.clientX + viewState.getInstance().canvasScrollX, ev.clientY - viewState.getInstance().canvasBoundingRect.clientY + viewState.getInstance().canvasScrollY);
 }
 
 /**
