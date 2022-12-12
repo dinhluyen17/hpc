@@ -213,6 +213,7 @@ body {
     background-color: #58f61a;
     padding: .5em;
     z-index: 1;
+    line-height: 0.55;
   }
 
   .tooltip-wrap:hover .tooltip-content {
