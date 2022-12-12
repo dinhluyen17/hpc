@@ -32,6 +32,7 @@ import {
   watch
 } from 'vue'
 import { useI18n } from 'vue-i18n'
+import { useRoute } from 'vue-router'
 import { useTable } from './use-table'
 import Card from '@/components/card'
 import ProjectModal from './components/project-modal'
@@ -40,6 +41,7 @@ const list = defineComponent({
   name: 'list',
   setup() {
     const { t } = useI18n()
+    const route = useRoute()
     const { variables, getTableData, createColumns } = useTable()
 
     const requestData = () => {
@@ -47,7 +49,7 @@ const list = defineComponent({
         pageSize: variables.pageSize,
         pageNo: variables.page,
         keyword: variables.searchVal
-      })
+      }, parseInt(route.params.projectCode))
     }
 
     const handleModalChange = () => {
@@ -79,6 +81,7 @@ const list = defineComponent({
     onMounted(() => {
       createColumns(variables)
       requestData()
+
     })
 
     watch(useI18n().locale, () => {

@@ -20,6 +20,7 @@ package org.apache.dolphinscheduler.quantum.service;
 import org.apache.dolphinscheduler.api.utils.Result;
 
 import java.io.IOException;
+import java.math.BigInteger;
 import java.util.List;
 import java.util.Map;
 
@@ -28,13 +29,13 @@ import java.util.Map;
  */
 public interface CircuitService {
 
-    Map<String, Object> create(Integer userId, String name, String description, String json, String qasm, String qiskit, Integer projectCode);
+    Map<String, Object> create(Integer userId, String name, String description, String json, String qasm, String qiskit, BigInteger projectCode);
 
     Map<String, Object> get(Integer id);
 
     Result search(Integer userId, String keyword, String criteria, String direction, Integer pageNo, Integer pageSize);
     
-    Map<String, Object> update(Integer id, String name, String description, String json, String qasm, String qiskit, Integer projectCode) throws IOException;
+    Map<String, Object> update(Integer id, String name, String description, String json, String qasm, String qiskit, BigInteger projectCode) throws IOException;
 
     Map<String, Object> delete(List<Integer> ids) throws IOException;
 

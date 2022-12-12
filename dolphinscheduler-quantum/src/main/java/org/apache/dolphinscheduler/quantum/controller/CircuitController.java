@@ -36,6 +36,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
+import java.math.BigInteger;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
@@ -75,7 +76,7 @@ public class CircuitController extends BaseController {
             @Parameter(name = "json", description = "JSON", schema = @Schema(implementation = String.class)),
             @Parameter(name = "qasm", description = "QASM", schema = @Schema(implementation = String.class)),
             @Parameter(name = "qiskit", description = "QISKIT", schema = @Schema(implementation = String.class)),
-            @Parameter(name = "projectCode", description = "PROJECT_CODE", schema = @Schema(implementation = String.class))
+            @Parameter(name = "projectCode", description = "PROJECT_CODE", schema = @Schema(implementation = BigInteger.class))
     })
     @PostMapping(value = "/create")
     @ResponseStatus(HttpStatus.CREATED)
@@ -87,7 +88,7 @@ public class CircuitController extends BaseController {
                                 @RequestParam(value = "json", required = false) String json,
                                 @RequestParam(value = "qasm", required = false) String qasm,
                                 @RequestParam(value = "qiskit", required = false) String qiskit,
-                                @RequestParam(value = "projectCode", required = false) Integer projectCode) throws Exception {
+                                @RequestParam(value = "projectCode", required = false) BigInteger projectCode) throws Exception {
         Integer userId = loginUser.getId();
         Map<String, Object> result =
                 circuitService.create(userId, name, description, json, qasm, qiskit, projectCode);
@@ -136,7 +137,7 @@ public class CircuitController extends BaseController {
             @Parameter(name = "json", description = "JSON", allowEmptyValue = true, schema = @Schema(implementation = String.class)),
             @Parameter(name = "qasm", description = "QASM", allowEmptyValue = true, schema = @Schema(implementation = String.class)),
             @Parameter(name = "qiskit", description = "QISKIT", allowEmptyValue = true, schema = @Schema(implementation = String.class)),
-            @Parameter(name = "projectCode", description = "PROJECT_CODE", allowEmptyValue = true, schema = @Schema(implementation = Integer.class))
+            @Parameter(name = "projectCode", description = "PROJECT_CODE", allowEmptyValue = true, schema = @Schema(implementation = BigInteger.class))
     })
     @PatchMapping(value = "/update")
     @ResponseStatus(HttpStatus.OK)
@@ -147,7 +148,7 @@ public class CircuitController extends BaseController {
                          @RequestParam(value = "json", required = false) String json,
                          @RequestParam(value = "qasm", required = false) String qasm,
                          @RequestParam(value = "qiskit", required = false) String qiskit,
-                         @RequestParam(value = "projectCode", required = false) Integer projectCode) throws Exception {
+                         @RequestParam(value = "projectCode", required = false) BigInteger projectCode) throws Exception {
         Map<String, Object> result =
                 circuitService.update(id, name, description, json, qasm, qiskit, projectCode);
         return returnDataList(result);

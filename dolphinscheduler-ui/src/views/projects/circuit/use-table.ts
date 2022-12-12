@@ -204,7 +204,7 @@ export function useTable() {
     loadingRef: ref(false)
   })
 
-  const getTableData = (params: any) => {
+  const getTableData = (params: any, projectCode: number) => {
     if (variables.loadingRef) return
     variables.loadingRef = true
     const { state } = useAsyncState(
@@ -223,6 +223,7 @@ export function useTable() {
             ...item
           }
         }) as any
+        variables.tableData = variables.tableData.filter((circuit) => circuit.projectCode === projectCode) as any
         variables.loadingRef = false
       }),
       {}

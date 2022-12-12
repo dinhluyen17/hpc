@@ -23,6 +23,7 @@ import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
 import lombok.Data;
 
+import java.math.BigInteger;
 import java.util.Date;
 
 @Data
@@ -49,5 +50,5 @@ public class Circuit {
 
     private Date updateTime;
 
-    private Integer projectCode;
+    private BigInteger projectCode;
 }

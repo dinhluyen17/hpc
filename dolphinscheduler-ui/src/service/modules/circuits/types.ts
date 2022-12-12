@@ -51,6 +51,7 @@ interface CircuitList {
   qiskit: string
   createTime: string
   updateTime: string
+  projectCode: number
 }
 
 interface CircuitRes {

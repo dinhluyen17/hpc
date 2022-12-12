@@ -35,6 +35,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.io.IOException;
+import java.math.BigInteger;
 import java.text.MessageFormat;
 import java.util.*;
 
@@ -51,7 +52,7 @@ public class CircuitServiceImpl extends BaseServiceImpl implements CircuitServic
 
     @Override
     @Transactional(rollbackFor = Exception.class)
-    public Map<String, Object> create(Integer userId, String name, String description, String json, String qasm, String qiskit, Integer projectCode) {
+    public Map<String, Object> create(Integer userId, String name, String description, String json, String qasm, String qiskit, BigInteger projectCode) {
         Map<String, Object> result = new HashMap<>();
 
         Circuit circuit = new Circuit();
@@ -104,7 +105,7 @@ public class CircuitServiceImpl extends BaseServiceImpl implements CircuitServic
     }
 
     @Override
-    public Map<String, Object> update(Integer id, String name, String description, String json, String qasm, String qiskit, Integer projectCode) throws IOException {
+    public Map<String, Object> update(Integer id, String name, String description, String json, String qasm, String qiskit, BigInteger projectCode) throws IOException {
         Map<String, Object> result = new HashMap<>();
         result.put(Constants.STATUS, false);
 
