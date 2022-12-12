@@ -37,9 +37,9 @@ public interface CircuitService {
 
     Result search(Integer userId, String keyword, String criteria, String direction, Integer pageNo, Integer pageSize);
 
-    Map<String, Object> update(CircuitUpdateRequest circuitUpdateRequest) throws IOException;
+    Map<String, Object> update(Integer id, CircuitUpdateRequest circuitUpdateRequest) throws IOException;
 
     Map<String, Object> delete(List<Integer> ids) throws IOException;
 
-    Map<String, Object> duplicate(Integer id);
+    Map<String, Object> duplicate(Integer id, String name, String description);
 }

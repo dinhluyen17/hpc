@@ -107,14 +107,14 @@ public class CircuitServiceImpl extends BaseServiceImpl implements CircuitServic
     }
 
     @Override
-    public Map<String, Object> update(CircuitUpdateRequest circuitUpdateRequest) throws IOException {
+    public Map<String, Object> update(Integer id, CircuitUpdateRequest circuitUpdateRequest) throws IOException {
         Map<String, Object> result = new HashMap<>();
         result.put(Constants.STATUS, false);
 
-        Circuit circuit = circuitMapper.selectById(circuitUpdateRequest.getId());
+        Circuit circuit = circuitMapper.selectById(id);
         if (circuit == null) {
-            logger.error("circuit does not exist, id:{}.", circuitUpdateRequest.getId());
-            putMsg(result, Status.USER_NOT_EXIST, circuitUpdateRequest.getId());
+            logger.error("circuit does not exist, id:{}.", id);
+            putMsg(result, Status.USER_NOT_EXIST, id);
             return result;
         }
         if (StringUtils.isNotEmpty(circuitUpdateRequest.getName())) {
@@ -141,10 +141,10 @@ public class CircuitServiceImpl extends BaseServiceImpl implements CircuitServic
         }
         int update = circuitMapper.updateById(circuit);
         if (update > 0) {
-            logger.info("Circuit is updated and id is :{}.", circuitUpdateRequest.getId());
+            logger.info("Circuit is updated and id is :{}.", id);
             putMsg(result, Status.SUCCESS);
         } else {
-            logger.error("Circuit update error, id:{}.", circuitUpdateRequest.getId());
+            logger.error("Circuit update error, id:{}.", id);
             putMsg(result, Status.UPDATE_USER_ERROR);
         }
 
@@ -189,10 +189,10 @@ public class CircuitServiceImpl extends BaseServiceImpl implements CircuitServic
 
     @Override
     @Transactional(rollbackFor = Exception.class)
-    public Map<String, Object> duplicate(Integer id) {
+    public Map<String, Object> duplicate(Integer id, String name, String description) {
         Map<String, Object> result = new HashMap<>();
-        Integer newId = circuitMapper.duplicate(id);
-        result.put(Constants.DATA_LIST, newId);
+        Integer insertResult = circuitMapper.duplicate(id, name, description);
+        result.put(Constants.DATA_LIST, insertResult);
         putMsg(result, Status.SUCCESS);
         return result;
     }

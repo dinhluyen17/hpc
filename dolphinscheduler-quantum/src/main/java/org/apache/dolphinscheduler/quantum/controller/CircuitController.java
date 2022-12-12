@@ -123,9 +123,10 @@ public class CircuitController extends BaseController {
     @ResponseStatus(HttpStatus.CREATED)
     @ApiException(UPDATE_USER_ERROR)
     @AccessLogAnnotation(ignoreRequestArgs = "loginUser")
-    public Result update(@RequestBody CircuitUpdateRequest circuitUpdateRequest) throws Exception {
+    public Result update(@RequestParam(value = "id") Integer id,
+                         @RequestBody CircuitUpdateRequest circuitUpdateRequest) throws Exception {
         Map<String, Object> result =
-                circuitService.update(circuitUpdateRequest);
+                circuitService.update(id, circuitUpdateRequest);
         return returnDataList(result);
     }
 
@@ -145,13 +146,17 @@ public class CircuitController extends BaseController {
 
     @Operation(summary = "duplicate", description = "DUPLICATE_CIRCUIT_NOTES")
     @Parameters({
-            @Parameter(name = "id", description = "ID", required = true, schema = @Schema(implementation = Integer.class))
+            @Parameter(name = "id", description = "ID", required = true, schema = @Schema(implementation = Integer.class)),
+            @Parameter(name = "name", description = "NAME", required = true, schema = @Schema(implementation = String.class)),
+            @Parameter(name = "name", description = "DESCRIPTION", schema = @Schema(implementation = String.class))
     })
     @PostMapping(value = "/duplicate")
     @ResponseStatus(HttpStatus.OK)
     @ApiException(GET_USER_INFO_ERROR)
-    public Result duplicateCircuit(@RequestParam(value = "id") Integer id) {
-        Map<String, Object> result = circuitService.duplicate(id);
+    public Result duplicateCircuit(@RequestParam(value = "id") Integer id,
+                                   @RequestParam(value = "name") String name,
+                                   @RequestParam(value = "description", required = false) String description) {
+        Map<String, Object> result = circuitService.duplicate(id, name, description);
         return returnDataList(result);
     }
 }

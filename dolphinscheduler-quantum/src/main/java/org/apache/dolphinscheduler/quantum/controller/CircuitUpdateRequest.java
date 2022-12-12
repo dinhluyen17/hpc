@@ -27,10 +27,6 @@ import java.math.BigInteger;
  */
 @Data
 public class CircuitUpdateRequest {
-
-    @Schema(example = "1", required = true)
-    private Integer id;
-
     @Schema(example = "pro123")
     private String name;
 

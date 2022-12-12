@@ -35,19 +35,21 @@ import java.util.List;
 public interface CircuitMapper extends BaseMapper<Circuit> {
 
     @Cacheable(sync = true)
-    Circuit selectById(int id);
+    Circuit selectById(Integer id);
 
     @CacheEvict
-    int deleteById(int id);
+    int deleteById(Integer id);
 
     @CacheEvict(key = "#p0.id")
     int updateById(@Param("et") Circuit circuit);
 
     IPage<Circuit> queryCircuitPaging(Page page,
-                                      @Param("userId") int userId,
+                                      @Param("userId") Integer userId,
                                       @Param("keyword") String keyword,
                                       @Param("criteria") String criteria,
                                       @Param("direction") String direction);
 
-    int duplicate(@Param("id") int id);
+    int duplicate(@Param("id") Integer id,
+                  @Param("name") String name,
+                  @Param("description") String description);
 }

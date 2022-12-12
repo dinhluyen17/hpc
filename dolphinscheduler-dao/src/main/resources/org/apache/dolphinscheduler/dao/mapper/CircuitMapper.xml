@@ -71,8 +71,15 @@
     </select>
 
     <insert id="duplicate">
-        INSERT INTO t_ds_circuit(user_id, name, description, json, qasm, qiskit, create_time, update_time)
-            (SELECT user_id, CONCAT('Copy of ',name), description, json, qasm,  qiskit, NOW(), NOW()
+        INSERT INTO t_ds_circuit(user_id, name, description, json, qasm, qiskit, create_time, update_time, project_code)
+            (SELECT user_id, #{name},
+                    <if test="description == null">
+                        description
+                    </if>
+                    <if test="description != null and description != ''">
+                        #{description}
+                    </if>
+                    , json, qasm, qiskit, NOW(), NOW(), project_code
              FROM t_ds_circuit WHERE id = #{id})
     </insert>
 </mapper>
