@@ -28,10 +28,10 @@
     <div class="content">
       <div class="gate-area">
         <div class="gate-area-header">
-          <input type="text" class="gate-area-header-search" id="searchKws" onchange="handleSearch()">
-          <button class="gate-area-header-btn" onclick="handleGroupOnClicked()">List</button>
-          <button class="gate-area-header-btn" onclick="handleGroupOffClicked()">Grid</button>
-          <button class="gate-area-header-btn" onclick="handleClear()">X</button>
+          <input type="text" class="gate-area-header-search" id="gate-area-header-search" onchange="handleSearch()">
+          <button class="gate-area-header-btn" id="gate-area-header-grid-btn" onclick="handleGroupOnClicked()">List</button>
+          <button class="gate-area-header-btn" id="gate-area-header-list-btn" onclick="handleGroupOffClicked()">Grid</button>
+          <button class="gate-area-header-btn" id="gate-area-header-close-btn">X</button>
         </div>
         <div class="gate-area-body">
           <label class="gate-area-body-section-label">Commons gates</label>
@@ -70,13 +70,11 @@
         </div>
         <div class="circuit-area-chart">
           <button id="circuit-area-chart-close-btn">X</button>
+          <div id="stateBarChart"></div>
         </div>
       </div>
       <div class="code-area">
         <button id="code-area-close-btn">X</button>
-      </div>
-      <div class="barChart">
-        <div id="stateBarChart"></div>
       </div>
     </div>
   </div>
@@ -188,12 +186,12 @@
     }
 
     function handleSearch() {
-      let search = document.getElementById("searchKws").textContent;
+      let search = document.getElementById("gate-area-header-search").textContent;
       console.log("search ", search);
     }
 
     function handleClear() {
-      document.getElementById("searchKws").innerHTML = "";
+      document.getElementById("gate-area-header-search").innerHTML = "";
     }
   </script>
 

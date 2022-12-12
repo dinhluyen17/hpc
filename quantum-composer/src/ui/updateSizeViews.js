@@ -39,6 +39,8 @@ const updateSizeViews = (parentDiv) => {
 
   const commonGates = document.getElementById('common-gates');
   const advancedGates = document.getElementById('advanced-gates');
+  const commonGatesGrid = document.getElementById('common-gates-grid');
+  const advancedGatesGrid = document.getElementById('advanced-gates-grid');
   commonGates.style.maxHeight = (
     parentDiv.clientHeight -
     SIZE_INFO.HEADER_HEIGHT -
@@ -46,6 +48,8 @@ const updateSizeViews = (parentDiv) => {
     SIZE_INFO.GATE_AREA_SECTION_LABEL_HEIGHT * 2 -
     4 * SIZE_INFO.VERTICAL_SPACING) / 2.0 + 'px';
   advancedGates.style.maxHeight = commonGates.style.maxHeight;
+  commonGatesGrid.style.maxHeight = commonGates.style.maxHeight;
+  advancedGatesGrid.style.maxHeight = commonGates.style.maxHeight;
 
   // Code area
   const codeArea = document.getElementsByClassName('code-area')[0];

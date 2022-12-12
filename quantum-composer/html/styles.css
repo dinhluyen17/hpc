@@ -111,25 +111,16 @@ body {
     color: black;
     margin-left: 10px;
 }
-.gate-area-body-common-gates div {
+.gate-area-body-common-gates {
     margin: 10px 5px 10px 5px;
-    /* border: 1px solid #373737; */
-    border: 1px solid red;
+    border: 1px solid #373737;
     flex: 1;
-    overflow-y: scroll;    
-    display: flex;
-    flex-direction: row;
-    flex-wrap: wrap;
 }
 
 .gate-area-body-advanced-gates {
     margin: 10px 5px 10px 5px;
     border: 1px solid #373737;
     flex: 1;
-    overflow-y: scroll;    
-    display: flex;
-    flex-direction: row;
-    flex-wrap: wrap;
 }
 
 .content .circuit-area {
@@ -182,10 +173,8 @@ body {
     width: 44px;
     height: 44px;    
 }
-
 #common-gates {
     overflow-y: scroll;
-    max-height: calc((100vh - 60px - 10px - 50px - 32px - 40px)/2); /* - header - margin - searchbox - section - margin*/
     display: flex;
     flex-direction: row;
     flex-wrap: wrap;
@@ -193,12 +182,10 @@ body {
 
 #common-gates-grid {
     overflow-y: scroll;
-    max-height: calc((100vh - 60px - 10px - 50px - 32px - 40px)/2); /* - header - margin - searchbox - section - margin*/
 }
 
 #advanced-gates {
     overflow-y: scroll;
-    max-height: calc((100vh - 60px - 10px - 50px - 32px - 40px)/2); /* - header - margin - searchbox - section - margin*/
     display: flex;
     flex-direction: row;
     flex-wrap: wrap;
@@ -206,7 +193,6 @@ body {
 
 #advanced-gates-grid {
     overflow-y: scroll;
-    max-height: calc((100vh - 60px - 10px - 50px - 32px - 40px)/2); /* - header - margin - searchbox - section - margin*/
 }
 
 #dragCanvas {
