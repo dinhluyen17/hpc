@@ -18,6 +18,7 @@
 import { useI18n } from 'vue-i18n'
 import { reactive, ref, SetupContext } from 'vue'
 import { useUserStore } from '@/store/user/user'
+import { useRoute } from 'vue-router'
 import type { FormRules } from 'naive-ui'
 import type { UserInfoRes } from '@/service/modules/users/types'
 import { createCircuit, updateCircuit } from '@/service/modules/circuits'
@@ -28,6 +29,12 @@ export function useForm(
 ) {
   const { t } = useI18n()
   const userStore = useUserStore()
+  const route = useRoute()
+
+  let projectCode = ''
+  if (typeof route.params.projectCode === 'string') {
+    projectCode = route.params.projectCode
+  }
 
   const resetForm = () => {
     variables.model = {
@@ -36,7 +43,7 @@ export function useForm(
       json: '',
       qasm: '',
       qiskit: '',
-      projectCode: null,
+      projectCode: parseInt(projectCode),
       userName: (userStore.getUserInfo as UserInfoRes).userName
     }
   }
@@ -49,7 +56,7 @@ export function useForm(
       json: '',
       qasm: '',
       qiskit: '',
-      projectCode: null,
+      projectCode: parseInt(projectCode),
       userName: (userStore.getUserInfo as UserInfoRes).userName
     },
     saving: false,

@@ -27,6 +27,7 @@ import { useForm } from './use-form'
 import Modal from '@/components/modal'
 import { useUserStore } from '@/store/user/user'
 import type { UserInfoRes } from '@/service/modules/users/types'
+import { useRoute } from 'vue-router'
 
 const props = {
   showModalRef: {
@@ -52,6 +53,13 @@ const ProjectModal = defineComponent({
 
     const userStore = useUserStore()
 
+    const route = useRoute()
+
+    let projectCode = ''
+    if (typeof route.params.projectCode === 'string') {
+      projectCode = route.params.projectCode
+    }
+
     const cancelModal = () => {
       if (props.statusRef === 0) {
         variables.model.name = ''
@@ -59,7 +67,6 @@ const ProjectModal = defineComponent({
         variables.model.json = ''
         variables.model.qasm = ''
         variables.model.qiskit = ''
-        variables.model.projectCode = null
       } else {
         variables.model.userName = props.row.userName
         variables.model.name = props.row.name
@@ -67,7 +74,7 @@ const ProjectModal = defineComponent({
         variables.model.json = props.row.json
         variables.model.qasm = props.row.qasm
         variables.model.qiskit = props.row.qiskit
-        variables.model.projectCode = props.row.projectCode
+        variables.model.projectCode = parseInt(projectCode)
       }
       ctx.emit('cancelModal', props.showModalRef)
     }
@@ -87,7 +94,7 @@ const ProjectModal = defineComponent({
           variables.model.json = ''
           variables.model.qasm = ''
           variables.model.qiskit = ''
-          variables.model.projectCode = null
+          variables.model.projectCode = parseInt(projectCode)
           variables.model.userName = (
             userStore.getUserInfo as UserInfoRes
           ).userName
@@ -124,8 +131,8 @@ const ProjectModal = defineComponent({
       <Modal
         title={
           this.statusRef === 0
-            ? t('project.list.create_project')
-            : t('project.list.edit_project')
+            ? t('circuit.create_circuit')
+            : t('circuit.edit_circuit')
         }
         show={this.showModalRef}
         onConfirm={this.confirmModal}
@@ -152,56 +159,41 @@ const ProjectModal = defineComponent({
               placeholder={t('project.list.username_tips')}
             />
           </NFormItem>
-          <NFormItem
-            label={t('project.list.project_description')}
-            path='description'
-          >
+          <NFormItem label={t('circuit.description')} path='description'>
             <NInput
               allowInput={this.trim}
               v-model={[this.model.description, 'value']}
               type='textarea'
-              placeholder={t('project.list.description_tips')}
+              placeholder={t('circuit.circuit_description_tips')}
             />
           </NFormItem>
-          <NFormItem
-            label={t('project.list.project_description')}
-            path='json'
-          >
+          <NFormItem label={t('circuit.json')} path='json'>
             <NInput
               allowInput={this.trim}
-              v-model={[this.model.description, 'value']}
-              placeholder={t('project.list.description_tips')}
+              v-model={[this.model.json, 'value']}
+              placeholder={t('circuit.circuit_json_tips')}
             />
           </NFormItem>
-          <NFormItem
-            label={t('project.list.project_description')}
-            path='qasm'
-          >
+          <NFormItem label={t('circuit.qasm')} path='qasm'>
             <NInput
               allowInput={this.trim}
-              v-model={[this.model.description, 'value']}
-              placeholder={t('project.list.description_tips')}
+              v-model={[this.model.qasm, 'value']}
+              placeholder={t('circuit.circuit_qasm_tips')}
             />
           </NFormItem>
-          <NFormItem
-            label={t('project.list.project_description')}
-            path='qiskit'
-          >
+          <NFormItem label={t('circuit.qiskit')} path='qiskit'>
             <NInput
               allowInput={this.trim}
-              v-model={[this.model.description, 'value']}
-              placeholder={t('project.list.description_tips')}
+              v-model={[this.model.qiskit, 'value']}
+              placeholder={t('circuit.circuit_qiskit_tips')}
             />
           </NFormItem>
-          <NFormItem
-            label={t('project.list.project_description')}
-            path='projectCode'
-          >
+          <NFormItem label={t('circuit.project_code')} path='projectCode'>
             <NInput
               allowInput={this.trim}
-              v-model={[this.model.description, 'value']}
+              v-model={[this.model.projectCode, 'value']}
               disabled={true}
-              placeholder={t('project.list.description_tips')}
+              placeholder={t('circuit.circuit_project_code_tips')}
             />
           </NFormItem>
         </NForm>

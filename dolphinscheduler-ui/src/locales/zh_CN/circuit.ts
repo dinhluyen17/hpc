@@ -16,10 +16,18 @@
  */
 
 export default {
+  create_circuit: 'Create Circuit',
+  edit_circuit: 'Edit Circuit',
   name: 'Circuit Name',
   description: 'Circuit Description',
   json: 'Circuit JSON',
   qasm: 'Circuit QASM',
   qiskit: 'Circuit QISKIT',
-  circuit_name_tips: 'Please enter your circuit name!'
+  project_code: 'Circuit Project Code',
+  circuit_name_tips: 'Please enter your circuit name!',
+  circuit_description_tips: 'Please enter circuit description!',
+  circuit_json_tips: 'Please enter circuit json!',
+  circuit_qasm_tips: 'Please enter circuit qasm!',
+  circuit_qiskit_tips: 'Please enter circuit qiskit!',
+  circuit_project_code_tips: 'Please enter circuit project code!'
 }
