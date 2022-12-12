@@ -72,7 +72,7 @@ public class CircuitController extends BaseController {
     }
 
     @Operation(summary = "create", description = "CREATE_CIRCUIT_NOTES")
-    @PostMapping(consumes = {"application/json"})
+    @PostMapping(value = "/create", consumes = {"application/json"})
     @ResponseStatus(HttpStatus.CREATED)
     @ApiException(CREATE_USER_ERROR)
     @AccessLogAnnotation(ignoreRequestArgs = "loginUser")
@@ -119,7 +119,7 @@ public class CircuitController extends BaseController {
 
 
     @Operation(summary = "update", description = "UPDATE_CIRCUIT_NOTES")
-    @PatchMapping(consumes = {"application/json"})
+    @PatchMapping(value = "/update", consumes = {"application/json"})
     @ResponseStatus(HttpStatus.CREATED)
     @ApiException(UPDATE_USER_ERROR)
     @AccessLogAnnotation(ignoreRequestArgs = "loginUser")
