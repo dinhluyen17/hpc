@@ -164,6 +164,8 @@ const redrawNow = () => {
     if (dt < Infinity) {
         window.requestAnimationFrame(() => redrawThrottle.trigger());
     }
+    //Animated bar chart; will crash if qubit > 6
+    // document.D3_FUNCTION.bar(stateBarCalc());
 };
 
 redrawThrottle = new CooldownThrottle(redrawNow, Config.REDRAW_COOLDOWN_MILLIS, 0.1, true);
@@ -175,18 +177,7 @@ displayed.observable().subscribe(() => redrawThrottle.trigger());
 
 /** @type {undefined|!string} */
 let clickDownGateButtonKey = undefined;
-canvasDiv.addEventListener('click', ev => {
-    // if (document.HIGHLIGHT_GATE) {
-    //     const gateRect = document.HIGHLIGHT_GATE.gateRect;
-    //     const element = document.getElementById('gateMenu');
-    //     element.style.display = 'block';
-    //     element.style.left = gateRect.x + "px";
-    //     element.style.top = (gateRect.y - 50) + "px";
-    // }
-    // else {
-    //     const element = document.getElementById('gateMenu');
-    //     element.style.display = 'none';
-    // }
+let stateBarCalc = () =>{
     let qHeight = mostRecentStats.get().finalState.height();
     let qStates = [];
     for (let i = 0; i < qHeight; i++){
@@ -205,21 +196,34 @@ canvasDiv.addEventListener('click', ev => {
     }
     const stateObj = qStates.map((str, index)=>
         ({
-           id: index, State: qStates[index]
+            id: index, State: qStates[index]
         }))
     const probObj = qProb.map((str, index) => ({
         id: index, Probability: qProb[index]
     }))
     const data = stateObj.map((e,i)=>{
         let temp = probObj.find(el => el.id === e.id)
-            e.id = temp.Probability
-            e.Probability = e.id
-            delete e.id
-        document.getElementById("stateBarChart").innerHTML ="";
+        e.id = temp.Probability
+        e.Probability = e.id
+        delete e.id
         return e;
     })
-    let barData = data;
-    document.D3_FUNCTION.test(barData);
+    return data;
+}
+document.D3_FUNCTION.init(stateBarCalc());
+canvasDiv.addEventListener('click', ev => {
+    // if (document.HIGHLIGHT_GATE) {
+    //     const gateRect = document.HIGHLIGHT_GATE.gateRect;
+    //     const element = document.getElementById('gateMenu');
+    //     element.style.display = 'block';
+    //     element.style.left = gateRect.x + "px";
+    //     element.style.top = (gateRect.y - 50) + "px";
+    // }
+    // else {
+    //     const element = document.getElementById('gateMenu');
+    //     element.style.display = 'none';
+    // }
+    document.D3_FUNCTION.bar(stateBarCalc());
     let pt = eventPosRelativeTo(ev, canvasDiv);
     let curInspector = displayed.get();
     if (curInspector.tryGetHandOverButtonKey() !== clickDownGateButtonKey) {
@@ -354,7 +358,7 @@ initSizeViews(canvasDiv);
 initUrlCircuitSync(revision);
 //initExports(revision, mostRecentStats, obsIsAnyOverlayShowing.observable());
 //initForge(revision, obsIsAnyOverlayShowing.observable());
-//initUndoRedo(revision, obsIsAnyOverlayShowing.observable());
+initUndoRedo(revision, obsIsAnyOverlayShowing.observable());
 //initClear(revision, obsIsAnyOverlayShowing.observable());
 //initMenu(revision, obsIsAnyOverlayShowing.observable());
 initTitleSync(revision);

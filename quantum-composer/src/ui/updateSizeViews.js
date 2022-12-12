@@ -74,7 +74,7 @@ const initSizeViews = (parentDiv) => {
   const searchGateBox = document.getElementById('gate-area-header-search');
   closeGateAreaBtn.addEventListener('click', () => {
     viewState.getInstance().expandGateArea = !viewState.getInstance().expandGateArea;
-    if (viewState.expandGateArea) {
+    if (viewState.getInstance().expandGateArea) {
       gridGateBtn.style.display = 'block';
       listGateBtn.style.display = 'block';
       searchGateBox.style.display = 'block';

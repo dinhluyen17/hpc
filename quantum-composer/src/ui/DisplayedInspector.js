@@ -111,7 +111,7 @@ class DisplayedInspector {
      * @private
      */
     _paintHand(painter, stats, dragPainter) {
-        const elmnt = document.getElementById('dragCanvas')
+        const elmnt = document.getElementById('dragCanvas');
         if (this.hand.pos === undefined || this.hand.heldGate === undefined) {
             elmnt.style.display = 'none'
             return;
@@ -120,15 +120,15 @@ class DisplayedInspector {
         elmnt.style.display = 'block'
         let gate = this.hand.heldGate;
         let pos = this.hand.pos.minus(this.hand.holdOffset);
-        elmnt.style.top = (pos.y + viewState.getInstance().canvasBoundingRect.clientY) + 'px';
-        elmnt.style.left = (pos.x + viewState.getInstance().canvasBoundingRect.clientX) + 'px';
+        elmnt.style.top = (pos.y + viewState.getInstance().canvasBoundingRect.clientY - viewState.getInstance().canvasScrollY) + 'px';
+        elmnt.style.left = (pos.x + viewState.getInstance().canvasBoundingRect.clientX - viewState.getInstance().canvasScrollX) + 'px';
         let rect = new Rect(
             0,
             0,
             Config.GATE_RADIUS*2 + Config.WIRE_SPACING*(gate.width-1),
             Config.GATE_RADIUS*2 + Config.WIRE_SPACING*(gate.height-1));
         let drawer = gate.customDrawer || GatePainting.DEFAULT_DRAWER;
-        
+        painter.clearRect();
         drawer(new GateDrawParams(
             painter,
             this.hand,

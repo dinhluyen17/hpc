@@ -115,6 +115,10 @@ class Painter {
         this.ctx.fillRect(0, 0, this.canvas.width, this.canvas.height);
     }
 
+    clearRect() {
+        this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
+    }
+
     /**
      * Draws a line segment between the two points.
      *
