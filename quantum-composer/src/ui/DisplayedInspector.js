@@ -120,8 +120,8 @@ class DisplayedInspector {
         elmnt.style.display = 'block'
         let gate = this.hand.heldGate;
         let pos = this.hand.pos.minus(this.hand.holdOffset);
-        elmnt.style.top = (pos.y + viewState.getInstance().canvasBoundingRect.clientY) + 'px';
-        elmnt.style.left = (pos.x + viewState.getInstance().canvasBoundingRect.clientX) + 'px';
+        elmnt.style.top = (pos.y + viewState.getInstance().canvasBoundingRect.clientY - viewState.getInstance().canvasScrollY) + 'px';
+        elmnt.style.left = (pos.x + viewState.getInstance().canvasBoundingRect.clientX - viewState.getInstance().canvasScrollX) + 'px';
         let rect = new Rect(
             0,
             0,

@@ -32,7 +32,7 @@ import {Rect} from "../math/Rect.js"
 import {Util} from "../base/Util.js"
 import {seq, Seq} from "../base/Seq.js"
 import {paintBlochSphereDisplay} from "../gates/BlochSphereDisplay.js"
-
+import {viewState} from "./viewState.js"
 /** @type {!number} */
 let CIRCUIT_OP_HORIZONTAL_SPACING = 10;
 /** @type {!number} */
@@ -215,7 +215,7 @@ class DisplayedCircuit {
      */
     // Phu: find column for drag and drop
     findOpHalfColumnAt(p) {
-        if (p.x < 0 || p.y < this.top || p.y > this.top + this.desiredHeight()) {
+        if (p.x < viewState.getInstance().canvasScrollX || p.y < this.top || p.y > this.top + this.desiredHeight()) {
             return undefined;
         }
 
