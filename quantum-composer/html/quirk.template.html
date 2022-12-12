@@ -4,7 +4,6 @@
   <meta charset="UTF-8">
   <title>Quantum Composer</title>
   <link rel="stylesheet" href="./styles.css">
-
 </head>
 
 <body>
@@ -186,8 +185,41 @@
     }
 
     function handleSearch() {
-      let search = document.getElementById("gate-area-header-search").textContent;
-      console.log("search ", search);
+      let search = document.getElementById("gate-area-header-search").value.toLowerCase();
+      console.log("search: ", search);
+
+      const listGates = document.querySelectorAll('.list-view')
+      const gridGates = document.querySelectorAll('.grid-view')
+      if(search != null && search != '' && search != undefined) {
+        listGates.forEach(item => {
+          const matchList = item.querySelector("span")
+          console.log("matchllist <<<<<<", matchList);
+          console.log("demoooo >>>>>", matchList.innerText);
+          if(!matchList.innerText.trim().toLowerCase().includes(search)) {
+            item.style.display = "none"
+          } else {
+            item.style.display = "block"
+          }
+        })
+
+        gridGates.forEach(item => {
+          const gridMatchList = item.querySelector("div span")
+          if(!gridMatchList.innerText.trim().toLowerCase().includes(search)) {
+            item.style.display = "none"
+          } else {
+            item.style.display = "block"
+          }
+        })        
+      }
+      else {
+        listGates.forEach(item => {
+          item.style.display = "block"
+        })
+        gridGates.forEach(item => {
+          item.style.display = "block"
+        }) 
+      }
+
     }
 
     function handleClear() {

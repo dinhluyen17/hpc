@@ -199,3 +199,23 @@ body {
     position: absolute;
     z-index: 9;
 }
+
+/* pop up gate name */
+.tooltip-wrap {
+    position: relative;
+  }
+  .tooltip-wrap .tooltip-content {
+    display: none;
+    position: absolute;
+    bottom: 5%;
+    left: 100%;
+    background-color: #58f61a;
+    padding: .5em;
+    z-index: 1;
+  }
+
+  .tooltip-wrap:hover .tooltip-content {
+    display: block;
+    font-size: small;
+  }
+  

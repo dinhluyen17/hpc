@@ -30,7 +30,7 @@ const initGateViews = () => {
     group.gates.forEach(gate => {
       if (gate != undefined) {
         const gateView = document.createElement('span');
-        gateView.setAttribute("class", "list-view")
+        gateView.setAttribute("class", "list-view tooltip-wrap")
         gateView.innerHTML = `
                       <svg onmousedown="grabGate('${gate.symbol}')" viewBox="0 0 40 40" xmlns="http://www.w3.org/2000/svg" width="40" height="40" style="cursor: grab; margin-left: 10px; margin-top: 10px;">
                         <rect x="1" y="1" width="38" height="38"
@@ -40,6 +40,7 @@ const initGateViews = () => {
                           style="font-family: sans-serif; font-size: 15px; font-style: normal; fill: rgb(0, 0, 0); font-weight: 300; text-anchor: middle;">${gate.symbol}
                         </text>
                       </svg>
+                      <span class="tooltip-content">${gate.name}</span>
                 `;
         commonGates.appendChild(gateView)
       }
@@ -83,7 +84,7 @@ const initGateViews = () => {
     group.gates.forEach(gate => {
       if (gate != undefined) {
         const gateView = document.createElement('span');
-        gateView.setAttribute("class", "list-view")
+        gateView.setAttribute("class", "list-view tooltip-wrap")
         gateView.innerHTML = `
                       <svg onmousedown="grabGate('${gate.symbol}')" viewBox="0 0 40 40" xmlns="http://www.w3.org/2000/svg" width="40" height="40" style="cursor: grab; margin-left: 10px; margin-top: 10px;">
                         <rect x="1" y="1" width="38" height="38"
@@ -93,6 +94,7 @@ const initGateViews = () => {
                           style="font-family: sans-serif; font-size: 15px; font-style: normal; fill: rgb(0, 0, 0); font-weight: 300; text-anchor: middle;">${gate.symbol}
                         </text>
                       </svg>
+                      <span class="tooltip-content">${gate.name}</span>
                 `;
         advancedGates.appendChild(gateView)
       }
