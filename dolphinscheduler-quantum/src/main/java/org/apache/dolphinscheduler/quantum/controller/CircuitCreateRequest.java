@@ -15,40 +15,32 @@
  * limitations under the License.
  */
 
-package org.apache.dolphinscheduler.dao.entity;
+package org.apache.dolphinscheduler.quantum.controller;
 
-import com.baomidou.mybatisplus.annotation.IdType;
-import com.baomidou.mybatisplus.annotation.TableField;
-import com.baomidou.mybatisplus.annotation.TableId;
-import com.baomidou.mybatisplus.annotation.TableName;
+import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Data;
 
-import java.math.BigInteger;
-import java.util.Date;
-
+/**
+ * circuit create request
+ */
 @Data
-@TableName("t_ds_circuit")
-public class Circuit {
+public class CircuitCreateRequest {
 
-    @TableId(value = "id", type = IdType.AUTO)
-    private Integer id;
-
-    @TableField("user_id")
-    private Integer userId;
-
+    @Schema(example = "pro123", required = true)
     private String name;
 
+    @Schema(example = "this is a circuit")
     private String description;
 
+    @Schema(example = "json")
     private String json;
 
+    @Schema(example = "qasm")
     private String qasm;
 
+    @Schema(example = "qiskit")
     private String qiskit;
 
-    private Date createTime;
-
-    private Date updateTime;
-
+    @Schema(example = "1")
     private Long projectCode;
 }

@@ -24,10 +24,12 @@ import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import org.apache.dolphinscheduler.api.aspect.AccessLogAnnotation;
 import org.apache.dolphinscheduler.api.controller.BaseController;
+import org.apache.dolphinscheduler.api.dto.taskRelation.TaskRelationCreateRequest;
 import org.apache.dolphinscheduler.api.exceptions.ApiException;
 import org.apache.dolphinscheduler.api.utils.Result;
 import org.apache.dolphinscheduler.common.constants.Constants;
 import org.apache.dolphinscheduler.dao.entity.User;
+import org.apache.dolphinscheduler.plugin.datasource.api.datasource.BaseDataSourceParamDTO;
 import org.apache.dolphinscheduler.plugin.task.api.utils.ParameterUtils;
 import org.apache.dolphinscheduler.quantum.service.CircuitService;
 import org.slf4j.Logger;
@@ -70,28 +72,15 @@ public class CircuitController extends BaseController {
     }
 
     @Operation(summary = "create", description = "CREATE_CIRCUIT_NOTES")
-    @Parameters({
-            @Parameter(name = "name", description = "NAME", required = true, schema = @Schema(implementation = String.class)),
-            @Parameter(name = "description", description = "DESCRIPTION", schema = @Schema(implementation = String.class)),
-            @Parameter(name = "json", description = "JSON", schema = @Schema(implementation = String.class)),
-            @Parameter(name = "qasm", description = "QASM", schema = @Schema(implementation = String.class)),
-            @Parameter(name = "qiskit", description = "QISKIT", schema = @Schema(implementation = String.class)),
-            @Parameter(name = "projectCode", description = "PROJECT_CODE", schema = @Schema(implementation = BigInteger.class))
-    })
-    @PostMapping(value = "/create")
+    @PostMapping(consumes = {"application/json"})
     @ResponseStatus(HttpStatus.CREATED)
     @ApiException(CREATE_USER_ERROR)
     @AccessLogAnnotation(ignoreRequestArgs = "loginUser")
     public Result createCircuit(@Parameter(hidden = true) @RequestAttribute(value = Constants.SESSION_USER) User loginUser,
-                                @RequestParam(value = "name") String name,
-                                @RequestParam(value = "description", required = false) String description,
-                                @RequestParam(value = "json", required = false) String json,
-                                @RequestParam(value = "qasm", required = false) String qasm,
-                                @RequestParam(value = "qiskit", required = false) String qiskit,
-                                @RequestParam(value = "projectCode", required = false) BigInteger projectCode) throws Exception {
+                                @RequestBody CircuitCreateRequest circuitCreateRequest) throws Exception {
         Integer userId = loginUser.getId();
         Map<String, Object> result =
-                circuitService.create(userId, name, description, json, qasm, qiskit, projectCode);
+                circuitService.create(userId, circuitCreateRequest);
         return returnDataList(result);
     }
 
@@ -129,28 +118,14 @@ public class CircuitController extends BaseController {
     }
 
 
-    @Operation(summary = "update", description = "UPDATE_USER_NOTES")
-    @Parameters({
-            @Parameter(name = "id", description = "CIRCUIT_ID", required = true, schema = @Schema(implementation = int.class, example = "100")),
-            @Parameter(name = "name", description = "NAME", allowEmptyValue = true, schema = @Schema(implementation = String.class)),
-            @Parameter(name = "description", description = "DESCRIPTION", allowEmptyValue = true, schema = @Schema(implementation = String.class)),
-            @Parameter(name = "json", description = "JSON", allowEmptyValue = true, schema = @Schema(implementation = String.class)),
-            @Parameter(name = "qasm", description = "QASM", allowEmptyValue = true, schema = @Schema(implementation = String.class)),
-            @Parameter(name = "qiskit", description = "QISKIT", allowEmptyValue = true, schema = @Schema(implementation = String.class)),
-            @Parameter(name = "projectCode", description = "PROJECT_CODE", allowEmptyValue = true, schema = @Schema(implementation = BigInteger.class))
-    })
-    @PatchMapping(value = "/update")
-    @ResponseStatus(HttpStatus.OK)
+    @Operation(summary = "update", description = "UPDATE_CIRCUIT_NOTES")
+    @PatchMapping(consumes = {"application/json"})
+    @ResponseStatus(HttpStatus.CREATED)
     @ApiException(UPDATE_USER_ERROR)
-    public Result update(@RequestParam(value = "id") int id,
-                         @RequestParam(value = "name", required = false) String name,
-                         @RequestParam(value = "description", required = false) String description,
-                         @RequestParam(value = "json", required = false) String json,
-                         @RequestParam(value = "qasm", required = false) String qasm,
-                         @RequestParam(value = "qiskit", required = false) String qiskit,
-                         @RequestParam(value = "projectCode", required = false) BigInteger projectCode) throws Exception {
+    @AccessLogAnnotation(ignoreRequestArgs = "loginUser")
+    public Result update(@RequestBody CircuitUpdateRequest circuitUpdateRequest) throws Exception {
         Map<String, Object> result =
-                circuitService.update(id, name, description, json, qasm, qiskit, projectCode);
+                circuitService.update(circuitUpdateRequest);
         return returnDataList(result);
     }
 

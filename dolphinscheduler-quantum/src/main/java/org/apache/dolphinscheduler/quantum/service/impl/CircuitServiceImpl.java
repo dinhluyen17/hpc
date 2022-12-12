@@ -27,6 +27,8 @@ import org.apache.dolphinscheduler.api.utils.Result;
 import org.apache.dolphinscheduler.common.constants.Constants;
 import org.apache.dolphinscheduler.dao.entity.Circuit;
 import org.apache.dolphinscheduler.dao.mapper.CircuitMapper;
+import org.apache.dolphinscheduler.quantum.controller.CircuitCreateRequest;
+import org.apache.dolphinscheduler.quantum.controller.CircuitUpdateRequest;
 import org.apache.dolphinscheduler.quantum.service.CircuitService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -52,21 +54,21 @@ public class CircuitServiceImpl extends BaseServiceImpl implements CircuitServic
 
     @Override
     @Transactional(rollbackFor = Exception.class)
-    public Map<String, Object> create(Integer userId, String name, String description, String json, String qasm, String qiskit, BigInteger projectCode) {
+    public Map<String, Object> create(Integer userId, CircuitCreateRequest circuitCreateRequest) {
         Map<String, Object> result = new HashMap<>();
 
         Circuit circuit = new Circuit();
         circuit.setUserId(userId);
-        circuit.setName(name);
-        circuit.setDescription(description);
-        circuit.setJson(json);
-        circuit.setQasm(qasm);
-        circuit.setQiskit(qiskit);
+        circuit.setName(circuitCreateRequest.getName());
+        circuit.setDescription(circuitCreateRequest.getDescription());
+        circuit.setJson(circuitCreateRequest.getJson());
+        circuit.setQasm(circuitCreateRequest.getQasm());
+        circuit.setQiskit(circuitCreateRequest.getQiskit());
         Date date = new Date();
         circuit.setCreateTime(date);
         circuit.setUpdateTime(date);
         circuit.setUpdateTime(date);
-        circuit.setProjectCode(projectCode);
+        circuit.setProjectCode(circuitCreateRequest.getProjectCode());
 
         // save user
         circuitMapper.insert(circuit);
@@ -105,44 +107,44 @@ public class CircuitServiceImpl extends BaseServiceImpl implements CircuitServic
     }
 
     @Override
-    public Map<String, Object> update(Integer id, String name, String description, String json, String qasm, String qiskit, BigInteger projectCode) throws IOException {
+    public Map<String, Object> update(CircuitUpdateRequest circuitUpdateRequest) throws IOException {
         Map<String, Object> result = new HashMap<>();
         result.put(Constants.STATUS, false);
 
-        Circuit circuit = circuitMapper.selectById(id);
+        Circuit circuit = circuitMapper.selectById(circuitUpdateRequest.getId());
         if (circuit == null) {
-            logger.error("circuit does not exist, id:{}.", id);
-            putMsg(result, Status.USER_NOT_EXIST, id);
+            logger.error("circuit does not exist, id:{}.", circuitUpdateRequest.getId());
+            putMsg(result, Status.USER_NOT_EXIST, circuitUpdateRequest.getId());
             return result;
         }
-        if (StringUtils.isNotEmpty(name)) {
-            circuit.setName(name);
+        if (StringUtils.isNotEmpty(circuitUpdateRequest.getName())) {
+            circuit.setName(circuitUpdateRequest.getName());
         }
 
-        if (description != null) {
-            circuit.setDescription(description);
+        if (circuitUpdateRequest.getDescription() != null) {
+            circuit.setDescription(circuitUpdateRequest.getDescription());
         }
-        if (json != null) {
-            circuit.setJson(json);
+        if (circuitUpdateRequest.getJson() != null) {
+            circuit.setJson(circuitUpdateRequest.getJson());
         }
-        if (qasm != null) {
-            circuit.setQasm(qasm);
+        if (circuitUpdateRequest.getQasm() != null) {
+            circuit.setQasm(circuitUpdateRequest.getQasm());
         }
-        if (qiskit != null) {
-            circuit.setQiskit(qiskit);
+        if (circuitUpdateRequest.getQiskit() != null) {
+            circuit.setQiskit(circuitUpdateRequest.getQiskit());
         }
         Date now = new Date();
         circuit.setUpdateTime(now);
         // updateProcessInstance user
-        if (projectCode != null) {
-            circuit.setProjectCode(projectCode);
+        if (circuitUpdateRequest.getProjectCode() != null) {
+            circuit.setProjectCode(circuitUpdateRequest.getProjectCode());
         }
         int update = circuitMapper.updateById(circuit);
         if (update > 0) {
-            logger.info("Circuit is updated and id is :{}.", id);
+            logger.info("Circuit is updated and id is :{}.", circuitUpdateRequest.getId());
             putMsg(result, Status.SUCCESS);
         } else {
-            logger.error("Circuit update error, id:{}.", id);
+            logger.error("Circuit update error, id:{}.", circuitUpdateRequest.getId());
             putMsg(result, Status.UPDATE_USER_ERROR);
         }
 
