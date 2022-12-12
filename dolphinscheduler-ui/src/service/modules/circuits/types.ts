@@ -29,18 +29,10 @@ interface ListReq {
 
 interface CircuitReq {
   name: string
-  description?: string
-  json: string
-  qiskit: string
-}
-
-interface UpdateCircuitReq {
-  name: string
   description: string
   json: string
   qasm: string
   qiskit: string
-  userName: string
   projectCode: number | null
 }
 
@@ -69,7 +61,6 @@ export {
   GetReq,
   ListReq,
   CircuitReq,
-  UpdateCircuitReq,
   CircuitRes,
   CircuitList
 }

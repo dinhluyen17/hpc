@@ -16,7 +16,7 @@
  */
 
 import { axiosQuantum } from '@/service/service'
-import { GetReq, ListReq, CircuitReq, UpdateCircuitReq } from './types'
+import { GetReq, ListReq, CircuitReq } from './types'
 
 export function getCircuit(params: GetReq): any {
   return axiosQuantum({
@@ -38,12 +38,16 @@ export function createCircuit(data: CircuitReq): any {
   return axiosQuantum({
     url: '/circuit/create',
     method: 'post',
-    data
+    headers: {
+      'Content-Type': 'application/json',
+      'accept': '*/*'
+    },
+    data: JSON.stringify(data)
   })
 }
 
 
-export function updateCircuit(data: UpdateCircuitReq, code: number): any {
+export function updateCircuit(data: CircuitReq, code: number): any {
   return axiosQuantum({
     url: `/circuit/${code}`,
     method: 'put',

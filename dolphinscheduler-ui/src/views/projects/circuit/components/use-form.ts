@@ -20,7 +20,6 @@ import { reactive, ref, SetupContext } from 'vue'
 import { useUserStore } from '@/store/user/user'
 import { useRoute } from 'vue-router'
 import type { FormRules } from 'naive-ui'
-import type { UserInfoRes } from '@/service/modules/users/types'
 import { createCircuit, updateCircuit } from '@/service/modules/circuits'
 
 export function useForm(
@@ -43,8 +42,7 @@ export function useForm(
       json: '',
       qasm: '',
       qiskit: '',
-      projectCode: parseInt(projectCode),
-      userName: (userStore.getUserInfo as UserInfoRes).userName
+      projectCode: parseInt(projectCode)
     }
   }
 
@@ -56,8 +54,7 @@ export function useForm(
       json: '',
       qasm: '',
       qiskit: '',
-      projectCode: parseInt(projectCode),
-      userName: (userStore.getUserInfo as UserInfoRes).userName
+      projectCode: parseInt(projectCode)
     },
     saving: false,
     rules: {

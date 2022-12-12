@@ -26,7 +26,6 @@ import { NForm, NFormItem, NInput } from 'naive-ui'
 import { useForm } from './use-form'
 import Modal from '@/components/modal'
 import { useUserStore } from '@/store/user/user'
-import type { UserInfoRes } from '@/service/modules/users/types'
 import { useRoute } from 'vue-router'
 
 const props = {
@@ -68,7 +67,6 @@ const ProjectModal = defineComponent({
         variables.model.qasm = ''
         variables.model.qiskit = ''
       } else {
-        variables.model.userName = props.row.userName
         variables.model.name = props.row.name
         variables.model.description = props.row.description
         variables.model.json = props.row.json
@@ -95,9 +93,6 @@ const ProjectModal = defineComponent({
           variables.model.qasm = ''
           variables.model.qiskit = ''
           variables.model.projectCode = parseInt(projectCode)
-          variables.model.userName = (
-            userStore.getUserInfo as UserInfoRes
-          ).userName
         } else {
           variables.model.name = props.row.name
           variables.model.description = props.row.description
@@ -105,7 +100,6 @@ const ProjectModal = defineComponent({
           variables.model.qasm = props.row.qasm
           variables.model.qiskit = props.row.qiskit
           variables.model.projectCode = props.row.projectCode
-          variables.model.userName = props.row.userName
         }
       }
     )
@@ -119,7 +113,6 @@ const ProjectModal = defineComponent({
         variables.model.qasm = props.row.qasm
         variables.model.qiskit = props.row.qiskit
         variables.model.projectCode = props.row.projectCode
-        variables.model.userName = props.row.userName
       }
     )
 
@@ -137,7 +130,7 @@ const ProjectModal = defineComponent({
         show={this.showModalRef}
         onConfirm={this.confirmModal}
         onCancel={this.cancelModal}
-        confirmDisabled={!this.model.name || !this.model.userName}
+        confirmDisabled={!this.model.name}
         confirmClassName='btn-submit'
         cancelClassName='btn-cancel'
         confirmLoading={this.saving}
@@ -149,14 +142,6 @@ const ProjectModal = defineComponent({
               v-model={[this.model.name, 'value']}
               placeholder={t('circuit.circuit_name_tips')}
               class='input-project-name'
-            />
-          </NFormItem>
-          <NFormItem label={t('project.list.owned_users')} path='userName'>
-            <NInput
-              allowInput={this.trim}
-              disabled={true}
-              v-model={[this.model.userName, 'value']}
-              placeholder={t('project.list.username_tips')}
             />
           </NFormItem>
           <NFormItem label={t('circuit.description')} path='description'>
