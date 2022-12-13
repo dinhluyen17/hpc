@@ -60,7 +60,7 @@ export function updateCircuit(data: CircuitReq, id: number): any {
 
 export function deleteCircuit(id: number): any {
   return axiosQuantum({
-    url: `/circuit/delete?id=${id}`,
+    url: `/circuit/delete/?id=${id}`,
     method: 'delete'
   })
 }

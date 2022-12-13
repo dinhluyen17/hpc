@@ -18,6 +18,7 @@
 export default {
   create_circuit: 'Create Circuit',
   edit_circuit: 'Edit Circuit',
+  duplicate_circuit: 'Duplicate Circuit',
   name: 'Circuit Name',
   description: 'Circuit Description',
   json: 'Circuit JSON',
@@ -31,10 +32,13 @@ export default {
   circuit_qiskit_tips: 'Please enter circuit qiskit!',
   circuit_project_code_tips: 'Please enter circuit project code!',
   list: {
+    create_title: 'Create Circuit',
+    title: 'Circuit List',
     edit_circuit: 'Edit',
     delete_circuit: 'Delete',
     duplicate_circuit: 'Duplicate',
     circuit_name: 'Circuit Name',
-    circuit_description: 'Circuit Description'
+    circuit_description: 'Circuit Description',
+    circuit_tips: 'Please enter your circuit name'
   }
 }

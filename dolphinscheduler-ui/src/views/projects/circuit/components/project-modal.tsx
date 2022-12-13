@@ -74,15 +74,10 @@ const ProjectModal = defineComponent({
         variables.model.json = ''
         variables.model.qasm = ''
         variables.model.qiskit = ''
-      } else if (props.statusRef === 1) {
-        variables.model.id = props.row.id
-        variables.model.name = props.row.name
-        variables.model.description = props.row.description
-        variables.model.json = props.row.json
-        variables.model.qasm = props.row.qasm
-        variables.model.qiskit = props.row.qiskit
-        variables.model.projectCode = parseInt(projectCode)
       } else {
+        if (props.statusRef === 1) {
+          variables.model.id = props.row.id
+        }
         variables.model.name = props.row.name
         variables.model.description = props.row.description
         variables.model.json = props.row.json
@@ -109,15 +104,10 @@ const ProjectModal = defineComponent({
           variables.model.qasm = ''
           variables.model.qiskit = ''
           variables.model.projectCode = parseInt(projectCode)
-        } else if (props.statusRef === 1) {
-          variables.model.id = props.row.id
-          variables.model.name = props.row.name
-          variables.model.description = props.row.description
-          variables.model.json = props.row.json
-          variables.model.qasm = props.row.qasm
-          variables.model.qiskit = props.row.qiskit
-          variables.model.projectCode = props.row.projectCode
         } else {
+          if (props.statusRef === 1) {
+            variables.model.id = props.row.id
+          }
           variables.model.name = props.row.name
           variables.model.description = props.row.description
           variables.model.json = props.row.json

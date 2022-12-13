@@ -75,13 +75,7 @@ export function useForm(
   const handleValidate = (statusRef: number) => {
     variables.circuitFormRef.validate((errors: any) => {
       if (!errors) {
-        if (statusRef === 0) {
-          submitProjectModal()
-        } else if (statusRef === 1) {
-          updateProjectModal()
-        } else {
-          duplicateProjectModal()
-        }
+        statusRef === 1 ? updateProjectModal() : submitProjectModal();
       } else {
         return
       }
@@ -106,19 +100,6 @@ export function useForm(
     variables.saving = true
     try {
       await updateCircuit(variables.model, props.row.id)
-      variables.saving = false
-      resetForm()
-      ctx.emit('confirmModal', props.showModalRef)
-    } catch (err) {
-      variables.saving = false
-    }
-  }
-
-  const duplicateProjectModal = async () => {
-    if (variables.saving) return
-    variables.saving = true
-    try {
-      await createCircuit(variables.model)
       variables.saving = false
       resetForm()
       ctx.emit('confirmModal', props.showModalRef)
