@@ -70,6 +70,7 @@
         </div>
         <div class="circuit-area-chart" id="circuit-chart">
           <button id="circuit-area-chart-close-btn">X</button>
+          <button id="stateBarChartFilterZero">Hide zero states</button>
           <div id="stateBarChart"></div>
         </div>
       </div>
@@ -105,51 +106,13 @@
   <script src='./dist/d3.min.js'></script>
   <script>
     document.D3_FUNCTION = {
-      init: (barData) => {
-        let margin = {top: 30, right: 30, bottom: 70, left: 60},
-                width = 460 - margin.left - margin.right,
-                height = 190 - margin.top - margin.bottom;
-        let svg = d3.select("#stateBarChart")
-                .append("svg")
-                .attr("width", width + margin.left + margin.right)
-                .attr("height", height + margin.top + margin.bottom)
-                .append("g")
-                .attr("transform",
-                        "translate(" + margin.left + "," + margin.top + ")");
-        let x = d3.scaleBand()
-                .range([0,width])
-                .domain(barData.map(function (d){return d.State;}))
-                .padding(0.2);
-        svg.append("g")
-                .attr("transform","translate(0," + height + ")")
-                .call(d3.axisBottom(x))
-                .selectAll("text")
-                .style("text-anchor","end");
-        svg.append("text")
-                .attr("class","x label")
-                .attr("text-anchor","end")
-                .attr("dy", "2.5rem")
-                .attr("x", width)
-                .attr("y", height)
-                .text("Computational basis states")
-        let y = d3.scaleLinear()
-                .domain([0,100])
-                .range([height, 0])
-        svg.append("g")
-                .call(d3.axisLeft(y));
-        svg.append("text")
-                .attr("class","y label")
-                .attr("text-anchor","end")
-                .attr("y", 6)
-                .attr("dy","-2.5rem")
-                .attr("transform","rotate(-90)")
-                .text("Probability(%)")
-      }
-      ,
       bar: (barData) => {
         let margin = {top: 30, right: 30, bottom: 70, left: 60},
                 width = (barData.length * 15) - margin.left - margin.right,
                 height = 190 - margin.top - margin.bottom;
+        if  (width <= 600){
+          width = 600;
+        }
         let svg = d3.select("#stateBarChart");
         svg.selectAll("*").remove();
         svg = d3.select("#stateBarChart")
