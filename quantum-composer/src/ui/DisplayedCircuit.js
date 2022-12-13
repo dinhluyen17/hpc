@@ -352,7 +352,7 @@ class DisplayedCircuit {
         if (showWires) {
             this._drawWires(painter, !forTooltip, hand);
         }
-        document.HIGHLIGHT_GATE = undefined;
+        viewState.getInstance().highlightGate = null;
         for (let col = 0; col < this.circuitDefinition.columns.length; col++) {
             this._drawColumn(painter, this.circuitDefinition.columns[col], col, hand, stats);
         }
@@ -537,7 +537,7 @@ class DisplayedCircuit {
             let {isHighlighted, isResizeShowing, isResizeHighlighted} =
                 this._highlightStatusAt(col, row, hand.hoverPoints());
             if (isHighlighted && hand.heldRow != row && hand.heldColumn != col) {
-                document.HIGHLIGHT_GATE = {row, col, gateRect};                 
+                viewState.getInstance().highlightGate = {row, col, gateRect};              
             }
             let drawer = gate.customDrawer || GatePainting.DEFAULT_DRAWER;
             painter.noteTouchBlocker({rect: gateRect, cursor: 'pointer'});
