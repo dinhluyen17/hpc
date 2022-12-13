@@ -27,13 +27,13 @@ import java.math.BigInteger;
  */
 @Data
 public class CircuitUpdateRequest {
-    @Schema(example = "pro123")
+    @Schema(example = "cir123")
     private String name;
 
     @Schema(example = "this is a circuit")
     private String description;
 
-    @Schema(example = "json")
+    @Schema(example = "{json}")
     private String json;
 
     @Schema(example = "qasm")

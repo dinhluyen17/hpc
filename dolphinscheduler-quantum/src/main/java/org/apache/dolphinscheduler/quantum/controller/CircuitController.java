@@ -22,26 +22,32 @@ import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.Parameters;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import org.apache.commons.io.IOUtils;
 import org.apache.dolphinscheduler.api.aspect.AccessLogAnnotation;
 import org.apache.dolphinscheduler.api.controller.BaseController;
-import org.apache.dolphinscheduler.api.dto.taskRelation.TaskRelationCreateRequest;
 import org.apache.dolphinscheduler.api.exceptions.ApiException;
 import org.apache.dolphinscheduler.api.utils.Result;
 import org.apache.dolphinscheduler.common.constants.Constants;
+import org.apache.dolphinscheduler.dao.entity.Circuit;
 import org.apache.dolphinscheduler.dao.entity.User;
-import org.apache.dolphinscheduler.plugin.datasource.api.datasource.BaseDataSourceParamDTO;
 import org.apache.dolphinscheduler.plugin.task.api.utils.ParameterUtils;
 import org.apache.dolphinscheduler.quantum.service.CircuitService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.math.BigInteger;
+import java.io.BufferedOutputStream;
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
+import java.util.zip.ZipEntry;
+import java.util.zip.ZipOutputStream;
 
 import static org.apache.dolphinscheduler.api.enums.Status.*;
 
@@ -66,7 +72,7 @@ public class CircuitController extends BaseController {
     @GetMapping(value = "/get")
     @ResponseStatus(HttpStatus.OK)
     @ApiException(GET_USER_INFO_ERROR)
-    public Result getCircuit(@RequestParam(value = "id") Integer id) throws Exception {
+    public Result getCircuit(@RequestParam(value = "id") Integer id) {
         Map<String, Object> result = circuitService.get(id);
         return returnDataList(result);
     }
@@ -77,7 +83,7 @@ public class CircuitController extends BaseController {
     @ApiException(CREATE_USER_ERROR)
     @AccessLogAnnotation(ignoreRequestArgs = "loginUser")
     public Result createCircuit(@Parameter(hidden = true) @RequestAttribute(value = Constants.SESSION_USER) User loginUser,
-                                @RequestBody CircuitCreateRequest circuitCreateRequest) throws Exception {
+                                @RequestBody CircuitCreateRequest circuitCreateRequest) {
         Integer userId = loginUser.getId();
         Map<String, Object> result =
                 circuitService.create(userId, circuitCreateRequest);
@@ -148,7 +154,7 @@ public class CircuitController extends BaseController {
     @Parameters({
             @Parameter(name = "id", description = "ID", required = true, schema = @Schema(implementation = Integer.class)),
             @Parameter(name = "name", description = "NAME", required = true, schema = @Schema(implementation = String.class)),
-            @Parameter(name = "name", description = "DESCRIPTION", schema = @Schema(implementation = String.class))
+            @Parameter(name = "description", description = "DESCRIPTION", schema = @Schema(implementation = String.class))
     })
     @PostMapping(value = "/duplicate")
     @ResponseStatus(HttpStatus.OK)
@@ -159,4 +165,79 @@ public class CircuitController extends BaseController {
         Map<String, Object> result = circuitService.duplicate(id, name, description);
         return returnDataList(result);
     }
+
+    @Operation(summary = "export", description = "DOWNLOAD_RESOURCE_FILE_NOTES")
+    @Parameters({
+            @Parameter(name = "id", description = "ID", required = true, schema = @Schema(implementation = Integer.class, example = "1"))
+    })
+    @GetMapping(value = "/export")
+    @ResponseBody
+    @ApiException(DOWNLOAD_RESOURCE_FILE_ERROR)
+    public ResponseEntity exportCircuit(@RequestParam(value = "id") Integer id) {
+        Map<String, Object> result = circuitService.get(id);
+        Circuit circuit = (Circuit) result.get("data");
+        String name = circuit.getName();
+        String json = circuit.getJson();
+        byte[] logBytes = json.getBytes();
+        return ResponseEntity
+                .ok()
+                .header(HttpHeaders.CONTENT_DISPOSITION,
+                        "attachment; filename=\"" + name + ".json" + "\"")
+                .body(logBytes);
+    }
+
+    @Operation(summary = "batchExport", description = "DOWNLOAD_RESOURCE_FILE_NOTES")
+    @Parameters({
+            @Parameter(name = "id", description = "ID", required = true, schema = @Schema(implementation = List.class, example = "[1, 2]"))
+    })
+    @GetMapping(value = "/batchExport", produces="application/zip")
+    @ResponseBody
+    @ApiException(DOWNLOAD_RESOURCE_FILE_ERROR)
+    public ResponseEntity exportCircuit(@RequestParam(value = "id") List<Integer> id) throws IOException {
+        ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
+        BufferedOutputStream bufferedOutputStream = new BufferedOutputStream(byteArrayOutputStream);
+        ZipOutputStream zipOutputStream = new ZipOutputStream(bufferedOutputStream);
+
+        for (Integer circuitId : id) {
+            Map<String, Object> result = circuitService.get(circuitId);
+            Circuit circuit = (Circuit) result.get("data");
+            String name = circuit.getName();
+            String json = circuit.getJson();
+            byte[] logBytes = json.getBytes();
+
+            zipOutputStream.putNextEntry(new ZipEntry(name));
+            zipOutputStream.write(logBytes);
+            zipOutputStream.closeEntry();
+        }
+
+        zipOutputStream.finish();
+        zipOutputStream.flush();
+
+        IOUtils.closeQuietly(zipOutputStream);
+        IOUtils.closeQuietly(bufferedOutputStream);
+        IOUtils.closeQuietly(byteArrayOutputStream);
+
+        return ResponseEntity
+                .ok()
+                .header(HttpHeaders.CONTENT_DISPOSITION,
+                        "attachment; filename=\"batch.zip\"")
+                .body(byteArrayOutputStream.toByteArray());
+    }
+
+//    @Operation(summary = "import", description = "UPLOAD_RESOURCE_FILE_NOTES")
+//    @Parameters({
+//            @Parameter(name = "id", description = "ID", required = true, schema = @Schema(implementation = Integer.class, example = "1")),
+//            @Parameter(name = "file", description = "FILE", required = true, schema = @Schema(implementation = MultipartFile.class))
+//    })
+//    @PostMapping(value = "/import")
+//    @ResponseStatus(HttpStatus.OK)
+//    @ApiException(UPDATE_USER_ERROR)
+//    public Result importCircuit(@RequestParam(value = "id") Integer id,
+//                                @RequestParam(value = "file") MultipartFile file) throws Exception {
+//        String json = new String(file.getBytes());
+//        CircuitUpdateRequest circuitUpdateRequest = new CircuitUpdateRequest();
+//        circuitUpdateRequest.setJson(json);
+//        Map<String, Object> result = circuitService.update(id, circuitUpdateRequest);
+//        return returnDataList(result);
+//    }
 }

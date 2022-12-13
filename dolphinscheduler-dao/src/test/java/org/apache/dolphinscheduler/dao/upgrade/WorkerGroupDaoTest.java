@@ -32,7 +32,7 @@ import org.springframework.test.context.ActiveProfiles;
 @ActiveProfiles("h2")
 @SpringBootTest(classes = DaoConfiguration.class)
 @ExtendWith(MockitoExtension.class)
-(scanBasePackageClasses = DaoConfiguration.class)
+@SpringBootApplication(scanBasePackageClasses = DaoConfiguration.class)
 public class WorkerGroupDaoTest {
 
     @Autowired
