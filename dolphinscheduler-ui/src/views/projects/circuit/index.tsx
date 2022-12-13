@@ -22,6 +22,7 @@ import {
   NIcon,
   NInput,
   NPagination,
+  NPopconfirm,
   NSpace
 } from 'naive-ui'
 import {
@@ -37,7 +38,7 @@ import { useRoute } from 'vue-router'
 import { useTable } from './use-table'
 import Card from '@/components/card'
 import ProjectModal from './components/project-modal'
-import { massActiondeleteCircuit } from '@/service/modules/circuits'
+import { massActionDeleteCircuit, massActionExportCircuit } from '@/service/modules/circuits'
 
 const list = defineComponent({
   name: 'list',
@@ -70,7 +71,7 @@ const list = defineComponent({
 
     const handleMassActionDelete = () => {
       const query = variables.massActionElement.join(',');
-      massActiondeleteCircuit(query).then(() => {
+      massActionDeleteCircuit(query).then(() => {
         getTableData({
           pageSize: variables.pageSize,
           pageNo:
@@ -80,6 +81,11 @@ const list = defineComponent({
           searchVal: variables.searchVal
         }, null)
       })
+    }
+
+    const handleMassActionExport = () => {
+      const query = variables.massActionElement.join(',');
+      massActionExportCircuit(query)
     }
 
     const requestData = () => {
@@ -139,7 +145,8 @@ const list = defineComponent({
       handleSorterChange,
       handleRowKeyChange,
       rowKey: (row: any) => row.id,
-      handleMassActionDelete
+      handleMassActionDelete,
+      handleMassActionExport
     }
   },
   render() {
@@ -172,14 +179,22 @@ const list = defineComponent({
           </NSpace>
         </Card>
         <Card title={t('circuit.list.title')}>
-          {this.isShowMassAction && <NSpace>
-            <NButton size='small' type='error' style={{ marginBottom: '12px' }} onClick={this.handleMassActionDelete}>
-              Delete
-            </NButton>
-            <NButton size='small' type='warning' style={{ marginBottom: '12px' }}>
-              Export
-            </NButton>
-          </NSpace>}
+          {this.isShowMassAction &&
+            <NSpace>
+              <NPopconfirm onPositiveClick={this.handleMassActionDelete}>
+                {{
+                  default: () => t('project.list.delete_confirm'),
+                  trigger: () => (
+                    <NButton size='small' type='error' style={{ marginBottom: '12px' }}>
+                      {t('circuit.list.delete_circuit')}
+                    </NButton>
+                  )
+                }}
+              </NPopconfirm>
+              <NButton size='small' type='warning' style={{ marginBottom: '12px' }} onClick={this.handleMassActionExport}>
+                {t('circuit.list.export_circuit')}
+              </NButton>
+            </NSpace>}
           <NSpace vertical>
             <NDataTable
               loading={loadingRef}

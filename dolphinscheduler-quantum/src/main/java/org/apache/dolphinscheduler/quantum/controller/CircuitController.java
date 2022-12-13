@@ -168,7 +168,7 @@ public class CircuitController extends BaseController {
 
     @Operation(summary = "export", description = "DOWNLOAD_RESOURCE_FILE_NOTES")
     @Parameters({
-            @Parameter(name = "id", description = "ID", required = true, schema = @Schema(implementation = Integer.class, example = "1"))
+            @Parameter(name = "id", description = "CIRCUIT_ID", required = true, schema = @Schema(implementation = Integer.class, example = "1"))
     })
     @GetMapping(value = "/export")
     @ResponseBody

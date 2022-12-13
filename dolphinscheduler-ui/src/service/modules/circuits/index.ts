@@ -48,7 +48,7 @@ export function createCircuit(data: CircuitReq): any {
 
 export function updateCircuit(data: CircuitReq, id: number): any {
   return axiosQuantum({
-    url: `/circuit/update/?id=${id}`,
+    url: `/circuit/update?id=${id}`,
     headers: {
       'Content-Type': 'application/json',
       'accept': '*/*'
@@ -60,7 +60,7 @@ export function updateCircuit(data: CircuitReq, id: number): any {
 
 export function deleteCircuit(id: number): any {
   return axiosQuantum({
-    url: `/circuit/delete/?id=${id}`,
+    url: `/circuit/delete?id=${id}`,
     method: 'delete'
   })
 }
@@ -68,17 +68,27 @@ export function deleteCircuit(id: number): any {
 export function exportCircuit(id: number): any {
   return axiosQuantum({
     url: `/circuit/batchExport?id=${id}`,
-    method: 'get',
     headers: {
       'accept': 'application/zip'
     },
+    method: 'get',
   })
 }
 
-export function massActiondeleteCircuit(ids: string): any {
+export function massActionDeleteCircuit(ids: string): any {
   return axiosQuantum({
-    url: `/circuit/delete/?id=${ids}`,
+    url: `/circuit/delete?id=${ids}`,
     method: 'delete'
+  })
+}
+
+export function massActionExportCircuit(ids: string): any {
+  return axiosQuantum({
+    url: `/circuit/batchExport?id=${ids}`,
+    headers: {
+      'accept': 'application/zip'
+    },
+    method: 'get'
   })
 }
 

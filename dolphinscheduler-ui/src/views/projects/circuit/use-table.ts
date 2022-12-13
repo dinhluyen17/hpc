@@ -215,20 +215,28 @@ export function useTable() {
                 }
               ),
               h(
-                NButton,
+                NTooltip,
+                {},
                 {
-                  circle: true,
-                  type: 'success',
-                  size: 'small',
-                  onClick: () => {
-                    handleExportCircuit(row)
-                  }
-                },
-                {
-                  icon: () =>
-                    h(NIcon, null, {
-                      default: () => h(ExportOutlined)
-                    })
+                  trigger: () =>
+                    h(
+                      NButton,
+                      {
+                        circle: true,
+                        type: 'success',
+                        size: 'small',
+                        onClick: () => {
+                          handleExportCircuit(row)
+                        }
+                      },
+                      {
+                        icon: () =>
+                          h(NIcon, null, {
+                            default: () => h(ExportOutlined)
+                          })
+                      }
+                    ),
+                  default: () => t('circuit.list.export_circuit')
                 }
               )
             ]
