@@ -28,6 +28,7 @@ interface ListReq {
 }
 
 interface CircuitReq {
+  id: number | null
   name: string
   description: string
   json: string

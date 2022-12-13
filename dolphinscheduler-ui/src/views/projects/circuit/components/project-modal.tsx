@@ -67,6 +67,7 @@ const ProjectModal = defineComponent({
         variables.model.qasm = ''
         variables.model.qiskit = ''
       } else {
+        variables.model.id = props.row.id
         variables.model.name = props.row.name
         variables.model.description = props.row.description
         variables.model.json = props.row.json
@@ -94,6 +95,7 @@ const ProjectModal = defineComponent({
           variables.model.qiskit = ''
           variables.model.projectCode = parseInt(projectCode)
         } else {
+          variables.model.id = props.row.id
           variables.model.name = props.row.name
           variables.model.description = props.row.description
           variables.model.json = props.row.json
@@ -107,6 +109,7 @@ const ProjectModal = defineComponent({
     watch(
       () => props.row,
       () => {
+        variables.model.id = props.row.id
         variables.model.name = props.row.name
         variables.model.description = props.row.description
         variables.model.json = props.row.json
@@ -150,35 +153,6 @@ const ProjectModal = defineComponent({
               v-model={[this.model.description, 'value']}
               type='textarea'
               placeholder={t('circuit.circuit_description_tips')}
-            />
-          </NFormItem>
-          <NFormItem label={t('circuit.json')} path='json'>
-            <NInput
-              allowInput={this.trim}
-              v-model={[this.model.json, 'value']}
-              placeholder={t('circuit.circuit_json_tips')}
-            />
-          </NFormItem>
-          <NFormItem label={t('circuit.qasm')} path='qasm'>
-            <NInput
-              allowInput={this.trim}
-              v-model={[this.model.qasm, 'value']}
-              placeholder={t('circuit.circuit_qasm_tips')}
-            />
-          </NFormItem>
-          <NFormItem label={t('circuit.qiskit')} path='qiskit'>
-            <NInput
-              allowInput={this.trim}
-              v-model={[this.model.qiskit, 'value']}
-              placeholder={t('circuit.circuit_qiskit_tips')}
-            />
-          </NFormItem>
-          <NFormItem label={t('circuit.project_code')} path='projectCode'>
-            <NInput
-              allowInput={this.trim}
-              v-model={[this.model.projectCode, 'value']}
-              disabled={true}
-              placeholder={t('circuit.circuit_project_code_tips')}
             />
           </NFormItem>
         </NForm>

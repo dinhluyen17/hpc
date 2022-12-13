@@ -46,12 +46,15 @@ export function createCircuit(data: CircuitReq): any {
   })
 }
 
-
-export function updateCircuit(data: CircuitReq, code: number): any {
+export function updateCircuit(data: CircuitReq, id: number): any {
   return axiosQuantum({
-    url: `/circuit/${code}`,
-    method: 'put',
-    data
+    url: `/circuit/update/?id=${id}`,
+    headers: {
+      'Content-Type': 'application/json',
+      'accept': '*/*'
+    },
+    method: 'patch',
+    data: JSON.stringify(data)
   })
 }
 

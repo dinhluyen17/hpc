@@ -37,6 +37,7 @@ export function useForm(
 
   const resetForm = () => {
     variables.model = {
+      id: null,
       name: '',
       description: '',
       json: '',
@@ -49,6 +50,7 @@ export function useForm(
   const variables = reactive({
     circuitFormRef: ref(),
     model: {
+      id: null,
       name: '',
       description: '',
       json: '',
@@ -84,8 +86,6 @@ export function useForm(
     if (variables.saving) return
     variables.saving = true
     try {
-      console.log(variables.model);
-
       await createCircuit(variables.model)
       variables.saving = false
       resetForm()
@@ -99,7 +99,8 @@ export function useForm(
     if (variables.saving) return
     variables.saving = true
     try {
-      await updateCircuit(variables.model, props.row.code)
+      console.log(variables.model);
+      await updateCircuit(variables.model, props.row.id)
       variables.saving = false
       resetForm()
       ctx.emit('confirmModal', props.showModalRef)
