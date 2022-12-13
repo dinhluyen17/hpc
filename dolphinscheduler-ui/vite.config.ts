@@ -44,6 +44,13 @@ export default defineConfig({
   },
   server: {
     proxy: {
+      '/dolphinscheduler-quantum': {
+        target: 'http://localhost:12346',
+        changeOrigin: true,
+        secure: false,
+        ws: true,
+        rewrite: (path) => path.replace('-quantum', '')
+      },
       '/dolphinscheduler': {
         target: loadEnv('development', './').VITE_APP_DEV_WEB_URL,
         changeOrigin: true

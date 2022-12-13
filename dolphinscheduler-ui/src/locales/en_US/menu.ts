@@ -23,6 +23,7 @@ export default {
   monitor: 'Monitor',
   security: 'Security',
   project_overview: 'Project Overview',
+  project_circuit: 'Circuit',
   workflow_relation: 'Workflow Relation',
   workflow: 'Workflow',
   workflow_definition: 'Workflow Definition',

@@ -3,3 +3,9 @@
 /logs
 **/node_modules/**
 /quantum-composer/out/quirk.html
+.idea
+.mvn
+logs
+gc.log
+target
+testFile.txt

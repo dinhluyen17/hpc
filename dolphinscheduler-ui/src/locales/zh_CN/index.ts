@@ -26,6 +26,7 @@ import monitor from '@/locales/zh_CN/monitor'
 import password from '@/locales/zh_CN/password'
 import profile from '@/locales/zh_CN/profile'
 import project from '@/locales/zh_CN/project'
+import circuit from '@/locales/zh_CN/circuit'
 import resource from '@/locales/zh_CN/resource'
 import security from '@/locales/zh_CN/security'
 import theme from '@/locales/zh_CN/theme'
@@ -44,6 +45,7 @@ export default {
   monitor,
   resource,
   project,
+  circuit,
   security,
   datasource,
   data_quality,

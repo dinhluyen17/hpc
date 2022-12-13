@@ -403,13 +403,13 @@ public class PythonGateway {
      * Grant or create project. Create a new project if project do not exists, and grant the project permission to user
      * if project exists but without permission to this user.
      */
-    public void createOrGrantProject(String userName, String name, String desc) {
+    public void createOrGrantProject(String userName, String name, String desc, Integer type) {
         User user = usersService.queryUser(userName);
 
         Project project;
         project = projectMapper.queryByName(name);
         if (project == null) {
-            projectService.createProject(user, name, desc);
+            projectService.createProject(user, name, desc, type);
         } else if (project.getUserId() != user.getId()) {
             ProjectUser projectUser = projectUserMapper.queryProjectRelation(project.getId(), user.getId());
             if (projectUser == null) {

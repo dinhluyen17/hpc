@@ -24,6 +24,7 @@ import { parseTime } from '@/common/common'
 import { deleteProject } from '@/service/modules/projects'
 import { format } from 'date-fns'
 import { useRouter } from 'vue-router'
+import { DEFAULT_PROJECT, QUANTUM_PROJECT } from './constans/project-types'
 import {
   NButton,
   NEllipsis,
@@ -77,12 +78,16 @@ export function useTable() {
         key: 'name',
         className: 'project-name',
         ...COLUMN_WIDTH_CONFIG['linkName'],
-        render: (row: { code: string; name: any }) =>
+        render: (row: { code: string; name: any; type: any }) =>
           h(
             ButtonLink,
             {
               onClick: () => {
-                router.push({ path: `/projects/${row.code}` })
+                if (row.type === 0 || row.type === null) {
+                  router.push({ path: `/projects/${row.code}` })
+                } else {
+                  router.push({ path: `/projects/${row.type}/${row.code}` })
+                }
               }
             },
             {
@@ -94,6 +99,12 @@ export function useTable() {
                 )
             }
           )
+      },
+      {
+        title: t('project.list.project_type'),
+        key: 'type',
+        render: (row: { type: any }) => row.type === 0 || row.type === null ? DEFAULT_PROJECT : QUANTUM_PROJECT,
+        ...COLUMN_WIDTH_CONFIG['type'],
       },
       {
         title: t('project.list.owned_users'),
