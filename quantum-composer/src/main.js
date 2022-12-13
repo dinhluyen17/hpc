@@ -239,6 +239,7 @@ canvasDiv.addEventListener('click', ev => {
         return;
     }
     if (viewState.getInstance().canShowGateMenu && viewState.getInstance().highlightGate != null) {
+        viewState.getInstance().gateMenuPos = viewState.getInstance().highlightGate;
         const gateRect = viewState.getInstance().highlightGate.gateRect;
         const element = document.getElementById('gate-menu-popup');
         element.style.display = 'block';

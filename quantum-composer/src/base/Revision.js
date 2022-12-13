@@ -48,6 +48,45 @@ class Revision {
         this._latestActiveCommit = new ObservableValue(this.history[this.index]);
     }
 
+    getLatestCommit() {
+        return this.history[this.index];
+    }
+    getGateSymbol(row, col) {
+        const jsonStr = this.getLatestCommit();
+        const json = JSON.parse(jsonStr);
+        if (json && json.cols) {
+            const cols = json.cols;
+            const colGates = cols[col];
+            return colGates[row];            
+        }
+        return '';
+    }
+    deleteGate(row, col) {
+        const jsonStr = this.getLatestCommit();
+        const json = JSON.parse(jsonStr);
+        if (json && json.cols) {
+            const cols = json.cols;
+            const colGates = cols[col];
+            if (row == colGates.length - 1) {
+                colGates.splice(-1);
+            }
+            else {
+                colGates[row] = 1;
+            }
+
+            this.commit(JSON.stringify({
+                cols: cols.filter(item => {
+                    let emptyCol = true;
+                    item.forEach(element => {
+                        if (typeof element == "string") {
+                            emptyCol = false;
+                        }
+                    });
+                    return !emptyCol;
+                })
+            }));
+        }
+    }
     /**
      * @returns {!Observable.<*>}
      */
