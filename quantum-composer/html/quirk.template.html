@@ -4,7 +4,6 @@
   <meta charset="UTF-8">
   <title>Quantum Composer</title>
   <link rel="stylesheet" href="./styles.css">
-
 </head>
 
 <body>
@@ -95,26 +94,13 @@
   <div id="noscript-div" class="noscript-warning">
     You appear to have JavaScript blocked. And Quirk is made out of JavaScript... :(
   </div>
-  <style>
-    .tooltip {
-      background: #b0c4de;
-      border: 0;
-      border-radius: 8px;
-      height: 40px;
-      padding: 12px;
-      pointer-events: none;
-      position: absolute;
-      text-align: center;
-      width: 150px;
-    }
-  </style>
-  <script src='https://d3js.org/d3.v4.min.js'></script>
+  <script src='./dist/d3.min.js'></script>
   <script>
     document.D3_FUNCTION = {
       init: (barData) => {
         let margin = {top: 30, right: 30, bottom: 70, left: 60},
                 width = 460 - margin.left - margin.right,
-                height = 400 - margin.top - margin.bottom;
+                height = 190 - margin.top - margin.bottom;
         let svg = d3.select("#stateBarChart")
                 .append("svg")
                 .attr("width", width + margin.left + margin.right)
@@ -152,12 +138,12 @@
                 .text("Probability(%)")
       }
       ,
-      test: (barData) => {
+      bar: (barData) => {
         let margin = {top: 30, right: 30, bottom: 70, left: 60},
-                width = 1500,
-                height = 400;
+                width = (barData.length * 15) - margin.left - margin.right,
+                height = 190 - margin.top - margin.bottom;
         let svg = d3.select("#stateBarChart");
-        svg.exit().remove();
+        svg.selectAll("*").remove();
         svg = d3.select("#stateBarChart")
                 .append("svg")
                 .attr("width", width + margin.left + margin.right)
@@ -177,7 +163,7 @@
         svg.append("text")
                 .attr("class","x label")
                 .attr("text-anchor","end")
-                .attr("dy", "2.5rem")
+                .attr("dy", 2.5 + (Math.sqrt(barData.length)/10 - .45) +"rem")
                 .attr("x", width)
                 .attr("y", height)
                 .text("Computational basis states")
@@ -194,7 +180,7 @@
                 .attr("transform","rotate(-90)")
                 .text("Probability(%)")
         const tooltip = d3.select("#stateBarChart").append("div")
-                .attr("class","tooltip")
+                .attr("class","barTooltip")
                 .style("opacity", 0)
         svg.selectAll("mybar")
                 .data(barData)
@@ -209,7 +195,7 @@
                   tooltip.transition().duration(200).style("opacity",.9);
                   tooltip.html(`State: <span>${d.State}</span><br>Probability: <span>${d.Probability}% </span>`)
                           .style('left', `${d3.event.layerX}px`)
-                          .style('top', `${(d3.event.layerY - 28)}px`);
+                          .style('top', `${d3.event.layerY}px`);
                 })
                 .on("mouseout",()=>tooltip.transition().duration(500).style("opacity",0))
         svg.selectAll("rect")
@@ -251,8 +237,41 @@
     }
 
     function handleSearch() {
-      let search = document.getElementById("gate-area-header-search").textContent;
-      console.log("search ", search);
+      let search = document.getElementById("gate-area-header-search").value.toLowerCase();
+      console.log("search: ", search);
+
+      const listGates = document.querySelectorAll('.list-view')
+      const gridGates = document.querySelectorAll('.grid-view')
+      if(search != null && search != '' && search != undefined) {
+        listGates.forEach(item => {
+          const matchList = item.querySelector("span")
+          console.log("matchllist <<<<<<", matchList);
+          console.log("demoooo >>>>>", matchList.innerText);
+          if(!matchList.innerText.trim().toLowerCase().includes(search)) {
+            item.style.display = "none"
+          } else {
+            item.style.display = "block"
+          }
+        })
+
+        gridGates.forEach(item => {
+          const gridMatchList = item.querySelector("div span")
+          if(!gridMatchList.innerText.trim().toLowerCase().includes(search)) {
+            item.style.display = "none"
+          } else {
+            item.style.display = "block"
+          }
+        })        
+      }
+      else {
+        listGates.forEach(item => {
+          item.style.display = "block"
+        })
+        gridGates.forEach(item => {
+          item.style.display = "block"
+        }) 
+      }
+
     }
 
     function handleClear() {
