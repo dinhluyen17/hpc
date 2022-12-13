@@ -143,13 +143,12 @@ revision.latestActiveCommit().subscribe(jsonText => {
     let circuitDef = fromJsonText_CircuitDefinition(jsonText);
     let newInspector = displayed.get().withCircuitDefinition(circuitDef);
     displayed.set(newInspector);
-    if (barDataFilterSwitch == false){
-        document.D3_FUNCTION.bar(stateBarCalc());
-    } else {
-        let barDataFilter = stateBarCalc().filter(val => !val.Probability.includes('0.0000'));
-        document.D3_FUNCTION.bar(barDataFilter);
-    }
-
+        if (barDataFilterSwitch == false) {
+            document.D3_FUNCTION.bar(stateBarCalc());
+        } else {
+            let barDataFilter = stateBarCalc().filter(val => !val.Probability.includes('0.0000'));
+            document.D3_FUNCTION.bar(barDataFilter);
+        }
 });
 /**
  * @param {!DisplayedInspector} curInspector
