@@ -14,6 +14,8 @@
  * limitations under the License.
  */
 
+import { viewState } from "./viewState.js";
+
 /**
  * @param {!Revision} revision
  * @param {!Observable.<boolean>} obsIsAnyOverlayShowing
@@ -36,8 +38,29 @@ function initUndoRedo(revision, obsIsAnyOverlayShowing) {
 
     undoButton.addEventListener('click', () => revision.undo());
     redoButton.addEventListener('click', () => revision.redo());
-    clearButton.addEventListener('click', () => revision.clear('{"cols":[]}'));
-    
+    clearButton.addEventListener('click', () => {
+        revision.commit('{"cols":[]}')
+    });
+
+    const deleteGateBtn = document.getElementById('gate-menu-popup-delete-btn');
+    const copyGateBtn = document.getElementById('gate-menu-popup-copy-btn');
+    const pasteGateBtn = document.getElementById('gate-menu-popup-paste-btn');
+
+    deleteGateBtn.addEventListener('click', () => {
+        const {row, col} = viewState.getInstance().gateMenuPos;
+        revision.deleteGate(row, col);
+    });
+    copyGateBtn.addEventListener('click', () => {
+        const {row, col} = viewState.getInstance().gateMenuPos;
+        const symbol = revision.getGateSymbol(row, col);
+        viewState.getInstance().currentCopyGateSymbol = symbol;
+    });
+    pasteGateBtn.addEventListener('click', () => {
+        const {row, col} = viewState.getInstance().gateMenuPos;
+        const symbol = viewState.getInstance().currentCopyGateSymbol;
+        //viewState.getInstance().pasteGate(symbol, row, col);
+    });
+
     // document.addEventListener("keydown", e => {
     //     // Don't capture keystrokes while menus are showing.
     //     for (let div of overlay_divs) {

@@ -76,6 +76,7 @@
           <button id="circuit-area-chart-close-btn">X</button>
           <button id="stateBarChartFilterZero">Hide zero states</button>
           <div id="stateBarChart"></div>
+          <div id="stateVectorChart"></div>
         </div>
       </div>
       <div class="code-area">
@@ -83,11 +84,11 @@
       </div>
     </div>
     <div id="gate-menu-popup" style="z-index: 888;">
-      <button class="gate-menu-popup-btn">Info</button>
-      <button class="gate-menu-popup-btn">Cut</button>
-      <button class="gate-menu-popup-btn">Copy</button>
-      <button class="gate-menu-popup-btn">Paste</button>
-      <button class="gate-menu-popup-btn">Delete</button>
+      <button class="gate-menu-popup-btn" id="gate-menu-popup-info-btn">Info</button>
+      <button class="gate-menu-popup-btn" id="gate-menu-popup-cut-btn">Cut</button>
+      <button class="gate-menu-popup-btn" id="gate-menu-popup-copy-btn">Copy</button>
+      <button class="gate-menu-popup-btn" id="gate-menu-popup-paste-btn">Paste</button>
+      <button class="gate-menu-popup-btn" id="gate-menu-popup-delete-btn">Delete</button>
     </div>
   </div>
 
@@ -143,8 +144,9 @@
                 .attr("y", height)
                 .text("Computational basis states")
         let y = d3.scaleLinear()
-                .domain([0,100])
+                // .domain([0,100])
                 .range([height, 0])
+                .domain([0, d3.max(barData, function (d){ return Math.ceil(d.Probability)})])
         svg.append("g")
                 .call(d3.axisLeft(y));
         svg.append("text")
@@ -157,10 +159,14 @@
         const tooltip = d3.select("#stateBarChart").append("div")
                 .attr("class","barTooltip")
                 .style("opacity", 0)
-        svg.selectAll("mybar")
+        let g = svg.selectAll("mybar")
                 .data(barData)
                 .enter()
-                .append("rect")
+        // svg.selectAll("mybar")
+        //         .data(barData)
+        //         .enter()
+        g.append("rect")
+                .attr("class","bar1")
                 .attr("x", function (d) {return x(d.State);})
                 .attr("y", function (d) {return y(d.Probability);})
                 .attr("width", x.bandwidth())
@@ -173,12 +179,20 @@
                           .style('top', `${d3.event.layerY}px`);
                 })
                 .on("mouseout",()=>tooltip.transition().duration(500).style("opacity",0))
-        svg.selectAll("rect")
-                .transition()
-                .duration(800)
-                .attr("y", function(d) { return y(d.Probability); })
-                .attr("height", function(d) { return height - y(d.Probability); })
-                .delay(function(d,i){ return(i*100)})
+        g.append("rect")
+                .attr("class","bar2")
+                .attr("x", function (d) {return x(d.State)})
+                .attr("y", function (d) {return d.Probability > 50 ? 0 : d.Probability})
+                .attr("width", x.bandwidth())
+                .attr("height",  height)
+                .style("opacity", 0)
+                .on("mouseover",(d)=>{
+                  tooltip.transition().duration(200).style("opacity",.9);
+                  tooltip.html(`State: <span>${d.State}</span><br>Probability: <span>${d.Probability}% </span>`)
+                          .style('left', `${d3.event.layerX}px`)
+                          .style('top', `${d3.event.layerY}px`);
+                })
+                .on("mouseout",()=>tooltip.transition().duration(500).style("opacity",0))
       }
     }
   </script>
