@@ -25,7 +25,6 @@ import {
 import { NForm, NFormItem, NInput } from 'naive-ui'
 import { useForm } from './use-form'
 import Modal from '@/components/modal'
-import { useUserStore } from '@/store/user/user'
 import { useRoute } from 'vue-router'
 
 const props = {
@@ -50,13 +49,22 @@ const ProjectModal = defineComponent({
   setup(props, ctx) {
     const { variables, t, handleValidate } = useForm(props, ctx)
 
-    const userStore = useUserStore()
-
     const route = useRoute()
 
     let projectCode = ''
     if (typeof route.params.projectCode === 'string') {
       projectCode = route.params.projectCode
+    }
+
+    const setModalTitle = (type: number) => {
+      switch (type) {
+        case 0:
+          return t('circuit.create_circuit')
+        case 1:
+          return t('circuit.edit_circuit')
+        case 2:
+          return t('circuit.duplicate_circuit')
+      }
     }
 
     const cancelModal = () => {
@@ -66,8 +74,15 @@ const ProjectModal = defineComponent({
         variables.model.json = ''
         variables.model.qasm = ''
         variables.model.qiskit = ''
-      } else {
+      } else if (props.statusRef === 1) {
         variables.model.id = props.row.id
+        variables.model.name = props.row.name
+        variables.model.description = props.row.description
+        variables.model.json = props.row.json
+        variables.model.qasm = props.row.qasm
+        variables.model.qiskit = props.row.qiskit
+        variables.model.projectCode = parseInt(projectCode)
+      } else {
         variables.model.name = props.row.name
         variables.model.description = props.row.description
         variables.model.json = props.row.json
@@ -94,8 +109,15 @@ const ProjectModal = defineComponent({
           variables.model.qasm = ''
           variables.model.qiskit = ''
           variables.model.projectCode = parseInt(projectCode)
-        } else {
+        } else if (props.statusRef === 1) {
           variables.model.id = props.row.id
+          variables.model.name = props.row.name
+          variables.model.description = props.row.description
+          variables.model.json = props.row.json
+          variables.model.qasm = props.row.qasm
+          variables.model.qiskit = props.row.qiskit
+          variables.model.projectCode = props.row.projectCode
+        } else {
           variables.model.name = props.row.name
           variables.model.description = props.row.description
           variables.model.json = props.row.json
@@ -119,17 +141,13 @@ const ProjectModal = defineComponent({
       }
     )
 
-    return { ...toRefs(variables), t, cancelModal, confirmModal, trim }
+    return { ...toRefs(variables), t, cancelModal, confirmModal, setModalTitle, trim }
   },
   render() {
     const { t } = this
     return (
       <Modal
-        title={
-          this.statusRef === 0
-            ? t('circuit.create_circuit')
-            : t('circuit.edit_circuit')
-        }
+        title={this.setModalTitle(this.statusRef)}
         show={this.showModalRef}
         onConfirm={this.confirmModal}
         onCancel={this.cancelModal}

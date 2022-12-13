@@ -21,7 +21,6 @@ import { useAsyncState } from '@vueuse/core'
 import ButtonLink from '@/components/button-link'
 import { deleteCircuit, queryCircuitListPaging } from '@/service/modules/circuits'
 import { parseTime } from '@/common/common'
-import { deleteProject } from '@/service/modules/projects'
 import { format } from 'date-fns'
 import { useRouter } from 'vue-router'
 import {
@@ -39,7 +38,7 @@ import {
 } from '@/common/column-width-config'
 import type { Router } from 'vue-router'
 import type { CircuitList, CircuitRes } from '@/service/modules/circuits/types'
-import { DeleteOutlined, EditOutlined } from '@vicons/antd'
+import { DeleteOutlined, EditOutlined, CopyOutlined } from '@vicons/antd'
 
 export function useTable() {
   const { t } = useI18n()
@@ -48,6 +47,12 @@ export function useTable() {
   const handleEdit = (row: any) => {
     variables.showModalRef = true
     variables.statusRef = 1
+    variables.row = row
+  }
+
+  const handleDuplicate = (row: any) => {
+    variables.showModalRef = true
+    variables.statusRef = 2
     variables.row = row
   }
 
@@ -73,7 +78,7 @@ export function useTable() {
         ...COLUMN_WIDTH_CONFIG['index']
       },
       {
-        title: 'Circuit name',
+        title: t('circuit.list.circuit_name'),
         key: 'name',
         className: 'project-name',
         ...COLUMN_WIDTH_CONFIG['linkName'],
@@ -99,7 +104,7 @@ export function useTable() {
           )
       },
       {
-        title: t('project.list.description'),
+        title: t('circuit.list.circuit_description'),
         key: 'description',
         ...COLUMN_WIDTH_CONFIG['note']
       },
@@ -141,7 +146,7 @@ export function useTable() {
                           h(NIcon, null, { default: () => h(EditOutlined) })
                       }
                     ),
-                  default: () => t('project.list.edit')
+                  default: () => t('circuit.list.edit_circuit')
                 }
               ),
               h(
@@ -173,12 +178,36 @@ export function useTable() {
                                 })
                             }
                           ),
-                        default: () => t('project.list.delete')
+                        default: () => t('circuit.list.delete_circuit')
                       }
                     ),
                   default: () => t('project.list.delete_confirm')
                 }
-              )
+              ),
+              h(
+                NTooltip,
+                {},
+                {
+                  trigger: () =>
+                    h(
+                      NButton,
+                      {
+                        circle: true,
+                        type: 'warning',
+                        size: 'small',
+                        class: 'duplicate',
+                        onClick: () => {
+                          handleDuplicate(row)
+                        }
+                      },
+                      {
+                        icon: () =>
+                          h(NIcon, null, { default: () => h(CopyOutlined) })
+                      }
+                    ),
+                  default: () => t('circuit.list.duplicate_circuit')
+                }
+              ),
             ]
           })
         }

@@ -112,14 +112,14 @@ const list = defineComponent({
               type='primary'
               class='btn-create-project'
             >
-              {'Create circuit'}
+              {t('circuit.list.create_title')}
             </NButton>
             <NSpace>
               <NInput
                 allowInput={this.trim}
                 size='small'
                 v-model={[this.searchVal, 'value']}
-                placeholder={t('project.list.project_tips')}
+                placeholder={t('circuit.list.circuit_tips')}
                 clearable
               />
               <NButton size='small' type='primary' onClick={this.handleSearch}>
@@ -130,7 +130,7 @@ const list = defineComponent({
             </NSpace>
           </NSpace>
         </Card>
-        <Card title={'Circuit list'}>
+        <Card title={t('circuit.list.title')}>
           <NSpace vertical>
             <NDataTable
               loading={loadingRef}
