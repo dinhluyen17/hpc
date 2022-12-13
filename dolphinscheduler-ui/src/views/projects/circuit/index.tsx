@@ -28,6 +28,7 @@ import {
   defineComponent,
   getCurrentInstance,
   onMounted,
+  ref,
   toRefs,
   watch
 } from 'vue'
@@ -36,6 +37,7 @@ import { useRoute } from 'vue-router'
 import { useTable } from './use-table'
 import Card from '@/components/card'
 import ProjectModal from './components/project-modal'
+import { massActiondeleteCircuit } from '@/service/modules/circuits'
 
 const list = defineComponent({
   name: 'list',
@@ -43,6 +45,39 @@ const list = defineComponent({
     const { t } = useI18n()
     const route = useRoute()
     const { variables, getTableData, createColumns } = useTable()
+
+    const handleSorterChange = (sorter: any) => {
+      const type = sorter.order === 'ascend' ? 'asc' : 'desc'
+      const field = sorter.columnKey
+      getTableData({
+        pageSize: variables.pageSize,
+        pageNo: variables.page,
+        criteria: field,
+        direction: type,
+      }, route.params.projectCode)
+    }
+
+    const handleRowKeyChange = (rowKey: any) => {
+      variables.isShowMassAction = rowKey.length > 0 ? true : false
+      variables.massActionElement = rowKey;
+    }
+
+    const handleMassActionDelete = () => {
+      const query = variables.massActionElement.join(',');
+      variables.loadingRef = true
+      massActiondeleteCircuit(query).then(() => {
+        getTableData({
+          pageSize: variables.pageSize,
+          pageNo:
+            variables.tableData.length === 1 && variables.page > 1
+              ? variables.page - 1
+              : variables.page,
+          searchVal: variables.searchVal
+        }, null)
+      }).finally(() => {
+        variables.loadingRef = false
+      })
+    }
 
     const requestData = () => {
       getTableData({
@@ -97,7 +132,11 @@ const list = defineComponent({
       onCancelModal,
       onConfirmModal,
       handleChangePageSize,
-      trim
+      trim,
+      handleSorterChange,
+      handleRowKeyChange,
+      rowKey: (row: any) => row.id,
+      handleMassActionDelete
     }
   },
   render() {
@@ -130,6 +169,14 @@ const list = defineComponent({
           </NSpace>
         </Card>
         <Card title={t('circuit.list.title')}>
+          {this.isShowMassAction && <NSpace>
+            <NButton size='small' type='error' style={{ marginBottom: '12px' }} onClick={this.handleMassActionDelete}>
+              Delete
+            </NButton>
+            <NButton size='small' type='warning' style={{ marginBottom: '12px' }}>
+              Export
+            </NButton>
+          </NSpace>}
           <NSpace vertical>
             <NDataTable
               loading={loadingRef}
@@ -137,6 +184,9 @@ const list = defineComponent({
               data={this.tableData}
               scrollX={this.tableWidth}
               row-class-name='items'
+              on-update:sorter={this.handleSorterChange}
+              rowKey={this.rowKey}
+              on-update:checked-row-keys={this.handleRowKeyChange}
             />
             <NSpace justify='center'>
               <NPagination

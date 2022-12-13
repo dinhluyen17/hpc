@@ -72,6 +72,9 @@ export function useTable() {
   const createColumns = (variables: any) => {
     variables.columns = [
       {
+        type: 'selection'
+      },
+      {
         title: '#',
         key: 'index',
         render: (unused: any, index: number) => index + 1,
@@ -228,7 +231,9 @@ export function useTable() {
     showModalRef: ref(false),
     statusRef: ref(0),
     row: {},
-    loadingRef: ref(false)
+    loadingRef: ref(false),
+    isShowMassAction: ref(false),
+    massActionElement: []
   })
 
   const getTableData = (params: any, projectCode: string | string[] | null) => {

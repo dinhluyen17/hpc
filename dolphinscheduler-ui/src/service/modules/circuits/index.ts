@@ -64,3 +64,11 @@ export function deleteCircuit(id: number): any {
     method: 'delete'
   })
 }
+
+export function massActiondeleteCircuit(ids: string): any {
+  return axiosQuantum({
+    url: `/circuit/delete/?id=${ids}`,
+    method: 'delete'
+  })
+}
+
