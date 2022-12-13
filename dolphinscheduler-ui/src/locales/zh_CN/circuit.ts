@@ -37,6 +37,7 @@ export default {
     edit_circuit: 'Edit',
     delete_circuit: 'Delete',
     duplicate_circuit: 'Duplicate',
+    export_circuit: 'Export',
     circuit_name: 'Circuit Name',
     circuit_description: 'Circuit Description',
     circuit_tips: 'Please enter your circuit name'

@@ -64,7 +64,6 @@ const list = defineComponent({
 
     const handleMassActionDelete = () => {
       const query = variables.massActionElement.join(',');
-      variables.loadingRef = true
       massActiondeleteCircuit(query).then(() => {
         getTableData({
           pageSize: variables.pageSize,
@@ -74,8 +73,6 @@ const list = defineComponent({
               : variables.page,
           searchVal: variables.searchVal
         }, null)
-      }).finally(() => {
-        variables.loadingRef = false
       })
     }
 

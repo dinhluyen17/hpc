@@ -38,7 +38,7 @@ import {
 } from '@/common/column-width-config'
 import type { Router } from 'vue-router'
 import type { CircuitList, CircuitRes } from '@/service/modules/circuits/types'
-import { DeleteOutlined, EditOutlined, CopyOutlined } from '@vicons/antd'
+import { DeleteOutlined, EditOutlined, CopyOutlined, ExportOutlined } from '@vicons/antd'
 
 export function useTable() {
   const { t } = useI18n()
@@ -126,7 +126,7 @@ export function useTable() {
       {
         title: t('project.list.operation'),
         key: 'actions',
-        ...COLUMN_WIDTH_CONFIG['operation'](2),
+        ...COLUMN_WIDTH_CONFIG['operation'](4),
         render(row: any) {
           return h(NSpace, null, {
             default: () => [
@@ -210,6 +210,28 @@ export function useTable() {
                   default: () => t('circuit.list.duplicate_circuit')
                 }
               ),
+              h(
+                'a',
+                {
+                  href: 'https://google.com'
+                },
+                [
+                  h(
+                    NButton,
+                    {
+                      circle: true,
+                      type: 'success',
+                      size: 'small'
+                    },
+                    {
+                      icon: () =>
+                        h(NIcon, null, {
+                          default: () => h(ExportOutlined)
+                        })
+                    }
+                  ),
+                ]
+              )
             ]
           })
         }
