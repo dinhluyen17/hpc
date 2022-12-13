@@ -37,6 +37,10 @@ const updateSizeViews = (parentDiv) => {
     2 * SIZE_INFO.VERTICAL_SPACING
   ) + 'px';
 
+  const circuitChart = document.getElementById('stateBarChart');
+  circuitChart.style.width = circuitBody.style.width;
+  circuitChart.style.maxHeight = getChartAreaHeight() + 'px';
+  
   const commonGates = document.getElementById('common-gates');
   const advancedGates = document.getElementById('advanced-gates');
   const commonGatesGrid = document.getElementById('common-gates-grid');

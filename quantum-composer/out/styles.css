@@ -21,44 +21,52 @@ body {
     display: flex;
     flex-direction: column;
     height: 100vh;
+    overflow: hidden;
 }
+
 /* App Header */
 .app .header {
     height: 60px;
     min-height: 60px;
     display: flex;
     flex-direction: row;
-    align-items: center;    
+    align-items: center;
 }
+
 .app .header .circuit-name {
     width: 300px;
     font-size: 20px;
     padding-left: 20px;
     font-weight: 500;
 }
+
 .app .header .tab {
     flex: 1;
     display: flex;
     flex-direction: row;
     padding-left: 50px;
-    justify-content: center;    
+    justify-content: center;
 }
+
 .app .header .tab .tab-child {
-    width: 200px;  
+    width: 200px;
     padding: 10px 10px;
     background-color: gray;
     color: black;
     text-align: center;
 }
+
 .app .header .tab .tab-child[data-state=active] {
     background-color: black;
     color: white;
 }
+
 .app .header .quick-menu {
     display: flex;
     flex-direction: row;
     padding: 0px 10px;
 }
+
 .app .header .quick-menu .quick-menu-btn {
     padding: 8px 15px;
     color: rgb(57, 57, 57);
@@ -94,23 +102,27 @@ body {
     padding: 5px 8px;
     box-sizing: border-box;
 }
+
 .gate-area-header-btn {
     padding: 5px 8px;
     color: rgb(57, 57, 57);
     border: 1px solid #373737;
     margin-left: 8px;
 }
+
 .gate-area-body {
     flex: 1;
     display: flex;
     flex-direction: column;
 }
+
 .gate-area-body-section-label {
     font-size: 16px;
     font-weight: 400;
     color: black;
     margin-left: 10px;
 }
+
 .gate-area-body-common-gates {
     margin: 10px 5px 10px 5px;
     border: 1px solid #373737;
@@ -128,6 +140,7 @@ body {
     display: flex;
     flex-direction: column;
 }
+
 .circuit-area-header {
     height: 50px;
     display: flex;
@@ -135,12 +148,14 @@ body {
     align-items: center;
     border: 1px solid #373737;
 }
+
 .circuit-area-header-btn {
     padding: 8px 15px;
     color: rgb(57, 57, 57);
     border: 1px solid #373737;
     margin-left: 8px;
 }
+
 .circuit-area-body {
     flex: 1;
     margin-top: 10px;
@@ -148,32 +163,39 @@ body {
     overflow-x: scroll;
     overflow-y: scroll;
 }
+
 .circuit-area-chart {
     position: relative;
     height: 200px;
     width: 100%;
     margin-top: 10px;
     border: 1px solid #373737;
+    display: flex;
+    flex-direction: column;
 }
+
 #circuit-area-chart-close-btn {
     position: absolute;
     top: 0px;
     right: 0px;
     width: 44px;
-    height: 44px;    
+    height: 44px;
 }
-.content .code-area {   
-    position: relative; 
+
+.content .code-area {
+    position: relative;
     width: 300px;
     border: 1px solid #373737;
 }
+
 #code-area-close-btn {
     position: absolute;
     top: 0px;
     left: 0px;
     width: 44px;
-    height: 44px;    
+    height: 44px;
 }
+
 #common-gates {
     overflow-y: scroll;
     display: flex;
@@ -201,11 +223,17 @@ body {
     z-index: 9;
 }
 
+#stateBarChart {
+    overflow-x: scroll;
+    overflow-y: hidden;
+}
+
 /* pop up gate name */
 .tooltip-wrap {
     position: relative;
-  }
-  .tooltip-wrap .tooltip-content {
+}
+
+.tooltip-wrap .tooltip-content {
     display: none;
     position: absolute;
     bottom: 5%;
@@ -214,17 +242,13 @@ body {
     padding: .5em;
     z-index: 1;
     line-height: 0.55;
-  }
+}
 
-  .tooltip-wrap:hover .tooltip-content {
+.tooltip-wrap:hover .tooltip-content {
     display: block;
     font-size: small;
-  }
-  
-#stateBarChart {
-    width: 1200px;
-    overflow: scroll;
 }
+
 .circuit-area-chart .barTooltip {
     background: #b0c4de;
     border: 0;
