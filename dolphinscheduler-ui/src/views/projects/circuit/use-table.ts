@@ -81,6 +81,7 @@ export function useTable() {
         title: t('circuit.list.circuit_name'),
         key: 'name',
         ...COLUMN_WIDTH_CONFIG['linkName'],
+        sorter: 'default',
         render: (row: { id: string; name: any }) =>
           h(
             ButtonLink,
@@ -110,12 +111,14 @@ export function useTable() {
       {
         title: t('project.list.create_time'),
         key: 'createTime',
-        ...COLUMN_WIDTH_CONFIG['time']
+        ...COLUMN_WIDTH_CONFIG['time'],
+        sorter: 'default'
       },
       {
         title: t('project.list.update_time'),
         key: 'updateTime',
-        ...COLUMN_WIDTH_CONFIG['time']
+        ...COLUMN_WIDTH_CONFIG['time'],
+        sorter: 'default'
       },
       {
         title: t('project.list.operation'),
