@@ -24,11 +24,41 @@ const initGateViews = () => {
   const commonGatesGrid = document.getElementById('common-gates-grid');
   const advancedGates = document.getElementById('advanced-gates');
   const advancedGatesGrid = document.getElementById('advanced-gates-grid');
+  //list all unsupported gates and temparory hide it on display
+  const unsupportedGates = [
+    "Postselect Off",
+    "Postselect On",
+    "Postselect X-Off",
+    "Postselect X-On",
+    "Postselect Y-Off",
+    "Postselect Y-On",
+    "Nothing Gate",
+    "Z Detect-Control-Reset",
+    "Y Detect-Control-Reset",
+    "X Detect-Control-Reset",
+    "Counting Gate",
+    "Down Counting Gate",
+    "Cycling Gradient Gate",
+    "Inverse Cycling Gradient Gate",
+    "Ne-Gate",
+    "Imaginary Gate",
+    "Anti-Imaginary Gate",
+    "Half Imaginary Gate",
+    "Half Anti-Imaginary Gate",
+    "X-Raising Gate (forward)",
+    "X-Raising Gate (backward)",
+    "Y-Raising Gate (forward)",
+    "Y-Raising Gate (backward)",
+    "Z-Raising Gate (forward)",
+    "Z-Raising Gate (backward)",
+  ]; 
+  //Gate group with 0 gate got supported by cirq or qiskit
+  const unsupportedGroupGate = "Spinning"
 
   //show top gate as normal list
   Gates.TopToolboxGroups.forEach((group) => {
     group.gates.forEach(gate => {
-      if (gate != undefined) {
+      if (gate != undefined && !unsupportedGates.includes(gate.name)) {
         const gateView = document.createElement('span');
         gateView.setAttribute("class", "list-view tooltip-wrap")
         gateView.innerHTML = `
@@ -49,6 +79,7 @@ const initGateViews = () => {
 
   //show top gate as grid list
   Gates.TopToolboxGroups.forEach((group) => {
+    if(group.hint === unsupportedGroupGate) {return}
     let gateGroup = document.createElement('div')
     let gateGroupName = document.createElement('h4')
     gateGroupName.innerText = group.hint
@@ -58,7 +89,7 @@ const initGateViews = () => {
     let gateGroupList = document.createElement('div')
     gateGroup.appendChild(gateGroupList)
     group.gates.forEach(gate => {
-      if (gate != undefined) {
+      if (gate != undefined && !unsupportedGates.includes(gate.name)) {
         const gateView = document.createElement('div');
         gateView.setAttribute("class", "grid-view")
         gateView.innerHTML = `
@@ -82,7 +113,7 @@ const initGateViews = () => {
   //show bottom gate as normal list
   Gates.BottomToolboxGroups.forEach((group) => {
     group.gates.forEach(gate => {
-      if (gate != undefined) {
+      if (gate != undefined && !unsupportedGates.includes(gate.name)) {
         const gateView = document.createElement('span');
         gateView.setAttribute("class", "list-view tooltip-wrap")
         gateView.innerHTML = `
@@ -112,7 +143,7 @@ const initGateViews = () => {
     let gateGroupList = document.createElement('div')
     gateGroup.appendChild(gateGroupList)
     group.gates.forEach(gate => {
-      if (gate != undefined) {
+      if (gate != undefined && !unsupportedGates.includes(gate.name)) {
         const gateView = document.createElement('div');
         gateView.setAttribute("class", "grid-view")
         gateView.innerHTML = `
