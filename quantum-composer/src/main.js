@@ -49,6 +49,7 @@ import {GateColumn} from "./circuit/GateColumn.js";
 import {Point} from "./math/Point.js";
 import {initGateViews} from "./ui/initGateViews.js";
 import {initSizeViews, updateSizeViews} from "./ui/updateSizeViews.js";
+import { viewState } from "./ui/viewState.js";
 
 initSerializer(
     GatePainting.LABEL_DRAWER,
@@ -231,23 +232,24 @@ displayed.observable().subscribe(() => redrawThrottle.trigger());
 /** @type {undefined|!string} */
 let clickDownGateButtonKey = undefined;
 canvasDiv.addEventListener('click', ev => {
-    // if (document.HIGHLIGHT_GATE) {
-    //     const gateRect = document.HIGHLIGHT_GATE.gateRect;
-    //     const element = document.getElementById('gateMenu');
-    //     element.style.display = 'block';
-    //     element.style.left = gateRect.x + "px";
-    //     element.style.top = (gateRect.y - 50) + "px";
-    // }
-    // else {
-    //     const element = document.getElementById('gateMenu');
-    //     element.style.display = 'none';
-    // }
     let pt = eventPosRelativeTo(ev, canvasDiv);
     let curInspector = displayed.get();
     if (curInspector.tryGetHandOverButtonKey() !== clickDownGateButtonKey) {
         return;
     }
+    if (viewState.getInstance().canShowGateMenu && viewState.getInstance().highlightGate != null) {
+        const gateRect = viewState.getInstance().highlightGate.gateRect;
+        const element = document.getElementById('gate-menu-popup');
+        element.style.display = 'block';
+        element.style.left = (gateRect.x - viewState.getInstance().canvasScrollX + viewState.getInstance().canvasBoundingRect.clientX) + "px";
+        element.style.top = (gateRect.y - viewState.getInstance().canvasScrollY + viewState.getInstance().canvasBoundingRect.clientY - 50) + "px";
+    }
+    else {
+        const element = document.getElementById('gate-menu-popup');
+        element.style.display = 'none';
+    }
     let clicked = syncArea(curInspector.withHand(curInspector.hand.withPos(pt))).tryClick();
+
     if (clicked !== undefined) {
         revision.commit(clicked.afterTidyingUp().snapshot());
     }
@@ -326,6 +328,8 @@ watchDrags(canvasDiv,
 // Middle-click to delete a gate.
 canvasDiv.addEventListener('mousedown', ev => {
     document.GRAB_GATE = undefined;
+    viewState.getInstance().highlightGate = null;
+    viewState.getInstance().canShowGateMenu = true;
     if (!isMiddleClicking(ev)) {
         return;
     }
@@ -353,15 +357,18 @@ canvasDiv.addEventListener('mousedown', ev => {
 
 // When mouse moves without dragging, track it (for showing hints and things).
 canvasDiv.addEventListener('mousemove', ev => {
+    viewState.getInstance().canShowGateMenu = false;
     if (!displayed.get().hand.isBusy()) {
         let newHand = displayed.get().hand.withPos(eventPosRelativeTo(ev, canvas));
         let newInspector = displayed.get().withHand(newHand);
         displayed.set(newInspector);
     }
+    
 });
 canvasDiv.addEventListener('mouseleave', () => {
     document.GRAB_GATE = undefined;
-    document.HIGHLIGHT_GATE = undefined;
+    viewState.getInstance().highlightGate = null;
+    viewState.getInstance().canShowGateMenu = true;
     if (!displayed.get().hand.isBusy()) {
         let newHand = displayed.get().hand.withPos(undefined);
         let newInspector = displayed.get().withHand(newHand);

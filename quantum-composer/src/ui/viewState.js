@@ -23,6 +23,9 @@ class ViewState {
     this.canvasScrollX = 0;
     this.canvasScrollY = 0;
 
+    this.highlightGate = null;
+    this.canShowGateMenu = true;
+    
     this.canvasBoundingRect = {
       clientX: 0,
       clientY: 0,
