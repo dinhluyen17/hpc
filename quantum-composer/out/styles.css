@@ -21,6 +21,7 @@ body {
     display: flex;
     flex-direction: column;
     height: 100vh;
+    overflow: hidden;
 }
 
 /* App Header */
@@ -224,7 +225,7 @@ body {
 
 #stateBarChart {
     overflow-x: scroll;
-    overflow-y: scroll;
+    overflow-y: hidden;
 }
 
 /* pop up gate name */
