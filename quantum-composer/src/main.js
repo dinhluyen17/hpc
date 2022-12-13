@@ -123,13 +123,34 @@ let stateBarCalc = () =>{
     })
     return data;
 }
+document.addEventListener("DOMContentLoaded", function (){
+    document.D3_FUNCTION.bar(stateBarCalc())
+})
+let barDataFilterSwitch = false;
+const stateBarChartFilter = document.getElementById("stateBarChartFilterZero");
+stateBarChartFilter.addEventListener('click',()=>{
+    barDataFilterSwitch = !barDataFilterSwitch;
+    if (barDataFilterSwitch == false){
+        stateBarChartFilter.style.color = "black";
+        document.D3_FUNCTION.bar(stateBarCalc());
+    } else {
+        stateBarChartFilter.style.color = "red";
+        let barDataFilter = stateBarCalc().filter(val => !val.Probability.includes('0.0000'));
+        document.D3_FUNCTION.bar(barDataFilter);
+    }
+})
 revision.latestActiveCommit().subscribe(jsonText => {
     let circuitDef = fromJsonText_CircuitDefinition(jsonText);
     let newInspector = displayed.get().withCircuitDefinition(circuitDef);
     displayed.set(newInspector);
-    document.D3_FUNCTION.bar(stateBarCalc());
-});
+    if (barDataFilterSwitch == false){
+        document.D3_FUNCTION.bar(stateBarCalc());
+    } else {
+        let barDataFilter = stateBarCalc().filter(val => !val.Probability.includes('0.0000'));
+        document.D3_FUNCTION.bar(barDataFilter);
+    }
 
+});
 /**
  * @param {!DisplayedInspector} curInspector
  * @returns {{w: number, h: !number}}
@@ -210,8 +231,6 @@ displayed.observable().subscribe(() => redrawThrottle.trigger());
 
 /** @type {undefined|!string} */
 let clickDownGateButtonKey = undefined;
-
-document.D3_FUNCTION.init(stateBarCalc());
 canvasDiv.addEventListener('click', ev => {
     // if (document.HIGHLIGHT_GATE) {
     //     const gateRect = document.HIGHLIGHT_GATE.gateRect;
@@ -224,7 +243,6 @@ canvasDiv.addEventListener('click', ev => {
     //     const element = document.getElementById('gateMenu');
     //     element.style.display = 'none';
     // }
-    //document.D3_FUNCTION.bar(stateBarCalc());
     let pt = eventPosRelativeTo(ev, canvasDiv);
     let curInspector = displayed.get();
     if (curInspector.tryGetHandOverButtonKey() !== clickDownGateButtonKey) {
@@ -235,7 +253,6 @@ canvasDiv.addEventListener('click', ev => {
         revision.commit(clicked.afterTidyingUp().snapshot());
     }
 });
-
 watchDrags(canvasDiv,
     /**
      * Grab
