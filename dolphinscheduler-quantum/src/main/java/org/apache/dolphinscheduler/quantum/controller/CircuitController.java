@@ -133,14 +133,14 @@ public class CircuitController extends BaseController {
 
     @Operation(summary = "delete", description = "DELETE_USER_BY_ID_NOTES")
     @Parameters({
-            @Parameter(name = "ids", description = "CIRCUIT_IDS", required = true, schema = @Schema(implementation = List.class, example = "[100]"))
+            @Parameter(name = "id", description = "CIRCUIT_ID", required = true, schema = @Schema(implementation = List.class, example = "[100]"))
     })
     @DeleteMapping(value = "/delete")
     @ResponseStatus(HttpStatus.OK)
     @ApiException(DELETE_USER_BY_ID_ERROR)
     @AccessLogAnnotation
-    public Result delete(@RequestParam(value = "ids") List<Integer> ids) throws Exception {
-        Map<String, Object> result = circuitService.delete(ids);
+    public Result delete(@RequestParam(value = "id") List<Integer> id) throws Exception {
+        Map<String, Object> result = circuitService.delete(id);
         return returnDataList(result);
     }
 

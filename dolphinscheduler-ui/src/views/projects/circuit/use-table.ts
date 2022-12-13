@@ -19,7 +19,7 @@ import { h, reactive, ref } from 'vue'
 import { useI18n } from 'vue-i18n'
 import { useAsyncState } from '@vueuse/core'
 import ButtonLink from '@/components/button-link'
-import { queryCircuitListPaging } from '@/service/modules/circuits'
+import { deleteCircuit, queryCircuitListPaging } from '@/service/modules/circuits'
 import { parseTime } from '@/common/common'
 import { deleteProject } from '@/service/modules/projects'
 import { format } from 'date-fns'
@@ -52,7 +52,7 @@ export function useTable() {
   }
 
   const handleDelete = (row: any) => {
-    deleteProject(row.id).then(() => {
+    deleteCircuit(row.id).then(() => {
       getTableData({
         pageSize: variables.pageSize,
         pageNo:

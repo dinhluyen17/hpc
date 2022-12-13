@@ -176,7 +176,7 @@ public class CircuitServiceImpl extends BaseServiceImpl implements CircuitServic
             }
         }
         successRes.put("sum", totalSuccess);
-        successRes.put("ids", successCircuits);
+        successRes.put("id", successCircuits);
         failedRes.put("sum", totalFailed);
         failedRes.put("info", failedInfo);
         Map<String, Object> res = new HashMap<>();
