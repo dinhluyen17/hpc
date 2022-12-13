@@ -48,7 +48,13 @@ const list = defineComponent({
 
     const handleSorterChange = (sorter: any) => {
       const type = sorter.order === 'ascend' ? 'asc' : 'desc'
-      const field = sorter.columnKey
+      var field = sorter.columnKey
+      if (field === 'createTime') {
+        field = 'create_time'
+      } else if (field === 'updateTime') {
+        field = 'update_time'
+      }
+
       getTableData({
         pageSize: variables.pageSize,
         pageNo: variables.page,

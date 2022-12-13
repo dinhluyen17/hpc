@@ -19,7 +19,7 @@ import { h, reactive, ref } from 'vue'
 import { useI18n } from 'vue-i18n'
 import { useAsyncState } from '@vueuse/core'
 import ButtonLink from '@/components/button-link'
-import { deleteCircuit, queryCircuitListPaging } from '@/service/modules/circuits'
+import { deleteCircuit, exportCircuit, queryCircuitListPaging } from '@/service/modules/circuits'
 import { parseTime } from '@/common/common'
 import { format } from 'date-fns'
 import { useRouter } from 'vue-router'
@@ -67,6 +67,10 @@ export function useTable() {
         searchVal: variables.searchVal
       }, null)
     })
+  }
+
+  const handleExportCircuit = (row: any) => {
+    exportCircuit(row.id)
   }
 
   const createColumns = (variables: any) => {
@@ -211,26 +215,21 @@ export function useTable() {
                 }
               ),
               h(
-                'a',
+                NButton,
                 {
-                  href: 'https://google.com'
+                  circle: true,
+                  type: 'success',
+                  size: 'small',
+                  onClick: () => {
+                    handleExportCircuit(row)
+                  }
                 },
-                [
-                  h(
-                    NButton,
-                    {
-                      circle: true,
-                      type: 'success',
-                      size: 'small'
-                    },
-                    {
-                      icon: () =>
-                        h(NIcon, null, {
-                          default: () => h(ExportOutlined)
-                        })
-                    }
-                  ),
-                ]
+                {
+                  icon: () =>
+                    h(NIcon, null, {
+                      default: () => h(ExportOutlined)
+                    })
+                }
               )
             ]
           })

@@ -65,6 +65,16 @@ export function deleteCircuit(id: number): any {
   })
 }
 
+export function exportCircuit(id: number): any {
+  return axiosQuantum({
+    url: `/circuit/batchExport?id=${id}`,
+    method: 'get',
+    headers: {
+      'accept': 'application/zip'
+    },
+  })
+}
+
 export function massActiondeleteCircuit(ids: string): any {
   return axiosQuantum({
     url: `/circuit/delete/?id=${ids}`,
