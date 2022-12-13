@@ -152,7 +152,6 @@ const ProjectModal = defineComponent({
               allowInput={this.trim}
               v-model={[this.model.name, 'value']}
               placeholder={t('circuit.circuit_name_tips')}
-              class='input-project-name'
             />
           </NFormItem>
           <NFormItem label={t('circuit.description')} path='description'>

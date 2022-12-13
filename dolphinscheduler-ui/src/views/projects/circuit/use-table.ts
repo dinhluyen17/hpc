@@ -80,7 +80,6 @@ export function useTable() {
       {
         title: t('circuit.list.circuit_name'),
         key: 'name',
-        className: 'project-name',
         ...COLUMN_WIDTH_CONFIG['linkName'],
         render: (row: { id: string; name: any }) =>
           h(
@@ -136,7 +135,6 @@ export function useTable() {
                         circle: true,
                         type: 'info',
                         size: 'small',
-                        class: 'edit',
                         onClick: () => {
                           handleEdit(row)
                         }
@@ -168,8 +166,7 @@ export function useTable() {
                             {
                               circle: true,
                               type: 'error',
-                              size: 'small',
-                              class: 'delete'
+                              size: 'small'
                             },
                             {
                               icon: () =>
@@ -195,7 +192,6 @@ export function useTable() {
                         circle: true,
                         type: 'warning',
                         size: 'small',
-                        class: 'duplicate',
                         onClick: () => {
                           handleDuplicate(row)
                         }

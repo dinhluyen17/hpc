@@ -110,7 +110,6 @@ const list = defineComponent({
               size='small'
               onClick={this.handleModalChange}
               type='primary'
-              class='btn-create-project'
             >
               {t('circuit.list.create_title')}
             </NButton>
