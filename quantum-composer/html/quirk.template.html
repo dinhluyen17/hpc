@@ -290,6 +290,13 @@
     for (let i = 0; i < buttons.length; i++) {
       buttons[i].addEventListener("click", function () {
         buttonsControl(this, i);
+        const dataState = buttons[i].getAttribute("data-state")
+        console.log("data state", dataState);
+        if(dataState == "open") {
+          buttons[i].setAttribute("data-state", "closed")
+        } else {
+          buttons[i].setAttribute("data-state", "open")
+        }
       }, false);
     }
 

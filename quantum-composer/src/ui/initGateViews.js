@@ -84,7 +84,7 @@ const initGateViews = () => {
     let gateGroup = document.createElement('div')
     let gateGroupName = document.createElement('h4'); gateGroupName.setAttribute("class", `group-gate-name`)
     gateGroupName.innerText = group.hint
-    let createButton = document.createElement('button'); createButton.setAttribute("class", `toggle-gate-list ${"group-gate-num" + groupNum}`);
+    let createButton = document.createElement('button'); createButton.setAttribute("class", `toggle-gate-list ${"group-gate-num" + groupNum}`); createButton.setAttribute("data-state", "open");
     createButton.innerHTML = `
       <svg focusable="false" preserveAspectRatio="xMidYMid meet" xmlns="http://www.w3.org/2000/svg" fill="currentColor" aria-hidden="true" width="20" height="20" viewBox="0 0 32 32" class="AccordionTriggerIcon"><path d="M16 22L6 12 7.4 10.6 16 19.2 24.6 10.6 26 12z"></path></svg>
     `;
@@ -143,7 +143,7 @@ const initGateViews = () => {
     let gateGroup = document.createElement('div')
     let gateGroupName = document.createElement('h4'); gateGroupName.setAttribute("class", `group-gate-name`);
     gateGroupName.innerText = group.hint
-    let createButton = document.createElement("button"); createButton.setAttribute("class",`toggle-gate-list ${"group-gate-num" + groupNum}`);
+    let createButton = document.createElement("button"); createButton.setAttribute("class",`toggle-gate-list ${"group-gate-num" + groupNum}`); createButton.setAttribute("data-state", "open");
     createButton.innerHTML = `
     <svg focusable="false" preserveAspectRatio="xMidYMid meet" xmlns="http://www.w3.org/2000/svg" fill="currentColor" aria-hidden="true" width="20" height="20" viewBox="0 0 32 32" class="AccordionTriggerIcon"><path d="M16 22L6 12 7.4 10.6 16 19.2 24.6 10.6 26 12z"></path></svg>
   `;

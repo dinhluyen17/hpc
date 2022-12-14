@@ -153,6 +153,20 @@ body {
     display: none;
 }
 
+.AccordionTriggerIcon {
+    align-self: flex-start;
+    color: var(--cds-icon-01,#161616);
+    height: 18px;
+    transition: transform .3s cubic-bezier(.87,0,.13,1);
+    width: 18px;
+}
+
+[data-state=open] .AccordionTriggerIcon {
+    --tw-rotate: 180deg;
+    /* transform: translate(var(--tw-translate-x),var(--tw-translate-y)) rotate(var(--tw-rotate)) skewX(var(--tw-skew-x)) skewY(var(--tw-skew-y)) scaleX(var(--tw-scale-x)) scaleY(var(--tw-scale-y)); */
+    transform: rotate(180deg);
+}
+
 .content .circuit-area {
     flex: 1;
     display: flex;
