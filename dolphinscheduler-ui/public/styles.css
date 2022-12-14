@@ -1,0 +1,305 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    background-color: white;
+    font-family: IBM Plex Sans, Helvetica Neue, Arial, sans-serif;
+    font-size: .875rem;
+    font-weight: 400;
+    letter-spacing: .01rem;
+    line-height: 1rem;
+    text-align: left;
+    white-space: nowrap;
+}
+
+/* Main App */
+
+.app {
+    display: flex;
+    flex-direction: column;
+    height: 100vh;
+    overflow: hidden;
+}
+
+/* App Header */
+.app .header {
+    height: 60px;
+    min-height: 60px;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+}
+
+.app .header .circuit-name {
+    width: 300px;
+    font-size: 20px;
+    padding-left: 20px;
+    font-weight: 500;
+}
+
+.app .header .tab {
+    flex: 1;
+    display: flex;
+    flex-direction: row;
+    padding-left: 50px;
+    justify-content: center;
+}
+
+.app .header .tab .tab-child {
+    width: 200px;
+    padding: 10px 10px;
+    background-color: gray;
+    color: black;
+    text-align: center;
+}
+
+.app .header .tab .tab-child[data-state=active] {
+    background-color: black;
+    color: white;
+}
+
+.app .header .quick-menu {
+    display: flex;
+    flex-direction: row;
+    padding: 0px 10px;
+}
+
+.app .header .quick-menu .quick-menu-btn {
+    padding: 8px 15px;
+    color: rgb(57, 57, 57);
+    border: 1px solid #373737;
+    margin-left: 8px;
+}
+
+.content {
+    flex: 1;
+    flex-direction: row;
+    display: flex;
+}
+
+.content .gate-area {
+    display: flex;
+    flex-direction: column;
+    width: 300px;
+    border: 1px solid #373737;
+}
+
+.gate-area-header {
+    height: 50px;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    padding-left: 10px;
+    padding-right: 10px;
+}
+
+.gate-area-header-search {
+    flex: 1;
+    min-width: 0px;
+    padding: 5px 8px;
+    box-sizing: border-box;
+}
+
+.gate-area-header-btn {
+    padding: 5px 8px;
+    color: rgb(57, 57, 57);
+    border: 1px solid #373737;
+    margin-left: 8px;
+}
+
+.gate-area-body {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+}
+
+.gate-area-body-section-label {
+    font-size: 16px;
+    font-weight: 400;
+    color: black;
+    margin-left: 10px;
+}
+
+.gate-area-body-common-gates {
+    margin: 10px 5px 10px 5px;
+    border: 1px solid #373737;
+    flex: 1;
+}
+
+.gate-area-body-advanced-gates {
+    margin: 10px 5px 10px 5px;
+    border: 1px solid #373737;
+    flex: 1;
+}
+
+.content .circuit-area {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+}
+
+.circuit-area-header {
+    height: 50px;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    border: 1px solid #373737;
+}
+
+.circuit-area-header-btn {
+    padding: 8px 15px;
+    color: rgb(57, 57, 57);
+    border: 1px solid #373737;
+    margin-left: 8px;
+}
+
+.circuit-area-body {
+    flex: 1;
+    margin-top: 10px;
+    border: 1px solid #373737;
+    overflow-x: scroll;
+    overflow-y: scroll;
+}
+
+.circuit-area-chart {
+    position: relative;
+    height: 200px;
+    width: 100%;
+    margin-top: 10px;
+    border: 1px solid #373737;
+    display: flex;
+    flex-direction: column;
+}
+
+#circuit-area-chart-close-btn {
+    position: absolute;
+    top: 0px;
+    right: 0px;
+    width: 44px;
+    height: 44px;
+}
+
+#stateBarChartFilterZero {
+    position: absolute;
+    top: 0px;
+    right: 44px;
+    height: 44px;
+    width: 105px;
+}
+
+.content .code-area {
+    position: relative;
+    width: 300px;
+    border: 1px solid #373737;
+}
+
+#code-area-close-btn {
+    position: absolute;
+    top: 0px;
+    left: 0px;
+    width: 44px;
+    height: 44px;
+}
+
+#common-gates {
+    overflow-y: scroll;
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+}
+
+#common-gates-grid {
+    overflow-y: scroll;
+    padding: 5px 10px;
+}
+
+#common-gates-grid > div {
+    border-top: 1px solid #e0e0e0;
+    margin-bottom: 7px;
+    padding-top: 3px;
+}
+
+#advanced-gates {
+    overflow-y: scroll;
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+}
+
+#advanced-gates-grid {
+    overflow-y: scroll;
+    padding: 5px 10px;
+}
+
+#advanced-gates-grid > div {
+    border-top: 1px solid #e0e0e0;
+    margin-bottom: 7px;
+    padding-top: 3px;
+}
+
+#dragCanvas {
+    position: absolute;
+    z-index: 9;
+}
+
+#stateBarChart {
+    overflow-x: scroll;
+    overflow-y: hidden;
+}
+
+/* pop up gate name */
+.tooltip-wrap {
+    position: relative;
+}
+
+.tooltip-wrap .tooltip-content {
+    display: none;
+    position: absolute;
+    bottom: 5%;
+    left: 100%;
+    background-color: #58f61a;
+    padding: .5em;
+    z-index: 1;
+    line-height: 0.55;
+}
+
+.tooltip-wrap:hover .tooltip-content {
+    display: block;
+    font-size: small;
+}
+
+.circuit-area-chart .barTooltip {
+    background: #b0c4de;
+    border: 0;
+    border-radius: 8px;
+    height: 50px;
+    padding: 12px;
+    pointer-events: none;
+    position: absolute;
+    text-align: center;
+    width: 155px;
+}
+#gate-menu-popup {
+    position: absolute;
+    width: 132px;
+    height: 44px;
+    flex-direction: row;
+    display: none;
+}
+.gate-menu-popup-btn {
+    width: 44px;
+    height: 44px;
+}
+#paste-menu-popup {
+    position: absolute;
+    width: 88px;
+    height: 44px;
+    display: none;
+}
+#paste-menu-popup-btn {
+    width: 88px;
+    height: 44px;
+}
