@@ -213,6 +213,13 @@ body {
 
 #common-gates-grid {
     overflow-y: scroll;
+    padding: 5px 10px;
+}
+
+#common-gates-grid > div {
+    border-top: 1px solid #e0e0e0;
+    margin-bottom: 7px;
+    padding-top: 3px;
 }
 
 #advanced-gates {
@@ -224,6 +231,13 @@ body {
 
 #advanced-gates-grid {
     overflow-y: scroll;
+    padding: 5px 10px;
+}
+
+#advanced-gates-grid > div {
+    border-top: 1px solid #e0e0e0;
+    margin-bottom: 7px;
+    padding-top: 3px;
 }
 
 #dragCanvas {
