@@ -18,7 +18,7 @@ import {describe} from "./Describe.js"
 import {equate} from "./Equate.js"
 import {DetailedError} from "./DetailedError.js"
 import {ObservableSource, ObservableValue} from "./Obs.js"
-
+import {fromJsonText_CircuitDefinition, Serializer} from "../circuit/Serializer.js"
 /**
  * A simple linear revision history tracker, for supporting undo and redo functionality.
  */
@@ -48,6 +48,84 @@ class Revision {
         this._latestActiveCommit = new ObservableValue(this.history[this.index]);
     }
 
+    getLatestCommit() {
+        return this.history[this.index];
+    }
+    getGateSymbol(row, col) {
+        const jsonStr = this.getLatestCommit();
+        const json = JSON.parse(jsonStr);
+        if (json && json.cols) {
+            const cols = json.cols;
+            const colGates = cols[col];
+            return colGates[row];            
+        }
+        return '';
+    }
+    pasteGate(gate, row, col) {
+        const jsonStr = this.getLatestCommit();
+        const json = JSON.parse(jsonStr);
+        if (json && json.cols) {
+            const cols = json.cols;
+            let found = false;
+            // Scan all columns to find best position
+            for (let index = col; index < cols.length; index++) {
+                const listColGates = cols[index];                
+                if (row < listColGates.length && typeof listColGates[row] != "string") {
+                    found = true;
+                    listColGates[row] = gate;
+                }
+                else if (row >= listColGates.length) {
+                    found = true;
+                    for (let index = listColGates.length; index < row; index++) {
+                        listColGates.push(1);
+                    }
+                    listColGates.push(gate);
+                }
+                if (found) {
+                    break;
+                }
+            }
+            if (!found) {
+                const newCol = [];
+                for (let index = 0; index < row; index++) {
+                    newCol.push(1);
+                }
+                newCol.push(gate);
+                cols.push(newCol);
+            }
+            this.prepareCommit(JSON.stringify({
+                cols: cols
+            }));
+        }
+    }
+    deleteGate(row, col) {
+        const jsonStr = this.getLatestCommit();
+        const json = JSON.parse(jsonStr);
+        if (json && json.cols) {
+            const cols = json.cols;
+            const colGates = cols[col];
+            if (row == colGates.length - 1) {
+                colGates.splice(-1);
+            }
+            else {
+                colGates[row] = 1;
+            }
+
+            this.prepareCommit(JSON.stringify({
+                cols: cols
+            }));
+        }
+    }
+    prepareCommit(jsonText) {
+        let circuitDef = fromJsonText_CircuitDefinition(jsonText);
+        circuitDef = circuitDef.
+            withUncoveredColumnsRemoved().
+            withHeightOverlapsFixed().
+            withWidthOverlapsFixed().
+            withUncoveredColumnsRemoved().
+            withTrailingSpacersIncluded();
+        this.commit(JSON.stringify(Serializer.toJson(circuitDef)));
+    }
     /**
      * @returns {!Observable.<*>}
      */

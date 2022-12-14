@@ -179,6 +179,10 @@ class DisplayedCircuit {
      * @param {!number} y
      * @returns {undefined|!int}
      */
+    indexOfDisplayedRowAt2(y) {
+        let i = Math.floor((y - this.top) / Config.WIRE_SPACING);        
+        return i;
+    }
     indexOfDisplayedRowAt(y) {
         let i = Math.floor((y - this.top) / Config.WIRE_SPACING);
         if (i < 0 || i >= this.circuitDefinition.numWires) {
@@ -191,6 +195,18 @@ class DisplayedCircuit {
      * @param {!number} x
      * @returns {undefined|!int}
      */
+    indexOfDisplayedColumnAt2(x) {
+        let col = this.toColumnSpaceCoordinate(x);
+        let i;
+        if (this._compressedColumnIndex === undefined || col < this._compressedColumnIndex - 0.75) {
+            i = Math.round(col);
+        } else if (col < this._compressedColumnIndex - 0.25) {
+            i = this._compressedColumnIndex;
+        } else {
+            i = Math.round(col) - 1;
+        }
+        return i;
+    }
     indexOfDisplayedColumnAt(x) {
         let col = this.toColumnSpaceCoordinate(x);
         let i;
@@ -977,6 +993,12 @@ class DisplayedCircuit {
     findGateOverlappingPos(pos) {
         let col = this.indexOfDisplayedColumnAt(pos.x);
         let row = this.indexOfDisplayedRowAt(pos.y);
+
+        let col2 = this.indexOfDisplayedColumnAt2(pos.x);
+        let row2 = this.indexOfDisplayedRowAt2(pos.y);
+
+        viewState.getInstance().currentHoverPos = {x: pos.x, y: pos.y, row: row2, col: col2};
+
         if (col === undefined || row === undefined) {
             return undefined;
         }

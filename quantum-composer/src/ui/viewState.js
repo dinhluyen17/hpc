@@ -24,14 +24,20 @@ class ViewState {
     this.canvasScrollY = 0;
 
     this.highlightGate = null;
+    this.gateMenuPos = null;
     this.canShowGateMenu = true;
-    
+
+    this.currentCopyGateSymbol = null;
+
+    this.currentHoverPos = null; 
+    this.currentPastePos = null;
+
     this.canvasBoundingRect = {
       clientX: 0,
       clientY: 0,
       clientWidth: 0,
       clientHeight: 0
-    } 
+    }; 
 
     const canvasWrapper = document.getElementById("circuit-area-body");
     canvasWrapper.addEventListener("scroll", event => {
@@ -65,7 +71,7 @@ const SIZE_INFO = {
 
 const getGateAreaWidth = () => {
   if (viewState.getInstance().expandGateArea) {
-    return 300;
+    return 320;
   }
   return 140;
 };

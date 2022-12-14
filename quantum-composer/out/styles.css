@@ -88,7 +88,7 @@ body {
 .content .gate-area {
     display: flex;
     flex-direction: column;
-    width: 300px;
+    width: 320px;
     border: 1px solid #373737;
 }
 
@@ -138,6 +138,38 @@ body {
     margin: 10px 5px 10px 5px;
     border: 1px solid #373737;
     flex: 1;
+}
+
+.group-gate-name {
+    display: flex;
+    justify-content: space-between;
+}
+
+.group-gate-name > button {
+    border: none;
+    background-color: transparent;
+}
+
+.group-gate-name > button:hover {
+    cursor: pointer;
+}
+
+.show-and-hide-gate-list {
+    display: none;
+}
+
+.AccordionTriggerIcon {
+    align-self: flex-start;
+    color: var(--cds-icon-01,#161616);
+    height: 18px;
+    transition: transform .3s cubic-bezier(.87,0,.13,1);
+    width: 18px;
+}
+
+[data-state=open] .AccordionTriggerIcon {
+    --tw-rotate: 180deg;
+    /* transform: translate(var(--tw-translate-x),var(--tw-translate-y)) rotate(var(--tw-rotate)) skewX(var(--tw-skew-x)) skewY(var(--tw-skew-y)) scaleX(var(--tw-scale-x)) scaleY(var(--tw-scale-y)); */
+    transform: rotate(180deg);
 }
 
 .content .circuit-area {
@@ -218,6 +250,13 @@ body {
 
 #common-gates-grid {
     overflow-y: scroll;
+    padding: 5px 10px;
+}
+
+#common-gates-grid > div {
+    border-top: 1px solid #e0e0e0;
+    margin-bottom: 7px;
+    padding-top: 3px;
 }
 
 #advanced-gates {
@@ -229,6 +268,13 @@ body {
 
 #advanced-gates-grid {
     overflow-y: scroll;
+    padding: 5px 10px;
+}
+
+#advanced-gates-grid > div {
+    border-top: 1px solid #e0e0e0;
+    margin-bottom: 7px;
+    padding-top: 3px;
 }
 
 #dragCanvas {
@@ -301,4 +347,14 @@ body {
 }
 #drawCanvasSim {
     display: inline-block;
+}
+#paste-menu-popup {
+    position: absolute;
+    width: 88px;
+    height: 44px;
+    display: none;
+}
+#paste-menu-popup-btn {
+    width: 88px;
+    height: 44px;
 }
