@@ -279,3 +279,13 @@ body {
     width: 44px;
     height: 44px;
 }
+#paste-menu-popup {
+    position: absolute;
+    width: 88px;
+    height: 44px;
+    display: none;
+}
+#paste-menu-popup-btn {
+    width: 88px;
+    height: 44px;
+}

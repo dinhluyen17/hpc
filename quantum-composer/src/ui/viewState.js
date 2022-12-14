@@ -29,6 +29,9 @@ class ViewState {
 
     this.currentCopyGateSymbol = null;
 
+    this.currentHoverPos = null; 
+    this.currentPastePos = null;
+
     this.canvasBoundingRect = {
       clientX: 0,
       clientY: 0,

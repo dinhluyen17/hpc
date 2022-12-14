@@ -61,6 +61,51 @@ class Revision {
         }
         return '';
     }
+    pasteGate(gate, row, col) {
+        const jsonStr = this.getLatestCommit();
+        const json = JSON.parse(jsonStr);
+        if (json && json.cols) {
+            const cols = json.cols;
+            let found = false;
+            // Scan all columns to find best position
+            for (let index = col; index < cols.length; index++) {
+                const listColGates = cols[index];                
+                if (row < listColGates.length && typeof listColGates[row] != "string") {
+                    found = true;
+                    listColGates[row] = gate;
+                }
+                else if (row >= listColGates.length) {
+                    found = true;
+                    for (let index = listColGates.length; index < row; index++) {
+                        listColGates.push(1);
+                    }
+                    listColGates.push(gate);
+                }
+                if (found) {
+                    break;
+                }
+            }
+            if (!found) {
+                const newCol = [];
+                for (let index = 0; index < row; index++) {
+                    newCol.push(1);
+                }
+                newCol.push(gate);
+                cols.push(newCol);
+            }
+            this.commit(JSON.stringify({
+                cols: cols.filter(item => {
+                    let emptyCol = true;
+                    item.forEach(element => {
+                        if (typeof element == "string") {
+                            emptyCol = false;
+                        }
+                    });
+                    return !emptyCol;
+                })
+            }));
+        }
+    }
     deleteGate(row, col) {
         const jsonStr = this.getLatestCommit();
         const json = JSON.parse(jsonStr);
