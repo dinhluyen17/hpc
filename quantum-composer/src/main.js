@@ -124,6 +124,15 @@ let stateBarCalc = () =>{
     })
     return data;
 }
+document.addEventListener('contextmenu', function (e) {
+    const hoverPos = viewState.getInstance().currentHoverPos;
+    viewState.getInstance().currentPastePos = hoverPos;
+    const element = document.getElementById('paste-menu-popup');
+    element.style.display = 'block';
+    element.style.left = (hoverPos.x - viewState.getInstance().canvasScrollX + viewState.getInstance().canvasBoundingRect.clientX) + "px";
+    element.style.top = (hoverPos.y - viewState.getInstance().canvasScrollY + viewState.getInstance().canvasBoundingRect.clientY - 44) + "px";
+    e.preventDefault();
+}, false);
 document.addEventListener("DOMContentLoaded", function (){
     document.D3_FUNCTION.bar(stateBarCalc())
 })
@@ -144,13 +153,12 @@ revision.latestActiveCommit().subscribe(jsonText => {
     let circuitDef = fromJsonText_CircuitDefinition(jsonText);
     let newInspector = displayed.get().withCircuitDefinition(circuitDef);
     displayed.set(newInspector);
-    if (barDataFilterSwitch == false){
-        document.D3_FUNCTION.bar(stateBarCalc());
-    } else {
-        let barDataFilter = stateBarCalc().filter(val => !val.Probability.includes('0.0000'));
-        document.D3_FUNCTION.bar(barDataFilter);
-    }
-
+        if (barDataFilterSwitch == false) {
+            document.D3_FUNCTION.bar(stateBarCalc());
+        } else {
+            let barDataFilter = stateBarCalc().filter(val => !val.Probability.includes('0.0000'));
+            document.D3_FUNCTION.bar(barDataFilter);
+        }
 });
 /**
  * @param {!DisplayedInspector} curInspector
@@ -238,7 +246,10 @@ canvasDiv.addEventListener('click', ev => {
     if (curInspector.tryGetHandOverButtonKey() !== clickDownGateButtonKey) {
         return;
     }
+    const pasteMenu = document.getElementById('paste-menu-popup');
+    pasteMenu.style.display = 'none';
     if (viewState.getInstance().canShowGateMenu && viewState.getInstance().highlightGate != null) {
+        viewState.getInstance().gateMenuPos = viewState.getInstance().highlightGate;
         const gateRect = viewState.getInstance().highlightGate.gateRect;
         const element = document.getElementById('gate-menu-popup');
         element.style.display = 'block';
