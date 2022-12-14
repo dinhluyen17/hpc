@@ -83,7 +83,7 @@ body {
 .content .gate-area {
     display: flex;
     flex-direction: column;
-    width: 300px;
+    width: 320px;
     border: 1px solid #373737;
 }
 
@@ -133,6 +133,24 @@ body {
     margin: 10px 5px 10px 5px;
     border: 1px solid #373737;
     flex: 1;
+}
+
+.group-gate-name {
+    display: flex;
+    justify-content: space-between;
+}
+
+.group-gate-name > button {
+    border: none;
+    background-color: transparent;
+}
+
+.group-gate-name > button:hover {
+    cursor: pointer;
+}
+
+.show-and-hide-gate-list {
+    display: none;
 }
 
 .content .circuit-area {
@@ -293,3 +311,4 @@ body {
     width: 44px;
     height: 44px;
 }
+

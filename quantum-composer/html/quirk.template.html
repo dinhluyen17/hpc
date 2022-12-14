@@ -280,6 +280,31 @@
 
     <!-- INCLUDE SOURCE PART -->
 
+    //toggle show and hide a list in a gate group
+  </script>
+    <script language="JavaScript" defer>
+    let buttons = document.getElementsByTagName('button'); //returns a nodelist
+    for (let i = 0; i < buttons.length; i++) {
+      buttons[i].addEventListener("click", function () {
+        buttonsControl(this, i);
+      }, false);
+    }
+
+    function buttonsControl(button, i) {
+      console.log(">>>>>>>> log button");
+      console.log(i);
+      console.log("log test ", button.className);
+      var groupNum = button.className.match(/\d+$/);
+      if(groupNum !== null) {
+        const toggleElement = document.getElementById(`${"group-num-" + groupNum[0]}`)
+         console.log("remove elemetn", toggleElement);
+         if(toggleElement != null && !toggleElement.className.includes('show-and-hide-gate-list')) {
+          toggleElement.setAttribute("class", "show-and-hide-gate-list")
+         } else if (toggleElement != null && toggleElement.className.includes('show-and-hide-gate-list')) {
+          toggleElement.classList.remove("show-and-hide-gate-list")
+         }
+      }
+    }
   </script>
 </body>
 
