@@ -101,13 +101,32 @@ body {
     min-width: 0px;
     padding: 5px 8px;
     box-sizing: border-box;
+    height: 2rem;
 }
 
 .gate-area-header-btn {
-    padding: 5px 8px;
     color: rgb(57, 57, 57);
     border: 1px solid #373737;
     margin-left: 8px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 2rem;
+    height: 2rem;
+}
+
+#gate-area-header-close-btn {
+    display: flex;
+    flex-direction: row; 
+}
+
+[data-gate=show] > svg {
+    color: var(--cds-icon-01,#161616);
+}
+
+[data-gate=hide] > svg > path {
+    transform: rotate(180deg);
+    transform-origin: 50% 50%;
 }
 
 .gate-area-body {

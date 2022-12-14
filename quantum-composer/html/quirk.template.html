@@ -27,14 +27,16 @@
     <div class="content">
       <div class="gate-area">
         <div class="gate-area-header">
-          <input type="search" class="gate-area-header-search" id="gate-area-header-search" placeholder="search" oninput="handleSearch()">
+          <input type="search" class="gate-area-header-search" id="gate-area-header-search" placeholder="Search" oninput="handleSearch()">
           <button class="gate-area-header-btn" id="gate-area-header-grid-btn" onclick="handleGroupOnClicked()">
             <svg focusable="false" preserveAspectRatio="xMidYMid meet" xmlns="http://www.w3.org/2000/svg" fill="currentColor" width="20" height="20" viewBox="0 0 32 32" aria-hidden="true"><path d="M12 4H6A2 2 0 004 6v6a2 2 0 002 2h6a2 2 0 002-2V6A2 2 0 0012 4zm0 8H6V6h6zM26 4H20a2 2 0 00-2 2v6a2 2 0 002 2h6a2 2 0 002-2V6A2 2 0 0026 4zm0 8H20V6h6zM12 18H6a2 2 0 00-2 2v6a2 2 0 002 2h6a2 2 0 002-2V20A2 2 0 0012 18zm0 8H6V20h6zM26 18H20a2 2 0 00-2 2v6a2 2 0 002 2h6a2 2 0 002-2V20A2 2 0 0026 18zm0 8H20V20h6z"></path></svg>
           </button>
           <button class="gate-area-header-btn" id="gate-area-header-list-btn" onclick="handleGroupOffClicked()">
             <svg focusable="false" preserveAspectRatio="xMidYMid meet" xmlns="http://www.w3.org/2000/svg" fill="currentColor" width="20" height="20" viewBox="0 0 32 32" aria-hidden="true"><path d="M16 8H30V10H16zM16 22H30V24H16zM10 14H4a2.0023 2.0023 0 01-2-2V6A2.0023 2.0023 0 014 4h6a2.0023 2.0023 0 012 2v6A2.0023 2.0023 0 0110 14zM4 6v6h6.0012L10 6zM10 28H4a2.0023 2.0023 0 01-2-2V20a2.0023 2.0023 0 012-2h6a2.0023 2.0023 0 012 2v6A2.0023 2.0023 0 0110 28zM4 20v6h6.0012L10 20z"></path></svg>
           </button>
-          <button class="gate-area-header-btn" id="gate-area-header-close-btn">X</button>
+          <button class="gate-area-header-btn" id="gate-area-header-close-btn" data-gate="show" onclick="toggleLeftSideBar()">
+            <svg focusable="false" preserveAspectRatio="xMidYMid meet" xmlns="http://www.w3.org/2000/svg" fill="currentColor" width="20" height="20" viewBox="0 0 32 32" aria-hidden="true" style="transform: rotate(90deg);"><path d="M4 18L15 18 15 24.172 12.414 21.586 11 23 16 28 21 23 19.586 21.586 17 24.172 17 18 28 18 28 16 4 16 4 18zM26 4H6A2 2 0 004 6v4a2 2 0 002 2H26a2 2 0 002-2V6A2 2 0 0026 4zm0 6H6V6H26z"></path></svg>
+          </button>
         </div>
         <div class="gate-area-body">
           <label class="gate-area-body-section-label">Commons gates</label>
@@ -264,8 +266,14 @@
 
     }
 
-    function handleClear() {
-      document.getElementById("gate-area-header-search").innerHTML = "";
+    function toggleLeftSideBar() {
+      let state = document.getElementById("gate-area-header-close-btn")
+      console.log("state", state);
+      if(state.getAttribute("data-gate") == "show") {
+        state.setAttribute("data-gate", "hide")
+      } else {
+        state.setAttribute("data-gate", "show")
+      }
     }
   </script>
 
@@ -291,7 +299,6 @@
       buttons[i].addEventListener("click", function () {
         buttonsControl(this, i);
         const dataState = buttons[i].getAttribute("data-state")
-        console.log("data state", dataState);
         if(dataState == "open") {
           buttons[i].setAttribute("data-state", "closed")
         } else {
