@@ -9,3 +9,4 @@ logs
 gc.log
 target
 testFile.txt
+pnpm-lock.yaml
