@@ -19,7 +19,7 @@ import { h, reactive, ref } from 'vue'
 import { useI18n } from 'vue-i18n'
 import { useAsyncState } from '@vueuse/core'
 import ButtonLink from '@/components/button-link'
-import { deleteCircuit, exportCircuit, queryCircuitListPaging } from '@/service/modules/circuits'
+import { deleteCircuit, queryCircuitListPaging } from '@/service/modules/circuits'
 import { parseTime } from '@/common/common'
 import { format } from 'date-fns'
 import { useRouter } from 'vue-router'
@@ -70,7 +70,17 @@ export function useTable() {
   }
 
   const handleExportCircuit = (row: any) => {
-    exportCircuit(row.id)
+    const file = new File([row.json], `${row.name}.json`, {
+      type: 'application/json',
+    })
+    const link = document.createElement('a')
+    const url = URL.createObjectURL(file)
+    link.href = url
+    link.download = file.name
+    document.body.appendChild(link)
+    link.click()
+    document.body.removeChild(link)
+    window.URL.revokeObjectURL(url)
   }
 
   const createColumns = (variables: any) => {

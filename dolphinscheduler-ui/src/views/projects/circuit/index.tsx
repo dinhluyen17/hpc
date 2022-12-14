@@ -38,7 +38,9 @@ import { useRoute } from 'vue-router'
 import { useTable } from './use-table'
 import Card from '@/components/card'
 import ProjectModal from './components/project-modal'
-import { massActionDeleteCircuit, massActionExportCircuit } from '@/service/modules/circuits'
+import { massActionDeleteCircuit } from '@/service/modules/circuits'
+import JSZip from 'jszip'
+import { CircuitReq } from '@/service/modules/circuits/types'
 
 const list = defineComponent({
   name: 'list',
@@ -84,8 +86,15 @@ const list = defineComponent({
     }
 
     const handleMassActionExport = () => {
-      const query = variables.massActionElement.join(',');
-      massActionExportCircuit(query)
+      var zip = new JSZip();
+      variables.tableData.map((circuit: CircuitReq) => {
+        const id = circuit.id?.toString();
+        // if (variables.massActionElement.includes('2')) {
+        //   console.log(123);
+
+        // }
+      });
+
     }
 
     const requestData = () => {
