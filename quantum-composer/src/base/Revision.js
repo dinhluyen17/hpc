@@ -18,7 +18,7 @@ import {describe} from "./Describe.js"
 import {equate} from "./Equate.js"
 import {DetailedError} from "./DetailedError.js"
 import {ObservableSource, ObservableValue} from "./Obs.js"
-
+import {fromJsonText_CircuitDefinition, Serializer} from "../circuit/Serializer.js"
 /**
  * A simple linear revision history tracker, for supporting undo and redo functionality.
  */
@@ -93,16 +93,8 @@ class Revision {
                 newCol.push(gate);
                 cols.push(newCol);
             }
-            this.commit(JSON.stringify({
-                cols: cols.filter(item => {
-                    let emptyCol = true;
-                    item.forEach(element => {
-                        if (typeof element == "string") {
-                            emptyCol = false;
-                        }
-                    });
-                    return !emptyCol;
-                })
+            this.prepareCommit(JSON.stringify({
+                cols: cols
             }));
         }
     }
@@ -119,18 +111,20 @@ class Revision {
                 colGates[row] = 1;
             }
 
-            this.commit(JSON.stringify({
-                cols: cols.filter(item => {
-                    let emptyCol = true;
-                    item.forEach(element => {
-                        if (typeof element == "string") {
-                            emptyCol = false;
-                        }
-                    });
-                    return !emptyCol;
-                })
+            this.prepareCommit(JSON.stringify({
+                cols: cols
             }));
         }
+    }
+    prepareCommit(jsonText) {
+        let circuitDef = fromJsonText_CircuitDefinition(jsonText);
+        circuitDef = circuitDef.
+            withUncoveredColumnsRemoved().
+            withHeightOverlapsFixed().
+            withWidthOverlapsFixed().
+            withUncoveredColumnsRemoved().
+            withTrailingSpacersIncluded();
+        this.commit(JSON.stringify(Serializer.toJson(circuitDef)));
     }
     /**
      * @returns {!Observable.<*>}
