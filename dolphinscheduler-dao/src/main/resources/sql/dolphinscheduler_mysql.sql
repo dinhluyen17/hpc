@@ -645,6 +645,7 @@ CREATE TABLE `t_ds_project` (
   `id` int(11) NOT NULL AUTO_INCREMENT COMMENT 'key',
   `name` varchar(100) DEFAULT NULL COMMENT 'project name',
   `code` bigint(20) NOT NULL COMMENT 'encoding',
+  `type` int(2) COMMENT '0 or null normal, 1 circuit',
   `description` varchar(255) DEFAULT NULL,
   `user_id` int(11) DEFAULT NULL COMMENT 'creator id',
   `flag` tinyint(4) DEFAULT '1' COMMENT '0 not available, 1 available',
@@ -1017,7 +1018,7 @@ VALUES ('1,2', 1, 'default admin warning group', 'default admin warning group', 
 -- Records of t_ds_user
 -- ----------------------------
 INSERT IGNORE INTO `t_ds_user`
-VALUES ('1', 'admin', '7ad2410b2f4c074479a8937a28a22b8f', '0', 'xxx@qq.com', '', '0', current_timestamp, current_timestamp, null, 1, null);
+VALUES ('1', 'admin', '7ad2410b2f4c074479a8937a28a22b8f', '0', 'admin@admin.com', '', '0', current_timestamp, current_timestamp, null, 1, null);
 
 -- ----------------------------
 -- Table structure for t_ds_plugin_define
@@ -2003,6 +2004,29 @@ CREATE TABLE `t_ds_fav_task`
     `id`        bigint      NOT NULL AUTO_INCREMENT COMMENT 'id',
     `task_type` varchar(64) NOT NULL COMMENT 'favorite task type name',
     `user_id`   int         NOT NULL COMMENT 'user id',
+    PRIMARY KEY (`id`)
+) ENGINE = InnoDB
+  AUTO_INCREMENT = 1
+  DEFAULT CHARSET = utf8;
+
+-- ----------------------------
+-- Table structure for t_ds_fav_task
+-- ----------------------------
+DROP TABLE IF EXISTS `t_ds_circuit`;
+CREATE TABLE `t_ds_citcuit`
+(
+    `id`        bigint      NOT NULL AUTO_INCREMENT COMMENT 'id',
+
+    `user_id`      int not null,
+    `name`         varchar(100),
+    `description`  varchar(255),
+    `json`         text,
+    `qasm`         text,
+    `qiskit`       text,
+    `create_time` timestamp NULL DEFAULT CURRENT_TIMESTAMP,
+    `update_time` timestamp NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+    `project_code` bigint(20),
+
     PRIMARY KEY (`id`)
 ) ENGINE = InnoDB
   AUTO_INCREMENT = 1
