@@ -62,9 +62,13 @@ const canvasDiv = document.getElementById("app");
 /** @type {!HTMLCanvasElement} */
 const canvas = document.getElementById("drawCanvas");
 const dragCanvas = document.getElementById("dragCanvas");
+const canvasSim = document.getElementById("drawCanvasSim");
 //noinspection JSValidateTypes
 if (!canvas) {
     throw new Error("Couldn't find 'drawCanvas'");
+}
+if (!canvasSim) {
+    throw new Error("Couldn't find 'canvasSim");
 }
 //canvas.width = canvasDiv.clientWidth;
 //canvas.height = window.innerHeight*0.9;
@@ -144,12 +148,12 @@ revision.latestActiveCommit().subscribe(jsonText => {
     let circuitDef = fromJsonText_CircuitDefinition(jsonText);
     let newInspector = displayed.get().withCircuitDefinition(circuitDef);
     displayed.set(newInspector);
-        if (barDataFilterSwitch == false) {
-            document.D3_FUNCTION.bar(stateBarCalc());
-        } else {
-            let barDataFilter = stateBarCalc().filter(val => !val.Probability.includes('0.0000'));
-            document.D3_FUNCTION.bar(barDataFilter);
-        }
+    if (barDataFilterSwitch == false) {
+        document.D3_FUNCTION.bar(stateBarCalc());
+    } else {
+        let barDataFilter = stateBarCalc().filter(val => !val.Probability.includes('0.0000'));
+        document.D3_FUNCTION.bar(barDataFilter);
+    }
 });
 /**
  * @param {!DisplayedInspector} curInspector
@@ -203,12 +207,16 @@ const redrawNow = () => {
     let size = desiredCanvasSizeFor(shown);
     canvas.width = size.w;
     canvas.height = size.h;
+    canvasSim.width = size.w;
+    canvasSim.height = size.h;
     let painter = new Painter(canvas, semiStableRng.cur.restarted());
     let dragPainter = new Painter(dragCanvas, semiStableRng.cur.restarted());
+    let simPainter = new Painter(canvasSim, semiStableRng.cur.restarted());
     shown.updateArea(painter.paintableArea());
-    shown.paint(painter, stats, dragPainter);
+    shown.paint(painter, stats, dragPainter, simPainter);
     painter.paintDeferred();
     dragPainter.paintDeferred();
+    simPainter.paintDeferred();
 
     displayed.get().hand.paintCursor(painter);
     scrollBlocker.setBlockers(painter.touchBlockers, painter.desiredCursorStyle);
@@ -413,3 +421,40 @@ setTimeout(() => {
         console.error(ex);
     }
 }, 0);
+document.getElementById("circuitTab").addEventListener('click', () => {
+    let e = document.getElementById("circuit");
+    e.classList.remove("hidden");
+    let eT = document.getElementById("circuitTab");
+    eT.setAttribute("data-state","active")
+
+    let e2 = document.getElementById("simulate");
+    e2.classList.add("hidden");
+    let e2T = document.getElementById("simulateTab");
+    e2T.setAttribute("data-state","inactive");
+
+    const canvas = document.getElementById("circuit-area-body");
+    let canvasBox = canvas.getBoundingClientRect();
+    viewState.getInstance().canvasBoundingRect = {
+        clientX: canvasBox.left,
+        clientY: canvasBox.top,
+    }
+});
+
+document.getElementById("simulateTab").addEventListener('click', () => {
+    let e = document.getElementById("circuit");
+    e.classList.add("hidden");
+    let eT = document.getElementById("circuitTab");
+    eT.setAttribute("data-state","inactive");
+
+    let e2 = document.getElementById("simulate");
+    e2.classList.remove("hidden");
+    let e2T = document.getElementById("simulateTab");
+    e2T.setAttribute("data-state","active");
+
+    let canvas = document.getElementById("drawCanvasSim");
+    let canvasBox = canvas.getBoundingClientRect();
+    viewState.getInstance().canvasBoundingRect = {
+        clientX: canvasBox.left,
+        clientY: canvasBox.top
+    }
+});
