@@ -18,7 +18,7 @@
 import { useI18n } from 'vue-i18n'
 import { useRoute, useRouter } from 'vue-router'
 import { NSelect, NSpace, NSwitch } from 'naive-ui'
-import { defineComponent } from 'vue'
+import { defineComponent, onBeforeUnmount } from 'vue'
 import { h, reactive, ref } from 'vue'
 import Card from '@/components/card'
 import type { CircuitList } from '@/service/modules/circuits/types'
@@ -28,31 +28,50 @@ import { onBeforeMount, onMounted, onUnmounted, toRefs, watch } from 'vue'
 const circuitItem = defineComponent({
   name: 'circuitItem',
   setup() {
+    let quantumRef = ref(null);
     const { t } = useI18n()
     const { variables, getData} = useTable()
     const route = useRoute()
     const id = route.params.circuitId
+
+    const sendMessageToIFrame = () => {
+      // 
+      //quantumRef.value.contentWindow.postMessage('message', '*');
+    }
+    // Handle message from Iframe
+    const handleReceiveMessage = () => {
+    }
     const requestData = () => {
       getData({
         id: id
       })
     }
-
     onBeforeMount(() => {
       requestData()
     })
 
+    onMounted(() => {
+      window.addEventListener('message', handleReceiveMessage)
+    })
+    onBeforeUnmount(() => {
+      window.addEventListener('message', handleReceiveMessage)
+    })
     return {
       variables,
-      ...toRefs(variables)
+      ...toRefs(variables),
+      quantumRef
     }
   },
   render() {
-    const { variables } = this
-    const circuit = variables?.data ? ("https://algassert.com/quirk#circuit="+encodeURIComponent(variables.data.json)) : ''
+    const { variables } = this;
     return (
-      <Card style={{ marginLeft: '10%', width: '70%' }} title={variables.data ? variables.data.name : 'Empty'}>
-        <iframe width="1200" height="600" src={circuit}></iframe>
+      <Card style={{ width: '100%', height: '100%' }}>
+        <iframe
+          ref="quantumRef"
+          src="/quirk.html"
+          style={{ width: '100%', height: '100%' }}
+          frameborder="0" >
+        </iframe>
       </Card>
     )
   }

@@ -63,6 +63,13 @@ const canvasDiv = document.getElementById("app");
 const canvas = document.getElementById("drawCanvas");
 const dragCanvas = document.getElementById("dragCanvas");
 //noinspection JSValidateTypes
+
+// Send message to vuejs
+//window.parent.postMessage('', '*');
+window.addEventListener('message', () => {
+    // handle message from vuejs
+}, false);
+
 if (!canvas) {
     throw new Error("Couldn't find 'drawCanvas'");
 }

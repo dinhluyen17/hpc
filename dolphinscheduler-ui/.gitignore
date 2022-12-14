@@ -23,7 +23,6 @@
 *.tsbuildinfo
 
 node_modules
-dist
 dist-ssr
 
 .pnpm-debug.log
