@@ -44,7 +44,10 @@ function initUndoRedo(revision, obsIsAnyOverlayShowing) {
 
     const deleteGateBtn = document.getElementById('gate-menu-popup-delete-btn');
     const copyGateBtn = document.getElementById('gate-menu-popup-copy-btn');
+    const cutGateBtn = document.getElementById('gate-menu-popup-cut-btn');
     const pasteGateBtn = document.getElementById('gate-menu-popup-paste-btn');
+
+    const pasteBtn = document.getElementById('paste-menu-popup-btn');
 
     deleteGateBtn.addEventListener('click', () => {
         const {row, col} = viewState.getInstance().gateMenuPos;
@@ -58,9 +61,29 @@ function initUndoRedo(revision, obsIsAnyOverlayShowing) {
     pasteGateBtn.addEventListener('click', () => {
         const {row, col} = viewState.getInstance().gateMenuPos;
         const symbol = viewState.getInstance().currentCopyGateSymbol;
-        //viewState.getInstance().pasteGate(symbol, row, col);
+        if (symbol) {
+            revision.pasteGate(symbol, row, col + 1);            
+        }   
+        else {
+            alert("No copy gate!");
+        }     
     });
-
+    cutGateBtn.addEventListener('click', () => {
+        const {row, col} = viewState.getInstance().gateMenuPos;
+        const symbol = revision.getGateSymbol(row, col);
+        viewState.getInstance().currentCopyGateSymbol = symbol;
+        revision.deleteGate(row, col);
+    });
+    pasteBtn.addEventListener('click', () => {
+        const {row, col} = viewState.getInstance().currentPastePos;
+        const symbol = viewState.getInstance().currentCopyGateSymbol;
+        if (symbol) {
+            revision.pasteGate(symbol, row >= 0 ? row : 0, col >= 0 ? col : 0);            
+        }        
+        else {
+            alert("No copy gate!");
+        }
+    });
     // document.addEventListener("keydown", e => {
     //     // Don't capture keystrokes while menus are showing.
     //     for (let div of overlay_divs) {
