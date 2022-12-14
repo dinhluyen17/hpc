@@ -88,13 +88,22 @@ const list = defineComponent({
     const handleMassActionExport = () => {
       var zip = new JSZip();
       variables.tableData.map((circuit: CircuitReq) => {
-        const id = circuit.id?.toString();
-        // if (variables.massActionElement.includes('2')) {
-        //   console.log(123);
-
-        // }
+        const isExists = variables.massActionElement.includes(circuit.id)
+        if (isExists) {
+          zip.file(`${circuit.name}.json`, circuit.json);
+        }
       });
-
+      zip.generateAsync({ type: "blob" })
+        .then(function (content) {
+          const url = window.URL.createObjectURL(content);
+          const link = document.createElement('a')
+          link.href = url
+          link.download = 'circuits.zip'
+          document.body.appendChild(link)
+          link.click()
+          document.body.removeChild(link)
+          window.URL.revokeObjectURL(url)
+        });
     }
 
     const requestData = () => {
