@@ -68,7 +68,7 @@ const SIZE_INFO = {
 
 const getGateAreaWidth = () => {
   if (viewState.getInstance().expandGateArea) {
-    return 300;
+    return 320;
   }
   return 140;
 };
