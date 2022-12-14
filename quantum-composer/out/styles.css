@@ -61,6 +61,11 @@ body {
     color: white;
 }
 
+.app .header .tab .tab-child[data-state=inactive] {
+    background: gray;
+    color: black;
+}
+
 .app .header .quick-menu {
     display: flex;
     flex-direction: row;
@@ -331,7 +336,7 @@ body {
     pointer-events: none;
     position: absolute;
     text-align: center;
-    width: 155px;
+    width: 170px;
 }
 #gate-menu-popup {
     position: absolute;
@@ -343,6 +348,24 @@ body {
 .gate-menu-popup-btn {
     width: 44px;
     height: 44px;
+}
+
+.hidden {
+    display: none;
+    pointer-events: none;
+}
+
+.simulate-area {
+    flex: 1;
+    margin-top: 10px;
+    border: 1px solid #373737;
+    overflow-x: scroll;
+    overflow-y: scroll;
+    width: 100%;
+    text-align: center;
+}
+#drawCanvasSim {
+    display: inline-block;
 }
 #paste-menu-popup {
     position: absolute;

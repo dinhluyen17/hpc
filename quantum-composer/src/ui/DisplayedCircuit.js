@@ -381,6 +381,11 @@ class DisplayedCircuit {
 
         this._drawRowDragHighlight(painter);
     }
+    simPaint(painter,hand,stats,forTooltip=false,showWires=false){
+        if (!forTooltip) {
+            this._drawMatrixDisplays(painter,stats,hand);
+        }
+    }
 
     /**
      * @param {!Painter} painter
@@ -1348,6 +1353,18 @@ class DisplayedCircuit {
     }
 
     /**
+     * Draws a peek gate on each wire at the right-hand side of the circuit.
+     *
+     * @param {!Painter} painter
+     * @param {!CircuitStats} stats
+     * @param {!Hand} hand
+     * @private
+     */
+    _drawMatrixDisplays(painter,stats,hand){
+        this._drawOutputSuperpositionDisplay(painter, stats, hand);
+    }
+
+    /**
      * @returns {!number} The number of columns used for drawing the circuit, before the output display.
      */
     clampedCircuitColCount() {
@@ -1393,6 +1410,8 @@ class DisplayedCircuit {
     _drawOutputSuperpositionDisplay_labels(painter) {
         let gridRect = this._rectForSuperpositionDisplay();
         let numWire = this.importantWireCount();
+        let wrap = document.getElementById("drawCanvasSim");
+        let {width} = wrap.getBoundingClientRect();
         _cachedRowLabelDrawer.paint(gridRect.right(), gridRect.y, painter, numWire);
         _cachedColLabelDrawer.paint(gridRect.x, gridRect.bottom(), painter, numWire);
     }
@@ -1427,9 +1446,12 @@ class DisplayedCircuit {
         let numWire = this.importantWireCount();
         let [colWires, rowWires] = [Math.floor(numWire/2), Math.ceil(numWire/2)];
         let [colCount, rowCount] = [1 << colWires, 1 << rowWires];
+        let wrap = document.getElementById("drawCanvasSim");
+        let {width} = wrap.getBoundingClientRect();
         let topRect = this.gateRect(0, col);
         let bottomRect = this.gateRect(numWire-1, col);
-        let gridRect = new Rect(topRect.x, topRect.y, 0, bottomRect.bottom() - topRect.y);
+        // let gridRect = new Rect(topRect.x, topRect.y, 0, bottomRect.bottom() - topRect.y);
+        let gridRect = new Rect(width/4, topRect.y, 0, bottomRect.bottom());
         return gridRect.withW(gridRect.h * (colCount/rowCount));
     }
 
@@ -1667,7 +1689,7 @@ function _drawLabelsReasonablyFast(painter, dy, n, labeller, boundingWidth) {
 let _cachedRowLabelDrawer = new CachablePainting(
     numWire => ({
         width: SUPERPOSITION_GRID_LABEL_SPAN,
-        height: (numWire - 1) * Config.WIRE_SPACING + Config.GATE_RADIUS * 2
+        height: (numWire - 1) * Config.WIRE_SPACING + 55 + Config.GATE_RADIUS * 2
     }),
     (painter, numWire) => {
         let [colWires, rowWires] = [Math.floor(numWire/2), Math.ceil(numWire/2)];
@@ -1687,7 +1709,7 @@ let _cachedColLabelDrawer = new CachablePainting(
     numWire => {
         let [colWires, rowWires] = [Math.floor(numWire/2), Math.ceil(numWire/2)];
         let [colCount, rowCount] = [1 << colWires, 1 << rowWires];
-        let total_height = (numWire - 1) * Config.WIRE_SPACING + Config.GATE_RADIUS * 2;
+        let total_height = (numWire - 1) * Config.WIRE_SPACING + 55 + Config.GATE_RADIUS * 2;
         let cellDiameter = total_height / rowCount;
         return {
             width: colCount * cellDiameter,

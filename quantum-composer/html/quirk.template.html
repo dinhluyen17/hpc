@@ -13,8 +13,8 @@
     <div class="header">
       <div class="circuit-name">Project name</div>
       <div class="tab">
-        <div class="tab-child" data-state="active">Circuit</div>
-        <div class="tab-child">Simulate</div>
+        <div class="tab-child" data-state="active" id="circuitTab">Circuit</div>
+        <div class="tab-child" data-state="inactive" id="simulateTab">Simulate</div>
       </div>
       <div class="quick-menu">
         <button class="quick-menu-btn">Save</button>
@@ -24,7 +24,7 @@
         <button class="quick-menu-btn">Help</button>
       </div>
     </div>
-    <div class="content">
+    <div class="content" id="circuit">
       <div class="gate-area">
         <div class="gate-area-header">
           <input type="search" class="gate-area-header-search" id="gate-area-header-search" placeholder="Search" oninput="handleSearch()">
@@ -71,7 +71,7 @@
           <button class="circuit-area-header-btn" id="clear-button">Clear</button>
         </div>        
         <div class="circuit-area-body" id="circuit-area-body">
-          <canvas id="drawCanvas">            
+          <canvas id="drawCanvas">
           </canvas>
         </div>
         <div class="circuit-area-chart" id="circuit-chart">
@@ -94,6 +94,10 @@
     </div>
     <div id="paste-menu-popup" style="z-index: 888;">
       <button id="paste-menu-popup-btn">Paste</button>
+    </div>
+    <div class="simulate-area hidden" id="simulate">
+      <canvas id="drawCanvasSim">
+      </canvas>
     </div>
   </div>
 
