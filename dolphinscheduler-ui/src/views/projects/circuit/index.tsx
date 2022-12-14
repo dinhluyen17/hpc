@@ -169,6 +169,7 @@ const list = defineComponent({
                 v-model={[this.searchVal, 'value']}
                 placeholder={t('circuit.list.circuit_tips')}
                 clearable
+                style={{ width: '300px' }}
               />
               <NButton size='small' type='primary' onClick={this.handleSearch}>
                 <NIcon>
@@ -183,7 +184,7 @@ const list = defineComponent({
             <NSpace>
               <NPopconfirm onPositiveClick={this.handleMassActionDelete}>
                 {{
-                  default: () => t('project.list.delete_confirm'),
+                  default: () => t('circuit.list.mass_delete_confirm'),
                   trigger: () => (
                     <NButton size='small' type='error' style={{ marginBottom: '12px' }}>
                       {t('circuit.list.delete_circuit')}

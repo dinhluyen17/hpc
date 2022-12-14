@@ -40,6 +40,8 @@ export default {
     export_circuit: 'Export',
     circuit_name: 'Circuit Name',
     circuit_description: 'Circuit Description',
-    circuit_tips: 'Please enter your circuit name'
+    circuit_tips: 'Please enter your circuit name',
+    delete_confirm: 'Sure you want to delete this circuit?',
+    mass_delete_confirm: 'Sure you want to delete selected circuit?',
   }
 }

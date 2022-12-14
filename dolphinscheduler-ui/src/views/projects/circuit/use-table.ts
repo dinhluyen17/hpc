@@ -188,7 +188,7 @@ export function useTable() {
                         default: () => t('circuit.list.delete_circuit')
                       }
                     ),
-                  default: () => t('project.list.delete_confirm')
+                  default: () => t('circuit.list.delete_confirm')
                 }
               ),
               h(
