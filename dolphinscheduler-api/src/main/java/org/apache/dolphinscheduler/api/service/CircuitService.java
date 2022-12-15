@@ -15,14 +15,13 @@
  * limitations under the License.
  */
 
-package org.apache.dolphinscheduler.quantum.service;
+package org.apache.dolphinscheduler.api.service;
 
 import org.apache.dolphinscheduler.api.utils.Result;
-import org.apache.dolphinscheduler.quantum.controller.CircuitCreateRequest;
-import org.apache.dolphinscheduler.quantum.controller.CircuitUpdateRequest;
+import org.apache.dolphinscheduler.api.dto.circuit.CircuitCreateRequest;
+import org.apache.dolphinscheduler.api.dto.circuit.CircuitUpdateRequest;
 
 import java.io.IOException;
-import java.math.BigInteger;
 import java.util.List;
 import java.util.Map;
 

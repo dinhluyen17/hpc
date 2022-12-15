@@ -15,11 +15,11 @@
  * limitations under the License.
  */
 
-import { axiosQuantum } from '@/service/service'
+import { axios } from '@/service/service'
 import { GetReq, ListReq, CircuitReq } from './types'
 
 export function getCircuit(params: GetReq): any {
-  return axiosQuantum({
+  return axios({
     url: '/circuit/get',
     method: 'get',
     params
@@ -27,7 +27,7 @@ export function getCircuit(params: GetReq): any {
 }
 
 export function queryCircuitListPaging(params: ListReq): any {
-  return axiosQuantum({
+  return axios({
     url: '/circuit/search',
     method: 'get',
     params
@@ -35,7 +35,7 @@ export function queryCircuitListPaging(params: ListReq): any {
 }
 
 export function createCircuit(data: CircuitReq): any {
-  return axiosQuantum({
+  return axios({
     url: '/circuit/create',
     method: 'post',
     headers: {
@@ -47,7 +47,7 @@ export function createCircuit(data: CircuitReq): any {
 }
 
 export function updateCircuit(data: CircuitReq, id: number): any {
-  return axiosQuantum({
+  return axios({
     url: `/circuit/update?id=${id}`,
     headers: {
       'Content-Type': 'application/json',
@@ -59,14 +59,14 @@ export function updateCircuit(data: CircuitReq, id: number): any {
 }
 
 export function deleteCircuit(id: number): any {
-  return axiosQuantum({
+  return axios({
     url: `/circuit/delete?id=${id}`,
     method: 'delete'
   })
 }
 
 export function massActionDeleteCircuit(ids: string): any {
-  return axiosQuantum({
+  return axios({
     url: `/circuit/delete?id=${ids}`,
     method: 'delete'
   })

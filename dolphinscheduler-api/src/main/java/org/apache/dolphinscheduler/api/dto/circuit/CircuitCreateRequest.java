@@ -15,7 +15,7 @@
  * limitations under the License.
  */
 
-package org.apache.dolphinscheduler.quantum.controller;
+package org.apache.dolphinscheduler.api.dto.circuit;
 
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Data;

@@ -15,21 +15,20 @@
  * limitations under the License.
  */
 
-package org.apache.dolphinscheduler.quantum.service.impl;
+package org.apache.dolphinscheduler.api.service.impl;
 
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.dolphinscheduler.api.enums.Status;
-import org.apache.dolphinscheduler.api.service.impl.BaseServiceImpl;
 import org.apache.dolphinscheduler.api.utils.PageInfo;
 import org.apache.dolphinscheduler.api.utils.Result;
 import org.apache.dolphinscheduler.common.constants.Constants;
 import org.apache.dolphinscheduler.dao.entity.Circuit;
 import org.apache.dolphinscheduler.dao.mapper.CircuitMapper;
-import org.apache.dolphinscheduler.quantum.controller.CircuitCreateRequest;
-import org.apache.dolphinscheduler.quantum.controller.CircuitUpdateRequest;
-import org.apache.dolphinscheduler.quantum.service.CircuitService;
+import org.apache.dolphinscheduler.api.dto.circuit.CircuitCreateRequest;
+import org.apache.dolphinscheduler.api.dto.circuit.CircuitUpdateRequest;
+import org.apache.dolphinscheduler.api.service.CircuitService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -37,7 +36,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.io.IOException;
-import java.math.BigInteger;
 import java.text.MessageFormat;
 import java.util.*;
 

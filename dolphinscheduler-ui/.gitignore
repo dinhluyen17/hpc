@@ -26,3 +26,4 @@ node_modules
 dist-ssr
 
 .pnpm-debug.log
+/dist
