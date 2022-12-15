@@ -58,6 +58,9 @@ const Content = defineComponent({
         state.menuOptions.filter((menu: { key: string }) => menu.key === key)[0]
           ?.children || state.menuOptions
       state.isShowSide = route.meta.showSide
+      if (route.matched[1].path === '/projects/:projectType/:projectCode/circuit/:circuitId') {
+        state.isShowSide = false
+      }
     }
 
     watch(useI18n().locale, () => {
@@ -75,10 +78,13 @@ const Content = defineComponent({
           routeStore.setLastRoute(route.path)
 
           state.isShowSide = route.meta.showSide as boolean
+
           if (route.matched[1].path === '/projects/:projectCode') {
             changeMenuOption(state)
           } else if (route.matched[1].path === '/projects/:projectType/:projectCode') {
             changeMenuWithTypeOption(state)
+          } else if (route.matched[1].path === '/projects/:projectType/:projectCode/circuit/:circuitId') {
+            console.log(state)
           }
 
           getSideMenu(state)
