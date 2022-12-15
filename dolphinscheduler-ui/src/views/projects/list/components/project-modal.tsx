@@ -56,7 +56,7 @@ const ProjectModal = defineComponent({
     const cancelModal = () => {
       if (props.statusRef === 0) {
         variables.model.projectName = ''
-        variables.model.type = ''
+        variables.model.type = '0'
         variables.model.description = ''
       } else {
         variables.model.userName = props.row.userName
@@ -78,7 +78,7 @@ const ProjectModal = defineComponent({
       () => {
         if (props.statusRef === 0) {
           variables.model.projectName = ''
-          variables.model.type = ''
+          variables.model.type = '0'
           variables.model.userName = (
             userStore.getUserInfo as UserInfoRes
           ).userName
@@ -142,8 +142,8 @@ const ProjectModal = defineComponent({
           <NFormItem label={t('project.list.project_type')} path='type'>
             <NSelect
               options={selectOptionsType}
-              v-model={[this.model.type, 'value']}
               disabled={this.statusRef !== 0}
+              v-model={[this.model.type, 'value']}
               placeholder={t('project.list.project_type_tips')}
             />
           </NFormItem>

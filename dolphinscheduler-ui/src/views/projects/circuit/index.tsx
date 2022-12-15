@@ -29,7 +29,6 @@ import {
   defineComponent,
   getCurrentInstance,
   onMounted,
-  ref,
   toRefs,
   watch
 } from 'vue'
@@ -88,7 +87,7 @@ const list = defineComponent({
     const handleMassActionExport = () => {
       var zip = new JSZip();
       variables.tableData.map((circuit: CircuitReq) => {
-        const isExists = variables.massActionElement.includes(circuit.id)
+        const isExists = variables.massActionElement.includes(circuit.id as never)
         if (isExists) {
           zip.file(`${circuit.name}.json`, circuit.json);
         }
