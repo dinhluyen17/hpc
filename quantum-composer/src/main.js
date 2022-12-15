@@ -146,12 +146,14 @@ let stateBarCalc = () =>{
 }
 document.addEventListener('contextmenu', function (e) {
     const hoverPos = viewState.getInstance().currentHoverPos;
-    viewState.getInstance().currentPastePos = hoverPos;
-    const element = document.getElementById('paste-menu-popup');
-    element.style.display = 'block';
-    element.style.left = (hoverPos.x - viewState.getInstance().canvasScrollX + viewState.getInstance().canvasBoundingRect.clientX) + "px";
-    element.style.top = (hoverPos.y - viewState.getInstance().canvasScrollY + viewState.getInstance().canvasBoundingRect.clientY - 44) + "px";
-    e.preventDefault();
+    if (hoverPos.x >= 0 && hoverPos.y >= 0) {
+        viewState.getInstance().currentPastePos = hoverPos;
+        const element = document.getElementById('paste-menu-popup');
+        element.style.display = 'block';
+        element.style.left = (hoverPos.x - viewState.getInstance().canvasScrollX + viewState.getInstance().canvasBoundingRect.clientX) + "px";
+        element.style.top = (hoverPos.y - viewState.getInstance().canvasScrollY + viewState.getInstance().canvasBoundingRect.clientY - 44) + "px";
+        e.preventDefault();        
+    }
 }, false);
 document.addEventListener("DOMContentLoaded", function (){
     document.D3_FUNCTION.bar(stateBarCalc())
