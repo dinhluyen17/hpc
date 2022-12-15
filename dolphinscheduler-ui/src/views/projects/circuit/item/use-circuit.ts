@@ -18,7 +18,8 @@
 import { reactive, ref } from 'vue'
 import { useAsyncState } from '@vueuse/core'
 import type { CircuitList } from '@/service/modules/circuits/types'
-import { getCircuit } from '@/service/modules/circuits'
+import { getCircuit, updateCircuit } from '@/service/modules/circuits'
+import { CircuitReq } from '@/service/modules/circuits/types'
 
 export function useCircuit() {
   const variables = reactive({
@@ -39,8 +40,18 @@ export function useCircuit() {
     return state
   }
 
+  const updateCircuitData = (id: number, updateData: any) => {
+    const { state } = useAsyncState(
+      updateCircuit(updateData, id).then((res: any) => {        
+      }),
+      {}
+    )
+    return state
+  }
+
   return {
     variables,
-    getCircuitData
+    getCircuitData,
+    updateCircuitData
   }
 }

@@ -66,19 +66,6 @@ const dragCanvas = document.getElementById("dragCanvas");
 
 // Send message to vuejs
 //window.parent.postMessage('', '*');
-window.addEventListener('message', (e) => {
-    // handle message from vuejs
-    if (e.data) {
-        try {
-            const obj = JSON.parse(e.data);
-            if (obj && obj.messageFrom == 'vuejs') {
-                const actionType = obj.actionType;
-            }
-        } catch(e) {
-        }           
-    }
-}, false);
-
 if (!canvas) {
     throw new Error("Couldn't find 'drawCanvas'");
 }
@@ -107,6 +94,25 @@ const mostRecentStats = new ObservableValue(CircuitStats.EMPTY);
 
 /** @type {!Revision} */
 let revision = Revision.startingAt(displayed.get().snapshot());
+
+window.addEventListener('message', (e) => {
+    // handle message from vuejs
+    if (e.data) {
+        try {
+            const obj = JSON.parse(e.data);
+            if (obj && obj.messageFrom == 'vuejs') {
+                const actionType = obj.actionType;
+                if (actionType == 'loaded_circuit_json') {
+                    if (obj.detailData && obj.detailData.length > 0) {
+                        revision.commit(obj.detailData);
+                    }                                       
+                }
+            }
+        } catch (e) {
+        }
+    }
+}, false);
+
 let stateBarCalc = () =>{
     let qHeight = mostRecentStats.get().finalState.height();
     let qStates = [];
@@ -155,11 +161,6 @@ document.addEventListener("DOMContentLoaded", function (){
 let barDataFilterSwitch = false;
 const stateBarChartFilter = document.getElementById("stateBarChartFilterZero");
 stateBarChartFilter.addEventListener('click',()=>{
-    window.parent.postMessage(JSON.stringify({
-        messageFrom: 'quantum_composer',
-        actionType: '',
-        detailData: ''
-    }));
     barDataFilterSwitch = !barDataFilterSwitch;
     if (barDataFilterSwitch == false){
         stateBarChartFilter.style.color = "black";

@@ -84,6 +84,14 @@ function initUndoRedo(revision, obsIsAnyOverlayShowing) {
             alert("No copy gate!");
         }
     });
+    const saveCircuitBtn = document.getElementById('save-menu-btn');
+    saveCircuitBtn.addEventListener('click', () => {
+        window.parent.postMessage(JSON.stringify({
+            messageFrom: 'quantum_composer',
+            actionType: 'save_circuit_json',
+            detailData: revision.getLatestCommit()
+        }));
+    });
     // document.addEventListener("keydown", e => {
     //     // Don't capture keystrokes while menus are showing.
     //     for (let div of overlay_divs) {
