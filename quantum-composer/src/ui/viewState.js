@@ -73,7 +73,7 @@ const getGateAreaWidth = () => {
   if (viewState.getInstance().expandGateArea) {
     return 320;
   }
-  return 140;
+  return 130;
 };
 const getCodeAreaWidth = () => {
   if (viewState.getInstance().expandCodeArea) {
