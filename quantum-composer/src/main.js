@@ -62,6 +62,7 @@ const canvasDiv = document.getElementById("app");
 /** @type {!HTMLCanvasElement} */
 const canvas = document.getElementById("drawCanvas");
 const dragCanvas = document.getElementById("dragCanvas");
+const gateInfoCanvas = document.getElementById("gateInfo");
 const canvasSim = document.getElementById("drawCanvasSim");
 //noinspection JSValidateTypes
 
@@ -247,13 +248,17 @@ const redrawNow = () => {
     let simArea = document.getElementById("simulate");
     canvasSim.width = size.w + 500;
     canvasSim.height = size.h;
+    gateInfo.width = 500;
+    gateInfo.height = 500;
     let painter = new Painter(canvas, semiStableRng.cur.restarted());
     let dragPainter = new Painter(dragCanvas, semiStableRng.cur.restarted());
+    let gateInfoPainter = new Painter(gateInfoCanvas, semiStableRng.cur.restarted());
     let simPainter = new Painter(canvasSim, semiStableRng.cur.restarted());
     shown.updateArea(painter.paintableArea());
-    shown.paint(painter, stats, dragPainter, simPainter);
+    shown.paint(painter, stats, dragPainter, simPainter, gateInfoPainter);
     painter.paintDeferred();
     dragPainter.paintDeferred();
+    gateInfoPainter.paintDeferred();
     simPainter.paintDeferred();
 
     displayed.get().hand.paintCursor(painter);
@@ -297,6 +302,22 @@ canvasDiv.addEventListener('click', ev => {
         const element = document.getElementById('gate-menu-popup');
         element.style.display = 'none';
     }
+    
+    if (viewState.getInstance().waitingInfoGate) {
+        viewState.getInstance().waitingInfoGate = null;
+        const gateRect = viewState.getInstance().gateMenuPos.gateRect;
+        const element = document.getElementById('gateInfo');
+        element.style.display = 'block';
+        element.style.left = (gateRect.x - viewState.getInstance().canvasScrollX + viewState.getInstance().canvasBoundingRect.clientX + 50) + "px";
+        element.style.top = (gateRect.y - viewState.getInstance().canvasScrollY + viewState.getInstance().canvasBoundingRect.clientY) + "px";
+    }
+    else {
+        const gateInfo = document.getElementById('gateInfo');
+        gateInfo.style.display = 'none';
+        viewState.getInstance().showInfoGate = null;
+        redrawThrottle.trigger();
+    }
+
     let clicked = syncArea(curInspector.withHand(curInspector.hand.withPos(pt))).tryClick();
 
     if (clicked !== undefined) {
@@ -431,7 +452,7 @@ initSizeViews(canvasDiv);
 initUrlCircuitSync(revision);
 //initExports(revision, mostRecentStats, obsIsAnyOverlayShowing.observable());
 //initForge(revision, obsIsAnyOverlayShowing.observable());
-initUndoRedo(revision, obsIsAnyOverlayShowing.observable());
+initUndoRedo(revision, obsIsAnyOverlayShowing.observable(), redrawThrottle);
 //initClear(revision, obsIsAnyOverlayShowing.observable());
 //initMenu(revision, obsIsAnyOverlayShowing.observable());
 initTitleSync(revision);

@@ -20,7 +20,7 @@ import { viewState } from "./viewState.js";
  * @param {!Revision} revision
  * @param {!Observable.<boolean>} obsIsAnyOverlayShowing
  */
-function initUndoRedo(revision, obsIsAnyOverlayShowing) {
+function initUndoRedo(revision, obsIsAnyOverlayShowing, redrawThrottle) {
     // const overlay_divs = [
     //     document.getElementById('gate-forge-div'),
     //     document.getElementById('export-div')
@@ -42,6 +42,7 @@ function initUndoRedo(revision, obsIsAnyOverlayShowing) {
         revision.commit('{"cols":[]}')
     });
 
+    const infoGateBtn = document.getElementById('gate-menu-popup-info-btn');
     const deleteGateBtn = document.getElementById('gate-menu-popup-delete-btn');
     const copyGateBtn = document.getElementById('gate-menu-popup-copy-btn');
     const cutGateBtn = document.getElementById('gate-menu-popup-cut-btn');
@@ -49,6 +50,13 @@ function initUndoRedo(revision, obsIsAnyOverlayShowing) {
 
     const pasteBtn = document.getElementById('paste-menu-popup-btn');
 
+    infoGateBtn.addEventListener('click', () => {
+        const {row, col, gateRect} = viewState.getInstance().gateMenuPos;
+        const symbol = revision.getGateSymbol(row, col);
+        viewState.getInstance().showInfoGate = symbol;
+        viewState.getInstance().waitingInfoGate = symbol;
+        redrawThrottle.trigger();
+    });
     deleteGateBtn.addEventListener('click', () => {
         const {row, col} = viewState.getInstance().gateMenuPos;
         revision.deleteGate(row, col);

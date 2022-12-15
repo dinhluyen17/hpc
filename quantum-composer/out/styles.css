@@ -296,6 +296,13 @@ body {
     padding-top: 3px;
 }
 
+#gateInfo {
+    position: absolute;
+    z-index: 9;
+    width: 500px;
+    height: 500px;
+}
+
 #dragCanvas {
     position: absolute;
     z-index: 9;

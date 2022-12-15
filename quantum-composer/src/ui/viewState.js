@@ -32,6 +32,9 @@ class ViewState {
     this.currentHoverPos = null; 
     this.currentPastePos = null;
 
+    this.waitingInfoGate = null;
+    this.showInfoGate = null;
+
     this.canvasBoundingRect = {
       clientX: 0,
       clientY: 0,
