@@ -58,9 +58,6 @@ const Content = defineComponent({
         state.menuOptions.filter((menu: { key: string }) => menu.key === key)[0]
           ?.children || state.menuOptions
       state.isShowSide = route.meta.showSide
-      if (route.matched[1].path === '/projects/:projectType/:projectCode/circuit/:circuitId') {
-        state.isShowSide = false
-      }
     }
 
     watch(useI18n().locale, () => {

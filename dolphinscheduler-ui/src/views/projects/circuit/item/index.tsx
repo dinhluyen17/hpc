@@ -20,7 +20,7 @@ import { Router, useRoute, useRouter } from 'vue-router'
 import { defineComponent, onBeforeUnmount, onMounted, toRefs, ref, watch, getCurrentInstance } from 'vue'
 import Card from '@/components/card'
 import { useCircuit } from './use-circuit'
-import { NButton, NGradientText, NIcon, NInput, NSpace } from 'naive-ui'
+import { NButton, NGradientText, NIcon, NInput, NSpace} from 'naive-ui'
 import { RollbackOutlined } from '@vicons/antd'
 
 const circuitItem = defineComponent({
@@ -40,7 +40,6 @@ const circuitItem = defineComponent({
       updateCircuitData(variables.data.id, {
         name: variables.data.name
       })
-      console.log(123);
       variables.isChangeName = false
     }
 
@@ -133,7 +132,7 @@ const circuitItem = defineComponent({
     }
   },
   render() {
-    const { t, data, isChangeName } = this;
+    const { t, data } = this;
     return (
       <Card style={{ width: '100%', height: '100%' }}>
         <NSpace justify='space-between' align='center'>
@@ -154,7 +153,6 @@ const circuitItem = defineComponent({
                   v-model={[this.data.name, 'value']}
                   placeholder={t('circuit.detail.change_name_tips')}
                   clearable
-                  onBlur={this.handleExitChangeName}
                 />
                 <NButton size='small' type='primary' onClick={this.handleChangeCircuitName}>
                   {t('circuit.detail.update_circuit_name')}
