@@ -15,55 +15,36 @@
  * limitations under the License.
  */
 
-import { useI18n } from 'vue-i18n'
-import { useRoute, useRouter } from 'vue-router'
-import { NSelect, NSpace, NSwitch } from 'naive-ui'
-import { defineComponent, onBeforeUnmount } from 'vue'
-import { h, reactive, ref } from 'vue'
+import { defineComponent, onBeforeUnmount, onMounted } from 'vue'
+import { ref } from 'vue'
 import Card from '@/components/card'
-import type { CircuitList } from '@/service/modules/circuits/types'
-import { useTable } from './use-table'
-import { onBeforeMount, onMounted, onUnmounted, toRefs, watch } from 'vue'
 
 const circuitItem = defineComponent({
   name: 'circuitItem',
   setup() {
     let quantumRef = ref(null);
-    const { t } = useI18n()
-    const { variables, getData} = useTable()
-    const route = useRoute()
-    const id = route.params.circuitId
 
     const sendMessageToIFrame = () => {
-      // 
       //quantumRef.value.contentWindow.postMessage('message', '*');
     }
+
     // Handle message from Iframe
     const handleReceiveMessage = () => {
     }
-    const requestData = () => {
-      getData({
-        id: id
-      })
-    }
-    onBeforeMount(() => {
-      requestData()
-    })
 
     onMounted(() => {
       window.addEventListener('message', handleReceiveMessage)
     })
+
     onBeforeUnmount(() => {
       window.addEventListener('message', handleReceiveMessage)
     })
+
     return {
-      variables,
-      ...toRefs(variables),
       quantumRef
     }
   },
   render() {
-    const { variables } = this;
     return (
       <Card style={{ width: '100%', height: '100%' }}>
         <iframe
