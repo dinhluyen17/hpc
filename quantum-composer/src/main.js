@@ -177,7 +177,7 @@ stateBarChartFilter.addEventListener('click',()=>{
         document.D3_FUNCTION.bar(stateBarCalc());
     } else {
         stateBarChartFilter.style.color = "red";
-        let barDataFilter = stateBarCalc().filter(val => !val.Probability.includes('0.0000'));
+        let barDataFilter = stateBarCalc().filter(val => !val.Probability.match(/^0.0000$/));
         document.D3_FUNCTION.bar(barDataFilter);
     }
 })
