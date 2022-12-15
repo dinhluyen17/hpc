@@ -1444,12 +1444,11 @@ class DisplayedCircuit {
         let numWire = this.importantWireCount();
         let [colWires, rowWires] = [Math.floor(numWire/2), Math.ceil(numWire/2)];
         let [colCount, rowCount] = [1 << colWires, 1 << rowWires];
-        let wrap = document.getElementById("drawCanvasSim");
-        let {width} = wrap.getBoundingClientRect();
         let topRect = this.gateRect(0, col);
         let bottomRect = this.gateRect(numWire-1, col);
         // let gridRect = new Rect(topRect.x, topRect.y, 0, bottomRect.bottom() - topRect.y);
-        let gridRect = new Rect(colCount == rowCount ? width/4 : width/3, topRect.y, 0, bottomRect.bottom() - topRect.y);
+        let gridRect = new Rect(50, topRect.y, 0, bottomRect.bottom());
+        // let gridRect = new Rect(colCount == rowCount ? width/4 : width/3, topRect.y, 0, bottomRect.bottom() - topRect.y);
         // let gridRect = new Rect(0, topRect.y, 0, bottomRect.bottom() - topRect.y);
         return gridRect.withW(gridRect.h * (colCount/rowCount));
     }
@@ -1688,7 +1687,7 @@ function _drawLabelsReasonablyFast(painter, dy, n, labeller, boundingWidth) {
 let _cachedRowLabelDrawer = new CachablePainting(
     numWire => ({
         width: SUPERPOSITION_GRID_LABEL_SPAN,
-        height: (numWire - 1) * Config.WIRE_SPACING + Config.GATE_RADIUS * 2
+        height: (numWire - 1) * Config.WIRE_SPACING + 45 + numWire + Config.GATE_RADIUS * 2
     }),
     (painter, numWire) => {
         let [colWires, rowWires] = [Math.floor(numWire/2), Math.ceil(numWire/2)];
@@ -1708,7 +1707,7 @@ let _cachedColLabelDrawer = new CachablePainting(
     numWire => {
         let [colWires, rowWires] = [Math.floor(numWire/2), Math.ceil(numWire/2)];
         let [colCount, rowCount] = [1 << colWires, 1 << rowWires];
-        let total_height = (numWire - 1) * Config.WIRE_SPACING + Config.GATE_RADIUS * 2;
+        let total_height = (numWire - 1) * Config.WIRE_SPACING + 45 + numWire + Config.GATE_RADIUS * 2;
         let cellDiameter = total_height / rowCount;
         return {
             width: colCount * cellDiameter,

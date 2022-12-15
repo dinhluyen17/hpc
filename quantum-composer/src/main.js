@@ -95,7 +95,7 @@ const mostRecentStats = new ObservableValue(CircuitStats.EMPTY);
 
 /** @type {!Revision} */
 let revision = Revision.startingAt(displayed.get().snapshot());
-let stateBarCalc = () =>{
+let stateBarCalc = () => {
     let qHeight = mostRecentStats.get().finalState.height();
     let qStates = [];
     for (let i = 0; i < qHeight; i++){
@@ -119,13 +119,19 @@ let stateBarCalc = () =>{
     const probObj = qProb.map((str, index) => ({
         id: index, Probability: qProb[index]
     }))
-    const data = stateObj.map((e,i)=>{
-        let temp = probObj.find(el => el.id === e.id)
-        e.id = temp.Probability
-        e.Probability = e.id
-        delete e.id
-        return e;
-    })
+
+    //Max 12 qubit before lag
+    // const data = stateObj.map((e,i)=>{
+    //     let temp = probObj.find(el => el.id === e.id)
+    //     e.id = temp.Probability
+    //     e.Probability = e.id
+    //     delete e.id
+    //     return e;
+    // })
+
+    //Max ~15 qubit before lag
+    const data2 = stateObj.reduce((a,c) => (a[c.id] = c, a), {})
+    const data = probObj.map(o => Object.assign(o, data2[o.id]))
     return data;
 }
 document.addEventListener('contextmenu', function (e) {
@@ -217,9 +223,7 @@ const redrawNow = () => {
     canvas.width = size.w;
     canvas.height = size.h;
     let simArea = document.getElementById("simulate");
-    // canvasSim.width = 1500;
-    // canvasSim.height = 1500;
-    canvasSim.width = size.w;
+    canvasSim.width = size.w + 500;
     canvasSim.height = size.h;
     let painter = new Painter(canvas, semiStableRng.cur.restarted());
     let dragPainter = new Painter(dragCanvas, semiStableRng.cur.restarted());
