@@ -16,26 +16,20 @@
  */
 
 import { useI18n } from 'vue-i18n'
-import { useRoute, useRouter } from 'vue-router'
-import { NSelect, NSpace, NSwitch } from 'naive-ui'
-import { defineComponent, onBeforeUnmount } from 'vue'
-import { h, reactive, ref } from 'vue'
+import { useRoute } from 'vue-router'
+import { defineComponent, onBeforeUnmount, onMounted, toRefs, ref } from 'vue'
 import Card from '@/components/card'
-import type { CircuitList } from '@/service/modules/circuits/types'
-import { useTable } from './use-table'
-import { onBeforeMount, onMounted, onUnmounted, toRefs, watch } from 'vue'
+import { useCircuit } from './use-circuit'
 
 const circuitItem = defineComponent({
   name: 'circuitItem',
   setup() {
     let quantumRef: any = ref(null);
     const { t } = useI18n()
-    const { variables, getData} = useTable()
+    const { variables, getCircuitData } = useCircuit()
     const route = useRoute()
-    const id = route.params.circuitId
 
     const sendMessageToIFrame = () => {
-      // 
       quantumRef.value.contentWindow.postMessage(JSON.stringify({
         messageFrom: 'vuejs',
         actionType: '',
@@ -54,37 +48,39 @@ const circuitItem = defineComponent({
         }
       }
     }
+
     const requestData = () => {
-      getData({
-        id: id
-      })
+      if (typeof route.params.circuitId === 'string') {
+        getCircuitData(parseInt(route.params.circuitId))
+      }
     }
-    onBeforeMount(() => {
-      requestData()
-    })
 
     onMounted(() => {
+      requestData()
       window.addEventListener('message', handleReceiveMessage)
     })
+
     onBeforeUnmount(() => {
       window.addEventListener('message', handleReceiveMessage)
     })
+
     return {
-      variables,
+      t,
       ...toRefs(variables),
       quantumRef
     }
   },
   render() {
-    const { variables } = this;
+    const { t, data } = this;
     return (
       <Card style={{ width: '100%', height: '100%' }}>
-        <iframe
+        {data.json}
+        {data.json && <iframe
           ref="quantumRef"
           src="/quirk.html"
           style={{ width: '100%', height: '100%' }}
           frameborder="0" >
-        </iframe>
+        </iframe>}
       </Card>
     )
   }

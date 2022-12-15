@@ -15,48 +15,23 @@
  * limitations under the License.
  */
 
-import { h, reactive, ref } from 'vue'
-import { useI18n } from 'vue-i18n'
+import { reactive, ref } from 'vue'
 import { useAsyncState } from '@vueuse/core'
-import ButtonLink from '@/components/button-link'
-import { queryCircuitListPaging } from '@/service/modules/circuits'
-import { parseTime } from '@/common/common'
-import { deleteProject } from '@/service/modules/projects'
-import { format } from 'date-fns'
-import { useRouter } from 'vue-router'
-import {
-  NButton,
-  NEllipsis,
-  NIcon,
-  NPopconfirm,
-  NSpace,
-  NTooltip
-} from 'naive-ui'
-import {
-  COLUMN_WIDTH_CONFIG,
-  calculateTableWidth,
-  DefaultTableWidth
-} from '@/common/column-width-config'
-import type { Router } from 'vue-router'
-import type { CircuitRes } from '@/service/modules/circuits/types'
-import { DeleteOutlined, EditOutlined } from '@vicons/antd'
+import type { CircuitList } from '@/service/modules/circuits/types'
 import { getCircuit } from '@/service/modules/circuits'
 
-export function useTable() {
-  const { t } = useI18n()
-  const router: Router = useRouter()
-
+export function useCircuit() {
   const variables = reactive({
-    data: [],
+    data: {} as CircuitList,
     loadingRef: ref(false)
   })
 
-  const getData = (params: any) => {
+  const getCircuitData = (id: number) => {
     if (variables.loadingRef) return
     variables.loadingRef = true
     const { state } = useAsyncState(
-      getCircuit(params).then((res: any) => {
-        variables.data = res as CircuitList
+      getCircuit(id).then((res: CircuitList) => {
+        variables.data = res
         variables.loadingRef = false
       }),
       {}
@@ -66,6 +41,6 @@ export function useTable() {
 
   return {
     variables,
-    getData
+    getCircuitData
   }
 }

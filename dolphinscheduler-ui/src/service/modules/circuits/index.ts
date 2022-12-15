@@ -16,13 +16,12 @@
  */
 
 import { axios } from '@/service/service'
-import { GetReq, ListReq, CircuitReq } from './types'
+import { ListReq, CircuitReq } from './types'
 
-export function getCircuit(params: GetReq): any {
+export function getCircuit(id: number): any {
   return axios({
-    url: '/circuit/get',
-    method: 'get',
-    params
+    url: `/circuit/get?id=${id}`,
+    method: 'get'
   })
 }
 
