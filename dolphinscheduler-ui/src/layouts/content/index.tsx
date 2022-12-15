@@ -37,6 +37,7 @@ const Content = defineComponent({
     const {
       state,
       changeMenuOption,
+      changeMenuWithTypeOption,
       changeHeaderMenuOptions,
       changeUserDropdown
     } = useDataList()
@@ -45,6 +46,7 @@ const Content = defineComponent({
     onMounted(() => {
       locale.value = localesStore.getLocales
       changeMenuOption(state)
+      changeMenuWithTypeOption(state)
       changeHeaderMenuOptions(state)
       getSideMenu(state)
       changeUserDropdown(state)
@@ -56,10 +58,14 @@ const Content = defineComponent({
         state.menuOptions.filter((menu: { key: string }) => menu.key === key)[0]
           ?.children || state.menuOptions
       state.isShowSide = route.meta.showSide
+      if (route.matched[1].path === '/projects/:projectType/:projectCode/circuit/:circuitId') {
+        state.isShowSide = false
+      }
     }
 
     watch(useI18n().locale, () => {
       changeMenuOption(state)
+      changeMenuWithTypeOption(state)
       changeHeaderMenuOptions(state)
       getSideMenu(state)
       changeUserDropdown(state)
@@ -72,8 +78,13 @@ const Content = defineComponent({
           routeStore.setLastRoute(route.path)
 
           state.isShowSide = route.meta.showSide as boolean
+
           if (route.matched[1].path === '/projects/:projectCode') {
             changeMenuOption(state)
+          } else if (route.matched[1].path === '/projects/:projectType/:projectCode') {
+            changeMenuWithTypeOption(state)
+          } else if (route.matched[1].path === '/projects/:projectType/:projectCode/circuit/:circuitId') {
+            console.log(state)
           }
 
           getSideMenu(state)
@@ -85,9 +96,9 @@ const Content = defineComponent({
           ) as string
           sideKeyRef.value = currentSide.includes(':projectCode')
             ? currentSide.replace(
-                ':projectCode',
-                route.params.projectCode as string
-              )
+              ':projectCode',
+              route.params.projectCode as string
+            )
             : currentSide
         }
       },
@@ -97,6 +108,7 @@ const Content = defineComponent({
     return {
       ...toRefs(state),
       changeMenuOption,
+      changeMenuWithTypeOption,
       sideKeyRef
     }
   },

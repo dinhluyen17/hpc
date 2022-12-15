@@ -44,7 +44,7 @@ export const COLUMN_WIDTH_CONFIG = {
     width: 120
   },
   type: {
-    width: 130
+    width: 150
   },
   version: {
     width: 80

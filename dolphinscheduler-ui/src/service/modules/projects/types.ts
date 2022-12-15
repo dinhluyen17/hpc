@@ -53,6 +53,8 @@ interface ProjectList {
   perm: number
   defCount: number
   instRunningCount: number
+  type: number
+  projectCode: number
 }
 
 interface ProjectRes {

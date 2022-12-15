@@ -32,6 +32,7 @@ export function useForm(
   const resetForm = () => {
     variables.model = {
       projectName: '',
+      type: '0',
       description: '',
       userName: (userStore.getUserInfo as UserInfoRes).userName
     }
@@ -41,6 +42,7 @@ export function useForm(
     projectFormRef: ref(),
     model: {
       projectName: '',
+      type: '0',
       description: '',
       userName: (userStore.getUserInfo as UserInfoRes).userName
     },
@@ -52,6 +54,15 @@ export function useForm(
         validator() {
           if (variables.model.projectName === '') {
             return new Error(t('project.list.project_tips'))
+          }
+        }
+      },
+      type: {
+        required: true,
+        trigger: ['input', 'blur'],
+        validator() {
+          if (variables.model.type === '') {
+            return new Error(t('project.list.project_type_tips'))
           }
         }
       },

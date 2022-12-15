@@ -2,6 +2,7 @@
   "name": "dolphinscheduler-ui",
   "version": "0.0.0",
   "scripts": {
+    "rebuild-quantum-composer": "sh ./rebuild_quantum_composer.sh",
     "dev": "vite",
     "build:prod": "vue-tsc --noEmit && vite build --mode production",
     "preview": "vite preview",
@@ -17,6 +18,7 @@
     "date-fns-tz": "^1.3.7",
     "echarts": "^5.3.3",
     "js-cookie": "^3.0.1",
+    "jszip": "^3.10.1",
     "lodash": "^4.17.21",
     "monaco-editor": "^0.34.0",
     "naive-ui": "2.30.7",

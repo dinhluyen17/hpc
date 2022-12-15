@@ -132,11 +132,11 @@ class JavaGate:
         )
 
     def create_or_grant_project(
-        self, user: str, name: str, description: Optional[str] = None
+        self, user: str, name: str, description: Optional[str] = None, type: Optional[int] = None
     ):
         """Create or grant project through java gateway."""
         return self.java_gateway.entry_point.createOrGrantProject(
-            user, name, description
+            user, name, description, type
         )
 
     def query_project_by_name(self, user: str, name: str):

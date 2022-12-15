@@ -80,7 +80,8 @@ public class ProjectController extends BaseController {
     @Operation(summary = "create", description = "CREATE_PROJECT_NOTES")
     @Parameters({
             @Parameter(name = "projectName", description = "PROJECT_NAME", schema = @Schema(implementation = String.class)),
-            @Parameter(name = "description", description = "PROJECT_DESC", schema = @Schema(implementation = String.class))
+            @Parameter(name = "description", description = "PROJECT_DESC", schema = @Schema(implementation = String.class)),
+            @Parameter(name = "type", description = "PROJECT_TYPE", schema = @Schema(implementation = Integer.class))
     })
     @PostMapping()
     @ResponseStatus(HttpStatus.CREATED)
@@ -88,8 +89,9 @@ public class ProjectController extends BaseController {
     @AccessLogAnnotation(ignoreRequestArgs = "loginUser")
     public Result createProject(@Parameter(hidden = true) @RequestAttribute(value = Constants.SESSION_USER) User loginUser,
                                 @RequestParam("projectName") String projectName,
-                                @RequestParam(value = "description", required = false) String description) {
-        return projectService.createProject(loginUser, projectName, description);
+                                @RequestParam(value = "description", required = false) String description,
+                                @RequestParam(value = "type", required = false) Integer type) {
+        return projectService.createProject(loginUser, projectName, description, type);
     }
 
     /**
