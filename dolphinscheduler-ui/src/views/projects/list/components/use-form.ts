@@ -32,7 +32,7 @@ export function useForm(
   const resetForm = () => {
     variables.model = {
       projectName: '',
-      type: '',
+      type: '0',
       description: '',
       userName: (userStore.getUserInfo as UserInfoRes).userName
     }
@@ -42,7 +42,7 @@ export function useForm(
     projectFormRef: ref(),
     model: {
       projectName: '',
-      type: '',
+      type: '0',
       description: '',
       userName: (userStore.getUserInfo as UserInfoRes).userName
     },
