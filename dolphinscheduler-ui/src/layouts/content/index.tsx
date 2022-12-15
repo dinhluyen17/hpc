@@ -83,8 +83,6 @@ const Content = defineComponent({
             changeMenuOption(state)
           } else if (route.matched[1].path === '/projects/:projectType/:projectCode') {
             changeMenuWithTypeOption(state)
-          } else if (route.matched[1].path === '/projects/:projectType/:projectCode/circuit/:circuitId') {
-            console.log(state)
           }
 
           getSideMenu(state)
