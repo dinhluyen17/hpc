@@ -25,33 +25,45 @@ const circuitItem = defineComponent({
   name: 'circuitItem',
   setup() {
     let quantumRef: any = ref(null);
+    let isIFrameReady: any = ref(false);
+
     const { t } = useI18n()
     const { variables, getCircuitData, updateCircuitData } = useCircuit()
     const route = useRoute()
 
     const sendMessageToIFrame = (actionType: string, detailData: string) => {
-      quantumRef.value.contentWindow.postMessage(JSON.stringify({
-        messageFrom: 'vuejs',
-        actionType,
-        detailData
-      }));
+      if (isIFrameReady.value) {
+        quantumRef.value.contentWindow.postMessage(JSON.stringify({
+          messageFrom: 'vuejs',
+          actionType,
+          detailData
+        }));
+      }
     }
-    // Handle message from Iframe
+    
     const handleReceiveMessage = (e: any) => {
       if (e.data) {
         try {
           const obj = JSON.parse(e.data);
           if (obj && obj.messageFrom == 'quantum_composer') {
             const actionType = obj.actionType;
-            if (actionType == 'save_circuit_json') {
-              if (typeof route.params.circuitId === 'string') {
-                updateCircuitData(parseInt(route.params.circuitId), {
-                  json: obj.detailData
-                })
-              }
+            switch (actionType) {
+              case 'setup_finish':
+                isIFrameReady.value = true;
+                if (variables.data.json) {
+                  sendMessageToIFrame('loaded_circuit_json', variables.data.json);
+                }
+                break;
+              case 'save_circuit_json':
+                if (typeof route.params.circuitId === 'string') {
+                  updateCircuitData(parseInt(route.params.circuitId), {
+                    json: obj.detailData
+                  })
+                }
+                break;
             }
           }
-        } catch (e) {
+        } catch (ex) {
         }
       }
     }
@@ -72,8 +84,8 @@ const circuitItem = defineComponent({
     })
 
     watch(
-      ()=>variables.data, 
-      ()=> {
+      () => variables.data,
+      () => {
         sendMessageToIFrame('loaded_circuit_json', variables.data.json);
       }
     );

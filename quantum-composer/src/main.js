@@ -64,8 +64,6 @@ const canvas = document.getElementById("drawCanvas");
 const dragCanvas = document.getElementById("dragCanvas");
 //noinspection JSValidateTypes
 
-// Send message to vuejs
-//window.parent.postMessage('', '*');
 if (!canvas) {
     throw new Error("Couldn't find 'drawCanvas'");
 }
@@ -111,7 +109,7 @@ window.addEventListener('message', (e) => {
         } catch (e) {
         }
     }
-}, false);
+});
 
 let stateBarCalc = () =>{
     let qHeight = mostRecentStats.get().finalState.height();
@@ -447,3 +445,7 @@ setTimeout(() => {
         console.error(ex);
     }
 }, 0);
+window.parent.postMessage(JSON.stringify({
+    messageFrom: 'quantum_composer',
+    actionType: 'setup_finish'
+}));
