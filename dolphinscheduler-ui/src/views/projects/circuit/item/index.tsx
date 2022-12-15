@@ -28,7 +28,7 @@ import { onBeforeMount, onMounted, onUnmounted, toRefs, watch } from 'vue'
 const circuitItem = defineComponent({
   name: 'circuitItem',
   setup() {
-    let quantumRef = ref(null);
+    let quantumRef: any = ref(null);
     const { t } = useI18n()
     const { variables, getData} = useTable()
     const route = useRoute()
@@ -36,10 +36,23 @@ const circuitItem = defineComponent({
 
     const sendMessageToIFrame = () => {
       // 
-      //quantumRef.value.contentWindow.postMessage('message', '*');
+      quantumRef.value.contentWindow.postMessage(JSON.stringify({
+        messageFrom: 'vuejs',
+        actionType: '',
+        detailData: ''
+      }));
     }
     // Handle message from Iframe
-    const handleReceiveMessage = () => {
+    const handleReceiveMessage = (e: any) => {
+      if (e.data) {
+        try {
+          const obj = JSON.parse(e.data);
+          if (obj && obj.messageFrom == 'quantum_composer') {
+            const actionType = obj.actionType;
+          }
+        } catch (e) {
+        }
+      }
     }
     const requestData = () => {
       getData({

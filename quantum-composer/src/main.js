@@ -66,8 +66,17 @@ const dragCanvas = document.getElementById("dragCanvas");
 
 // Send message to vuejs
 //window.parent.postMessage('', '*');
-window.addEventListener('message', () => {
+window.addEventListener('message', (e) => {
     // handle message from vuejs
+    if (e.data) {
+        try {
+            const obj = JSON.parse(e.data);
+            if (obj && obj.messageFrom == 'vuejs') {
+                const actionType = obj.actionType;
+            }
+        } catch(e) {
+        }           
+    }
 }, false);
 
 if (!canvas) {
@@ -146,6 +155,11 @@ document.addEventListener("DOMContentLoaded", function (){
 let barDataFilterSwitch = false;
 const stateBarChartFilter = document.getElementById("stateBarChartFilterZero");
 stateBarChartFilter.addEventListener('click',()=>{
+    window.parent.postMessage(JSON.stringify({
+        messageFrom: 'quantum_composer',
+        actionType: '',
+        detailData: ''
+    }));
     barDataFilterSwitch = !barDataFilterSwitch;
     if (barDataFilterSwitch == false){
         stateBarChartFilter.style.color = "black";
