@@ -54,6 +54,40 @@ export default {
       }
     },
     {
+      path: '/projects/:projectType/:projectCode',
+      name: 'projects-quantum-overview',
+      component: components['projects-overview'],
+      meta: {
+        title: '项目概览',
+        activeMenu: 'projects',
+        showSide: true,
+        auth: []
+      }
+    },
+    {
+      path: '/projects/:projectType/:projectCode/circuit',
+      name: 'projects-circuit',
+      component: components['projects-circuit'],
+      meta: {
+        title: 'Circuit',
+        activeMenu: 'projects',
+        showSide: true,
+        auth: []
+      }
+    },
+    {
+      path: '/projects/:projectType/:projectCode/circuit/:circuitId',
+      name: 'projects-circuit-item',
+      component: components['projects-circuit-item'],
+      meta: {
+        title: 'Circuit item',
+        activeMenu: 'projects',
+        activeSide: '/projects/:projectCode/circuit',
+        showSide: true,
+        auth: []
+      }
+    },
+    {
       path: '/projects/:projectCode/workflow/relation',
       name: 'workflow-relation',
       component: components['projects-workflow-relation'],

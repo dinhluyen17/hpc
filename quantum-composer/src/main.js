@@ -64,6 +64,7 @@ const canvas = document.getElementById("drawCanvas");
 const dragCanvas = document.getElementById("dragCanvas");
 const canvasSim = document.getElementById("drawCanvasSim");
 //noinspection JSValidateTypes
+
 if (!canvas) {
     throw new Error("Couldn't find 'drawCanvas'");
 }
@@ -95,7 +96,26 @@ const mostRecentStats = new ObservableValue(CircuitStats.EMPTY);
 
 /** @type {!Revision} */
 let revision = Revision.startingAt(displayed.get().snapshot());
-let stateBarCalc = () => {
+
+window.addEventListener('message', (e) => {
+    // handle message from vuejs
+    if (e.data) {
+        try {
+            const obj = JSON.parse(e.data);
+            if (obj && obj.messageFrom == 'vuejs') {
+                const actionType = obj.actionType;
+                if (actionType == 'loaded_circuit_json') {
+                    if (obj.detailData && obj.detailData.length > 0) {
+                        revision.commit(obj.detailData);
+                    }                                       
+                }
+            }
+        } catch (e) {
+        }
+    }
+});
+
+let stateBarCalc = () =>{
     let qHeight = mostRecentStats.get().finalState.height();
     let qStates = [];
     for (let i = 0; i < qHeight; i++){
@@ -136,12 +156,14 @@ let stateBarCalc = () => {
 }
 document.addEventListener('contextmenu', function (e) {
     const hoverPos = viewState.getInstance().currentHoverPos;
-    viewState.getInstance().currentPastePos = hoverPos;
-    const element = document.getElementById('paste-menu-popup');
-    element.style.display = 'block';
-    element.style.left = (hoverPos.x - viewState.getInstance().canvasScrollX + viewState.getInstance().canvasBoundingRect.clientX) + "px";
-    element.style.top = (hoverPos.y - viewState.getInstance().canvasScrollY + viewState.getInstance().canvasBoundingRect.clientY - 44) + "px";
-    e.preventDefault();
+    if (hoverPos.x >= 0 && hoverPos.y >= 0) {
+        viewState.getInstance().currentPastePos = hoverPos;
+        const element = document.getElementById('paste-menu-popup');
+        element.style.display = 'block';
+        element.style.left = (hoverPos.x - viewState.getInstance().canvasScrollX + viewState.getInstance().canvasBoundingRect.clientX) + "px";
+        element.style.top = (hoverPos.y - viewState.getInstance().canvasScrollY + viewState.getInstance().canvasBoundingRect.clientY - 44) + "px";
+        e.preventDefault();        
+    }
 }, false);
 document.addEventListener("DOMContentLoaded", function (){
     document.D3_FUNCTION.bar(stateBarCalc())
@@ -477,3 +499,7 @@ document.getElementById("simulateTab").addEventListener('click', () => {
         clientY: canvasBox.top
     }
 });
+window.parent.postMessage(JSON.stringify({
+    messageFrom: 'quantum_composer',
+    actionType: 'setup_finish'
+}));

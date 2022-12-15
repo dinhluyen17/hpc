@@ -13,4 +13,35 @@
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * See the License for the specific language governing permissions and
  * limitations under the License.
-*/
+ */
+
+package org.apache.dolphinscheduler.api.dto.circuit;
+
+import io.swagger.v3.oas.annotations.media.Schema;
+import lombok.Data;
+
+import java.math.BigInteger;
+
+/**
+ * circuit update request
+ */
+@Data
+public class CircuitUpdateRequest {
+    @Schema(example = "cir123")
+    private String name;
+
+    @Schema(example = "this is a circuit")
+    private String description;
+
+    @Schema(example = "{json}")
+    private String json;
+
+    @Schema(example = "qasm")
+    private String qasm;
+
+    @Schema(example = "qiskit")
+    private String qiskit;
+
+    @Schema(example = "1")
+    private Long projectCode;
+}

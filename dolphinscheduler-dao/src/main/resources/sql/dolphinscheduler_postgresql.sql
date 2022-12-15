@@ -571,6 +571,7 @@ CREATE TABLE t_ds_project (
   id int NOT NULL  ,
   name varchar(100) DEFAULT NULL ,
   code bigint NOT NULL,
+  type int,
   description varchar(255) DEFAULT NULL ,
   user_id int DEFAULT NULL ,
   flag int DEFAULT '1' ,
@@ -977,9 +978,13 @@ DROP SEQUENCE IF EXISTS t_ds_worker_group_id_sequence;
 CREATE SEQUENCE  t_ds_worker_group_id_sequence;
 ALTER TABLE t_ds_worker_group ALTER COLUMN id SET DEFAULT NEXTVAL('t_ds_worker_group_id_sequence');
 
+DROP SEQUENCE IF EXISTS t_ds_circuit_id_sequence;
+CREATE SEQUENCE  t_ds_circuit_id_sequence;
+ALTER TABLE t_ds_circuit ALTER COLUMN id SET DEFAULT NEXTVAL('t_ds_circuit_id_sequence');
+
 -- Records of t_ds_user?user : admin , password : dolphinscheduler123
 INSERT INTO t_ds_user(user_name, user_password, user_type, email, phone, tenant_id, state, create_time, update_time, time_zone)
-VALUES ('admin', '7ad2410b2f4c074479a8937a28a22b8f', '0', 'xxx@qq.com', '', '0', 1, '2018-03-27 15:48:50', '2018-10-24 17:40:22', null);
+VALUES ('admin', '7ad2410b2f4c074479a8937a28a22b8f', '0', 'admin@admin.com', '', '0', 1, '2022-03-27 15:48:50', '2022-10-24 17:40:22', null);
 
 -- Records of t_ds_alertgroup, default admin warning group
 INSERT INTO t_ds_alertgroup(alert_instance_ids, create_user_id, group_name, description, create_time, update_time)
@@ -990,7 +995,7 @@ INSERT INTO t_ds_queue(queue_name, queue, create_time, update_time)
 VALUES ('default', 'default', '2018-11-29 10:22:33', '2018-11-29 10:22:33');
 
 -- Records of t_ds_queue,default queue name : default
-INSERT INTO t_ds_version(version) VALUES ('1.4.0');
+INSERT INTO t_ds_version(version) VALUES ('3.1.0');
 
 --
 -- Table structure for table t_ds_plugin_define
@@ -1982,4 +1987,24 @@ CREATE TABLE t_ds_fav_task
     task_type varchar(64) NOT NULL,
     user_id   int         NOT NULL,
     PRIMARY KEY (id)
+);
+
+--
+-- Table structure for table t_ds_circuit
+--
+DROP TABLE IF EXISTS t_ds_circuit;
+CREATE TABLE t_ds_circuit (
+                              id           serial not null,
+                              user_id      integer not null,
+                              name         varchar,
+                              description  varchar,
+                              json         varchar,
+                              qasm         varchar,
+                              qiskit       varchar,
+                              create_time  timestamp,
+                              update_time  timestamp,
+                              project_code bigint,
+
+                              PRIMARY KEY (id),
+                              CONSTRAINT t_ds_circuit_un UNIQUE (id)
 );
