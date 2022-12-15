@@ -236,7 +236,6 @@
 
     function handleSearch() {
       let search = document.getElementById("gate-area-header-search").value.toLowerCase();
-      console.log("search: ", search);
 
       const listGates = document.querySelectorAll('.list-view')
       const gridGates = document.querySelectorAll('.grid-view')
@@ -267,14 +266,20 @@
           item.style.display = "block"
         }) 
       }
-
     }
 
     function toggleLeftSideBar() {
-      let state = document.getElementById("gate-area-header-close-btn")
-      console.log("state", state);
+      let state = document.getElementById("gate-area-header-close-btn") 
       if(state.getAttribute("data-gate") == "show") {
         state.setAttribute("data-gate", "hide")
+        const gateList = document.querySelectorAll('.gateList')
+        const gateGrid = document.querySelectorAll('.gateGrid')
+        gateList.forEach(item => {
+          item.style.display = 'block'
+        })      
+        gateGrid.forEach(item => {
+          item.style.display = 'none'
+        })
       } else {
         state.setAttribute("data-gate", "show")
       }
@@ -295,7 +300,7 @@
 
     <!-- INCLUDE SOURCE PART -->
 
-    //toggle show and hide a list in a gate group
+    //toggle show and hide gate list in a specific gate group
   </script>
     <script language="JavaScript" defer>
     let buttons = document.getElementsByTagName('button'); //returns a nodelist
