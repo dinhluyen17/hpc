@@ -216,6 +216,9 @@ const redrawNow = () => {
     let size = desiredCanvasSizeFor(shown);
     canvas.width = size.w;
     canvas.height = size.h;
+    let simArea = document.getElementById("simulate");
+    // canvasSim.width = 1500;
+    // canvasSim.height = 1500;
     canvasSim.width = size.w;
     canvasSim.height = size.h;
     let painter = new Painter(canvas, semiStableRng.cur.restarted());

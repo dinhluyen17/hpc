@@ -377,3 +377,18 @@ body {
     width: 88px;
     height: 44px;
 }
+
+#circuitTab {
+    cursor: pointer;
+}
+
+#simulateTab {
+    cursor: pointer;
+}
+
+/*#simulateOutput {*/
+/*    float: right;*/
+/*    right: 10%;*/
+/*    column-count: 3;*/
+/*    position: relative;*/
+/*}*/

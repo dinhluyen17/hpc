@@ -96,8 +96,12 @@
       <button id="paste-menu-popup-btn">Paste</button>
     </div>
     <div class="simulate-area hidden" id="simulate">
-      <canvas id="drawCanvasSim">
-      </canvas>
+      <h3>Simulation Amplitudes</h3>
+      <div class="simWrapper">
+        <canvas id="drawCanvasSim">
+        </canvas>
+<!--        <div id="simulateOutput"></div>-->
+      </div>
     </div>
   </div>
 
@@ -202,6 +206,15 @@
                           .style('top', `${d3.event.layerY}px`);
                 })
                 .on("mouseout",()=>tooltip.transition().duration(500).style("opacity",0))
+        // let dataOutput = document.createElement("ul");
+        // barData.forEach(item => {
+        //   if (item.Probability !== 'NaN' && item.Probability !== '0.0000') {
+        //     let output = document.createElement("li");
+        //     output.innerHTML = item.State + ": " + item.Probability + "% <br/>";
+        //     dataOutput.appendChild(output);
+        //   }
+        // })
+        // document.getElementById("simulateOutput").appendChild(dataOutput);
       }
     }
   </script>
