@@ -68,6 +68,8 @@ const updateSizeViews = (parentDiv) => {
   viewState.getInstance().canvasBoundingRect = {
     clientX: canvasBox.left,
     clientY: canvasBox.top,
+    width: canvasBox.width,
+    height: canvasBox.height
   }
 }
 
