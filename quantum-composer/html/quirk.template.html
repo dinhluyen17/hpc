@@ -79,6 +79,8 @@
         <div class="circuit-area-chart" id="circuit-chart">
           <button id="circuit-area-chart-close-btn">X</button>
           <button id="stateBarChartFilterZero">Hide zero states</button>
+<!--          <input type="checkbox" id="stateBarBool">-->
+<!--          <label>Use bar graph when above 12 qubits (may cause performance issues)</label>-->
           <div id="stateBarChart"></div>
           <div id="stateVectorChart"></div>
         </div>
@@ -110,7 +112,17 @@
         <canvas id="drawCanvasSim">
         </canvas>
         <div id="simulateOutput">
-          <ul id="dataOutput"></ul>
+<!--          <ul id="dataOutput"></ul>-->
+          <table id="vectorTable">
+            <tr>
+              <th>State</th>
+              <th>Vector</th>
+              <th>Phase angle</th>
+              <th>Probability</th>
+            </tr>
+            <tbody id="dataOutput">
+            </tbody>
+          </table>
         </div>
       </div>
     </div>
@@ -171,8 +183,12 @@
                 // .domain([0,100])
                 .range([height, 0])
                 .domain([0, d3.max(barData, function (d){ return Math.ceil(d.Probability)})])
+                .nice(3)
+
         svg.append("g")
-                .call(d3.axisLeft(y));
+                .call(d3.axisLeft(y)
+                        .ticks(4)
+                );
         svg.append("text")
                 .attr("class","y label")
                 .attr("text-anchor","end")
@@ -217,25 +233,24 @@
                           .style('top', `${d3.event.layerY}px`);
                 })
                 .on("mouseout",()=>tooltip.transition().duration(500).style("opacity",0))
-        const dataWrap = document.getElementById("simulateOutput");
-        // let dataOutput = document.createElement("ul");
-        let dataOutput = document.getElementById("dataOutput");
-        dataOutput.innerHTML = "";
-        dataOutput.style.height = "800px";
-        dataOutput.style.overflow = "auto";
-        barData.forEach(item => {
-          if (item.Probability !== 'NaN' && item.Probability !== '0.0000') {
-            let output = document.createElement("li");
-            output.innerHTML = item.State + ": " + item.Probability + "% <br/>";
-            dataOutput.appendChild(output);
-          }
-        })
-        if (dataOutput.getElementsByTagName("li").length > 15) {
-          dataOutput.style.columnCount = "2"
-        } else {
-          dataOutput.style.columnCount = "1";
-        }
-        dataWrap.appendChild(dataOutput);
+        // const dataWrap = document.getElementById("simulateOutput");
+        // let dataOutput = document.getElementById("dataOutput");
+        // dataOutput.innerHTML = "";
+        // dataOutput.style.height = "800px";
+        // dataOutput.style.overflow = "auto";
+        // barData.forEach(item => {
+        //   if (item.Probability !== 'NaN' && item.Probability !== '0.0000') {
+        //     let output = document.createElement("li");
+        //     output.innerHTML = item.State + ": " + item.Probability + "% <br/>";
+        //     dataOutput.appendChild(output);
+        //   }
+        // })
+        // if (dataOutput.getElementsByTagName("li").length > 15) {
+        //   dataOutput.style.columnCount = "2"
+        // } else {
+        //   dataOutput.style.columnCount = "1";
+        // }
+        // dataWrap.appendChild(dataOutput);
       }
     }
   </script>

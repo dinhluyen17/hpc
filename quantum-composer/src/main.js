@@ -118,11 +118,13 @@ window.addEventListener('message', (e) => {
 
 let stateBarCalc = () =>{
     let qHeight = mostRecentStats.get().finalState.height();
+    let qNumWire = mostRecentStats.get().circuitDefinition.numWires;
     let qStates = [];
     for (let i = 0; i < qHeight; i++){
-        qStates[i] = Util.bin(i,mostRecentStats.get().circuitDefinition.numWires);
+        qStates[i] = Util.bin(i,qNumWire);
     }
     let qProb = [];
+    let qVector = [];
     for (let i = 0; i < mostRecentStats.get().finalState._buffer.length; i++) {
         let x = mostRecentStats.get().finalState._buffer;
         let y = x[i];
@@ -130,6 +132,7 @@ let stateBarCalc = () =>{
         if (i % 2 == 0){
             let k = i/2;
             let j = Math.pow(y,2) + Math.pow(z, 2);
+            qVector[k] = (y < 0 ? "":"+") + y.toFixed(5) + "+" + z.toFixed(5) + "i";
             qProb[k] = (j*100).toFixed(4);
         }
     }
@@ -151,8 +154,18 @@ let stateBarCalc = () =>{
     // })
 
     //Max ~15 qubit before lag
-    const data2 = stateObj.reduce((a,c) => (a[c.id] = c, a), {})
-    const data = probObj.map(o => Object.assign(o, data2[o.id]))
+    let data = {}
+    // if (qNumWire <= 12 || qNumWire > 12 && document.getElementById("stateBarBool").checked) {
+    //     const data2 = stateObj.reduce((a, c) => (a[c.id] = c, a), {})
+    //     data = probObj.map(o => Object.assign(o, data2[o.id]))
+    // } else {
+    //     data = [
+    //         {id: 0, Probability: "100.0000", State: "0"},
+    //         {id: 1, Probability: "0.0000", State: "1"}
+    //     ]
+    // }
+    const data2 = stateObj.reduce((a, c) => (a[c.id] = c, a), {})
+    data = probObj.map(o => Object.assign(o, data2[o.id]))
     return data;
 }
 document.addEventListener('contextmenu', function (e) {
@@ -246,7 +259,7 @@ const redrawNow = () => {
     canvas.width = size.w;
     canvas.height = size.h;
     let simArea = document.getElementById("simulate");
-    canvasSim.width = size.w + 500;
+    canvasSim.width = size.w + 250;
     canvasSim.height = size.h;
     gateInfo.width = 500;
     gateInfo.height = 500;
@@ -519,6 +532,48 @@ document.getElementById("simulateTab").addEventListener('click', () => {
         clientX: canvasBox.left,
         clientY: canvasBox.top
     }
+    let qHeight = mostRecentStats.get().finalState.height();
+    let qNumWire = mostRecentStats.get().circuitDefinition.numWires;
+    let qStates = [];
+    for (let i = 0; i < qHeight; i++){
+        qStates[i] = Util.bin(i,qNumWire);
+    }
+    let qProb = [];
+    let qVector = [];
+    let qPhase = [];
+    for (let i = 0; i < mostRecentStats.get().finalState._buffer.length; i++) {
+        let x = mostRecentStats.get().finalState._buffer;
+        let y = x[i];
+        let z = x[i + 1];
+        if (i % 2 == 0){
+            let k = i/2;
+            let j = Math.pow(y,2) + Math.pow(z, 2);
+            qVector[k] = (y < 0 ? "-":"+") + y.toFixed(5) + (z < 0 ? "-":"+") + z.toFixed(5) + "i";
+            qPhase[k] = Math.atan2(z,y).toFixed(5) + "°";
+            qProb[k] = (j*100).toFixed(4);
+        }
+    }
+    let printVect = document.getElementById("dataOutput");
+    // qVector.forEach(i => {
+    //     let output = document.createElement("li");
+    //     output.innerText = i;
+    //     printVect.appendChild(output);
+    // })
+    printVect.innerHTML = "";
+    for (let i = 0; i < qVector.length; i++){
+        let output = document.createElement("tr");
+        let state = document.createElement("td");
+        state.innerText = qStates[i];
+        let vect = document.createElement("td");
+        vect.innerText = qVector[i];
+        let rad = document.createElement("td");
+        rad.innerText = qPhase[i];
+        let prob = document.createElement("td");
+        prob.innerText = qProb[i] + "%";
+        output.append(state,vect,rad,prob)
+        printVect.appendChild(output)
+    }
+    document.getElementById("vectorTable").appendChild(printVect)
 });
 window.parent.postMessage(JSON.stringify({
     messageFrom: 'quantum_composer',
