@@ -159,7 +159,7 @@ class DisplayedToolbox {
                 let rect = this.gateDrawRect(groupIndex, gateIndex);
                 // Phu: Change logic
                 // if (gate !== undefined && rect.containsPoint(pt)) {
-                if (gate !== undefined && gate.symbol == document.GRAB_GATE) {
+                if (gate !== undefined && gate.serializedId == document.GRAB_GATE) {
                     return {groupIndex, gateIndex, gate, rect};
                 }
             }

@@ -62,7 +62,7 @@ const initGateViews = () => {
         const gateView = document.createElement('span');
         gateView.setAttribute("class", "list-view tooltip-wrap")
         gateView.innerHTML = `
-                      <svg onmousedown="grabGate('${gate.symbol}')" viewBox="0 0 40 40" xmlns="http://www.w3.org/2000/svg" width="40" height="40" style="cursor: grab; margin:0.3rem 0.25rem;">
+                      <svg onmousedown="grabGate('${gate.serializedId}')" viewBox="0 0 40 40" xmlns="http://www.w3.org/2000/svg" width="40" height="40" style="cursor: grab; margin:0.3rem 0.25rem;">
                         <rect x="1" y="1" width="38" height="38"
                           style="fill: rgb(255, 255, 255); stroke-width: 2; stroke: rgb(22, 22, 22); paint-order: stroke;">
                         </rect>
@@ -100,7 +100,7 @@ const initGateViews = () => {
         gateView.setAttribute("class", "grid-view")
         gateView.innerHTML = `
                     <div style="display:flex; align-items: center;">
-                      <svg onmousedown="grabGate('${gate.symbol}')" viewBox="0 0 40 40" xmlns="http://www.w3.org/2000/svg" width="40" height="40" style="cursor: grab; padding: 5px 3px;">
+                      <svg onmousedown="grabGate('${gate.serializedId}')" viewBox="0 0 40 40" xmlns="http://www.w3.org/2000/svg" width="40" height="40" style="cursor: grab; padding: 5px 3px;">
                         <rect x="1" y="1" width="38" height="38"
                           style="fill: rgb(255, 255, 255); stroke-width: 2; stroke: rgb(22, 22, 22); paint-order: stroke;">
                         </rect>
@@ -123,7 +123,7 @@ const initGateViews = () => {
         const gateView = document.createElement('span');
         gateView.setAttribute("class", "list-view tooltip-wrap")
         gateView.innerHTML = `
-                      <svg onmousedown="grabGate('${gate.symbol}')" viewBox="0 0 40 40" xmlns="http://www.w3.org/2000/svg" width="40" height="40" style="cursor: grab; margin:0.3rem 0.25rem;">
+                      <svg onmousedown="grabGate('${gate.serializedId}')" viewBox="0 0 40 40" xmlns="http://www.w3.org/2000/svg" width="40" height="40" style="cursor: grab; margin:0.3rem 0.25rem;">
                         <rect x="1" y="1" width="38" height="38"
                           style="fill: rgb(255, 255, 255); stroke-width: 2; stroke: rgb(22, 22, 22); paint-order: stroke;">
                         </rect>
@@ -159,7 +159,7 @@ const initGateViews = () => {
         gateView.setAttribute("class", "grid-view")
         gateView.innerHTML = `
                     <div style="display:flex; align-items: center;">
-                      <svg onmousedown="grabGate('${gate.symbol}')" viewBox="0 0 40 40" xmlns="http://www.w3.org/2000/svg" width="40" height="40" style="cursor: grab; padding: 5px 3px;">
+                      <svg onmousedown="grabGate('${gate.serializedId}')" viewBox="0 0 40 40" xmlns="http://www.w3.org/2000/svg" width="40" height="40" style="cursor: grab; padding: 5px 3px;">
                         <rect x="1" y="1" width="38" height="38"
                           style="fill: rgb(255, 255, 255); stroke-width: 2; stroke: rgb(22, 22, 22); paint-order: stroke;">
                         </rect>
