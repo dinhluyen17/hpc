@@ -337,7 +337,7 @@
     //toggle show and hide gate list in a specific gate group
   </script>
     <script language="JavaScript" defer>
-    let buttons = document.getElementsByTagName('button'); //returns a nodelist
+    let buttons = document.querySelectorAll('button.toggle-gate-list'); //returns a nodelist
     for (let i = 0; i < buttons.length; i++) {
       buttons[i].addEventListener("click", function () {
         buttonsControl(this, i);
@@ -351,9 +351,7 @@
     }
 
     function buttonsControl(button, i) {
-      console.log(">>>>>>>> log button");
       console.log(i);
-      console.log("log test ", button.className);
       var groupNum = button.className.match(/\d+$/);
       if(groupNum !== null) {
         const toggleElement = document.getElementById(`${"group-num-" + groupNum[0]}`)
