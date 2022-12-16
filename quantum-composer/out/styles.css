@@ -101,6 +101,23 @@ body {
     padding-right: 10px;
 }
 
+.gate-area-header button {
+    color: #161616;
+    background-color: #ffffff;
+    border: solid 0.5px ;
+}
+
+.gate-area-header button:hover {
+    background-color: #9e9d9d;
+}
+
+.gate-area-header button[data-state=active] {
+    background-color: transparent;
+    color: #197af9 !important;
+    border: solid 2.5px !important;
+    border-color: #197af9 !important;
+}
+
 .gate-area-header-search {
     flex: 1;
     min-width: 0px;
@@ -126,7 +143,7 @@ body {
 }
 
 [data-gate=show] > svg {
-    color: var(--cds-icon-01,#161616);
+    color: #161616;
 }
 
 [data-gate=hide] > svg > path {
@@ -173,6 +190,10 @@ body {
     cursor: pointer;
 }
 
+.group-gate-name-not-found {
+    display: none !important;
+}
+
 .show-and-hide-gate-list {
     display: none;
 }
@@ -187,7 +208,6 @@ body {
 
 [data-state=open] .AccordionTriggerIcon {
     --tw-rotate: 180deg;
-    /* transform: translate(var(--tw-translate-x),var(--tw-translate-y)) rotate(var(--tw-rotate)) skewX(var(--tw-skew-x)) skewY(var(--tw-skew-y)) scaleX(var(--tw-scale-x)) scaleY(var(--tw-scale-y)); */
     transform: rotate(180deg);
 }
 
@@ -323,10 +343,11 @@ body {
     position: absolute;
     bottom: 5%;
     left: 100%;
-    background-color: #58f61a;
+    background-color: #8e928d;
     padding: .5em;
     z-index: 1;
     line-height: 0.55;
+    border-radius: 10px
 }
 
 .tooltip-wrap:hover .tooltip-content {

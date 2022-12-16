@@ -302,33 +302,37 @@ canvasDiv.addEventListener('click', ev => {
         return;
     }
     const pasteMenu = document.getElementById('paste-menu-popup');
-    pasteMenu.style.display = 'none';
-    if (viewState.getInstance().canShowGateMenu && viewState.getInstance().highlightGate != null) {
-        viewState.getInstance().gateMenuPos = viewState.getInstance().highlightGate;
-        const gateRect = viewState.getInstance().highlightGate.gateRect;
-        const element = document.getElementById('gate-menu-popup');
-        element.style.display = 'block';
-        element.style.left = (gateRect.x - viewState.getInstance().canvasScrollX + viewState.getInstance().canvasBoundingRect.clientX) + "px";
-        element.style.top = (gateRect.y - viewState.getInstance().canvasScrollY + viewState.getInstance().canvasBoundingRect.clientY - 50) + "px";
-    }
+    const element = document.getElementById('gate-menu-popup');
+    element.style.display = 'none';
+
+    if(pasteMenu.style.display == 'block') {
+        pasteMenu.style.display = 'none';
+    }    
     else {
-        const element = document.getElementById('gate-menu-popup');
-        element.style.display = 'none';
-    }
-    
-    if (viewState.getInstance().waitingInfoGate) {
-        viewState.getInstance().waitingInfoGate = null;
-        const gateRect = viewState.getInstance().gateMenuPos.gateRect;
-        const element = document.getElementById('gateInfo');
-        element.style.display = 'block';
-        element.style.left = (gateRect.x - viewState.getInstance().canvasScrollX + viewState.getInstance().canvasBoundingRect.clientX + 50) + "px";
-        element.style.top = (gateRect.y - viewState.getInstance().canvasScrollY + viewState.getInstance().canvasBoundingRect.clientY) + "px";
-    }
-    else {
-        const gateInfo = document.getElementById('gateInfo');
-        gateInfo.style.display = 'none';
-        viewState.getInstance().showInfoGate = null;
-        redrawThrottle.trigger();
+        if (viewState.getInstance().waitingInfoGate) {
+            viewState.getInstance().waitingInfoGate = null;
+            const gateRect = viewState.getInstance().gateMenuPos.gateRect;
+            const element = document.getElementById('gateInfo');
+            element.style.display = 'block';
+            element.style.left = (gateRect.x - viewState.getInstance().canvasScrollX + viewState.getInstance().canvasBoundingRect.clientX + 50) + "px";
+            element.style.top = (gateRect.y - viewState.getInstance().canvasScrollY + viewState.getInstance().canvasBoundingRect.clientY) + "px";
+        }
+        else {
+            const gateInfo = document.getElementById('gateInfo');
+            gateInfo.style.display = 'none';
+            viewState.getInstance().showInfoGate = null;
+
+            if (viewState.getInstance().canShowGateMenu && viewState.getInstance().highlightGate != null) {
+                viewState.getInstance().gateMenuPos = viewState.getInstance().highlightGate;
+                const gateRect = viewState.getInstance().highlightGate.gateRect;
+                const element = document.getElementById('gate-menu-popup');
+                element.style.display = 'block';
+                element.style.left = (gateRect.x - viewState.getInstance().canvasScrollX + viewState.getInstance().canvasBoundingRect.clientX) + "px";
+                element.style.top = (gateRect.y - viewState.getInstance().canvasScrollY + viewState.getInstance().canvasBoundingRect.clientY - 50) + "px";
+            }
+
+            redrawThrottle.trigger();
+        }
     }
 
     let clicked = syncArea(curInspector.withHand(curInspector.hand.withPos(pt))).tryClick();
