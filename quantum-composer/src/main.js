@@ -62,10 +62,15 @@ const canvasDiv = document.getElementById("app");
 /** @type {!HTMLCanvasElement} */
 const canvas = document.getElementById("drawCanvas");
 const dragCanvas = document.getElementById("dragCanvas");
+const gateInfoCanvas = document.getElementById("gateInfo");
+const canvasSim = document.getElementById("drawCanvasSim");
 //noinspection JSValidateTypes
 
 if (!canvas) {
     throw new Error("Couldn't find 'drawCanvas'");
+}
+if (!canvasSim) {
+    throw new Error("Couldn't find 'canvasSim");
 }
 //canvas.width = canvasDiv.clientWidth;
 //canvas.height = window.innerHeight*0.9;
@@ -135,13 +140,19 @@ let stateBarCalc = () =>{
     const probObj = qProb.map((str, index) => ({
         id: index, Probability: qProb[index]
     }))
-    const data = stateObj.map((e,i)=>{
-        let temp = probObj.find(el => el.id === e.id)
-        e.id = temp.Probability
-        e.Probability = e.id
-        delete e.id
-        return e;
-    })
+
+    //Max 12 qubit before lag
+    // const data = stateObj.map((e,i)=>{
+    //     let temp = probObj.find(el => el.id === e.id)
+    //     e.id = temp.Probability
+    //     e.Probability = e.id
+    //     delete e.id
+    //     return e;
+    // })
+
+    //Max ~15 qubit before lag
+    const data2 = stateObj.reduce((a,c) => (a[c.id] = c, a), {})
+    const data = probObj.map(o => Object.assign(o, data2[o.id]))
     return data;
 }
 document.addEventListener('contextmenu', function (e) {
@@ -167,7 +178,7 @@ stateBarChartFilter.addEventListener('click',()=>{
         document.D3_FUNCTION.bar(stateBarCalc());
     } else {
         stateBarChartFilter.style.color = "red";
-        let barDataFilter = stateBarCalc().filter(val => !val.Probability.includes('0.0000'));
+        let barDataFilter = stateBarCalc().filter(val => !val.Probability.match(/^0.0000$/));
         document.D3_FUNCTION.bar(barDataFilter);
     }
 })
@@ -175,12 +186,12 @@ revision.latestActiveCommit().subscribe(jsonText => {
     let circuitDef = fromJsonText_CircuitDefinition(jsonText);
     let newInspector = displayed.get().withCircuitDefinition(circuitDef);
     displayed.set(newInspector);
-        if (barDataFilterSwitch == false) {
-            document.D3_FUNCTION.bar(stateBarCalc());
-        } else {
-            let barDataFilter = stateBarCalc().filter(val => !val.Probability.includes('0.0000'));
-            document.D3_FUNCTION.bar(barDataFilter);
-        }
+    if (barDataFilterSwitch == false) {
+        document.D3_FUNCTION.bar(stateBarCalc());
+    } else {
+        let barDataFilter = stateBarCalc().filter(val => !val.Probability.includes('0.0000'));
+        document.D3_FUNCTION.bar(barDataFilter);
+    }
 });
 /**
  * @param {!DisplayedInspector} curInspector
@@ -234,12 +245,21 @@ const redrawNow = () => {
     let size = desiredCanvasSizeFor(shown);
     canvas.width = size.w;
     canvas.height = size.h;
+    let simArea = document.getElementById("simulate");
+    canvasSim.width = size.w + 500;
+    canvasSim.height = size.h;
+    gateInfo.width = 500;
+    gateInfo.height = 500;
     let painter = new Painter(canvas, semiStableRng.cur.restarted());
     let dragPainter = new Painter(dragCanvas, semiStableRng.cur.restarted());
+    let gateInfoPainter = new Painter(gateInfoCanvas, semiStableRng.cur.restarted());
+    let simPainter = new Painter(canvasSim, semiStableRng.cur.restarted());
     shown.updateArea(painter.paintableArea());
-    shown.paint(painter, stats, dragPainter);
+    shown.paint(painter, stats, dragPainter, simPainter, gateInfoPainter);
     painter.paintDeferred();
     dragPainter.paintDeferred();
+    gateInfoPainter.paintDeferred();
+    simPainter.paintDeferred();
 
     displayed.get().hand.paintCursor(painter);
     scrollBlocker.setBlockers(painter.touchBlockers, painter.desiredCursorStyle);
@@ -269,19 +289,39 @@ canvasDiv.addEventListener('click', ev => {
         return;
     }
     const pasteMenu = document.getElementById('paste-menu-popup');
-    pasteMenu.style.display = 'none';
-    if (viewState.getInstance().canShowGateMenu && viewState.getInstance().highlightGate != null) {
-        viewState.getInstance().gateMenuPos = viewState.getInstance().highlightGate;
-        const gateRect = viewState.getInstance().highlightGate.gateRect;
-        const element = document.getElementById('gate-menu-popup');
-        element.style.display = 'block';
-        element.style.left = (gateRect.x - viewState.getInstance().canvasScrollX + viewState.getInstance().canvasBoundingRect.clientX) + "px";
-        element.style.top = (gateRect.y - viewState.getInstance().canvasScrollY + viewState.getInstance().canvasBoundingRect.clientY - 50) + "px";
-    }
+    const element = document.getElementById('gate-menu-popup');
+    element.style.display = 'none';
+
+    if(pasteMenu.style.display == 'block') {
+        pasteMenu.style.display = 'none';
+    }    
     else {
-        const element = document.getElementById('gate-menu-popup');
-        element.style.display = 'none';
+        if (viewState.getInstance().waitingInfoGate) {
+            viewState.getInstance().waitingInfoGate = null;
+            const gateRect = viewState.getInstance().gateMenuPos.gateRect;
+            const element = document.getElementById('gateInfo');
+            element.style.display = 'block';
+            element.style.left = (gateRect.x - viewState.getInstance().canvasScrollX + viewState.getInstance().canvasBoundingRect.clientX + 50) + "px";
+            element.style.top = (gateRect.y - viewState.getInstance().canvasScrollY + viewState.getInstance().canvasBoundingRect.clientY) + "px";
+        }
+        else {
+            const gateInfo = document.getElementById('gateInfo');
+            gateInfo.style.display = 'none';
+            viewState.getInstance().showInfoGate = null;
+
+            if (viewState.getInstance().canShowGateMenu && viewState.getInstance().highlightGate != null) {
+                viewState.getInstance().gateMenuPos = viewState.getInstance().highlightGate;
+                const gateRect = viewState.getInstance().highlightGate.gateRect;
+                const element = document.getElementById('gate-menu-popup');
+                element.style.display = 'block';
+                element.style.left = (gateRect.x - viewState.getInstance().canvasScrollX + viewState.getInstance().canvasBoundingRect.clientX) + "px";
+                element.style.top = (gateRect.y - viewState.getInstance().canvasScrollY + viewState.getInstance().canvasBoundingRect.clientY - 50) + "px";
+            }
+
+            redrawThrottle.trigger();
+        }
     }
+
     let clicked = syncArea(curInspector.withHand(curInspector.hand.withPos(pt))).tryClick();
 
     if (clicked !== undefined) {
@@ -416,7 +456,7 @@ initSizeViews(canvasDiv);
 initUrlCircuitSync(revision);
 //initExports(revision, mostRecentStats, obsIsAnyOverlayShowing.observable());
 //initForge(revision, obsIsAnyOverlayShowing.observable());
-initUndoRedo(revision, obsIsAnyOverlayShowing.observable());
+initUndoRedo(revision, obsIsAnyOverlayShowing.observable(), redrawThrottle);
 //initClear(revision, obsIsAnyOverlayShowing.observable());
 //initMenu(revision, obsIsAnyOverlayShowing.observable());
 initTitleSync(revision);
@@ -447,6 +487,43 @@ setTimeout(() => {
         console.error(ex);
     }
 }, 0);
+document.getElementById("circuitTab").addEventListener('click', () => {
+    let e = document.getElementById("circuit");
+    e.classList.remove("hidden");
+    let eT = document.getElementById("circuitTab");
+    eT.setAttribute("data-state","active")
+
+    let e2 = document.getElementById("simulate");
+    e2.classList.add("hidden");
+    let e2T = document.getElementById("simulateTab");
+    e2T.setAttribute("data-state","inactive");
+
+    const canvas = document.getElementById("circuit-area-body");
+    let canvasBox = canvas.getBoundingClientRect();
+    viewState.getInstance().canvasBoundingRect = {
+        clientX: canvasBox.left,
+        clientY: canvasBox.top,
+    }
+});
+
+document.getElementById("simulateTab").addEventListener('click', () => {
+    let e = document.getElementById("circuit");
+    e.classList.add("hidden");
+    let eT = document.getElementById("circuitTab");
+    eT.setAttribute("data-state","inactive");
+
+    let e2 = document.getElementById("simulate");
+    e2.classList.remove("hidden");
+    let e2T = document.getElementById("simulateTab");
+    e2T.setAttribute("data-state","active");
+
+    let canvas = document.getElementById("drawCanvasSim");
+    let canvasBox = canvas.getBoundingClientRect();
+    viewState.getInstance().canvasBoundingRect = {
+        clientX: canvasBox.left,
+        clientY: canvasBox.top
+    }
+});
 window.parent.postMessage(JSON.stringify({
     messageFrom: 'quantum_composer',
     actionType: 'setup_finish'

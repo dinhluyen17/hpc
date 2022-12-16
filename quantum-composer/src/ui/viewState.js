@@ -32,6 +32,9 @@ class ViewState {
     this.currentHoverPos = null; 
     this.currentPastePos = null;
 
+    this.waitingInfoGate = null;
+    this.showInfoGate = null;
+
     this.canvasBoundingRect = {
       clientX: 0,
       clientY: 0,
@@ -71,9 +74,9 @@ const SIZE_INFO = {
 
 const getGateAreaWidth = () => {
   if (viewState.getInstance().expandGateArea) {
-    return 300;
+    return 320;
   }
-  return 140;
+  return 130;
 };
 const getCodeAreaWidth = () => {
   if (viewState.getInstance().expandCodeArea) {

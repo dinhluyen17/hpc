@@ -94,16 +94,18 @@ class DisplayedInspector {
      * @param {!Painter} painter
      * @param {!CircuitStats} stats
      */
-    paint(painter, stats, dragPainter) {
+    paint(painter, stats, dragPainter, simPainter, gateInfoPainter) {
         // Phu: Disable draw Toolbox & bg
         //painter.fillRect(this.drawArea, Config.BACKGROUND_COLOR);
 
-        //this.displayedToolboxTop.paint(painter, stats, this.hand);
-        //this.displayedToolboxBottom.paint(painter, stats, this.hand);
+        this.displayedToolboxTop.paint(gateInfoPainter, stats, this.hand);
+        this.displayedToolboxBottom.paint(gateInfoPainter, stats, this.hand);
         this.displayedCircuit.paint(painter, this.hand, stats);
+        this.displayedCircuit.simPaint(simPainter, this.hand, stats);
         this._paintHand(dragPainter, stats);
         this._drawHint(painter);
     }
+
 
     /**
      * @param {!Painter} painter

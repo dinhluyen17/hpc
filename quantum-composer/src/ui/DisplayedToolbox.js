@@ -26,7 +26,7 @@ import {Painter} from "../draw/Painter.js"
 import {Point} from "../math/Point.js"
 import {seq} from "../base/Seq.js"
 import {WidgetPainter} from "../draw/WidgetPainter.js"
-
+import {viewState} from "./viewState.js"
 class DisplayedToolbox {
     /**
      * That thing showing gates you can grab.
@@ -167,6 +167,21 @@ class DisplayedToolbox {
         return undefined;
     }
 
+    findGateAt2(pt) {
+        for (let groupIndex = 0; groupIndex < this.toolboxGroups.length; groupIndex++) {
+            let group = this.toolboxGroups[groupIndex];
+            for (let gateIndex = 0; gateIndex < group.gates.length; gateIndex++) {
+                let gate = group.gates[gateIndex];
+                let rect = this.gateDrawRect(groupIndex, gateIndex);
+
+                if (gate !== undefined && gate.symbol == viewState.getInstance().showInfoGate) {
+                    return {groupIndex, gateIndex, gate, rect};
+                }
+            }
+        }
+        return undefined;
+    }
+
     /**
      * @param {!DisplayedToolbox|*} other
      * @returns {!boolean}
@@ -208,9 +223,9 @@ class DisplayedToolbox {
      */
     paint(painter, stats, hand) {
         // Phu: change
-        //painter.fillRect(this.curArea(painter.canvas.width), Config.BACKGROUND_COLOR_TOOLBOX);
-        this._standardApperance.paint(0, this.top, painter);
-        this._paintDeviations(painter, stats, hand);
+        if (viewState.getInstance().showInfoGate) {
+            this._paintFocus(painter, stats, hand);
+        }    
     }
 
     /**
@@ -327,27 +342,25 @@ class DisplayedToolbox {
     _paintFocus(painter, stats, hand) {
         // Phu: Draw tooltip for gate
         // Focus when hovering, but also when dragging a gate over its own toolbox spot.
-        let f = this.findGateAt(hand.pos);
-        if (f === undefined || (hand.heldGate !== undefined && f.gate.symbol !== hand.heldGate.symbol)) {
+        let f = this.findGateAt2(hand.pos);
+        
+        if (f === undefined) {
             return;
         }
-
-        // Draw highlight.
-        DisplayedToolbox._paintGate(painter, hand, f.gate, f.rect, true, stats);
 
         // Size tooltip.
         painter.ctx.save();
         painter.ctx.globalAlpha = 0;
         painter.ctx.translate(-10000, -10000);
         let {maxW, maxH} = WidgetPainter.paintGateTooltip(
-            painter, new Rect(0, 0, 500, 300), f.gate, stats.time, true);
-        let mayNeedToScale = maxW >= 500 || maxH >= 300;
+            painter, new Rect(0, 0, 500, 300), f.gate, stats.time, false);
+        let mayNeedToScale = false;
         painter.ctx.restore();
 
         // Draw tooltip.
         let cx = f.rect.right() + 1;
-        let hintRect = new Rect(cx, f.rect.center().y, maxW, maxH).
-            snapInside(painter.paintableArea().skipRight(10).skipBottom(20));
+        let hintRect = new Rect(0, 0, maxW, maxH).
+            snapInside(painter.paintableArea().skipRight(10).skipBottom(20));      
         painter.defer(() => WidgetPainter.paintGateTooltip(painter, hintRect, f.gate, stats.time, mayNeedToScale));
     }
 

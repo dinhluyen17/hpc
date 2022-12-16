@@ -62,7 +62,7 @@ const initGateViews = () => {
         const gateView = document.createElement('span');
         gateView.setAttribute("class", "list-view tooltip-wrap")
         gateView.innerHTML = `
-                      <svg onmousedown="grabGate('${gate.symbol}')" viewBox="0 0 40 40" xmlns="http://www.w3.org/2000/svg" width="40" height="40" style="cursor: grab; margin-left: 10px; margin-top: 10px;">
+                      <svg onmousedown="grabGate('${gate.symbol}')" viewBox="0 0 40 40" xmlns="http://www.w3.org/2000/svg" width="40" height="40" style="cursor: grab; margin:0.3rem 0.25rem;">
                         <rect x="1" y="1" width="38" height="38"
                           style="fill: rgb(255, 255, 255); stroke-width: 2; stroke: rgb(22, 22, 22); paint-order: stroke;">
                         </rect>
@@ -78,15 +78,21 @@ const initGateViews = () => {
   })
 
   //show top gate as grid list
+  let groupNum = 0
   Gates.TopToolboxGroups.forEach((group) => {
     if(group.hint === unsupportedGroupGate) {return}
     let gateGroup = document.createElement('div')
-    let gateGroupName = document.createElement('h4')
+    let gateGroupName = document.createElement('h4'); gateGroupName.setAttribute("class", `group-gate-name`)
     gateGroupName.innerText = group.hint
+    let createButton = document.createElement('button'); createButton.setAttribute("class", `toggle-gate-list ${"group-gate-num" + groupNum}`); createButton.setAttribute("data-state", "open");
+    createButton.innerHTML = `
+      <svg focusable="false" preserveAspectRatio="xMidYMid meet" xmlns="http://www.w3.org/2000/svg" fill="currentColor" aria-hidden="true" width="20" height="20" viewBox="0 0 32 32" class="AccordionTriggerIcon"><path d="M16 22L6 12 7.4 10.6 16 19.2 24.6 10.6 26 12z"></path></svg>
+    `;
+    gateGroupName.appendChild(createButton)
     gateGroup.appendChild(gateGroupName)
     commonGatesGrid.appendChild(gateGroup)
 
-    let gateGroupList = document.createElement('div')
+    let gateGroupList = document.createElement('div'); gateGroupList.setAttribute("id", `${"group-num-" + groupNum}`); groupNum++;
     gateGroup.appendChild(gateGroupList)
     group.gates.forEach(gate => {
       if (gate != undefined && !unsupportedGates.includes(gate.name)) {
@@ -117,7 +123,7 @@ const initGateViews = () => {
         const gateView = document.createElement('span');
         gateView.setAttribute("class", "list-view tooltip-wrap")
         gateView.innerHTML = `
-                      <svg onmousedown="grabGate('${gate.symbol}')" viewBox="0 0 40 40" xmlns="http://www.w3.org/2000/svg" width="40" height="40" style="cursor: grab; margin-left: 10px; margin-top: 10px;">
+                      <svg onmousedown="grabGate('${gate.symbol}')" viewBox="0 0 40 40" xmlns="http://www.w3.org/2000/svg" width="40" height="40" style="cursor: grab; margin:0.3rem 0.25rem;">
                         <rect x="1" y="1" width="38" height="38"
                           style="fill: rgb(255, 255, 255); stroke-width: 2; stroke: rgb(22, 22, 22); paint-order: stroke;">
                         </rect>
@@ -135,12 +141,17 @@ const initGateViews = () => {
   //show bottom gate as grid list
   Gates.BottomToolboxGroups.forEach((group) => {
     let gateGroup = document.createElement('div')
-    let gateGroupName = document.createElement('h4')
+    let gateGroupName = document.createElement('h4'); gateGroupName.setAttribute("class", `group-gate-name`);
     gateGroupName.innerText = group.hint
+    let createButton = document.createElement("button"); createButton.setAttribute("class",`toggle-gate-list ${"group-gate-num" + groupNum}`); createButton.setAttribute("data-state", "open");
+    createButton.innerHTML = `
+    <svg focusable="false" preserveAspectRatio="xMidYMid meet" xmlns="http://www.w3.org/2000/svg" fill="currentColor" aria-hidden="true" width="20" height="20" viewBox="0 0 32 32" class="AccordionTriggerIcon"><path d="M16 22L6 12 7.4 10.6 16 19.2 24.6 10.6 26 12z"></path></svg>
+  `;
+    gateGroupName.appendChild(createButton)
     gateGroup.appendChild(gateGroupName)
     advancedGatesGrid.appendChild(gateGroup)
 
-    let gateGroupList = document.createElement('div')
+    let gateGroupList = document.createElement('div'); gateGroupList.setAttribute("id", `${"group-num-" + groupNum}`); groupNum++;
     gateGroup.appendChild(gateGroupList)
     group.gates.forEach(gate => {
       if (gate != undefined && !unsupportedGates.includes(gate.name)) {
