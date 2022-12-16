@@ -135,7 +135,7 @@ const circuitItem = defineComponent({
     const { t, data } = this;
     return (
       <Card style={{ width: '100%', height: '100%' }}>
-        <NSpace justify='space-between' align='center'>
+        {/* <NSpace justify='space-between' align='center'>
           <NSpace justify='space-between' align='center'>
             <NButton size='small' type='primary' onClick={this.handleReturnToCircuitList}>
               {{
@@ -182,7 +182,7 @@ const circuitItem = defineComponent({
               {t('circuit.detail.help_circuit')}
             </NButton>
           </NSpace>
-        </NSpace>
+        </NSpace> */}
         <iframe
           ref="quantumRef"
           src="/quirk.html"
