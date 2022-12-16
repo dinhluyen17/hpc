@@ -1047,7 +1047,7 @@ class DisplayedCircuit {
     // Phu: draw wire
     _wireInitialStateClickableRect(wire) {
         let r = this.wireRect(wire);
-        r.x = CIRCUIT_OP_LEFT_SPACING;
+        r.x = 17;
         r.y += 5;
         r.w = 30;
         r.h -= 10;
@@ -1060,9 +1060,9 @@ class DisplayedCircuit {
      */
     findWireWithInitialStateAreaContaining(pt) {
         // Is it in the right vertical band; the one at the start of the circuit?
-        if (pt.x < 0 || pt.x > 30) {
-            return undefined;
-        }
+        // if (pt.x < 0 || pt.x > 30) {
+        //     return undefined;
+        // }
 
         // Which wire is it? Is it one that's actually in the circuit?
         let wire = this.wireIndexAt(pt.y);
