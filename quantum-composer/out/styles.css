@@ -173,6 +173,10 @@ body {
     cursor: pointer;
 }
 
+.group-gate-name-not-found {
+    display: none !important;
+}
+
 .show-and-hide-gate-list {
     display: none;
 }

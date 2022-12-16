@@ -81,7 +81,7 @@ const initGateViews = () => {
   let groupNum = 0
   Gates.TopToolboxGroups.forEach((group) => {
     if(group.hint === unsupportedGroupGate) {return}
-    let gateGroup = document.createElement('div')
+    let gateGroup = document.createElement('div'); gateGroup.setAttribute("class", "gate-group")
     let gateGroupName = document.createElement('h4'); gateGroupName.setAttribute("class", `group-gate-name`)
     gateGroupName.innerText = group.hint
     let createButton = document.createElement('button'); createButton.setAttribute("class", `toggle-gate-list ${"group-gate-num" + groupNum}`); createButton.setAttribute("data-state", "open");
@@ -140,7 +140,7 @@ const initGateViews = () => {
 
   //show bottom gate as grid list
   Gates.BottomToolboxGroups.forEach((group) => {
-    let gateGroup = document.createElement('div')
+    let gateGroup = document.createElement('div'); gateGroup.setAttribute("class", "gate-group")
     let gateGroupName = document.createElement('h4'); gateGroupName.setAttribute("class", `group-gate-name`);
     gateGroupName.innerText = group.hint
     let createButton = document.createElement("button"); createButton.setAttribute("class",`toggle-gate-list ${"group-gate-num" + groupNum}`); createButton.setAttribute("data-state", "open");
