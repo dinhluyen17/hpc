@@ -10,12 +10,12 @@ const SEND_GET_CIRCUIT_JSON = 'get_circuit_json'
 
 const MESSAGE = {
     //Send
-    loadedCircuitJson: SEND_LOADED_CIRCUIT_JSON, /** Vuejs send circuit json to Composer after call api get circuit info successful  */
-    getCircuitJson: SEND_GET_CIRCUIT_JSON, /** Vuejs send request to composer to request get current circuit json  */
+    loadedCircuitJson: SEND_LOADED_CIRCUIT_JSON, /** Vuejs --> Composer: send circuit json after call api get circuit info successful  */
+    getCircuitJson: SEND_GET_CIRCUIT_JSON, /** Vuejs --> Composer: send request to get current circuit json  */
     //Receive
-    setupFinish: RECEIVE_SETUP_FINISH, /** Composer send msg to notify that iframe is ready to receive message from vuejs*/
-    saveCircuitJson: RECEIVE_SAVE_CIRCUIT_JSON, /** Composer send the msg to request save current json from composer*/
-    getCurrentCircuitJson: RECEIVE_CURRENT_CIRCUIT_JSON, /** Composer response current circuit json*/
+    setupFinish: RECEIVE_SETUP_FINISH, /** Composer --> Vuejs: notify that composer is ready to receive message from Vuejs*/
+    saveCircuitJson: RECEIVE_SAVE_CIRCUIT_JSON, /** Composer --> Vuejs: request save circuit json*/
+    getCurrentCircuitJson: RECEIVE_CURRENT_CIRCUIT_JSON, /** Composer --> Vuejs: send current circuit json*/
 }
 
 export default MESSAGE
