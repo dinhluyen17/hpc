@@ -24,6 +24,7 @@ import { NButton, NGradientText, NIcon, NInput, NSpace } from 'naive-ui'
 import { RollbackOutlined } from '@vicons/antd'
 import MESSAGE, { QUANTUM_MESSAGE_FROM, VUEJS_MESSAGE_FROM } from './constants'
 import exportFile from '@/utils/exportFile'
+import './styles/CircuitStyle.scss'
 
 const circuitItem = defineComponent({
   name: 'circuitItem',
@@ -58,12 +59,14 @@ const circuitItem = defineComponent({
       sendMessageToIFrame(MESSAGE.getCircuitJson, null);
     }
 
-    const handleChangeTabCircuit = () => {
+    const handleChangeTabCircuit = (e: any) => {
       sendMessageToIFrame(MESSAGE.changeTab, 'circuit');
+      variables.isCircuitTab = true
     }
 
-    const handleChangeTabSimulate = () => {
+    const handleChangeTabSimulate = (e: any) => {
       sendMessageToIFrame(MESSAGE.changeTab, 'simulate');
+      variables.isCircuitTab = false
     }
 
     const handleChangeCircuitName = () => {
@@ -200,10 +203,10 @@ const circuitItem = defineComponent({
           </NSpace>
           {/* Tab change area */}
           <NSpace>
-            <NButton size='large' style={{ width: '200px' }} onClick={this.handleChangeTabCircuit}>
+            <NButton size='large' focusable={false} style={{ width: '200px' }} onClick={(e) => this.handleChangeTabCircuit(e)} class={`tab-button ${this.isCircuitTab ? 'active' : ''}`}>
               {t('circuit.detail.circuit')}
             </NButton>
-            <NButton size='large' style={{ width: '200px' }} onClick={this.handleChangeTabSimulate}>
+            <NButton size='large' focusable={false} style={{ width: '200px' }} onClick={(e) => this.handleChangeTabSimulate(e)} class={`tab-button ${this.isCircuitTab ? '' : 'active'}`}>
               {t('circuit.detail.simulate')}
             </NButton>
           </NSpace>
@@ -226,12 +229,12 @@ const circuitItem = defineComponent({
             </NButton>
           </NSpace>
         </NSpace>
-          <iframe
-            ref="quantumRef"
-            src="/quirk.html"
-            style={{ width: '100%', height: 'calc(100% - 60px)', marginTop: '10px' }}
-            frameborder="0">
-          </iframe>
+        <iframe
+          ref="quantumRef"
+          src="/quirk.html"
+          style={{ width: '100%', height: 'calc(100% - 60px)', marginTop: '10px' }}
+          frameborder="0">
+        </iframe>
       </Card>
     )
   }
