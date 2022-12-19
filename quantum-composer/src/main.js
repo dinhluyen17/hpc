@@ -187,10 +187,10 @@ const stateBarChartFilter = document.getElementById("stateBarChartFilterZero");
 stateBarChartFilter.addEventListener('click',()=>{
     barDataFilterSwitch = !barDataFilterSwitch;
     if (barDataFilterSwitch == false){
-        stateBarChartFilter.style.color = "black";
+        stateBarChartFilter.innerHTML = "Hide zero states";
         document.D3_FUNCTION.bar(stateBarCalc());
     } else {
-        stateBarChartFilter.style.color = "red";
+        stateBarChartFilter.innerHTML = "Show all states";
         let barDataFilter = stateBarCalc().filter(val => !val.Probability.match(/^0.0000$/));
         document.D3_FUNCTION.bar(barDataFilter);
     }

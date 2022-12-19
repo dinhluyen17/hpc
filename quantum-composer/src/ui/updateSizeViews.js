@@ -93,12 +93,22 @@ const initSizeViews = (parentDiv) => {
 
   const closeCodeAreaBtn = document.getElementById('code-area-close-btn');
   closeCodeAreaBtn.addEventListener('click', () => {
+    if (closeCodeAreaBtn.getAttribute("data-gate") == "show") {
+      closeCodeAreaBtn.setAttribute("data-gate", "hide")
+    } else {
+      closeCodeAreaBtn.setAttribute("data-gate", "show")
+    }
     viewState.getInstance().expandCodeArea = !viewState.getInstance().expandCodeArea;
     updateSizeViews(parentDiv);
   });
 
   const closeChartAreaBtn = document.getElementById('circuit-area-chart-close-btn');
   closeChartAreaBtn.addEventListener('click', () => {
+    if (closeChartAreaBtn.getAttribute("data-gate") == "show") {
+      closeChartAreaBtn.setAttribute("data-gate", "hide")
+    } else {
+      closeChartAreaBtn.setAttribute("data-gate", "show")
+    }
     viewState.getInstance().expandChartArea = !viewState.getInstance().expandChartArea;
     updateSizeViews(parentDiv);
   });

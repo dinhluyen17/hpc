@@ -77,7 +77,9 @@
           </canvas>
         </div>
         <div class="circuit-area-chart" id="circuit-chart">
-          <button id="circuit-area-chart-close-btn">X</button>
+          <button id="circuit-area-chart-close-btn" data-gate="show">
+            <svg focusable="false" preserveAspectRatio="xMidYMid meet" xmlns="http://www.w3.org/2000/svg" fill="currentColor" width="20" height="20" viewBox="0 0 32 32" aria-hidden="true" style="transform: rotate(90deg);"><path d="M4 18L15 18 15 24.172 12.414 21.586 11 23 16 28 21 23 19.586 21.586 17 24.172 17 18 28 18 28 16 4 16 4 18zM26 4H6A2 2 0 004 6v4a2 2 0 002 2H26a2 2 0 002-2V6A2 2 0 0026 4zm0 6H6V6H26z"></path></svg>
+          </button>
           <button id="stateBarChartFilterZero">Hide zero states</button>
 <!--          <input type="checkbox" id="stateBarBool">-->
 <!--          <label>Use bar graph when above 12 qubits (may cause performance issues)</label>-->
@@ -86,7 +88,9 @@
         </div>
       </div>
       <div class="code-area">
-        <button id="code-area-close-btn">X</button>
+        <button id="code-area-close-btn" data-gate="show">
+          <svg focusable="false" preserveAspectRatio="xMidYMid meet" xmlns="http://www.w3.org/2000/svg" fill="currentColor" width="20" height="20" viewBox="0 0 32 32" aria-hidden="true" style="transform: rotate(90deg);"><path d="M4 18L15 18 15 24.172 12.414 21.586 11 23 16 28 21 23 19.586 21.586 17 24.172 17 18 28 18 28 16 4 16 4 18zM26 4H6A2 2 0 004 6v4a2 2 0 002 2H26a2 2 0 002-2V6A2 2 0 0026 4zm0 6H6V6H26z"></path></svg>
+        </button>
       </div>
     </div>
     <div id="gate-menu-popup" style="z-index: 888;">
@@ -175,7 +179,7 @@
         svg.append("text")
                 .attr("class","x label")
                 .attr("text-anchor","end")
-                .attr("dy", 2.5 + (Math.sqrt(barData.length)/10 - .45) +"rem")
+                .attr("dy", 2.5 + (Math.sqrt(barData.length)/10) +"rem")
                 .attr("x", width)
                 .attr("y", height)
                 .text("Computational basis states")
