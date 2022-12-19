@@ -110,6 +110,16 @@ window.addEventListener('message', (e) => {
                         revision.commit(obj.detailData);
                     }                                       
                 }
+                else if (actionType == 'get_circuit_json') {
+                    window.parent.postMessage(JSON.stringify({
+                        messageFrom: 'quantum_composer',
+                        actionType: 'current_circuit_json',
+                        detailData: revision.getLatestCommit()
+                    }));                                                    
+                }
+                else if (actionType == 'set_circuit_json') {
+                    revision.commit(obj.detailData);                                              
+                }
             }
         } catch (e) {
         }
