@@ -46,6 +46,8 @@ export default {
   },
   detail: {
     return: 'Back',
+    circuit: 'Circuit',
+    simulate: 'Simulate',
     save_circuit: 'Save',
     import_circuit: 'Import',
     export_circuit: 'Export',

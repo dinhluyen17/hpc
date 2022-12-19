@@ -20,7 +20,7 @@ import { Router, useRoute, useRouter } from 'vue-router'
 import { defineComponent, onBeforeUnmount, onMounted, toRefs, ref, watch, getCurrentInstance } from 'vue'
 import Card from '@/components/card'
 import { useCircuit } from './use-circuit'
-import { NButton, NGradientText, NIcon, NInput, NSpace} from 'naive-ui'
+import { NButton, NGradientText, NIcon, NInput, NSpace } from 'naive-ui'
 import { RollbackOutlined } from '@vicons/antd'
 
 const circuitItem = defineComponent({
@@ -35,6 +35,14 @@ const circuitItem = defineComponent({
     const router: Router = useRouter()
 
     const trim = getCurrentInstance()?.appContext.config.globalProperties.trim
+
+    const handleChangeTabCircuit = () => {
+      variables.isCircuitTab = true
+    }
+
+    const handleChangeTabSimulate = () => {
+      variables.isCircuitTab = false
+    }
 
     const handleChangeCircuitName = () => {
       updateCircuitData(variables.data.id, {
@@ -127,6 +135,8 @@ const circuitItem = defineComponent({
       handleExitChangeName,
       handleChangeCircuitName,
       handleReturnToCircuitList,
+      handleChangeTabCircuit,
+      handleChangeTabSimulate,
       quantumRef,
       trim
     }
@@ -135,7 +145,8 @@ const circuitItem = defineComponent({
     const { t, data } = this;
     return (
       <Card style={{ width: '100%', height: '100%' }}>
-        {/* <NSpace justify='space-between' align='center'>
+        <NSpace justify='space-between' align='center'>
+          {/* Name and return area */}
           <NSpace justify='space-between' align='center'>
             <NButton size='small' type='primary' onClick={this.handleReturnToCircuitList}>
               {{
@@ -146,18 +157,19 @@ const circuitItem = defineComponent({
               }}
             </NButton>
             {this.isChangeName ?
+              //Project Name
               <NSpace>
                 <NInput
                   size='small'
                   allowInput={this.trim}
                   v-model={[this.data.name, 'value']}
                   placeholder={t('circuit.detail.change_name_tips')}
-                  clearable
                 />
                 <NButton size='small' type='primary' onClick={this.handleChangeCircuitName}>
                   {t('circuit.detail.update_circuit_name')}
                 </NButton>
               </NSpace> :
+              //Project Name Edit
               <NButton text onClick={this.handleChangeName}>
                 <NGradientText type="info" style={{ fontSize: '36px', cursor: 'pointer' }}>
                   {data.name}
@@ -165,6 +177,16 @@ const circuitItem = defineComponent({
               </NButton>
             }
           </NSpace>
+          {/* Tab change area */}
+          <NSpace>
+            <NButton size='large' style={{ width: '200px' }} onClick={this.handleChangeTabCircuit}>
+              {t('circuit.detail.circuit')}
+            </NButton>
+            <NButton size='large' style={{ width: '200px' }} onClick={this.handleChangeTabSimulate}>
+              {t('circuit.detail.simulate')}
+            </NButton>
+          </NSpace>
+          {/* Button area */}
           <NSpace>
             <NButton size='small' type='primary'>
               {t('circuit.detail.save_circuit')}
@@ -182,13 +204,18 @@ const circuitItem = defineComponent({
               {t('circuit.detail.help_circuit')}
             </NButton>
           </NSpace>
-        </NSpace> */}
-        <iframe
-          ref="quantumRef"
-          src="/quirk.html"
-          style={{ width: '100%', height: '100%' }}
-          frameborder="0">
-        </iframe>
+        </NSpace>
+        {this.isCircuitTab ?
+          <iframe
+            ref="quantumRef"
+            src="/quirk.html"
+            style={{ width: '100%', height: '100%' }}
+            frameborder="0">
+          </iframe> :
+          <NSpace>
+            aaaa
+          </NSpace>
+        }
       </Card>
     )
   }
