@@ -248,7 +248,7 @@ class WidgetPainter {
 
         let {maxX, maxY} = WidgetPainter.paintGateTooltipHelper(painter, w, gate, time);
         let r = new Rect(0, 0, maxX, maxY);
-        painter.fillRect(r, '#F9FFF9');
+        painter.fillRect(r, '#FFFFFF');
         painter.strokeRect(r, 'black');
         WidgetPainter.paintGateTooltipHelper(painter, w, gate, time);
 

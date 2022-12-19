@@ -43,5 +43,15 @@ export default {
     circuit_tips: 'Please enter your circuit name',
     delete_confirm: 'Sure you want to delete this circuit?',
     mass_delete_confirm: 'Sure you want to delete selected circuit?',
+  },
+  detail: {
+    return: 'Back',
+    save_circuit: 'Save',
+    import_circuit: 'Import',
+    export_circuit: 'Export',
+    share_circuit: 'Share',
+    help_circuit: 'Help',
+    update_circuit_name: 'Change',
+    change_name_tips: 'Enter your new circuit name'
   }
 }

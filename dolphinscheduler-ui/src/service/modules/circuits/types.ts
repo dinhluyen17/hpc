@@ -44,6 +44,7 @@ interface CircuitList {
   description: string
   json: string
   qiskit: string
+  qasm: string
   createTime: string
   updateTime: string
   projectCode: number

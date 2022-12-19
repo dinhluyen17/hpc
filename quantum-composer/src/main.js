@@ -170,7 +170,12 @@ let stateBarCalc = () =>{
 }
 document.addEventListener('contextmenu', function (e) {
     const hoverPos = viewState.getInstance().currentHoverPos;
-    if (hoverPos.x >= 0 && hoverPos.y >= 0) {
+    const posX = hoverPos.x - viewState.getInstance().canvasScrollX + viewState.getInstance().canvasBoundingRect.clientX;
+    const posY = hoverPos.y - viewState.getInstance().canvasScrollY + viewState.getInstance().canvasBoundingRect.clientY;
+    if (posX >= viewState.getInstance().canvasBoundingRect.clientX &&
+        posY >= viewState.getInstance().canvasBoundingRect.clientY &&
+        posY <= viewState.getInstance().canvasBoundingRect.clientY + viewState.getInstance().canvasBoundingRect.height &&
+        posX <= viewState.getInstance().canvasBoundingRect.clientX + viewState.getInstance().canvasBoundingRect.width) {
         viewState.getInstance().currentPastePos = hoverPos;
         const element = document.getElementById('paste-menu-popup');
         element.style.display = 'block';
@@ -516,6 +521,8 @@ document.getElementById("circuitTab").addEventListener('click', () => {
     viewState.getInstance().canvasBoundingRect = {
         clientX: canvasBox.left,
         clientY: canvasBox.top,
+        width: canvasBox.width,
+        height: canvasBox.height
     }
 });
 
@@ -534,7 +541,9 @@ document.getElementById("simulateTab").addEventListener('click', () => {
     let canvasBox = canvas.getBoundingClientRect();
     viewState.getInstance().canvasBoundingRect = {
         clientX: canvasBox.left,
-        clientY: canvasBox.top
+        clientY: canvasBox.top,
+        width: canvasBox.width,
+        height: canvasBox.height
     }
     let qHeight = mostRecentStats.get().finalState.height();
     let qNumWire = mostRecentStats.get().circuitDefinition.numWires;
