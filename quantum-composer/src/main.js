@@ -110,6 +110,7 @@ const changeTab = (tab) => {
         let e2T = document.getElementById("simulateTab");
         e2T.setAttribute("data-state","inactive");
     
+        viewState.getInstance().currentTab = 'circuit';
         const canvas = document.getElementById("circuit-area-body");
         let canvasBox = canvas.getBoundingClientRect();
         viewState.getInstance().canvasBoundingRect = {
@@ -130,6 +131,7 @@ const changeTab = (tab) => {
         let e2T = document.getElementById("simulateTab");
         e2T.setAttribute("data-state","active");
     
+        viewState.getInstance().currentTab = 'simulate';
         let canvas = document.getElementById("drawCanvasSim");
         let canvasBox = canvas.getBoundingClientRect();
         viewState.getInstance().canvasBoundingRect = {
@@ -212,19 +214,21 @@ let stateBarCalc = () =>{
     return data;
 }
 document.addEventListener('contextmenu', function (e) {
-    const hoverPos = viewState.getInstance().currentHoverPos;
-    const posX = hoverPos.x - viewState.getInstance().canvasScrollX + viewState.getInstance().canvasBoundingRect.clientX;
-    const posY = hoverPos.y - viewState.getInstance().canvasScrollY + viewState.getInstance().canvasBoundingRect.clientY;
-    if (posX >= viewState.getInstance().canvasBoundingRect.clientX &&
-        posY >= viewState.getInstance().canvasBoundingRect.clientY &&
-        posY <= viewState.getInstance().canvasBoundingRect.clientY + viewState.getInstance().canvasBoundingRect.height &&
-        posX <= viewState.getInstance().canvasBoundingRect.clientX + viewState.getInstance().canvasBoundingRect.width) {
-        viewState.getInstance().currentPastePos = hoverPos;
-        const element = document.getElementById('paste-menu-popup');
-        element.style.display = 'block';
-        element.style.left = (hoverPos.x - viewState.getInstance().canvasScrollX + viewState.getInstance().canvasBoundingRect.clientX) + "px";
-        element.style.top = (hoverPos.y - viewState.getInstance().canvasScrollY + viewState.getInstance().canvasBoundingRect.clientY - 44) + "px";
-        e.preventDefault();        
+    if (viewState.getInstance().currentTab == 'circuit') {
+        const hoverPos = viewState.getInstance().currentHoverPos;
+        const posX = hoverPos.x - viewState.getInstance().canvasScrollX + viewState.getInstance().canvasBoundingRect.clientX;
+        const posY = hoverPos.y - viewState.getInstance().canvasScrollY + viewState.getInstance().canvasBoundingRect.clientY;
+        if (posX >= viewState.getInstance().canvasBoundingRect.clientX &&
+            posY >= viewState.getInstance().canvasBoundingRect.clientY &&
+            posY <= viewState.getInstance().canvasBoundingRect.clientY + viewState.getInstance().canvasBoundingRect.height &&
+            posX <= viewState.getInstance().canvasBoundingRect.clientX + viewState.getInstance().canvasBoundingRect.width) {
+            viewState.getInstance().currentPastePos = hoverPos;
+            const element = document.getElementById('paste-menu-popup');
+            element.style.display = 'block';
+            element.style.left = (hoverPos.x - viewState.getInstance().canvasScrollX + viewState.getInstance().canvasBoundingRect.clientX) + "px";
+            element.style.top = (hoverPos.y - viewState.getInstance().canvasScrollY + viewState.getInstance().canvasBoundingRect.clientY - 44) + "px";
+            e.preventDefault();        
+        }        
     }
 }, false);
 document.addEventListener("DOMContentLoaded", function (){
@@ -343,6 +347,15 @@ displayed.observable().subscribe(() => redrawThrottle.trigger());
 
 /** @type {undefined|!string} */
 let clickDownGateButtonKey = undefined;
+const hideAllMenu = () => {
+    const pasteMenu = document.getElementById('paste-menu-popup');
+    const gateMenu = document.getElementById('gate-menu-popup');
+    const gateInfo = document.getElementById('gateInfo');
+    gateMenu.style.display = 'none';
+    pasteMenu.style.display = 'none';
+    gateInfo.style.display = 'none';
+}
+
 canvasDiv.addEventListener('click', ev => {
     let pt = eventPosRelativeTo(ev, canvasDiv);
     let curInspector = displayed.get();
@@ -559,6 +572,7 @@ document.getElementById("circuitTab").addEventListener('click', () => {
     let e2T = document.getElementById("simulateTab");
     e2T.setAttribute("data-state","inactive");
 
+    viewState.getInstance().currentTab = 'circuit';
     const canvas = document.getElementById("circuit-area-body");
     let canvasBox = canvas.getBoundingClientRect();
     viewState.getInstance().canvasBoundingRect = {
@@ -580,6 +594,7 @@ document.getElementById("simulateTab").addEventListener('click', () => {
     let e2T = document.getElementById("simulateTab");
     e2T.setAttribute("data-state","active");
 
+    viewState.getInstance().currentTab = 'simulate';
     let canvas = document.getElementById("drawCanvasSim");
     let canvasBox = canvas.getBoundingClientRect();
     viewState.getInstance().canvasBoundingRect = {
@@ -593,3 +608,4 @@ window.parent.postMessage(JSON.stringify({
     messageFrom: 'quantum_composer',
     actionType: 'setup_finish'
 }));
+hideAllMenu();

@@ -16,6 +16,8 @@
 
 class ViewState {
   constructor() {
+    this.currentTab = 'circuit';
+    
     this.expandGateArea = true;
     this.expandCodeArea = true;
     this.expandChartArea = true;
@@ -34,7 +36,7 @@ class ViewState {
 
     this.waitingInfoGate = null;
     this.showInfoGate = null;
-
+    
     this.canvasBoundingRect = {
       clientX: 0,
       clientY: 0,
