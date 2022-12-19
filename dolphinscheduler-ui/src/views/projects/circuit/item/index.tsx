@@ -23,6 +23,7 @@ import { useCircuit } from './use-circuit'
 import { NButton, NGradientText, NIcon, NInput, NSpace } from 'naive-ui'
 import { RollbackOutlined } from '@vicons/antd'
 import MESSAGE, { QUANTUM_MESSAGE_FROM, VUEJS_MESSAGE_FROM } from './constants'
+import exportFile from '@/utils/exportFile'
 
 const circuitItem = defineComponent({
   name: 'circuitItem',
@@ -118,17 +119,7 @@ const circuitItem = defineComponent({
                     })
                   }
                 } else {
-                  const file = new File([obj.detailData], `${variables.data.name}.json`, {
-                    type: 'application/json',
-                  })
-                  const link = document.createElement('a')
-                  const url = URL.createObjectURL(file)
-                  link.href = url
-                  link.download = file.name
-                  document.body.appendChild(link)
-                  link.click()
-                  document.body.removeChild(link)
-                  window.URL.revokeObjectURL(url)
+                  exportFile(obj.detailData, variables.data.name, 'json')
                 }
                 break;
             }

@@ -39,6 +39,7 @@ import {
 import type { Router } from 'vue-router'
 import type { CircuitList, CircuitRes } from '@/service/modules/circuits/types'
 import { DeleteOutlined, EditOutlined, CopyOutlined, ExportOutlined } from '@vicons/antd'
+import exportFile from '@/utils/exportFile'
 
 export function useTable() {
   const { t } = useI18n()
@@ -70,17 +71,7 @@ export function useTable() {
   }
 
   const handleExportCircuit = (row: any) => {
-    const file = new File([row.json], `${row.name}.json`, {
-      type: 'application/json',
-    })
-    const link = document.createElement('a')
-    const url = URL.createObjectURL(file)
-    link.href = url
-    link.download = file.name
-    document.body.appendChild(link)
-    link.click()
-    document.body.removeChild(link)
-    window.URL.revokeObjectURL(url)
+    exportFile(row.json, row.name, 'json')
   }
 
   const createColumns = (variables: any) => {
