@@ -17,11 +17,12 @@
 
 import { useI18n } from 'vue-i18n'
 import { Router, useRoute, useRouter } from 'vue-router'
-import { defineComponent, onBeforeUnmount, onMounted, toRefs, ref, watch, getCurrentInstance } from 'vue'
+import { defineComponent, onMounted, toRefs, ref, watch, getCurrentInstance } from 'vue'
 import Card from '@/components/card'
 import { useCircuit } from './use-circuit'
 import { NButton, NGradientText, NIcon, NInput, NSpace } from 'naive-ui'
 import { RollbackOutlined } from '@vicons/antd'
+import MESSAGE, { QUANTUM_MESSAGE_FROM, VUEJS_MESSAGE_FROM } from './constants'
 
 const circuitItem = defineComponent({
   name: 'circuitItem',
@@ -35,6 +36,20 @@ const circuitItem = defineComponent({
     const router: Router = useRouter()
 
     const trim = getCurrentInstance()?.appContext.config.globalProperties.trim
+
+    const sendMessageToIFrame = (actionType: string, detailData: string | null) => {
+      if (isIFrameReady.value) {
+        quantumRef.value.contentWindow.postMessage(JSON.stringify({
+          messageFrom: VUEJS_MESSAGE_FROM,
+          actionType,
+          detailData
+        }));
+      }
+    }
+
+    const handleSaveCircuit = () => {
+      sendMessageToIFrame(MESSAGE.getCircuitJson, null);
+    }
 
     const handleChangeTabCircuit = () => {
       variables.isCircuitTab = true
@@ -69,35 +84,28 @@ const circuitItem = defineComponent({
       })
     }
 
-    const sendMessageToIFrame = (actionType: string, detailData: string) => {
-      if (isIFrameReady.value) {
-        quantumRef.value.contentWindow.postMessage(JSON.stringify({
-          messageFrom: 'vuejs',
-          actionType,
-          detailData
-        }));
-      }
-    }
-
     const handleReceiveMessage = (e: any) => {
       if (e.data) {
         try {
+          console.log(e.data);
           const obj = JSON.parse(e.data);
-          if (obj && obj.messageFrom == 'quantum_composer') {
+          if (obj && obj.messageFrom == QUANTUM_MESSAGE_FROM) {
             const actionType = obj.actionType;
             switch (actionType) {
-              case 'setup_finish':
+              case MESSAGE.setupFinish:
                 isIFrameReady.value = true;
                 if (variables.data.json) {
-                  sendMessageToIFrame('loaded_circuit_json', variables.data.json);
+                  sendMessageToIFrame(MESSAGE.loadedCircuitJson, variables.data.json);
                 }
                 break;
-              case 'save_circuit_json':
+              case MESSAGE.saveCircuitJson:
                 if (typeof route.params.circuitId === 'string') {
                   updateCircuitData(parseInt(route.params.circuitId), {
                     json: obj.detailData
                   })
                 }
+                break;
+              case MESSAGE.getCurrentCircuitJson:
                 break;
             }
           }
@@ -117,14 +125,10 @@ const circuitItem = defineComponent({
       window.addEventListener('message', handleReceiveMessage)
     })
 
-    onBeforeUnmount(() => {
-      window.addEventListener('message', handleReceiveMessage)
-    })
-
     watch(
       () => variables.data,
       () => {
-        sendMessageToIFrame('loaded_circuit_json', variables.data.json);
+        sendMessageToIFrame(MESSAGE.loadedCircuitJson, variables.data.json);
       }
     );
 
@@ -137,6 +141,7 @@ const circuitItem = defineComponent({
       handleReturnToCircuitList,
       handleChangeTabCircuit,
       handleChangeTabSimulate,
+      handleSaveCircuit,
       quantumRef,
       trim
     }
@@ -188,7 +193,7 @@ const circuitItem = defineComponent({
           </NSpace>
           {/* Button area */}
           <NSpace>
-            <NButton size='small' type='primary'>
+            <NButton size='small' type='primary' onClick={this.handleSaveCircuit}>
               {t('circuit.detail.save_circuit')}
             </NButton>
             <NButton size='small' type='warning'>
