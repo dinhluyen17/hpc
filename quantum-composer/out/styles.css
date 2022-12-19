@@ -367,16 +367,24 @@ body {
 }
 #gate-menu-popup {
     position: absolute;
-    width: 132px;
+    width: 220px;
     height: 44px;
     flex-direction: row;
     display: none;
+    background-color: #F2F2F2;    
+    box-shadow: rgba(100, 100, 111, 0.2) 0px 7px 29px 0px;
+    border-radius: 5px;    
+    border: 1px solid #d1d0d7;
 }
 .gate-menu-popup-btn {
     width: 44px;
     height: 44px;
+    background-color: transparent;
+    border: none;
 }
-
+.gate-menu-popup-btn:hover {
+    background-color: #E1E1E1;
+}
 .hidden {
     display: none;
     pointer-events: none;
@@ -397,12 +405,18 @@ body {
 #paste-menu-popup {
     position: absolute;
     width: 88px;
-    height: 44px;
+    height: 35px;
     display: none;
+    background-color: #F2F2F2;    
+    box-shadow: rgba(100, 100, 111, 0.2) 0px 7px 29px 0px; 
+    border: 1px solid #d1d0d7;
+    border-radius: 5px;
 }
 #paste-menu-popup-btn {
     width: 88px;
-    height: 44px;
+    height: 35px;
+    background-color: transparent;
+    border: none;
 }
 
 #circuitTab {
