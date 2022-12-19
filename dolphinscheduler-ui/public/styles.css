@@ -210,8 +210,10 @@ body {
 .circuit-area-header-btn {
     background-color: white;
     border: none;
-    padding: 8px 15px;
-    margin-left: 8px;
+    width: 65px;
+    height: 46px;
+    border: 1px solid #EDECF3;
+    border-width: 0 2px 0px 0px;
 }
 
 .circuit-area-header-btn:hover {
