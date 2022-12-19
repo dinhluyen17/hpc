@@ -40,7 +40,6 @@
         <module>dolphinscheduler-task-plugin</module>
         <module>dolphinscheduler-common</module>
         <module>dolphinscheduler-api</module>
-        <module>dolphinscheduler-quantum</module>
         <module>dolphinscheduler-dao</module>
         <module>dolphinscheduler-dist</module>
         <module>dolphinscheduler-remote</module>
@@ -140,11 +139,6 @@
             <dependency>
                 <groupId>org.apache.dolphinscheduler</groupId>
                 <artifactId>dolphinscheduler-api</artifactId>
-                <version>${project.version}</version>
-            </dependency>
-            <dependency>
-                <groupId>org.apache.dolphinscheduler</groupId>
-                <artifactId>dolphinscheduler-quantum</artifactId>
                 <version>${project.version}</version>
             </dependency>
             <dependency>

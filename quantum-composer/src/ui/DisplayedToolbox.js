@@ -159,7 +159,7 @@ class DisplayedToolbox {
                 let rect = this.gateDrawRect(groupIndex, gateIndex);
                 // Phu: Change logic
                 // if (gate !== undefined && rect.containsPoint(pt)) {
-                if (gate !== undefined && gate.symbol == document.GRAB_GATE) {
+                if (gate !== undefined && gate.serializedId == document.GRAB_GATE) {
                     return {groupIndex, gateIndex, gate, rect};
                 }
             }
@@ -173,9 +173,18 @@ class DisplayedToolbox {
             for (let gateIndex = 0; gateIndex < group.gates.length; gateIndex++) {
                 let gate = group.gates[gateIndex];
                 let rect = this.gateDrawRect(groupIndex, gateIndex);
-
-                if (gate !== undefined && gate.symbol == viewState.getInstance().showInfoGate) {
-                    return {groupIndex, gateIndex, gate, rect};
+                if (gate !== undefined && viewState.getInstance().showInfoGate) {
+                    const lastChar = viewState.getInstance().showInfoGate.slice(-1);
+                    if (lastChar >= '0' && lastChar <= '9') {                       
+                        const strTrim1 = viewState.getInstance().showInfoGate.substring(0, viewState.getInstance().showInfoGate.length - 1);
+                        const strTrim2 = gate.serializedId.substring(0, gate.serializedId.length - 1);
+                        if (strTrim1 == strTrim2) {
+                            return {groupIndex, gateIndex, gate, rect};                                                        
+                        }
+                    }
+                    else if (viewState.getInstance().showInfoGate == gate.serializedId){
+                        return {groupIndex, gateIndex, gate, rect};
+                    }
                 }
             }
         }

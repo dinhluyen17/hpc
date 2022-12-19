@@ -15,54 +15,18 @@
  * limitations under the License.
  */
 
-interface GetReq {
-  id: number
+const exportFile = (data: any, name: string, type: string) => {
+  const file = new File([data], `${name}.${type}`, {
+    type: 'application/json',
+  })
+  const link = document.createElement('a')
+  const url = URL.createObjectURL(file)
+  link.href = url
+  link.download = file.name
+  document.body.appendChild(link)
+  link.click()
+  document.body.removeChild(link)
+  window.URL.revokeObjectURL(url)
 }
 
-interface ListReq {
-  pageNo: number
-  pageSize: number
-  criteria?: string
-  direction?: string
-  keyword?: string
-}
-
-interface CircuitReq {
-  id: number | null
-  name: string
-  description: string
-  json: string
-  qasm: string
-  qiskit: string
-  projectCode: number | null
-}
-
-interface CircuitList {
-  id: number
-  userId: number
-  name: string
-  description: string
-  json: string
-  qiskit: string
-  qasm: string
-  createTime: string
-  updateTime: string
-  projectCode: number
-}
-
-interface CircuitRes {
-  totalList: CircuitList[]
-  total: number
-  totalPage: number
-  pageSize: number
-  currentPage: number
-  start: number
-}
-
-export {
-  GetReq,
-  ListReq,
-  CircuitReq,
-  CircuitRes,
-  CircuitList
-}
+export default exportFile

@@ -3,7 +3,7 @@
   "version": "0.0.0",
   "scripts": {
     "rebuild-quantum-composer": "sh ./rebuild_quantum_composer.sh",
-    "dev": "vite",
+    "dev": "pnpm run rebuild-quantum-composer && vite",
     "build:prod": "vue-tsc --noEmit && vite build --mode production",
     "preview": "vite preview",
     "lint": "eslint src --fix --ext .ts,.tsx,.vue",

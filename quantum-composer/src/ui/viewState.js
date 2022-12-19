@@ -16,6 +16,8 @@
 
 class ViewState {
   constructor() {
+    this.currentTab = 'circuit';
+    
     this.expandGateArea = true;
     this.expandCodeArea = true;
     this.expandChartArea = true;
@@ -34,7 +36,7 @@ class ViewState {
 
     this.waitingInfoGate = null;
     this.showInfoGate = null;
-
+    
     this.canvasBoundingRect = {
       clientX: 0,
       clientY: 0,
@@ -65,7 +67,7 @@ const viewState = (function () {
 })();
 
 const SIZE_INFO = {
-  HEADER_HEIGHT: 60,
+  HEADER_HEIGHT: 0,
   CIRCUIT_AREA_HEADER_HEIGHT: 50,
   VERTICAL_SPACING: 10,
   GATE_AREA_HEADER_HEIGHT: 50,

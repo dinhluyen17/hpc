@@ -82,8 +82,7 @@ export default {
       meta: {
         title: 'Circuit item',
         activeMenu: 'projects',
-        activeSide: '/projects/:projectCode/circuit',
-        showSide: true,
+        showSide: false,
         auth: []
       }
     },
