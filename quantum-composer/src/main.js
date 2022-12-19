@@ -98,6 +98,49 @@ const mostRecentStats = new ObservableValue(CircuitStats.EMPTY);
 /** @type {!Revision} */
 let revision = Revision.startingAt(displayed.get().snapshot());
 
+const changeTab = (tab) => {
+    if (tab == 'circuit') {
+        let e = document.getElementById("circuit");
+        e.classList.remove("hidden");
+        let eT = document.getElementById("circuitTab");
+        eT.setAttribute("data-state","active")
+    
+        let e2 = document.getElementById("simulate");
+        e2.classList.add("hidden");
+        let e2T = document.getElementById("simulateTab");
+        e2T.setAttribute("data-state","inactive");
+    
+        const canvas = document.getElementById("circuit-area-body");
+        let canvasBox = canvas.getBoundingClientRect();
+        viewState.getInstance().canvasBoundingRect = {
+            clientX: canvasBox.left,
+            clientY: canvasBox.top,
+            width: canvasBox.width,
+            height: canvasBox.height
+        }        
+    }
+    else {
+        let e = document.getElementById("circuit");
+        e.classList.add("hidden");
+        let eT = document.getElementById("circuitTab");
+        eT.setAttribute("data-state","inactive");
+    
+        let e2 = document.getElementById("simulate");
+        e2.classList.remove("hidden");
+        let e2T = document.getElementById("simulateTab");
+        e2T.setAttribute("data-state","active");
+    
+        let canvas = document.getElementById("drawCanvasSim");
+        let canvasBox = canvas.getBoundingClientRect();
+        viewState.getInstance().canvasBoundingRect = {
+            clientX: canvasBox.left,
+            clientY: canvasBox.top,
+            width: canvasBox.width,
+            height: canvasBox.height
+        }
+    }
+}
+
 window.addEventListener('message', (e) => {
     // handle message from vuejs
     if (e.data) {
@@ -119,6 +162,9 @@ window.addEventListener('message', (e) => {
                 }
                 else if (actionType == 'set_circuit_json') {
                     revision.commit(obj.detailData);                                              
+                }
+                else if (actionType == 'change_tab') {
+                    changeTab(obj.detailData);                    
                 }
             }
         } catch (e) {

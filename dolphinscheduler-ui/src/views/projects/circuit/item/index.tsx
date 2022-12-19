@@ -59,11 +59,11 @@ const circuitItem = defineComponent({
     }
 
     const handleChangeTabCircuit = () => {
-      variables.isCircuitTab = true
+      sendMessageToIFrame(MESSAGE.changeTab, 'circuit');
     }
 
     const handleChangeTabSimulate = () => {
-      variables.isCircuitTab = false
+      sendMessageToIFrame(MESSAGE.changeTab, 'simulate');
     }
 
     const handleChangeCircuitName = () => {
@@ -226,17 +226,12 @@ const circuitItem = defineComponent({
             </NButton>
           </NSpace>
         </NSpace>
-        {this.isCircuitTab ?
           <iframe
             ref="quantumRef"
             src="/quirk.html"
-            style={{ width: '100%', height: '100%' }}
+            style={{ width: '100%', height: 'calc(100% - 60px)', marginTop: '10px' }}
             frameborder="0">
-          </iframe> :
-          <NSpace>
-            aaaa
-          </NSpace>
-        }
+          </iframe>
       </Card>
     )
   }

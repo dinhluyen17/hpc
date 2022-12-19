@@ -33,8 +33,7 @@ const updateSizeViews = (parentDiv) => {
     parentDiv.clientHeight -
     SIZE_INFO.HEADER_HEIGHT -
     SIZE_INFO.CIRCUIT_AREA_HEADER_HEIGHT -
-    getChartAreaHeight() -
-    2 * SIZE_INFO.VERTICAL_SPACING
+    getChartAreaHeight()
   ) + 'px';
 
   const circuitChart = document.getElementById('stateBarChart');

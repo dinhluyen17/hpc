@@ -65,7 +65,7 @@ const viewState = (function () {
 })();
 
 const SIZE_INFO = {
-  HEADER_HEIGHT: 60,
+  HEADER_HEIGHT: 0,
   CIRCUIT_AREA_HEADER_HEIGHT: 50,
   VERTICAL_SPACING: 10,
   GATE_AREA_HEADER_HEIGHT: 50,
