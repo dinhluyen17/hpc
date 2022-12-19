@@ -25,7 +25,8 @@ export function useCircuit() {
     data: {} as CircuitList,
     loadingRef: ref(false),
     isChangeName: ref(false),
-    isCircuitTab: ref(true)
+    isCircuitTab: ref(true),
+    isSaveCircuit: ref(true)
   })
 
   const getCircuitData = (id: number) => {

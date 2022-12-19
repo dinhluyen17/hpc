@@ -47,7 +47,13 @@ const circuitItem = defineComponent({
       }
     }
 
+    const handleExportCircuit = () => {
+      variables.isSaveCircuit = false;
+      sendMessageToIFrame(MESSAGE.getCircuitJson, null);
+    }
+
     const handleSaveCircuit = () => {
+      variables.isSaveCircuit = true;
       sendMessageToIFrame(MESSAGE.getCircuitJson, null);
     }
 
@@ -87,7 +93,6 @@ const circuitItem = defineComponent({
     const handleReceiveMessage = (e: any) => {
       if (e.data) {
         try {
-          console.log(e.data);
           const obj = JSON.parse(e.data);
           if (obj && obj.messageFrom == QUANTUM_MESSAGE_FROM) {
             const actionType = obj.actionType;
@@ -106,6 +111,25 @@ const circuitItem = defineComponent({
                 }
                 break;
               case MESSAGE.getCurrentCircuitJson:
+                if (variables.isSaveCircuit) {
+                  if (typeof route.params.circuitId === 'string') {
+                    updateCircuitData(parseInt(route.params.circuitId), {
+                      json: obj.detailData
+                    })
+                  }
+                } else {
+                  const file = new File([obj.detailData], `${variables.data.name}.json`, {
+                    type: 'application/json',
+                  })
+                  const link = document.createElement('a')
+                  const url = URL.createObjectURL(file)
+                  link.href = url
+                  link.download = file.name
+                  document.body.appendChild(link)
+                  link.click()
+                  document.body.removeChild(link)
+                  window.URL.revokeObjectURL(url)
+                }
                 break;
             }
           }
@@ -142,6 +166,7 @@ const circuitItem = defineComponent({
       handleChangeTabCircuit,
       handleChangeTabSimulate,
       handleSaveCircuit,
+      handleExportCircuit,
       quantumRef,
       trim
     }
@@ -199,7 +224,7 @@ const circuitItem = defineComponent({
             <NButton size='small' type='warning'>
               {t('circuit.detail.import_circuit')}
             </NButton>
-            <NButton size='small' type='warning'>
+            <NButton size='small' type='warning' onClick={this.handleExportCircuit}>
               {t('circuit.detail.export_circuit')}
             </NButton>
             <NButton size='small' type='success'>
