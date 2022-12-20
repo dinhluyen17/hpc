@@ -86,24 +86,16 @@ document.D3_FUNCTION = {
                     .style('top', `${d3.event.layerY}px`);
             })
             .on("mouseout", () => tooltip.transition().duration(500).style("opacity", 0))
-        // const dataWrap = document.getElementById("simulateOutput");
-        // let dataOutput = document.getElementById("dataOutput");
-        // dataOutput.innerHTML = "";
-        // dataOutput.style.height = "800px";
-        // dataOutput.style.overflow = "auto";
-        // barData.forEach(item => {
-        //   if (item.Probability !== 'NaN' && item.Probability !== '0.0000') {
-        //     let output = document.createElement("li");
-        //     output.innerHTML = item.State + ": " + item.Probability + "% <br/>";
-        //     dataOutput.appendChild(output);
-        //   }
-        // })
-        // if (dataOutput.getElementsByTagName("li").length > 15) {
-        //   dataOutput.style.columnCount = "2"
-        // } else {
-        //   dataOutput.style.columnCount = "1";
-        // }
-        // dataWrap.appendChild(dataOutput);
+        switch (barData.length){
+            case 256:
+                document.getElementById("simulateOutput").style.width = "725px"
+                break;
+            case 8192:
+                document.getElementById("simulateOutput").style.width = "675px"
+            case 16384:
+                document.getElementById("simulateOutput").style.width = "625px"
+                break;
+        }
     }
 }
 
