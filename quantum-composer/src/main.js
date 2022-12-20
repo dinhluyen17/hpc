@@ -98,6 +98,51 @@ const mostRecentStats = new ObservableValue(CircuitStats.EMPTY);
 /** @type {!Revision} */
 let revision = Revision.startingAt(displayed.get().snapshot());
 
+const changeTab = (tab) => {
+    if (tab == 'circuit') {
+        let e = document.getElementById("circuit");
+        e.classList.remove("hidden");
+        let eT = document.getElementById("circuitTab");
+        eT.setAttribute("data-state","active")
+    
+        let e2 = document.getElementById("simulate");
+        e2.classList.add("hidden");
+        let e2T = document.getElementById("simulateTab");
+        e2T.setAttribute("data-state","inactive");
+    
+        viewState.getInstance().currentTab = 'circuit';
+        const canvas = document.getElementById("circuit-area-body");
+        let canvasBox = canvas.getBoundingClientRect();
+        viewState.getInstance().canvasBoundingRect = {
+            clientX: canvasBox.left,
+            clientY: canvasBox.top,
+            width: canvasBox.width,
+            height: canvasBox.height
+        }        
+    }
+    else {
+        let e = document.getElementById("circuit");
+        e.classList.add("hidden");
+        let eT = document.getElementById("circuitTab");
+        eT.setAttribute("data-state","inactive");
+    
+        let e2 = document.getElementById("simulate");
+        e2.classList.remove("hidden");
+        let e2T = document.getElementById("simulateTab");
+        e2T.setAttribute("data-state","active");
+    
+        viewState.getInstance().currentTab = 'simulate';
+        let canvas = document.getElementById("drawCanvasSim");
+        let canvasBox = canvas.getBoundingClientRect();
+        viewState.getInstance().canvasBoundingRect = {
+            clientX: canvasBox.left,
+            clientY: canvasBox.top,
+            width: canvasBox.width,
+            height: canvasBox.height
+        }
+    }
+}
+
 window.addEventListener('message', (e) => {
     // handle message from vuejs
     if (e.data) {
@@ -109,6 +154,19 @@ window.addEventListener('message', (e) => {
                     if (obj.detailData && obj.detailData.length > 0) {
                         revision.commit(obj.detailData);
                     }                                       
+                }
+                else if (actionType == 'get_circuit_json') {
+                    window.parent.postMessage(JSON.stringify({
+                        messageFrom: 'quantum_composer',
+                        actionType: 'current_circuit_json',
+                        detailData: revision.getLatestCommit()
+                    }));                                                    
+                }
+                else if (actionType == 'set_circuit_json') {
+                    revision.commit(obj.detailData);                                              
+                }
+                else if (actionType == 'change_tab') {
+                    changeTab(obj.detailData);                    
                 }
             }
         } catch (e) {
@@ -169,19 +227,23 @@ let stateBarCalc = () =>{
     return data;
 }
 document.addEventListener('contextmenu', function (e) {
-    const hoverPos = viewState.getInstance().currentHoverPos;
-    const posX = hoverPos.x - viewState.getInstance().canvasScrollX + viewState.getInstance().canvasBoundingRect.clientX;
-    const posY = hoverPos.y - viewState.getInstance().canvasScrollY + viewState.getInstance().canvasBoundingRect.clientY;
-    if (posX >= viewState.getInstance().canvasBoundingRect.clientX &&
-        posY >= viewState.getInstance().canvasBoundingRect.clientY &&
-        posY <= viewState.getInstance().canvasBoundingRect.clientY + viewState.getInstance().canvasBoundingRect.height &&
-        posX <= viewState.getInstance().canvasBoundingRect.clientX + viewState.getInstance().canvasBoundingRect.width) {
-        viewState.getInstance().currentPastePos = hoverPos;
-        const element = document.getElementById('paste-menu-popup');
-        element.style.display = 'block';
-        element.style.left = (hoverPos.x - viewState.getInstance().canvasScrollX + viewState.getInstance().canvasBoundingRect.clientX) + "px";
-        element.style.top = (hoverPos.y - viewState.getInstance().canvasScrollY + viewState.getInstance().canvasBoundingRect.clientY - 44) + "px";
-        e.preventDefault();        
+    if (viewState.getInstance().currentTab == 'circuit') {
+        const hoverPos = viewState.getInstance().currentHoverPos;
+        if (hoverPos) {
+            const posX = hoverPos.x - viewState.getInstance().canvasScrollX + viewState.getInstance().canvasBoundingRect.clientX;
+            const posY = hoverPos.y - viewState.getInstance().canvasScrollY + viewState.getInstance().canvasBoundingRect.clientY;
+            if (posX >= viewState.getInstance().canvasBoundingRect.clientX &&
+                posY >= viewState.getInstance().canvasBoundingRect.clientY &&
+                posY <= viewState.getInstance().canvasBoundingRect.clientY + viewState.getInstance().canvasBoundingRect.height &&
+                posX <= viewState.getInstance().canvasBoundingRect.clientX + viewState.getInstance().canvasBoundingRect.width) {
+                viewState.getInstance().currentPastePos = hoverPos;
+                const element = document.getElementById('paste-menu-popup');
+                element.style.display = 'block';
+                element.style.left = (hoverPos.x - viewState.getInstance().canvasScrollX + viewState.getInstance().canvasBoundingRect.clientX) + "px";
+                element.style.top = (hoverPos.y - viewState.getInstance().canvasScrollY + viewState.getInstance().canvasBoundingRect.clientY - 44) + "px";
+                e.preventDefault();        
+            }            
+        }   
     }
 }, false);
 document.addEventListener("DOMContentLoaded", function (){
@@ -192,10 +254,10 @@ const stateBarChartFilter = document.getElementById("stateBarChartFilterZero");
 stateBarChartFilter.addEventListener('click',()=>{
     barDataFilterSwitch = !barDataFilterSwitch;
     if (barDataFilterSwitch == false){
-        stateBarChartFilter.style.color = "black";
+        stateBarChartFilter.innerHTML = "Hide zero states";
         document.D3_FUNCTION.bar(stateBarCalc());
     } else {
-        stateBarChartFilter.style.color = "red";
+        stateBarChartFilter.innerHTML = "Show all states";
         let barDataFilter = stateBarCalc().filter(val => !val.Probability.match(/^0.0000$/));
         document.D3_FUNCTION.bar(barDataFilter);
     }
@@ -300,6 +362,15 @@ displayed.observable().subscribe(() => redrawThrottle.trigger());
 
 /** @type {undefined|!string} */
 let clickDownGateButtonKey = undefined;
+const hideAllMenu = () => {
+    const pasteMenu = document.getElementById('paste-menu-popup');
+    const gateMenu = document.getElementById('gate-menu-popup');
+    const gateInfo = document.getElementById('gateInfo');
+    gateMenu.style.display = 'none';
+    pasteMenu.style.display = 'none';
+    gateInfo.style.display = 'none';
+}
+
 canvasDiv.addEventListener('click', ev => {
     let pt = eventPosRelativeTo(ev, canvasDiv);
     let curInspector = displayed.get();
@@ -331,7 +402,7 @@ canvasDiv.addEventListener('click', ev => {
                 viewState.getInstance().gateMenuPos = viewState.getInstance().highlightGate;
                 const gateRect = viewState.getInstance().highlightGate.gateRect;
                 const element = document.getElementById('gate-menu-popup');
-                element.style.display = 'block';
+                element.style.display = 'flex';
                 element.style.left = (gateRect.x - viewState.getInstance().canvasScrollX + viewState.getInstance().canvasBoundingRect.clientX) + "px";
                 element.style.top = (gateRect.y - viewState.getInstance().canvasScrollY + viewState.getInstance().canvasBoundingRect.clientY - 50) + "px";
             }
@@ -516,6 +587,7 @@ document.getElementById("circuitTab").addEventListener('click', () => {
     let e2T = document.getElementById("simulateTab");
     e2T.setAttribute("data-state","inactive");
 
+    viewState.getInstance().currentTab = 'circuit';
     const canvas = document.getElementById("circuit-area-body");
     let canvasBox = canvas.getBoundingClientRect();
     viewState.getInstance().canvasBoundingRect = {
@@ -537,6 +609,7 @@ document.getElementById("simulateTab").addEventListener('click', () => {
     let e2T = document.getElementById("simulateTab");
     e2T.setAttribute("data-state","active");
 
+    viewState.getInstance().currentTab = 'simulate';
     let canvas = document.getElementById("drawCanvasSim");
     let canvasBox = canvas.getBoundingClientRect();
     viewState.getInstance().canvasBoundingRect = {
@@ -592,3 +665,4 @@ window.parent.postMessage(JSON.stringify({
     messageFrom: 'quantum_composer',
     actionType: 'setup_finish'
 }));
+hideAllMenu();

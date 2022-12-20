@@ -29,7 +29,7 @@ body {
 .app .header {
     height: 60px;
     min-height: 60px;
-    display: flex;
+    display: none;
     flex-direction: row;
     align-items: center;
 }
@@ -76,7 +76,7 @@ body {
 .app .header .quick-menu .quick-menu-btn {
     padding: 8px 15px;
     color: rgb(57, 57, 57);
-    border: 1px solid #373737;
+    border: 1px solid #EDECF3;
     margin-left: 8px;
 }
 
@@ -90,7 +90,7 @@ body {
     display: flex;
     flex-direction: column;
     width: 320px;
-    border: 1px solid #373737;
+    border: 2px solid #EDECF3;
 }
 
 .gate-area-header {
@@ -150,13 +150,13 @@ body {
 
 .gate-area-body-common-gates {
     margin: 10px 5px 10px 5px;
-    border: 1px solid #373737;
+    border: 1px solid #EDECF3;
     flex: 1;
 }
 
 .gate-area-body-advanced-gates {
     margin: 10px 5px 10px 5px;
-    border: 1px solid #373737;
+    border: 1px solid #EDECF3;
     flex: 1;
 }
 
@@ -203,30 +203,48 @@ body {
     display: flex;
     flex-direction: row;
     align-items: center;
-    border: 1px solid #373737;
+    border: 1px solid #EDECF3;
+    border-width:2px 0 2px 0px;
 }
 
 .circuit-area-header-btn {
+    background-color: white;
+    border: none;
     padding: 8px 15px;
-    color: rgb(57, 57, 57);
-    border: 1px solid #373737;
     margin-left: 8px;
+}
+
+.circuit-area-header-btn:hover {
+    background-color: #E1E1E1;
 }
 
 .circuit-area-body {
     flex: 1;
-    margin-top: 10px;
-    border: 1px solid #373737;
+    /* border: 1px solid #373737; */
     overflow-x: scroll;
     overflow-y: scroll;
 }
+
+::-webkit-scrollbar {
+    width: 8px;
+    height: 8px;
+}
+
+::-webkit-scrollbar-track {
+    background: white;
+}
+
+::-webkit-scrollbar-thumb {
+    background: #E1E1E1; 
+    border-radius: 8px;
+  }
 
 .circuit-area-chart {
     position: relative;
     height: 200px;
     width: 100%;
-    margin-top: 10px;
-    border: 1px solid #373737;
+    border: 1px solid #EDECF3;
+    border-width:2px 0 2px 0px;
     display: flex;
     flex-direction: column;
 }
@@ -250,7 +268,7 @@ body {
 .content .code-area {
     position: relative;
     width: 300px;
-    border: 1px solid #373737;
+    border: 2px solid #EDECF3;
 }
 
 #code-area-close-btn {
@@ -302,6 +320,7 @@ body {
     z-index: 9;
     width: 500px;
     height: 500px;
+    display: none;
 }
 
 #dragCanvas {
@@ -348,16 +367,24 @@ body {
 }
 #gate-menu-popup {
     position: absolute;
-    width: 132px;
+    width: 220px;
     height: 44px;
     flex-direction: row;
     display: none;
+    background-color: #F2F2F2;    
+    box-shadow: rgba(100, 100, 111, 0.2) 0px 7px 29px 0px;
+    border-radius: 5px;    
+    border: 1px solid #d1d0d7;
 }
 .gate-menu-popup-btn {
     width: 44px;
     height: 44px;
+    background-color: transparent;
+    border: none;
 }
-
+.gate-menu-popup-btn:hover {
+    background-color: #E1E1E1;
+}
 .hidden {
     display: none;
     pointer-events: none;
@@ -366,7 +393,7 @@ body {
 .simulate-area {
     flex: 1;
     margin-top: 10px;
-    border: 1px solid #373737;
+    border: 1px solid #EDECF3;
     overflow-x: scroll;
     overflow-y: scroll;
     width: 100%;
@@ -378,12 +405,18 @@ body {
 #paste-menu-popup {
     position: absolute;
     width: 88px;
-    height: 44px;
+    height: 35px;
     display: none;
+    background-color: #F2F2F2;    
+    box-shadow: rgba(100, 100, 111, 0.2) 0px 7px 29px 0px; 
+    border: 1px solid #d1d0d7;
+    border-radius: 5px;
 }
 #paste-menu-popup-btn {
     width: 88px;
-    height: 44px;
+    height: 35px;
+    background-color: transparent;
+    border: none;
 }
 
 #circuitTab {

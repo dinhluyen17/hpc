@@ -17,11 +17,14 @@
 
 import { useI18n } from 'vue-i18n'
 import { Router, useRoute, useRouter } from 'vue-router'
-import { defineComponent, onBeforeUnmount, onMounted, toRefs, ref, watch, getCurrentInstance } from 'vue'
+import { defineComponent, onMounted, toRefs, ref, watch, getCurrentInstance } from 'vue'
 import Card from '@/components/card'
 import { useCircuit } from './use-circuit'
-import { NButton, NGradientText, NIcon, NInput, NSpace} from 'naive-ui'
+import { NButton, NGradientText, NIcon, NInput, NSpace } from 'naive-ui'
 import { RollbackOutlined } from '@vicons/antd'
+import MESSAGE, { QUANTUM_MESSAGE_FROM, VUEJS_MESSAGE_FROM } from './constants'
+import exportFile from '@/utils/exportFile'
+import './styles/CircuitStyle.scss'
 
 const circuitItem = defineComponent({
   name: 'circuitItem',
@@ -35,6 +38,36 @@ const circuitItem = defineComponent({
     const router: Router = useRouter()
 
     const trim = getCurrentInstance()?.appContext.config.globalProperties.trim
+
+    const sendMessageToIFrame = (actionType: string, detailData: string | null) => {
+      if (isIFrameReady.value) {
+        quantumRef.value.contentWindow.postMessage(JSON.stringify({
+          messageFrom: VUEJS_MESSAGE_FROM,
+          actionType,
+          detailData
+        }));
+      }
+    }
+
+    const handleExportCircuit = () => {
+      variables.isSaveCircuit = false;
+      sendMessageToIFrame(MESSAGE.getCircuitJson, null);
+    }
+
+    const handleSaveCircuit = () => {
+      variables.isSaveCircuit = true;
+      sendMessageToIFrame(MESSAGE.getCircuitJson, null);
+    }
+
+    const handleChangeTabCircuit = (e: any) => {
+      sendMessageToIFrame(MESSAGE.changeTab, 'circuit');
+      variables.isCircuitTab = true
+    }
+
+    const handleChangeTabSimulate = (e: any) => {
+      sendMessageToIFrame(MESSAGE.changeTab, 'simulate');
+      variables.isCircuitTab = false
+    }
 
     const handleChangeCircuitName = () => {
       updateCircuitData(variables.data.id, {
@@ -61,34 +94,35 @@ const circuitItem = defineComponent({
       })
     }
 
-    const sendMessageToIFrame = (actionType: string, detailData: string) => {
-      if (isIFrameReady.value) {
-        quantumRef.value.contentWindow.postMessage(JSON.stringify({
-          messageFrom: 'vuejs',
-          actionType,
-          detailData
-        }));
-      }
-    }
-
     const handleReceiveMessage = (e: any) => {
       if (e.data) {
         try {
           const obj = JSON.parse(e.data);
-          if (obj && obj.messageFrom == 'quantum_composer') {
+          if (obj && obj.messageFrom == QUANTUM_MESSAGE_FROM) {
             const actionType = obj.actionType;
             switch (actionType) {
-              case 'setup_finish':
+              case MESSAGE.setupFinish:
                 isIFrameReady.value = true;
                 if (variables.data.json) {
-                  sendMessageToIFrame('loaded_circuit_json', variables.data.json);
+                  sendMessageToIFrame(MESSAGE.loadedCircuitJson, variables.data.json);
                 }
                 break;
-              case 'save_circuit_json':
+              case MESSAGE.saveCircuitJson:
                 if (typeof route.params.circuitId === 'string') {
                   updateCircuitData(parseInt(route.params.circuitId), {
                     json: obj.detailData
                   })
+                }
+                break;
+              case MESSAGE.getCurrentCircuitJson:
+                if (variables.isSaveCircuit) {
+                  if (typeof route.params.circuitId === 'string') {
+                    updateCircuitData(parseInt(route.params.circuitId), {
+                      json: obj.detailData
+                    })
+                  }
+                } else {
+                  exportFile(obj.detailData, variables.data.name, 'json')
                 }
                 break;
             }
@@ -109,14 +143,10 @@ const circuitItem = defineComponent({
       window.addEventListener('message', handleReceiveMessage)
     })
 
-    onBeforeUnmount(() => {
-      window.addEventListener('message', handleReceiveMessage)
-    })
-
     watch(
       () => variables.data,
       () => {
-        sendMessageToIFrame('loaded_circuit_json', variables.data.json);
+        sendMessageToIFrame(MESSAGE.loadedCircuitJson, variables.data.json);
       }
     );
 
@@ -127,6 +157,10 @@ const circuitItem = defineComponent({
       handleExitChangeName,
       handleChangeCircuitName,
       handleReturnToCircuitList,
+      handleChangeTabCircuit,
+      handleChangeTabSimulate,
+      handleSaveCircuit,
+      handleExportCircuit,
       quantumRef,
       trim
     }
@@ -135,7 +169,8 @@ const circuitItem = defineComponent({
     const { t, data } = this;
     return (
       <Card style={{ width: '100%', height: '100%' }}>
-        {/* <NSpace justify='space-between' align='center'>
+        <NSpace justify='space-between' align='center'>
+          {/* Name and return area */}
           <NSpace justify='space-between' align='center'>
             <NButton size='small' type='primary' onClick={this.handleReturnToCircuitList}>
               {{
@@ -146,18 +181,19 @@ const circuitItem = defineComponent({
               }}
             </NButton>
             {this.isChangeName ?
+              //Project Name
               <NSpace>
                 <NInput
                   size='small'
                   allowInput={this.trim}
                   v-model={[this.data.name, 'value']}
                   placeholder={t('circuit.detail.change_name_tips')}
-                  clearable
                 />
                 <NButton size='small' type='primary' onClick={this.handleChangeCircuitName}>
                   {t('circuit.detail.update_circuit_name')}
                 </NButton>
               </NSpace> :
+              //Project Name Edit
               <NButton text onClick={this.handleChangeName}>
                 <NGradientText type="info" style={{ fontSize: '36px', cursor: 'pointer' }}>
                   {data.name}
@@ -165,14 +201,24 @@ const circuitItem = defineComponent({
               </NButton>
             }
           </NSpace>
+          {/* Tab change area */}
           <NSpace>
-            <NButton size='small' type='primary'>
+            <NButton size='large' focusable={false} style={{ width: '200px' }} onClick={(e) => this.handleChangeTabCircuit(e)} class={`tab-button ${this.isCircuitTab ? 'active' : ''}`}>
+              {t('circuit.detail.circuit')}
+            </NButton>
+            <NButton size='large' focusable={false} style={{ width: '200px' }} onClick={(e) => this.handleChangeTabSimulate(e)} class={`tab-button ${this.isCircuitTab ? '' : 'active'}`}>
+              {t('circuit.detail.simulate')}
+            </NButton>
+          </NSpace>
+          {/* Button area */}
+          <NSpace>
+            <NButton size='small' type='primary' onClick={this.handleSaveCircuit}>
               {t('circuit.detail.save_circuit')}
             </NButton>
             <NButton size='small' type='warning'>
               {t('circuit.detail.import_circuit')}
             </NButton>
-            <NButton size='small' type='warning'>
+            <NButton size='small' type='warning' onClick={this.handleExportCircuit}>
               {t('circuit.detail.export_circuit')}
             </NButton>
             <NButton size='small' type='success'>
@@ -182,11 +228,11 @@ const circuitItem = defineComponent({
               {t('circuit.detail.help_circuit')}
             </NButton>
           </NSpace>
-        </NSpace> */}
+        </NSpace>
         <iframe
           ref="quantumRef"
           src="/quirk.html"
-          style={{ width: '100%', height: '100%' }}
+          style={{ width: '100%', height: 'calc(100% - 60px)', marginTop: '10px' }}
           frameborder="0">
         </iframe>
       </Card>

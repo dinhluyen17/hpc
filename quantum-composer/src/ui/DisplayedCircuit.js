@@ -140,7 +140,7 @@ class DisplayedCircuit {
         //  return this.opRect(this.circuitDefinition.columns.length - 1).right() + CIRCUIT_OP_LEFT_SPACING;
         //}
         // return this._rectForSuperpositionDisplay().right() + 101;
-        return Math.max(this.opRect(this.circuitDefinition.columns.length - 1).right() + CIRCUIT_OP_LEFT_SPACING + 250, 500);
+        return Math.max(this.opRect(this.circuitDefinition.columns.length - 1).right() + CIRCUIT_OP_LEFT_SPACING + 350, 700);
     }
 
     /**

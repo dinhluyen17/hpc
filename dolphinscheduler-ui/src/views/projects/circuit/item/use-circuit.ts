@@ -24,7 +24,9 @@ export function useCircuit() {
   const variables = reactive({
     data: {} as CircuitList,
     loadingRef: ref(false),
-    isChangeName: ref(false)
+    isChangeName: ref(false),
+    isCircuitTab: ref(true),
+    isSaveCircuit: ref(true)
   })
 
   const getCircuitData = (id: number) => {
