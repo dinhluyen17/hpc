@@ -22,7 +22,7 @@ body {
     flex-direction: column;
     height: 100vh;
     overflow: hidden;
-    position:relative;
+    position: relative;
 }
 
 /* App Header */
@@ -55,16 +55,6 @@ body {
     background-color: gray;
     color: black;
     text-align: center;
-}
-
-.app .header .tab .tab-child[data-state=active] {
-    background-color: black;
-    color: white;
-}
-
-.app .header .tab .tab-child[data-state=inactive] {
-    background: gray;
-    color: black;
 }
 
 .app .header .quick-menu {
@@ -111,8 +101,9 @@ body {
 }
 
 .gate-area-header-btn {
-    color: rgb(57, 57, 57);
-    border: 1px solid #373737;
+    cursor: pointer;
+    border: 1px solid #000000;
+    background-color: #FFFFFF;
     margin-left: 8px;
     display: flex;
     justify-content: center;
@@ -121,16 +112,30 @@ body {
     height: 2rem;
 }
 
+.gate-area-header-btn svg {
+    fill: #000000;
+}
+
+.gate-area-header-btn:hover,
+.gate-area-header-btn.active {
+    background-color: #000000;
+}
+
+.gate-area-header-btn:hover svg,
+.gate-area-header-btn.active svg {
+    fill: #FFFFFF;
+}
+
 #gate-area-header-close-btn {
     display: flex;
-    flex-direction: row; 
+    flex-direction: row;
 }
 
-[data-gate=show] > svg {
-    color: var(--cds-icon-01,#161616);
+[data-gate=show]>svg {
+    color: #161616;
 }
 
-[data-gate=hide] > svg > path {
+[data-gate=hide]>svg>path {
     transform: rotate(180deg);
     transform-origin: 50% 50%;
 }
@@ -165,13 +170,17 @@ body {
     justify-content: space-between;
 }
 
-.group-gate-name > button {
+.group-gate-name>button {
     border: none;
     background-color: transparent;
 }
 
-.group-gate-name > button:hover {
+.group-gate-name>button:hover {
     cursor: pointer;
+}
+
+.group-gate-name-not-found {
+    display: none !important;
 }
 
 .show-and-hide-gate-list {
@@ -180,15 +189,14 @@ body {
 
 .AccordionTriggerIcon {
     align-self: flex-start;
-    color: var(--cds-icon-01,#161616);
+    color: var(--cds-icon-01, #161616);
     height: 18px;
-    transition: transform .3s cubic-bezier(.87,0,.13,1);
+    transition: transform .3s cubic-bezier(.87, 0, .13, 1);
     width: 18px;
 }
 
 [data-state=open] .AccordionTriggerIcon {
     --tw-rotate: 180deg;
-    /* transform: translate(var(--tw-translate-x),var(--tw-translate-y)) rotate(var(--tw-rotate)) skewX(var(--tw-skew-x)) skewY(var(--tw-skew-y)) scaleX(var(--tw-scale-x)) scaleY(var(--tw-scale-y)); */
     transform: rotate(180deg);
 }
 
@@ -204,14 +212,17 @@ body {
     flex-direction: row;
     align-items: center;
     border: 1px solid #EDECF3;
-    border-width:2px 0 2px 0px;
+    border-width: 2px 0 2px 0px;
 }
 
 .circuit-area-header-btn {
+    cursor: pointer;
     background-color: white;
     border: none;
-    padding: 8px 15px;
-    margin-left: 8px;
+    width: 65px;
+    height: 46px;
+    border: 1px solid #EDECF3;
+    border-width: 0 2px 0px 0px;
 }
 
 .circuit-area-header-btn:hover {
@@ -235,34 +246,64 @@ body {
 }
 
 ::-webkit-scrollbar-thumb {
-    background: #E1E1E1; 
+    background: #E1E1E1;
     border-radius: 8px;
-  }
+}
 
 .circuit-area-chart {
     position: relative;
     height: 200px;
     width: 100%;
     border: 1px solid #EDECF3;
-    border-width:2px 0 2px 0px;
+    border-width: 2px 0 2px 0px;
     display: flex;
     flex-direction: column;
 }
 
 #circuit-area-chart-close-btn {
+    cursor: pointer;
     position: absolute;
     top: 0px;
-    right: 0px;
-    width: 44px;
-    height: 44px;
+    right: 8px;
+    width: 2rem;
+    height: 2rem;
+    transform: rotate(270deg);
+    background-color: #FFFFFF;
+    border: .5px solid;
+    margin-top: 8px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+#circuit-area-chart-close-btn svg {
+    fill: #000000;
+}
+
+#circuit-area-chart-close-btn:hover {
+    background-color: #000000;
+}
+
+#circuit-area-chart-close-btn:hover svg {
+    fill: #FFFFFF;
 }
 
 #stateBarChartFilterZero {
+    cursor: pointer;
     position: absolute;
     top: 0px;
-    right: 44px;
-    height: 44px;
-    width: 105px;
+    right: 52px;
+    height: 2rem;
+    width: 7rem;
+    background-color: #FFFFFF;
+    color: #000000;
+    border: .5px solid;
+    margin-top: 8px;
+}
+
+#stateBarChartFilterZero:hover {
+    background-color: #000000;
+    color: #FFFFFF;
 }
 
 .content .code-area {
@@ -272,11 +313,31 @@ body {
 }
 
 #code-area-close-btn {
+    cursor: pointer;
     position: absolute;
     top: 0px;
-    left: 0px;
-    width: 44px;
-    height: 44px;
+    left: 4px;
+    width: 2rem;
+    height: 2rem;
+    transform: rotate(180deg);
+    background-color: #FFFFFF;
+    border: .5px solid;
+    margin-top: 8px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+#code-area-close-btn svg {
+    fill: #000000;
+}
+
+#code-area-close-btn:hover {
+    background-color: #000000;
+}
+
+#code-area-close-btn:hover svg {
+    fill: #FFFFFF;
 }
 
 #common-gates {
@@ -291,7 +352,7 @@ body {
     padding: 5px 10px;
 }
 
-#common-gates-grid > div {
+#common-gates-grid>div {
     border-top: 1px solid #e0e0e0;
     margin-bottom: 7px;
     padding-top: 3px;
@@ -309,7 +370,7 @@ body {
     padding: 5px 10px;
 }
 
-#advanced-gates-grid > div {
+#advanced-gates-grid>div {
     border-top: 1px solid #e0e0e0;
     margin-bottom: 7px;
     padding-top: 3px;
@@ -329,8 +390,7 @@ body {
 }
 
 #stateBarChart {
-    overflow-x: scroll;
-    overflow-y: hidden;
+    overflow: auto;
 }
 
 /* pop up gate name */
@@ -343,10 +403,11 @@ body {
     position: absolute;
     bottom: 5%;
     left: 100%;
-    background-color: #58f61a;
+    background-color: #8e928d;
     padding: .5em;
     z-index: 1;
     line-height: 0.55;
+    border-radius: 10px
 }
 
 .tooltip-wrap:hover .tooltip-content {
@@ -365,26 +426,30 @@ body {
     text-align: center;
     width: 215px;
 }
+
 #gate-menu-popup {
     position: absolute;
     width: 220px;
     height: 44px;
     flex-direction: row;
     display: none;
-    background-color: #F2F2F2;    
+    background-color: #F2F2F2;
     box-shadow: rgba(100, 100, 111, 0.2) 0px 7px 29px 0px;
-    border-radius: 5px;    
+    border-radius: 5px;
     border: 1px solid #d1d0d7;
 }
+
 .gate-menu-popup-btn {
     width: 44px;
     height: 44px;
     background-color: transparent;
     border: none;
 }
+
 .gate-menu-popup-btn:hover {
     background-color: #E1E1E1;
 }
+
 .hidden {
     display: none;
     pointer-events: none;
@@ -399,19 +464,22 @@ body {
     width: 100%;
     /*text-align: center;*/
 }
+
 #drawCanvasSim {
-    /*display: inline-block;*/
+    max-width: 2000px;
 }
+
 #paste-menu-popup {
     position: absolute;
     width: 88px;
     height: 35px;
     display: none;
-    background-color: #F2F2F2;    
-    box-shadow: rgba(100, 100, 111, 0.2) 0px 7px 29px 0px; 
+    background-color: #F2F2F2;
+    box-shadow: rgba(100, 100, 111, 0.2) 0px 7px 29px 0px;
     border: 1px solid #d1d0d7;
     border-radius: 5px;
 }
+
 #paste-menu-popup-btn {
     width: 88px;
     height: 35px;
@@ -430,9 +498,11 @@ body {
 #simulateOutput {
     float: right;
     right: 5%;
-    /*column-count: 2;*/
     position: relative;
+    height: 800px;
+    overflow-y: auto;
 }
+
 #simulateOutput ul {
     list-style-type: none;
     margin-top: 20%;
@@ -451,4 +521,22 @@ body {
 .simTitle .simTitleRight {
     margin-right: 40%;
     margin-left: auto;
+}
+
+.simWrapper {
+    display: block;
+    overflow: auto;
+}
+
+#simulateOutput table, #dataOutput tr, #dataOutput th, #dataOutput td {
+    /*border: solid black 1px;*/
+    text-align: center;
+    padding: 10px 45px 0px 45px;
+    margin-top: 45px
+}
+
+#simulateOutput #dataOutput tr {
+    box-shadow: 0px 0px 0px 1px rgba(196, 195, 195, 0.6);
+    -webkit-box-shadow: 0px 0px 0px 1px rgba(196, 195, 195, 0.6);
+    -moz-box-shadow: 0px 0px 0px 1px rgba(196, 195, 195, 0.6);
 }

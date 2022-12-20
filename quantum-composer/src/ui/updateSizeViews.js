@@ -80,9 +80,9 @@ const initSizeViews = (parentDiv) => {
   closeGateAreaBtn.addEventListener('click', () => {
     viewState.getInstance().expandGateArea = !viewState.getInstance().expandGateArea;
     if (viewState.getInstance().expandGateArea) {
-      gridGateBtn.style.display = 'block';
-      listGateBtn.style.display = 'block';
-      searchGateBox.style.display = 'block';
+      gridGateBtn.style.display = 'flex';
+      listGateBtn.style.display = 'flex';
+      searchGateBox.style.display = 'flex';
     }
     else {
       gridGateBtn.style.display = 'none';

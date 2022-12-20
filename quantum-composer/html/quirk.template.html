@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html>
+
 <head lang="en">
   <meta charset="UTF-8">
   <title>Quantum Composer</title>
@@ -15,8 +16,8 @@
     <div class="header">
       <div class="circuit-name">Project name</div>
       <div class="tab">
-        <div class="tab-child" data-state="active" id="circuitTab">Circuit</div>
-        <div class="tab-child" data-state="inactive" id="simulateTab">Simulate</div>
+        <div class="tab-child" id="circuitTab">Circuit</div>
+        <div class="tab-child" id="simulateTab">Simulate</div>
       </div>
       <div class="quick-menu">
         <button class="quick-menu-btn" id="save-menu-btn">Save</button>
@@ -29,15 +30,30 @@
     <div class="content" id="circuit">
       <div class="gate-area">
         <div class="gate-area-header">
-          <input type="search" class="gate-area-header-search" id="gate-area-header-search" placeholder="Search" oninput="handleSearch()">
-          <button class="gate-area-header-btn" id="gate-area-header-grid-btn" data-state="active" onclick="handleGroupOnClicked()">
-            <svg focusable="false" preserveAspectRatio="xMidYMid meet" xmlns="http://www.w3.org/2000/svg" fill="currentColor" width="20" height="20" viewBox="0 0 32 32" aria-hidden="true"><path d="M12 4H6A2 2 0 004 6v6a2 2 0 002 2h6a2 2 0 002-2V6A2 2 0 0012 4zm0 8H6V6h6zM26 4H20a2 2 0 00-2 2v6a2 2 0 002 2h6a2 2 0 002-2V6A2 2 0 0026 4zm0 8H20V6h6zM12 18H6a2 2 0 00-2 2v6a2 2 0 002 2h6a2 2 0 002-2V20A2 2 0 0012 18zm0 8H6V20h6zM26 18H20a2 2 0 00-2 2v6a2 2 0 002 2h6a2 2 0 002-2V20A2 2 0 0026 18zm0 8H20V20h6z"></path></svg>
+          <input type="search" class="gate-area-header-search" id="gate-area-header-search" placeholder="Search">
+          <button class="gate-area-header-btn active" id="gate-area-header-grid-btn" data-type="icon">
+            <svg focusable="false" preserveAspectRatio="xMidYMid meet" xmlns="http://www.w3.org/2000/svg" fill="currentColor" width="20" height="20"
+              viewBox="0 0 32 32" aria-hidden="true">
+              <path
+                d="M12 4H6A2 2 0 004 6v6a2 2 0 002 2h6a2 2 0 002-2V6A2 2 0 0012 4zm0 8H6V6h6zM26 4H20a2 2 0 00-2 2v6a2 2 0 002 2h6a2 2 0 002-2V6A2 2 0 0026 4zm0 8H20V6h6zM12 18H6a2 2 0 00-2 2v6a2 2 0 002 2h6a2 2 0 002-2V20A2 2 0 0012 18zm0 8H6V20h6zM26 18H20a2 2 0 00-2 2v6a2 2 0 002 2h6a2 2 0 002-2V20A2 2 0 0026 18zm0 8H20V20h6z">
+              </path>
+            </svg>
           </button>
-          <button class="gate-area-header-btn" id="gate-area-header-list-btn" data-state="inactive" onclick="handleGroupOffClicked()">
-            <svg focusable="false" preserveAspectRatio="xMidYMid meet" xmlns="http://www.w3.org/2000/svg" fill="currentColor" width="20" height="20" viewBox="0 0 32 32" aria-hidden="true"><path d="M16 8H30V10H16zM16 22H30V24H16zM10 14H4a2.0023 2.0023 0 01-2-2V6A2.0023 2.0023 0 014 4h6a2.0023 2.0023 0 012 2v6A2.0023 2.0023 0 0110 14zM4 6v6h6.0012L10 6zM10 28H4a2.0023 2.0023 0 01-2-2V20a2.0023 2.0023 0 012-2h6a2.0023 2.0023 0 012 2v6A2.0023 2.0023 0 0110 28zM4 20v6h6.0012L10 20z"></path></svg>
+          <button class="gate-area-header-btn" id="gate-area-header-list-btn" data-type="list">
+            <svg focusable="false" preserveAspectRatio="xMidYMid meet" xmlns="http://www.w3.org/2000/svg" fill="currentColor" width="20" height="20"
+              viewBox="0 0 32 32" aria-hidden="true">
+              <path
+                d="M16 8H30V10H16zM16 22H30V24H16zM10 14H4a2.0023 2.0023 0 01-2-2V6A2.0023 2.0023 0 014 4h6a2.0023 2.0023 0 012 2v6A2.0023 2.0023 0 0110 14zM4 6v6h6.0012L10 6zM10 28H4a2.0023 2.0023 0 01-2-2V20a2.0023 2.0023 0 012-2h6a2.0023 2.0023 0 012 2v6A2.0023 2.0023 0 0110 28zM4 20v6h6.0012L10 20z">
+              </path>
+            </svg>
           </button>
-          <button class="gate-area-header-btn" id="gate-area-header-close-btn" data-gate="show" onclick="toggleLeftSideBar()">
-            <svg focusable="false" preserveAspectRatio="xMidYMid meet" xmlns="http://www.w3.org/2000/svg" fill="currentColor" width="20" height="20" viewBox="0 0 32 32" aria-hidden="true" style="transform: rotate(90deg);"><path d="M4 18L15 18 15 24.172 12.414 21.586 11 23 16 28 21 23 19.586 21.586 17 24.172 17 18 28 18 28 16 4 16 4 18zM26 4H6A2 2 0 004 6v4a2 2 0 002 2H26a2 2 0 002-2V6A2 2 0 0026 4zm0 6H6V6H26z"></path></svg>
+          <button class="gate-area-header-btn" id="gate-area-header-close-btn" data-gate="show" data-type="colapse">
+            <svg focusable="false" preserveAspectRatio="xMidYMid meet" xmlns="http://www.w3.org/2000/svg" fill="currentColor" width="20" height="20"
+              viewBox="0 0 32 32" aria-hidden="true" style="transform: rotate(90deg);">
+              <path
+                d="M4 18L15 18 15 24.172 12.414 21.586 11 23 16 28 21 23 19.586 21.586 17 24.172 17 18 28 18 28 16 4 16 4 18zM26 4H6A2 2 0 004 6v4a2 2 0 002 2H26a2 2 0 002-2V6A2 2 0 0026 4zm0 6H6V6H26z">
+              </path>
+            </svg>
           </button>
         </div>
         <div class="gate-area-body">
@@ -45,23 +61,23 @@
           <div class="gate-area-body-common-gates">
             <div class="gateList">
               <div id="common-gates">
-              </div> 
+              </div>
             </div>
             <div class="gateGrid" style="display: none;">
               <div id="common-gates-grid">
-              </div> 
+              </div>
             </div>
-                       
+
           </div>
           <label class="gate-area-body-section-label">Advanced gates</label>
           <div class="gate-area-body-advanced-gates">
             <div class="gateList">
               <div id="advanced-gates">
-              </div>   
+              </div>
             </div>
             <div class="gateGrid" style="display: none;">
               <div id="advanced-gates-grid">
-              </div>   
+              </div>
             </div>
           </div>
         </div>
@@ -69,49 +85,92 @@
       <div class="circuit-area">
         <div class="circuit-area-header">
           <button class="circuit-area-header-btn" id="undo-button">
-            <svg focusable="false" preserveAspectRatio="xMidYMid meet" xmlns="http://www.w3.org/2000/svg" fill="currentColor" width="20" height="20" viewBox="0 0 20 20" aria-hidden="true"><path d="M15,9.3c1.5,0,2.8,1.3,2.8,2.7c0,1.5-1.3,2.7-2.8,2.7h-4V16h4c2.3,0,4-1.7,4-4c0-2.2-1.8-4-4-4H3.4	l2.5-2.5L5,4.6l-4,4l4,4l0.9-0.9L3.4,9.3H15z"></path></svg>
+            <svg focusable="false" preserveAspectRatio="xMidYMid meet" xmlns="http://www.w3.org/2000/svg" fill="currentColor" width="20" height="20"
+              viewBox="0 0 20 20" aria-hidden="true">
+              <path
+                d="M15,9.3c1.5,0,2.8,1.3,2.8,2.7c0,1.5-1.3,2.7-2.8,2.7h-4V16h4c2.3,0,4-1.7,4-4c0-2.2-1.8-4-4-4H3.4	l2.5-2.5L5,4.6l-4,4l4,4l0.9-0.9L3.4,9.3H15z">
+              </path>
+            </svg>
           </button>
-          <button class="circuit-area-header-btn" id="redo-button" style="transform: scaleX(-1);">
-            <svg focusable="false" preserveAspectRatio="xMidYMid meet" xmlns="http://www.w3.org/2000/svg" fill="currentColor" width="20" height="20" viewBox="0 0 20 20" aria-hidden="true"><path d="M15,9.3c1.5,0,2.8,1.3,2.8,2.7c0,1.5-1.3,2.7-2.8,2.7h-4V16h4c2.3,0,4-1.7,4-4c0-2.2-1.8-4-4-4H3.4	l2.5-2.5L5,4.6l-4,4l4,4l0.9-0.9L3.4,9.3H15z"></path></svg>
+          <button class="circuit-area-header-btn" id="redo-button">
+            <svg focusable="false" transform="scale(-1,1)" preserveAspectRatio="xMidYMid meet" xmlns="http://www.w3.org/2000/svg" fill="currentColor" width="20"
+              height="20" viewBox="0 0 20 20" aria-hidden="true">
+              <path
+                d="M15,9.3c1.5,0,2.8,1.3,2.8,2.7c0,1.5-1.3,2.7-2.8,2.7h-4V16h4c2.3,0,4-1.7,4-4c0-2.2-1.8-4-4-4H3.4	l2.5-2.5L5,4.6l-4,4l4,4l0.9-0.9L3.4,9.3H15z">
+              </path>
+            </svg>
           </button>
           <button class="circuit-area-header-btn" id="clear-button">Clear</button>
-        </div>        
+        </div>
         <div class="circuit-area-body" id="circuit-area-body">
           <canvas id="drawCanvas">
           </canvas>
         </div>
         <div class="circuit-area-chart" id="circuit-chart">
           <button id="circuit-area-chart-close-btn" data-gate="show">
-            <svg focusable="false" preserveAspectRatio="xMidYMid meet" xmlns="http://www.w3.org/2000/svg" fill="currentColor" width="20" height="20" viewBox="0 0 32 32" aria-hidden="true" style="transform: rotate(90deg);"><path d="M4 18L15 18 15 24.172 12.414 21.586 11 23 16 28 21 23 19.586 21.586 17 24.172 17 18 28 18 28 16 4 16 4 18zM26 4H6A2 2 0 004 6v4a2 2 0 002 2H26a2 2 0 002-2V6A2 2 0 0026 4zm0 6H6V6H26z"></path></svg>
+            <svg focusable="false" preserveAspectRatio="xMidYMid meet" xmlns="http://www.w3.org/2000/svg" fill="currentColor" width="20" height="20"
+              viewBox="0 0 32 32" aria-hidden="true" style="transform: rotate(90deg);">
+              <path
+                d="M4 18L15 18 15 24.172 12.414 21.586 11 23 16 28 21 23 19.586 21.586 17 24.172 17 18 28 18 28 16 4 16 4 18zM26 4H6A2 2 0 004 6v4a2 2 0 002 2H26a2 2 0 002-2V6A2 2 0 0026 4zm0 6H6V6H26z">
+              </path>
+            </svg>
           </button>
           <button id="stateBarChartFilterZero">Hide zero states</button>
-<!--          <input type="checkbox" id="stateBarBool">-->
-<!--          <label>Use bar graph when above 12 qubits (may cause performance issues)</label>-->
+          <!--          <input type="checkbox" id="stateBarBool">-->
+          <!--          <label>Use bar graph when above 12 qubits (may cause performance issues)</label>-->
           <div id="stateBarChart"></div>
           <div id="stateVectorChart"></div>
         </div>
       </div>
       <div class="code-area">
         <button id="code-area-close-btn" data-gate="show">
-          <svg focusable="false" preserveAspectRatio="xMidYMid meet" xmlns="http://www.w3.org/2000/svg" fill="currentColor" width="20" height="20" viewBox="0 0 32 32" aria-hidden="true" style="transform: rotate(90deg);"><path d="M4 18L15 18 15 24.172 12.414 21.586 11 23 16 28 21 23 19.586 21.586 17 24.172 17 18 28 18 28 16 4 16 4 18zM26 4H6A2 2 0 004 6v4a2 2 0 002 2H26a2 2 0 002-2V6A2 2 0 0026 4zm0 6H6V6H26z"></path></svg>
+          <svg focusable="false" preserveAspectRatio="xMidYMid meet" xmlns="http://www.w3.org/2000/svg" fill="currentColor" width="20" height="20"
+            viewBox="0 0 32 32" aria-hidden="true" style="transform: rotate(90deg);">
+            <path
+              d="M4 18L15 18 15 24.172 12.414 21.586 11 23 16 28 21 23 19.586 21.586 17 24.172 17 18 28 18 28 16 4 16 4 18zM26 4H6A2 2 0 004 6v4a2 2 0 002 2H26a2 2 0 002-2V6A2 2 0 0026 4zm0 6H6V6H26z">
+            </path>
+          </svg>
         </button>
       </div>
     </div>
     <div id="gate-menu-popup" style="z-index: 888;">
       <button class="gate-menu-popup-btn" id="gate-menu-popup-info-btn">
-        <svg focusable="false" preserveAspectRatio="xMidYMid meet" xmlns="http://www.w3.org/2000/svg" fill="currentColor" width="20" height="20" viewBox="0 0 32 32" aria-hidden="true"><path d="M17 22L17 14 13 14 13 16 15 16 15 22 12 22 12 24 20 24 20 22 17 22zM16 8a1.5 1.5 0 101.5 1.5A1.5 1.5 0 0016 8z"></path><path d="M16,30A14,14,0,1,1,30,16,14,14,0,0,1,16,30ZM16,4A12,12,0,1,0,28,16,12,12,0,0,0,16,4Z"></path></svg>        
+        <svg focusable="false" preserveAspectRatio="xMidYMid meet" xmlns="http://www.w3.org/2000/svg" fill="currentColor" width="20" height="20"
+          viewBox="0 0 32 32" aria-hidden="true">
+          <path d="M17 22L17 14 13 14 13 16 15 16 15 22 12 22 12 24 20 24 20 22 17 22zM16 8a1.5 1.5 0 101.5 1.5A1.5 1.5 0 0016 8z"></path>
+          <path d="M16,30A14,14,0,1,1,30,16,14,14,0,0,1,16,30ZM16,4A12,12,0,1,0,28,16,12,12,0,0,0,16,4Z"></path>
+        </svg>
       </button>
       <button class="gate-menu-popup-btn" id="gate-menu-popup-cut-btn">
-        <svg focusable="false" preserveAspectRatio="xMidYMid meet" xmlns="http://www.w3.org/2000/svg" fill="currentColor" width="20" height="20" viewBox="0 0 32 32" aria-hidden="true"><path d="M26.5,19.63,20.24,16l6.26-3.63a5,5,0,0,0-1.21-9.2A5.19,5.19,0,0,0,24,3a5,5,0,0,0-4.33,7.53,5,5,0,0,0,2.39,2.1l-3.82,2.21L4,6.6,3,8.34,16.24,16,3,23.68l1,1.74,14.24-8.26,3.82,2.21a5,5,0,0,0-2.39,2.1A5,5,0,0,0,24,29a5.19,5.19,0,0,0,1.29-.17,5,5,0,0,0,1.21-9.2ZM21.4,9.53a3,3,0,0,1,1.1-4.12,3,3,0,0,1,4.1,1.11,3,3,0,0,1-1.1,4.11h0A3,3,0,0,1,21.4,9.53Zm5.2,16a3,3,0,0,1-4.1,1.11,3,3,0,0,1-1.1-4.12,3,3,0,0,1,4.1-1.1h0A3,3,0,0,1,26.6,25.48Z"></path></svg>
+        <svg focusable="false" preserveAspectRatio="xMidYMid meet" xmlns="http://www.w3.org/2000/svg" fill="currentColor" width="20" height="20"
+          viewBox="0 0 32 32" aria-hidden="true">
+          <path
+            d="M26.5,19.63,20.24,16l6.26-3.63a5,5,0,0,0-1.21-9.2A5.19,5.19,0,0,0,24,3a5,5,0,0,0-4.33,7.53,5,5,0,0,0,2.39,2.1l-3.82,2.21L4,6.6,3,8.34,16.24,16,3,23.68l1,1.74,14.24-8.26,3.82,2.21a5,5,0,0,0-2.39,2.1A5,5,0,0,0,24,29a5.19,5.19,0,0,0,1.29-.17,5,5,0,0,0,1.21-9.2ZM21.4,9.53a3,3,0,0,1,1.1-4.12,3,3,0,0,1,4.1,1.11,3,3,0,0,1-1.1,4.11h0A3,3,0,0,1,21.4,9.53Zm5.2,16a3,3,0,0,1-4.1,1.11,3,3,0,0,1-1.1-4.12,3,3,0,0,1,4.1-1.1h0A3,3,0,0,1,26.6,25.48Z">
+          </path>
+        </svg>
       </button>
       <button class="gate-menu-popup-btn" id="gate-menu-popup-copy-btn">
-        <svg focusable="false" preserveAspectRatio="xMidYMid meet" xmlns="http://www.w3.org/2000/svg" fill="currentColor" width="20" height="20" viewBox="0 0 32 32" aria-hidden="true"><path d="M28,10V28H10V10H28m0-2H10a2,2,0,0,0-2,2V28a2,2,0,0,0,2,2H28a2,2,0,0,0,2-2V10a2,2,0,0,0-2-2Z"></path><path d="M4,18H2V4A2,2,0,0,1,4,2H18V4H4Z"></path></svg>
+        <svg focusable="false" preserveAspectRatio="xMidYMid meet" xmlns="http://www.w3.org/2000/svg" fill="currentColor" width="20" height="20"
+          viewBox="0 0 32 32" aria-hidden="true">
+          <path d="M28,10V28H10V10H28m0-2H10a2,2,0,0,0-2,2V28a2,2,0,0,0,2,2H28a2,2,0,0,0,2-2V10a2,2,0,0,0-2-2Z"></path>
+          <path d="M4,18H2V4A2,2,0,0,1,4,2H18V4H4Z"></path>
+        </svg>
       </button>
       <button class="gate-menu-popup-btn" id="gate-menu-popup-paste-btn">
-        <svg focusable="false" preserveAspectRatio="xMidYMid meet" xmlns="http://www.w3.org/2000/svg" fill="currentColor" width="20" height="20" viewBox="0 0 32 32" aria-hidden="true"><path d="M26,20H17.83l2.58-2.59L19,16l-5,5,5,5,1.41-1.41L17.83,22H26v8h2V22A2,2,0,0,0,26,20Z"></path><path d="M23.71,9.29l-7-7A1,1,0,0,0,16,2H6A2,2,0,0,0,4,4V28a2,2,0,0,0,2,2h8V28H6V4h8v6a2,2,0,0,0,2,2h6v2h2V10A1,1,0,0,0,23.71,9.29ZM16,4.41,21.59,10H16Z"></path></svg>
+        <svg focusable="false" preserveAspectRatio="xMidYMid meet" xmlns="http://www.w3.org/2000/svg" fill="currentColor" width="20" height="20"
+          viewBox="0 0 32 32" aria-hidden="true">
+          <path d="M26,20H17.83l2.58-2.59L19,16l-5,5,5,5,1.41-1.41L17.83,22H26v8h2V22A2,2,0,0,0,26,20Z"></path>
+          <path
+            d="M23.71,9.29l-7-7A1,1,0,0,0,16,2H6A2,2,0,0,0,4,4V28a2,2,0,0,0,2,2h8V28H6V4h8v6a2,2,0,0,0,2,2h6v2h2V10A1,1,0,0,0,23.71,9.29ZM16,4.41,21.59,10H16Z">
+          </path>
+        </svg>
       </button>
       <button class="gate-menu-popup-btn" id="gate-menu-popup-delete-btn">
-        <svg focusable="false" preserveAspectRatio="xMidYMid meet" xmlns="http://www.w3.org/2000/svg" fill="currentColor" width="20" height="20" viewBox="0 0 32 32" aria-hidden="true"><path d="M12 12H14V24H12zM18 12H20V24H18z"></path><path d="M4 6V8H6V28a2 2 0 002 2H24a2 2 0 002-2V8h2V6zM8 28V8H24V28zM12 2H20V4H12z"></path></svg>
+        <svg focusable="false" preserveAspectRatio="xMidYMid meet" xmlns="http://www.w3.org/2000/svg" fill="currentColor" width="20" height="20"
+          viewBox="0 0 32 32" aria-hidden="true">
+          <path d="M12 12H14V24H12zM18 12H20V24H18z"></path>
+          <path d="M4 6V8H6V28a2 2 0 002 2H24a2 2 0 002-2V8h2V6zM8 28V8H24V28zM12 2H20V4H12z"></path>
+        </svg>
       </button>
     </div>
     <div id="paste-menu-popup" style="z-index: 888;">
@@ -130,7 +189,7 @@
         <canvas id="drawCanvasSim">
         </canvas>
         <div id="simulateOutput">
-<!--          <ul id="dataOutput"></ul>-->
+          <!--          <ul id="dataOutput"></ul>-->
           <table id="vectorTable">
             <tr>
               <th>State</th>
@@ -146,249 +205,32 @@
     </div>
   </div>
 
-  <!-- Primary content -->
+  <div class="render-content" style="display: none;">
+    <!-- Primary content -->
 
-  <!-- Circuit drawing area -->
+    <!-- Circuit drawing area -->
 
-  <!-- INCLUDE EXPORT PART -->
+    <!-- INCLUDE EXPORT PART -->
 
-  <!-- INCLUDE FORGE PART -->
+    <!-- INCLUDE FORGE PART -->
 
-  <!-- INCLUDE MENU PART -->
+    <!-- INCLUDE MENU PART -->
 
-  <!-- INCLUDE ERROR PART -->
+    <!-- INCLUDE ERROR PART -->
 
-  <!-- Javascript detection -->
-  <div id="noscript-div" class="noscript-warning">
-    You appear to have JavaScript blocked. And Quirk is made out of JavaScript... :(
+    <!-- INCLUDE SOURCE PART -->
+
+    <!-- Javascript detection -->
   </div>
+
   <script src='./dist/d3.min.js'></script>
-  <script>
-    document.D3_FUNCTION = {
-      bar: (barData) => {
-        let margin = {top: 30, right: 30, bottom: 70, left: 60},
-                width = (barData.length * 15) - margin.left - margin.right,
-                height = 190 - margin.top - margin.bottom;
-        if  (width <= 600){
-          width = 600;
-        }
-        let svg = d3.select("#stateBarChart");
-        svg.selectAll("*").remove();
-        svg = d3.select("#stateBarChart")
-                .append("svg")
-                .attr("width", width + margin.left + margin.right)
-                .attr("height", height + margin.top + margin.bottom)
-                .append("g")
-                .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
-        let x = d3.scaleBand()
-                .range([0,width])
-                .domain(barData.map(function (d){return d.State;}))
-                .padding(0.2);
-        svg.append("g")
-                .attr("transform","translate(0," + height + ")")
-                .call(d3.axisBottom(x))
-                .selectAll("text")
-                .attr("transform", "translate(-10,0)rotate(-45)")
-                .style("text-anchor","end");
-        svg.append("text")
-                .attr("class","x label")
-                .attr("text-anchor","end")
-                .attr("dy", 2.5 + (Math.sqrt(barData.length)/10) +"rem")
-                .attr("x", width)
-                .attr("y", height)
-                .text("Computational basis states")
-        let y = d3.scaleLinear()
-                // .domain([0,100])
-                .range([height, 0])
-                .domain([0, d3.max(barData, function (d){ return Math.ceil(d.Probability)})])
-                .nice(3)
-
-        svg.append("g")
-                .call(d3.axisLeft(y)
-                        .ticks(4)
-                );
-        svg.append("text")
-                .attr("class","y label")
-                .attr("text-anchor","end")
-                .attr("y", 6)
-                .attr("dy","-2.5rem")
-                .attr("transform","rotate(-90)")
-                .text("Probability(%)")
-        const tooltip = d3.select("#stateBarChart").append("div")
-                .attr("class","barTooltip")
-                .style("opacity", 0)
-        let g = svg.selectAll("mybar")
-                .data(barData)
-                .enter()
-        // svg.selectAll("mybar")
-        //         .data(barData)
-        //         .enter()
-        g.append("rect")
-                .attr("class","bar1")
-                .attr("x", function (d) {return x(d.State);})
-                .attr("y", function (d) {return y(d.Probability);})
-                .attr("width", x.bandwidth())
-                .attr("height", function (d) {return height - y(d.Probability)})
-                .attr("fill", "#5BB0F8")
-                .on("mouseover",(d)=>{
-                  tooltip.transition().duration(200).style("opacity",.9);
-                  tooltip.html(`State: <span>${d.State}</span><br>Probability: <span>${d.Probability}% </span>`)
-                          .style('left', `${d3.event.layerX}px`)
-                          .style('top', `${d3.event.layerY}px`);
-                })
-                .on("mouseout",()=>tooltip.transition().duration(500).style("opacity",0))
-        g.append("rect")
-                .attr("class","bar2")
-                .attr("x", function (d) {return x(d.State)})
-                .attr("y", function (d) {return d.Probability > 50 ? 0 : d.Probability})
-                .attr("width", x.bandwidth())
-                .attr("height",  height)
-                .style("opacity", 0)
-                .on("mouseover",(d)=>{
-                  tooltip.transition().duration(200).style("opacity",.9);
-                  tooltip.html(`State: <span>${d.State}</span><br>Probability: <span>${d.Probability}% </span>`)
-                          .style('left', `${d3.event.layerX}px`)
-                          .style('top', `${d3.event.layerY}px`);
-                })
-                .on("mouseout",()=>tooltip.transition().duration(500).style("opacity",0))
-        // const dataWrap = document.getElementById("simulateOutput");
-        // let dataOutput = document.getElementById("dataOutput");
-        // dataOutput.innerHTML = "";
-        // dataOutput.style.height = "800px";
-        // dataOutput.style.overflow = "auto";
-        // barData.forEach(item => {
-        //   if (item.Probability !== 'NaN' && item.Probability !== '0.0000') {
-        //     let output = document.createElement("li");
-        //     output.innerHTML = item.State + ": " + item.Probability + "% <br/>";
-        //     dataOutput.appendChild(output);
-        //   }
-        // })
-        // if (dataOutput.getElementsByTagName("li").length > 15) {
-        //   dataOutput.style.columnCount = "2"
-        // } else {
-        //   dataOutput.style.columnCount = "1";
-        // }
-        // dataWrap.appendChild(dataOutput);
-      }
-    }
-  </script>
-  <script>
-    document.getElementById('noscript-div').style.display = 'none';
-    
-    function handleGroupOnClicked() {
-      const gateList = document.querySelectorAll('.gateList')
-      const gateGrid = document.querySelectorAll('.gateGrid')
-      gateList.forEach(item => {
-        item.style.display = 'block'
-      })      
-      gateGrid.forEach(item => {
-        item.style.display = 'none'
-      })
-      //style click button
-      const button1 = document.getElementById("gate-area-header-grid-btn")
-      button1.setAttribute("data-state", "active")
-      const button2 = document.getElementById("gate-area-header-list-btn")
-      button2.setAttribute("data-state", "inactive")
-    }
-  
-    function handleGroupOffClicked() {
-      const gateList = document.querySelectorAll('.gateList')
-      const gateGrid = document.querySelectorAll('.gateGrid')
-      gateList.forEach(item => {
-        item.style.display = 'none'
-      })      
-      gateGrid.forEach(item => {
-        item.style.display = 'block'
-      })
-      //style click button
-      const button1 = document.getElementById("gate-area-header-grid-btn")
-      button1.setAttribute("data-state", "inactive")
-      const button2 = document.getElementById("gate-area-header-list-btn")
-      button2.setAttribute("data-state", "active")
-    }
-    
-    function grabGate(gate) {
-      document.GRAB_GATE = gate;
-    }
-
-    function handleSearch() {
-      let search = document.getElementById("gate-area-header-search").value.toLowerCase();
-
-      const listGates = document.querySelectorAll('.list-view')
-      const groupGates = document.querySelectorAll('.gate-group')
-      if(search != null && search != '' && search != undefined) {
-        listGates.forEach(item => {
-          const matchList = item.querySelector("span") //element contains gate name
-          if(!matchList.innerText.trim().toLowerCase().includes(search)) {
-            item.style.display = "none"
-          } else {
-            item.style.display = "block"
-          }
-        })
-
-        groupGates.forEach(item => {
-          let found = false
-          const gridGates = item.querySelectorAll('.grid-view')
-          gridGates.forEach(item => {
-            const gridMatchList = item.querySelector("div span")
-            if(!gridMatchList.innerText.trim().toLowerCase().includes(search)) {
-            item.style.display = "none"
-            } else {
-            item.style.display = "block"
-            found = true
-            }
-          })  
-          if(found == false) {
-            if(!item.classList.contains("group-gate-name-not-found")) {
-              item.classList.add("group-gate-name-not-found")
-            }
-          } else {
-            if(item.classList.contains("group-gate-name-not-found")) {
-              item.classList.remove("group-gate-name-not-found")
-            }
-          }
-        })
-      }
-      else {
-        listGates.forEach(item => {
-          item.style.display = "block"
-        })
-        groupGates.forEach(item => {
-          if(item.classList.contains("group-gate-name-not-found")) {
-              item.classList.remove("group-gate-name-not-found")
-          }
-          const gridGates = item.querySelectorAll('.grid-view')
-          gridGates.forEach(item => {
-            item.style.display = "block"
-          })  
-        })
-      }
-    }
-
-    function toggleLeftSideBar() {
-      let state = document.getElementById("gate-area-header-close-btn") 
-      if(state.getAttribute("data-gate") == "show") {
-        state.setAttribute("data-gate", "hide")
-        const gateList = document.querySelectorAll('.gateList')
-        const gateGrid = document.querySelectorAll('.gateGrid')
-        gateList.forEach(item => {
-          item.style.display = 'block'
-        })      
-        gateGrid.forEach(item => {
-          item.style.display = 'none'
-        })
-      } else {
-        state.setAttribute("data-gate", "show")
-      }
-    }
-  </script>
+  <script src='./dist/jquery-3.6.2.min.js'></script>
+  <script src='./script.js'></script>
 
   <script>
-    document.getElementById('noscript-div').style.display = 'block';
     //noinspection InnerHTMLJS
     document.QUIRK_QUINE_ALL_HTML_ORIGINAL = '<!' + 'DOCTYPE html>\n<' + 'html>\n    ' +
       document.documentElement.innerHTML + '\n<' + '/html>';
-    document.getElementById('noscript-div').style.display = 'none';
     //DEFAULT_CIRCUIT_START
     document.DEFAULT_CIRCUIT = undefined;
         //DEFAULT_CIRCUIT_END
@@ -398,34 +240,6 @@
     <!-- INCLUDE SOURCE PART -->
 
     //toggle show and hide gate list in a specific gate group
-  </script>
-    <script language="JavaScript" defer>
-    let buttons = document.querySelectorAll('button.toggle-gate-list'); //returns a nodelist
-    for (let i = 0; i < buttons.length; i++) {
-      buttons[i].addEventListener("click", function () {
-        buttonsControl(this, i);
-        const dataState = buttons[i].getAttribute("data-state")
-        if(dataState == "open") {
-          buttons[i].setAttribute("data-state", "closed")
-        } else {
-          buttons[i].setAttribute("data-state", "open")
-        }
-      }, false);
-    }
-
-    function buttonsControl(button, i) {
-      console.log(i);
-      var groupNum = button.className.match(/\d+$/);
-      if(groupNum !== null) {
-        const toggleElement = document.getElementById(`${"group-num-" + groupNum[0]}`)
-         console.log("remove elemetn", toggleElement);
-         if(toggleElement != null && !toggleElement.className.includes('show-and-hide-gate-list')) {
-          toggleElement.setAttribute("class", "show-and-hide-gate-list")
-         } else if (toggleElement != null && toggleElement.className.includes('show-and-hide-gate-list')) {
-          toggleElement.classList.remove("show-and-hide-gate-list")
-         }
-      }
-    }
   </script>
 </body>
 

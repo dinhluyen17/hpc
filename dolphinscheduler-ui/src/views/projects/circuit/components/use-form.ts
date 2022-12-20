@@ -17,7 +17,6 @@
 
 import { useI18n } from 'vue-i18n'
 import { reactive, ref, SetupContext } from 'vue'
-import { useUserStore } from '@/store/user/user'
 import { useRoute } from 'vue-router'
 import type { FormRules } from 'naive-ui'
 import { createCircuit, updateCircuit } from '@/service/modules/circuits'
@@ -27,7 +26,6 @@ export function useForm(
   ctx: SetupContext<('cancelModal' | 'confirmModal')[]>
 ) {
   const { t } = useI18n()
-  const userStore = useUserStore()
   const route = useRoute()
 
   let projectCode = ''

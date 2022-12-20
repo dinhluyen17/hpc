@@ -25,6 +25,7 @@ import { RollbackOutlined } from '@vicons/antd'
 import MESSAGE, { QUANTUM_MESSAGE_FROM, VUEJS_MESSAGE_FROM } from './constants'
 import exportFile from '@/utils/exportFile'
 import './styles/CircuitStyle.scss'
+import HelpModal from './help-modal'
 
 const circuitItem = defineComponent({
   name: 'circuitItem',
@@ -38,6 +39,14 @@ const circuitItem = defineComponent({
     const router: Router = useRouter()
 
     const trim = getCurrentInstance()?.appContext.config.globalProperties.trim
+
+    const handleShowHelpModal = () => {
+      variables.showHelpModalRef = true
+    }
+
+    const handleConfirmModal = () => {
+      variables.showHelpModalRef = false
+    }
 
     const sendMessageToIFrame = (actionType: string, detailData: string | null) => {
       if (isIFrameReady.value) {
@@ -70,13 +79,16 @@ const circuitItem = defineComponent({
     }
 
     const handleChangeCircuitName = () => {
-      updateCircuitData(variables.data.id, {
-        name: variables.data.name
-      })
+      if (variables.currentValue !== variables.data.name) {
+        updateCircuitData(variables.data.id, {
+          name: variables.data.name
+        })
+      }
       variables.isChangeName = false
     }
 
     const handleChangeName = () => {
+      variables.currentValue = variables.data.name
       variables.isChangeName = true
     }
 
@@ -161,6 +173,8 @@ const circuitItem = defineComponent({
       handleChangeTabSimulate,
       handleSaveCircuit,
       handleExportCircuit,
+      handleConfirmModal,
+      handleShowHelpModal,
       quantumRef,
       trim
     }
@@ -190,7 +204,7 @@ const circuitItem = defineComponent({
                   placeholder={t('circuit.detail.change_name_tips')}
                 />
                 <NButton size='small' type='primary' onClick={this.handleChangeCircuitName}>
-                  {t('circuit.detail.update_circuit_name')}
+                  {this.currentValue === this.data.name ? t('circuit.detail.exit') : t('circuit.detail.update_circuit_name')}
                 </NButton>
               </NSpace> :
               //Project Name Edit
@@ -224,7 +238,7 @@ const circuitItem = defineComponent({
             <NButton size='small' type='success'>
               {t('circuit.detail.share_circuit')}
             </NButton>
-            <NButton size='small' type='success'>
+            <NButton size='small' type='success' onClick={this.handleShowHelpModal}>
               {t('circuit.detail.help_circuit')}
             </NButton>
           </NSpace>
@@ -235,6 +249,10 @@ const circuitItem = defineComponent({
           style={{ width: '100%', height: 'calc(100% - 60px)', marginTop: '10px' }}
           frameborder="0">
         </iframe>
+        <HelpModal
+          showHelpModalRef={this.showHelpModalRef}
+          onConfirmModal={this.handleConfirmModal}
+        />
       </Card>
     )
   }
