@@ -61,16 +61,32 @@ const initGateViews = () => {
       if (gate != undefined && !unsupportedGates.includes(gate.name)) {
         const gateView = document.createElement('span');
         gateView.setAttribute("class", "list-view tooltip-wrap")
+        const iconLink = `./icon/${gate.serializedId}.png`
+        let newIconLink = ''
+        if(iconLink.includes("Z^(A/2^n)")) {
+          newIconLink = iconLink.replace("Z^(A/2^n)", "Z^(A:2^n)")
+        } 
+        else if(iconLink.includes("Z^(-A/2^n)")) {
+          newIconLink = iconLink.replace("Z^(-A/2^n)", "Z^(-A:2^n)")
+        }
+        else if(iconLink.includes("Y^(A/2^n)")) {
+          newIconLink = iconLink.replace("Y^(A/2^n)", "Y^(A:2^n)")
+        }
+        else if(iconLink.includes("Y^(-A/2^n)")) {
+          newIconLink = iconLink.replace("Y^(-A/2^n)", "Y^(-A:2^n)")
+        }
+        else if(iconLink.includes("X^(A/2^n)")) {
+          newIconLink = iconLink.replace("X^(A/2^n)", "X^(A:2^n)")
+        }
+        else if(iconLink.includes("X^(-A/2^n)")) {
+          newIconLink = iconLink.replace("X^(-A/2^n)", "X^(-A:2^n)")
+        }
+        else {
+          newIconLink = iconLink
+        }
         gateView.innerHTML = `
-                      <svg onmousedown="grabGate('${gate.serializedId}')" viewBox="0 0 40 40" xmlns="http://www.w3.org/2000/svg" width="40" height="40" style="cursor: grab; margin:0.3rem 0.25rem;">
-                        <rect x="1" y="1" width="38" height="38"
-                          style="fill: rgb(255, 255, 255); stroke-width: 2; stroke: rgb(22, 22, 22); paint-order: stroke;">
-                        </rect>
-                        <text x="20" y="20" dy=".3em"
-                          style="font-family: sans-serif; font-size: 15px; font-style: normal; fill: rgb(0, 0, 0); font-weight: 300; text-anchor: middle;">${gate.symbol}
-                        </text>
-                      </svg>
-                      <span class="tooltip-content">${gate.name}</span>
+                    <img onmousedown="grabGate('${gate.serializedId}')" src=${newIconLink} style="width:36px; height:36px; margin: 5px 6px;"/>
+                    <span class="tooltip-content">${gate.name}</span>
                 `;
         commonGates.appendChild(gateView)
       }
@@ -98,16 +114,32 @@ const initGateViews = () => {
       if (gate != undefined && !unsupportedGates.includes(gate.name)) {
         const gateView = document.createElement('div');
         gateView.setAttribute("class", "grid-view")
+        const iconLink =`./icon/${gate.serializedId}.png`
+        let newIconLink = ''
+        if(iconLink.includes("Z^(A/2^n)")) {
+          newIconLink = iconLink.replace("Z^(A/2^n)", "Z^(A:2^n)")
+        } 
+        else if(iconLink.includes("Z^(-A/2^n)")) {
+          newIconLink = iconLink.replace("Z^(-A/2^n)", "Z^(-A:2^n)")
+        }
+        else if(iconLink.includes("Y^(A/2^n)")) {
+          newIconLink = iconLink.replace("Y^(A/2^n)", "Y^(A:2^n)")
+        }
+        else if(iconLink.includes("Y^(-A/2^n)")) {
+          newIconLink = iconLink.replace("Y^(-A/2^n)", "Y^(-A:2^n)")
+        }
+        else if(iconLink.includes("X^(A/2^n)")) {
+          newIconLink = iconLink.replace("X^(A/2^n)", "X^(A:2^n)")
+        }
+        else if(iconLink.includes("X^(-A/2^n)")) {
+          newIconLink = iconLink.replace("X^(-A/2^n)", "X^(-A:2^n)")
+        }
+        else {
+          newIconLink = iconLink
+        }
         gateView.innerHTML = `
-                    <div style="display:flex; align-items: center;">
-                      <svg onmousedown="grabGate('${gate.serializedId}')" viewBox="0 0 40 40" xmlns="http://www.w3.org/2000/svg" width="40" height="40" style="cursor: grab; padding: 5px 3px;">
-                        <rect x="1" y="1" width="38" height="38"
-                          style="fill: rgb(255, 255, 255); stroke-width: 2; stroke: rgb(22, 22, 22); paint-order: stroke;">
-                        </rect>
-                        <text x="20" y="20" dy=".3em"
-                          style="font-family: sans-serif; font-size: 15px; font-style: normal; fill: rgb(0, 0, 0); font-weight: 300; text-anchor: middle;">${gate.symbol}
-                        </text>
-                      </svg>
+                    <div style="display:flex; align-items: center; padding: 2px">
+                    <img onmousedown="grabGate('${gate.serializedId}')" src=${newIconLink} style="border:1px solid black; width:33px; height:33px; margin:2px 3px;"/>
                       <span> ${gate.name}</span>
                     </div>
                 `;
@@ -122,15 +154,37 @@ const initGateViews = () => {
       if (gate != undefined && !unsupportedGates.includes(gate.name)) {
         const gateView = document.createElement('span');
         gateView.setAttribute("class", "list-view tooltip-wrap")
+        const iconLink = `./icon/${gate.serializedId}.png`
+        let newIconLink = ''
+        if(iconLink.includes(">>3")) {
+          newIconLink = iconLink.replace(">>3", "2greater")
+        } 
+        else if(iconLink.includes("(/)")) {
+          newIconLink = iconLink.replace("(/)", "(:)")
+        } 
+        else if(iconLink.includes("|/⟩⟨/|")) {
+          newIconLink = iconLink.replace("|/⟩⟨/|", "|:⟩⟨:|")
+        }
+        else if(iconLink.includes("/A2")) {
+          newIconLink = iconLink.replace("/A2", ":A2")
+        }  
+        else if(iconLink.includes("^A>B")) {
+          newIconLink = iconLink.replace("^A>B", "^AgreaterB")
+        } 
+        else if(iconLink.includes("^A>=B")) {
+          newIconLink = iconLink.replace("^A>=B", "^Agreater=B")
+        }  
+        else if(iconLink.includes("/AmodR2")) {
+          newIconLink = iconLink.replace("/AmodR2", ":AmodR2")
+        }  
+        else if(iconLink.includes("/BToAmodR2")) {
+          newIconLink = iconLink.replace("/BToAmodR2", ":BToAmodR2")
+        }  
+        else {
+          newIconLink = iconLink
+        }
         gateView.innerHTML = `
-                      <svg onmousedown="grabGate('${gate.serializedId}')" viewBox="0 0 40 40" xmlns="http://www.w3.org/2000/svg" width="40" height="40" style="cursor: grab; margin:0.3rem 0.25rem;">
-                        <rect x="1" y="1" width="38" height="38"
-                          style="fill: rgb(255, 255, 255); stroke-width: 2; stroke: rgb(22, 22, 22); paint-order: stroke;">
-                        </rect>
-                        <text x="20" y="20" dy=".3em"
-                          style="font-family: sans-serif; font-size: 15px; font-style: normal; fill: rgb(0, 0, 0); font-weight: 300; text-anchor: middle;">${gate.symbol}
-                        </text>
-                      </svg>
+                      <img onmousedown="grabGate('${gate.serializedId}')" src=${newIconLink} style="width:36px; height:36px; margin: 5px 6px;"/>
                       <span class="tooltip-content">${gate.name}</span>
                 `;
         advancedGates.appendChild(gateView)
@@ -157,18 +211,40 @@ const initGateViews = () => {
       if (gate != undefined && !unsupportedGates.includes(gate.name)) {
         const gateView = document.createElement('div');
         gateView.setAttribute("class", "grid-view")
+        const iconLink = `./icon/${gate.serializedId}.png`
+        let newIconLink = ''
+        if(iconLink.includes(">>3")) {
+          newIconLink = iconLink.replace(">>3", "2greater")
+        } 
+        else if(iconLink.includes("(/)")) {
+          newIconLink = iconLink.replace("(/)", "(:)")
+        } 
+        else if(iconLink.includes("|/⟩⟨/|")) {
+          newIconLink = iconLink.replace("|/⟩⟨/|", "|:⟩⟨:|")
+        }
+        else if(iconLink.includes("/A2")) {
+          newIconLink = iconLink.replace("/A2", ":A2")
+        }  
+        else if(iconLink.includes("^A>B")) {
+          newIconLink = iconLink.replace("^A>B", "^AgreaterB")
+        } 
+        else if(iconLink.includes("^A>=B")) {
+          newIconLink = iconLink.replace("^A>=B", "^Agreater=B")
+        }  
+        else if(iconLink.includes("/AmodR2")) {
+          newIconLink = iconLink.replace("/AmodR2", ":AmodR2")
+        }  
+        else if(iconLink.includes("/BToAmodR2")) {
+          newIconLink = iconLink.replace("/BToAmodR2", ":BToAmodR2")
+        }  
+        else {
+          newIconLink = iconLink
+        }
         gateView.innerHTML = `
-                    <div style="display:flex; align-items: center;">
-                      <svg onmousedown="grabGate('${gate.serializedId}')" viewBox="0 0 40 40" xmlns="http://www.w3.org/2000/svg" width="40" height="40" style="cursor: grab; padding: 5px 3px;">
-                        <rect x="1" y="1" width="38" height="38"
-                          style="fill: rgb(255, 255, 255); stroke-width: 2; stroke: rgb(22, 22, 22); paint-order: stroke;">
-                        </rect>
-                        <text x="20" y="20" dy=".3em"
-                          style="font-family: sans-serif; font-size: 15px; font-style: normal; fill: rgb(0, 0, 0); font-weight: 300; text-anchor: middle;">${gate.symbol}
-                        </text>
-                      </svg>
-                      <span> ${gate.name}</span>
-                    </div>
+                  <div style="display:flex; align-items: center; padding: 2px">
+                  <img onmousedown="grabGate('${gate.serializedId}')" src=${newIconLink} style="border:1px solid black; width:33px; height:33px; margin:2px 3px;"/>
+                    <span> ${gate.name}</span>
+                  </div>
                 `;
         gateGroupList.appendChild(gateView)
       }

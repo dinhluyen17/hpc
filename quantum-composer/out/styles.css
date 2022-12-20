@@ -339,6 +339,10 @@ body {
     position: relative;
 }
 
+.tooltip-wrap img {
+    border: 1px solid black;
+}
+
 .tooltip-wrap .tooltip-content {
     display: none;
     position: absolute;
