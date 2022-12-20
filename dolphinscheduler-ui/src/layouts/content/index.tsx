@@ -37,7 +37,6 @@ const Content = defineComponent({
     const {
       state,
       changeMenuOption,
-      changeMenuWithTypeOption,
       changeHeaderMenuOptions,
       changeUserDropdown
     } = useDataList()
@@ -46,7 +45,6 @@ const Content = defineComponent({
     onMounted(() => {
       locale.value = localesStore.getLocales
       changeMenuOption(state)
-      changeMenuWithTypeOption(state)
       changeHeaderMenuOptions(state)
       getSideMenu(state)
       changeUserDropdown(state)
@@ -62,7 +60,6 @@ const Content = defineComponent({
 
     watch(useI18n().locale, () => {
       changeMenuOption(state)
-      changeMenuWithTypeOption(state)
       changeHeaderMenuOptions(state)
       getSideMenu(state)
       changeUserDropdown(state)
@@ -76,11 +73,7 @@ const Content = defineComponent({
 
           state.isShowSide = route.meta.showSide as boolean
 
-          if (route.matched[1].path === '/projects/:projectCode') {
-            changeMenuOption(state)
-          } else if (route.matched[1].path === '/projects/:projectType/:projectCode') {
-            changeMenuWithTypeOption(state)
-          }
+          changeMenuOption(state)
 
           getSideMenu(state)
 
@@ -103,7 +96,6 @@ const Content = defineComponent({
     return {
       ...toRefs(state),
       changeMenuOption,
-      changeMenuWithTypeOption,
       sideKeyRef
     }
   },

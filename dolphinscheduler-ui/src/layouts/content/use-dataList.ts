@@ -89,6 +89,7 @@ export function useDataList() {
   })
 
   const changeMenuOption = (state: any) => {
+    const projectType = route.params.projectType || ''
     const projectCode = route.params.projectCode || ''
 
     state.menuOptions = [
@@ -101,7 +102,19 @@ export function useDataList() {
         label: () => h(NEllipsis, null, { default: () => t('menu.project') }),
         key: 'projects',
         icon: renderIcon(ProfileOutlined),
-        children: [
+        children: projectType == '1' ? 
+        [
+          {
+            label: t('menu.project_overview'),
+            key: `/projects/${projectType}/${projectCode}`,
+            icon: renderIcon(FundProjectionScreenOutlined)
+          },
+          {
+            label: t('menu.project_circuit'),
+            key: `/projects/${projectType}/${projectCode}/circuit`,
+            icon: renderIcon(ApiOutlined)
+          }
+        ] : [
           {
             label: t('menu.project_overview'),
             key: `/projects/${projectCode}`,
@@ -320,210 +333,6 @@ export function useDataList() {
     ]
   }
 
-  const changeMenuWithTypeOption = (state: any) => {
-    const projectType = route.params.projectType || ''
-    const projectCode = route.params.projectCode || ''
-
-    state.menuOptions = [
-      {
-        label: () => h(NEllipsis, null, { default: () => t('menu.home') }),
-        key: 'home',
-        icon: renderIcon(HomeOutlined)
-      },
-      {
-        label: () => h(NEllipsis, null, { default: () => t('menu.project') }),
-        key: 'projects',
-        icon: renderIcon(ProfileOutlined),
-        children: [
-          {
-            label: t('menu.project_overview'),
-            key: `/projects/${projectType}/${projectCode}`,
-            icon: renderIcon(FundProjectionScreenOutlined)
-          },
-          {
-            label: t('menu.project_circuit'),
-            key: `/projects/${projectType}/${projectCode}/circuit`,
-            icon: renderIcon(ApiOutlined)
-          }
-        ]
-      },
-      {
-        label: () => h(NEllipsis, null, { default: () => t('menu.resources') }),
-        key: 'resource',
-        icon: renderIcon(FolderOutlined),
-        children: [
-          {
-            label: t('menu.file_manage'),
-            key: '/resource/file-manage',
-            icon: renderIcon(FileSearchOutlined)
-          },
-          {
-            label: t('menu.udf_manage'),
-            key: 'udf-manage',
-            icon: renderIcon(RobotOutlined),
-            children: [
-              {
-                label: t('menu.resource_manage'),
-                key: '/resource/resource-manage'
-              },
-              {
-                label: t('menu.function_manage'),
-                key: '/resource/function-manage'
-              }
-            ]
-          },
-          {
-            label: t('menu.task_group_manage'),
-            key: 'task-group-manage',
-            icon: renderIcon(GroupOutlined),
-            children: [
-              {
-                label: t('menu.task_group_option'),
-                key: '/resource/task-group-option'
-              },
-              {
-                label: t('menu.task_group_queue'),
-                key: '/resource/task-group-queue'
-              }
-            ]
-          }
-        ]
-      },
-      {
-        label: () =>
-          h(NEllipsis, null, { default: () => t('menu.data_quality') }),
-        key: 'data-quality',
-        icon: renderIcon(ContainerOutlined),
-        children: [
-          {
-            label: t('menu.task_result'),
-            key: '/data-quality/task-result',
-            icon: renderIcon(ApartmentOutlined)
-          },
-          {
-            label: t('menu.rule'),
-            key: '/data-quality/rule',
-            icon: renderIcon(BarsOutlined)
-          }
-        ]
-      },
-      {
-        label: () =>
-          h(NEllipsis, null, { default: () => t('menu.datasource') }),
-        key: 'datasource',
-        icon: renderIcon(DatabaseOutlined),
-        children: []
-      },
-      {
-        label: () => h(NEllipsis, null, { default: () => t('menu.monitor') }),
-        key: 'monitor',
-        icon: renderIcon(DesktopOutlined),
-        children: [
-          {
-            label: t('menu.service_manage'),
-            key: 'service-manage',
-            icon: renderIcon(AppstoreOutlined),
-            children: [
-              {
-                label: t('menu.master'),
-                key: '/monitor/master'
-              },
-              {
-                label: t('menu.worker'),
-                key: '/monitor/worker'
-              },
-              {
-                label: t('menu.db'),
-                key: '/monitor/db'
-              }
-            ]
-          },
-          {
-            label: t('menu.statistical_manage'),
-            key: 'statistical-manage',
-            icon: renderIcon(AppstoreOutlined),
-            children: [
-              {
-                label: t('menu.statistics'),
-                key: '/monitor/statistics'
-              },
-              {
-                label: t('menu.audit_log'),
-                key: '/monitor/audit-log'
-              }
-            ]
-          }
-        ]
-      },
-      {
-        label: () => h(NEllipsis, null, { default: () => t('menu.security') }),
-        key: 'security',
-        icon: renderIcon(SafetyCertificateOutlined),
-        children:
-          (userStore.getUserInfo as UserInfoRes).userType === 'ADMIN_USER'
-            ? [
-              {
-                label: t('menu.tenant_manage'),
-                key: '/security/tenant-manage',
-                icon: renderIcon(UsergroupAddOutlined)
-              },
-              {
-                label: t('menu.user_manage'),
-                key: '/security/user-manage',
-                icon: renderIcon(UserAddOutlined)
-              },
-              {
-                label: t('menu.alarm_group_manage'),
-                key: '/security/alarm-group-manage',
-                icon: renderIcon(WarningOutlined)
-              },
-              {
-                label: t('menu.alarm_instance_manage'),
-                key: '/security/alarm-instance-manage',
-                icon: renderIcon(InfoCircleOutlined)
-              },
-              {
-                label: t('menu.worker_group_manage'),
-                key: '/security/worker-group-manage',
-                icon: renderIcon(ControlOutlined)
-              },
-              {
-                label: t('menu.yarn_queue_manage'),
-                key: '/security/yarn-queue-manage',
-                icon: renderIcon(SlackOutlined)
-              },
-              {
-                label: t('menu.environment_manage'),
-                key: '/security/environment-manage',
-                icon: renderIcon(EnvironmentOutlined)
-              },
-              {
-                label: t('menu.cluster_manage'),
-                key: '/security/cluster-manage',
-                icon: renderIcon(ClusterOutlined)
-              },
-              {
-                label: t('menu.k8s_namespace_manage'),
-                key: '/security/k8s-namespace-manage',
-                icon: renderIcon(CloudServerOutlined)
-              },
-              {
-                label: t('menu.token_manage'),
-                key: '/security/token-manage',
-                icon: renderIcon(SafetyOutlined)
-              }
-            ]
-            : [
-              {
-                label: t('menu.token_manage'),
-                key: '/security/token-manage',
-                icon: renderIcon(SafetyOutlined)
-              }
-            ]
-      }
-    ]
-  }
-
   const changeHeaderMenuOptions = (state: any) => {
     state.headerMenuOptions = state.menuOptions.map(
       (item: { label: string; key: string; icon: any }) => {
@@ -561,7 +370,6 @@ export function useDataList() {
     state,
     changeHeaderMenuOptions,
     changeMenuOption,
-    changeMenuWithTypeOption,
     changeUserDropdown
   }
 }
