@@ -140,6 +140,7 @@ const changeTab = (tab) => {
             width: canvasBox.width,
             height: canvasBox.height
         }
+        simStatCalc();
     }
 }
 
@@ -226,6 +227,68 @@ let stateBarCalc = () =>{
     data = probObj.map(o => Object.assign(o, data2[o.id]))
     return data;
 }
+let simStatCalc = () => {
+    let qHeight = mostRecentStats.get().finalState.height();
+    let qNumWire = mostRecentStats.get().circuitDefinition.numWires;
+    let qStates = [];
+    for (let i = 0; i < qHeight; i++){
+        qStates[i] = Util.bin(i,qNumWire);
+    }
+    let qProb = [];
+    let qVector = [];
+    let qPhase = [];
+    for (let i = 0; i < mostRecentStats.get().finalState._buffer.length; i++) {
+        let x = mostRecentStats.get().finalState._buffer;
+        let y = x[i];
+        let z = x[i + 1];
+        if (i % 2 == 0){
+            let k = i/2;
+            let j = Math.pow(y,2) + Math.pow(z, 2);
+            qVector[k] = (y < 0 ? "-":"+") + y.toFixed(5) + (z < 0 ? "-":"+") + z.toFixed(5) + "i";
+            qPhase[k] = Math.atan2(z,y).toFixed(5) + "°";
+            qProb[k] = (j*100).toFixed(4);
+        }
+    }
+    let printVect = document.getElementById("dataOutput");
+    printVect.innerHTML = "";
+    for (let i = 0; i < qVector.length; i++){
+        let output = document.createElement("tr");
+        let state = document.createElement("td");
+        state.innerText = qStates[i];
+        let vect = document.createElement("td");
+        vect.innerText = qVector[i];
+        let rad = document.createElement("td");
+        rad.innerText = qPhase[i];
+        let prob = document.createElement("td");
+        prob.innerText = qProb[i] + "%";
+        output.append(state,vect,rad,prob)
+        printVect.appendChild(output)
+    }
+    document.getElementById("vectorTable").appendChild(printVect)
+}
+let vectFilterSwitch = false;
+document.getElementById("vectFilter").addEventListener('click', function (e) {
+    vectFilterSwitch = !vectFilterSwitch;
+    let table = document.getElementById("vectorTable");
+    let tr = table.getElementsByTagName("tr")
+    if (vectFilterSwitch == true) {
+        document.getElementById("vectFilter").style.color = "red"
+        for (let i = 0; i < tr.length; i++) {
+            let td = tr[i].getElementsByTagName("td")[3];
+            if (td) {
+                let value = td.textContent || td.innerText
+                if (value.search(/^0.0000/) > -1) {
+                    tr[i].style.display = "none";
+                } else {
+                    tr[i].style.display = "";
+                }
+            }
+        }
+    } else {
+        document.getElementById("vectFilter").style.color = "blue"
+        simStatCalc();
+    }
+})
 document.addEventListener('contextmenu', function (e) {
     if (viewState.getInstance().currentTab == 'circuit') {
         const hoverPos = viewState.getInstance().currentHoverPos;
@@ -576,91 +639,87 @@ setTimeout(() => {
         console.error(ex);
     }
 }, 0);
-document.getElementById("circuitTab").addEventListener('click', () => {
-    let e = document.getElementById("circuit");
-    e.classList.remove("hidden");
-    let eT = document.getElementById("circuitTab");
-    eT.setAttribute("data-state","active")
-
-    let e2 = document.getElementById("simulate");
-    e2.classList.add("hidden");
-    let e2T = document.getElementById("simulateTab");
-    e2T.setAttribute("data-state","inactive");
-
-    viewState.getInstance().currentTab = 'circuit';
-    const canvas = document.getElementById("circuit-area-body");
-    let canvasBox = canvas.getBoundingClientRect();
-    viewState.getInstance().canvasBoundingRect = {
-        clientX: canvasBox.left,
-        clientY: canvasBox.top,
-        width: canvasBox.width,
-        height: canvasBox.height
-    }
-});
-
-document.getElementById("simulateTab").addEventListener('click', () => {
-    let e = document.getElementById("circuit");
-    e.classList.add("hidden");
-    let eT = document.getElementById("circuitTab");
-    eT.setAttribute("data-state","inactive");
-
-    let e2 = document.getElementById("simulate");
-    e2.classList.remove("hidden");
-    let e2T = document.getElementById("simulateTab");
-    e2T.setAttribute("data-state","active");
-
-    viewState.getInstance().currentTab = 'simulate';
-    let canvas = document.getElementById("drawCanvasSim");
-    let canvasBox = canvas.getBoundingClientRect();
-    viewState.getInstance().canvasBoundingRect = {
-        clientX: canvasBox.left,
-        clientY: canvasBox.top,
-        width: canvasBox.width,
-        height: canvasBox.height
-    }
-    let qHeight = mostRecentStats.get().finalState.height();
-    let qNumWire = mostRecentStats.get().circuitDefinition.numWires;
-    let qStates = [];
-    for (let i = 0; i < qHeight; i++){
-        qStates[i] = Util.bin(i,qNumWire);
-    }
-    let qProb = [];
-    let qVector = [];
-    let qPhase = [];
-    for (let i = 0; i < mostRecentStats.get().finalState._buffer.length; i++) {
-        let x = mostRecentStats.get().finalState._buffer;
-        let y = x[i];
-        let z = x[i + 1];
-        if (i % 2 == 0){
-            let k = i/2;
-            let j = Math.pow(y,2) + Math.pow(z, 2);
-            qVector[k] = (y < 0 ? "-":"+") + y.toFixed(5) + (z < 0 ? "-":"+") + z.toFixed(5) + "i";
-            qPhase[k] = Math.atan2(z,y).toFixed(5) + "°";
-            qProb[k] = (j*100).toFixed(4);
-        }
-    }
-    let printVect = document.getElementById("dataOutput");
-    // qVector.forEach(i => {
-    //     let output = document.createElement("li");
-    //     output.innerText = i;
-    //     printVect.appendChild(output);
-    // })
-    printVect.innerHTML = "";
-    for (let i = 0; i < qVector.length; i++){
-        let output = document.createElement("tr");
-        let state = document.createElement("td");
-        state.innerText = qStates[i];
-        let vect = document.createElement("td");
-        vect.innerText = qVector[i];
-        let rad = document.createElement("td");
-        rad.innerText = qPhase[i];
-        let prob = document.createElement("td");
-        prob.innerText = qProb[i] + "%";
-        output.append(state,vect,rad,prob)
-        printVect.appendChild(output)
-    }
-    document.getElementById("vectorTable").appendChild(printVect)
-});
+// document.getElementById("circuitTab").addEventListener('click', () => {
+//     let e = document.getElementById("circuit");
+//     e.classList.remove("hidden");
+//     let eT = document.getElementById("circuitTab");
+//     eT.setAttribute("data-state","active")
+//
+//     let e2 = document.getElementById("simulate");
+//     e2.classList.add("hidden");
+//     let e2T = document.getElementById("simulateTab");
+//     e2T.setAttribute("data-state","inactive");
+//
+//     viewState.getInstance().currentTab = 'circuit';
+//     const canvas = document.getElementById("circuit-area-body");
+//     let canvasBox = canvas.getBoundingClientRect();
+//     viewState.getInstance().canvasBoundingRect = {
+//         clientX: canvasBox.left,
+//         clientY: canvasBox.top,
+//         width: canvasBox.width,
+//         height: canvasBox.height
+//     }
+// });
+//
+// document.getElementById("simulateTab").addEventListener('click', () => {
+//
+//     let e = document.getElementById("circuit");
+//     e.classList.add("hidden");
+//     let eT = document.getElementById("circuitTab");
+//     eT.setAttribute("data-state","inactive");
+//
+//     let e2 = document.getElementById("simulate");
+//     e2.classList.remove("hidden");
+//     let e2T = document.getElementById("simulateTab");
+//     e2T.setAttribute("data-state","active");
+//
+//     viewState.getInstance().currentTab = 'simulate';
+//     let canvas = document.getElementById("drawCanvasSim");
+//     let canvasBox = canvas.getBoundingClientRect();
+//     viewState.getInstance().canvasBoundingRect = {
+//         clientX: canvasBox.left,
+//         clientY: canvasBox.top,
+//         width: canvasBox.width,
+//         height: canvasBox.height
+//     }
+//     let qHeight = mostRecentStats.get().finalState.height();
+//     let qNumWire = mostRecentStats.get().circuitDefinition.numWires;
+//     let qStates = [];
+//     for (let i = 0; i < qHeight; i++){
+//         qStates[i] = Util.bin(i,qNumWire);
+//     }
+//     let qProb = [];
+//     let qVector = [];
+//     let qPhase = [];
+//     for (let i = 0; i < mostRecentStats.get().finalState._buffer.length; i++) {
+//         let x = mostRecentStats.get().finalState._buffer;
+//         let y = x[i];
+//         let z = x[i + 1];
+//         if (i % 2 == 0){
+//             let k = i/2;
+//             let j = Math.pow(y,2) + Math.pow(z, 2);
+//             qVector[k] = (y < 0 ? "-":"+") + y.toFixed(5) + (z < 0 ? "-":"+") + z.toFixed(5) + "i";
+//             qPhase[k] = Math.atan2(z,y).toFixed(5) + "°";
+//             qProb[k] = (j*100).toFixed(4);
+//         }
+//     }
+//     let printVect = document.getElementById("dataOutput");
+//     printVect.innerHTML = "";
+//     for (let i = 0; i < qVector.length; i++){
+//         let output = document.createElement("tr");
+//         let state = document.createElement("td");
+//         state.innerText = qStates[i];
+//         let vect = document.createElement("td");
+//         vect.innerText = qVector[i];
+//         let rad = document.createElement("td");
+//         rad.innerText = qPhase[i];
+//         let prob = document.createElement("td");
+//         prob.innerText = qProb[i] + "%";
+//         output.append(state,vect,rad,prob)
+//         printVect.appendChild(output)
+//     }
+//     document.getElementById("vectorTable").appendChild(printVect)
+// });
 window.parent.postMessage(JSON.stringify({
     messageFrom: 'quantum_composer',
     actionType: 'setup_finish'

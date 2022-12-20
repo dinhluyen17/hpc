@@ -505,7 +505,9 @@ body {
     right: 5%;
     position: relative;
     height: 800px;
-    overflow-y: auto;
+    overflow: auto;
+    /*min-width: 500px;*/
+    /*max-width: 500px;*/
 }
 
 #simulateOutput ul {
@@ -537,7 +539,8 @@ body {
     /*border: solid black 1px;*/
     text-align: center;
     padding: 10px 45px 0px 45px;
-    margin-top: 45px
+    /*margin-top: 45px*/
+    margin-top: .75rem;
 }
 
 #simulateOutput #dataOutput tr {
