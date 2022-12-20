@@ -107,8 +107,12 @@ document.D3_FUNCTION = {
     }
 }
 
+function grabGate(gate) {
+    document.GRAB_GATE = gate;
+}
+
 const circuitEdit = {
-    //Hanlde all DOM events in My Review Page
+    //Hanlde all DOM events in Circuit Edit Page
     handleDomEvents: function () {
         //Handle sidebar header button click
         $('.gate-area-header-btn').click(function () {
@@ -119,12 +123,84 @@ const circuitEdit = {
             } else if (type === 'list') {
                 $('.gateList').hide();
                 $('.gateGrid').show();
+            } else {
+                let state = document.getElementById("gate-area-header-close-btn")
+                if (state.getAttribute("data-gate") == "show") {
+                    state.setAttribute("data-gate", "hide")
+                    const gateList = document.querySelectorAll('.gateList')
+                    const gateGrid = document.querySelectorAll('.gateGrid')
+                    gateList.forEach(item => {
+                        item.style.display = 'block'
+                    })
+                    gateGrid.forEach(item => {
+                        item.style.display = 'none'
+                    })
+                } else {
+                    state.setAttribute("data-gate", "show")
+                }
             }
             if (!$(this).hasClass('active')) {
                 $('.gate-area-header-btn').removeClass('active');
                 $(this).addClass('active');
             }
         });
+
+        //Handle Search Circuit
+        $('.gate-area-header-search').on('input', function () {
+            let search = document.getElementById("gate-area-header-search").value.toLowerCase();
+
+            const listGates = document.querySelectorAll('.list-view')
+            const groupGates = document.querySelectorAll('.gate-group')
+            if (search != null && search != '' && search != undefined) {
+                listGates.forEach(item => {
+                    const matchList = item.querySelector("span") //element contains gate name
+                    if (!matchList.innerText.trim().toLowerCase().includes(search)) {
+                        item.style.display = "none"
+                    } else {
+                        item.style.display = "block"
+                    }
+                })
+
+                groupGates.forEach(item => {
+                    let found = false
+                    const gridGates = item.querySelectorAll('.grid-view')
+                    gridGates.forEach(item => {
+                        const gridMatchList = item.querySelector("div span")
+                        if (!gridMatchList.innerText.trim().toLowerCase().includes(search)) {
+                            item.style.display = "none"
+                        } else {
+                            item.style.display = "block"
+                            found = true
+                        }
+                    })
+                    if (found == false) {
+                        if (!item.classList.contains("group-gate-name-not-found")) {
+                            item.classList.add("group-gate-name-not-found")
+                        }
+                    } else {
+                        if (item.classList.contains("group-gate-name-not-found")) {
+                            item.classList.remove("group-gate-name-not-found")
+                        }
+                    }
+                })
+            }
+            else {
+                listGates.forEach(item => {
+                    item.style.display = "block"
+                })
+                groupGates.forEach(item => {
+                    if (item.classList.contains("group-gate-name-not-found")) {
+                        item.classList.remove("group-gate-name-not-found")
+                    }
+                    const gridGates = item.querySelectorAll('.grid-view')
+                    gridGates.forEach(item => {
+                        item.style.display = "block"
+                    })
+                })
+            }
+        })
+
+        //Handle Toggle Sidebar
     },
 
     start: function () {

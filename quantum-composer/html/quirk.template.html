@@ -30,7 +30,7 @@
     <div class="content" id="circuit">
       <div class="gate-area">
         <div class="gate-area-header">
-          <input type="search" class="gate-area-header-search" id="gate-area-header-search" placeholder="Search" oninput="handleSearch()">
+          <input type="search" class="gate-area-header-search" id="gate-area-header-search" placeholder="Search">
           <button class="gate-area-header-btn active" id="gate-area-header-grid-btn" data-type="icon">
             <svg focusable="false" preserveAspectRatio="xMidYMid meet" xmlns="http://www.w3.org/2000/svg" fill="currentColor" width="20" height="20"
               viewBox="0 0 32 32" aria-hidden="true">
@@ -47,7 +47,7 @@
               </path>
             </svg>
           </button>
-          <button class="gate-area-header-btn" id="gate-area-header-close-btn" data-gate="show" onclick="toggleLeftSideBar()" data-type="colapse">
+          <button class="gate-area-header-btn" id="gate-area-header-close-btn" data-gate="show" data-type="colapse">
             <svg focusable="false" preserveAspectRatio="xMidYMid meet" xmlns="http://www.w3.org/2000/svg" fill="currentColor" width="20" height="20"
               viewBox="0 0 32 32" aria-hidden="true" style="transform: rotate(90deg);">
               <path
@@ -205,96 +205,27 @@
     </div>
   </div>
 
-  <!-- Primary content -->
+  <div class="render-content" style="display: none;">
+    <!-- Primary content -->
 
-  <!-- Circuit drawing area -->
+    <!-- Circuit drawing area -->
 
-  <!-- INCLUDE EXPORT PART -->
+    <!-- INCLUDE EXPORT PART -->
 
-  <!-- INCLUDE FORGE PART -->
+    <!-- INCLUDE FORGE PART -->
 
-  <!-- INCLUDE MENU PART -->
+    <!-- INCLUDE MENU PART -->
 
-  <!-- INCLUDE ERROR PART -->
+    <!-- INCLUDE ERROR PART -->
 
-  <!-- INCLUDE SOURCE PART -->
+    <!-- INCLUDE SOURCE PART -->
 
-  <!-- Javascript detection -->
+    <!-- Javascript detection -->
+  </div>
+
   <script src='./dist/d3.min.js'></script>
   <script src='./dist/jquery-3.6.2.min.js'></script>
   <script src='./script.js'></script>
-  <script>
-    function handleSearch() {
-      let search = document.getElementById("gate-area-header-search").value.toLowerCase();
-
-      const listGates = document.querySelectorAll('.list-view')
-      const groupGates = document.querySelectorAll('.gate-group')
-      if (search != null && search != '' && search != undefined) {
-        listGates.forEach(item => {
-          const matchList = item.querySelector("span") //element contains gate name
-          if (!matchList.innerText.trim().toLowerCase().includes(search)) {
-            item.style.display = "none"
-          } else {
-            item.style.display = "block"
-          }
-        })
-
-        groupGates.forEach(item => {
-          let found = false
-          const gridGates = item.querySelectorAll('.grid-view')
-          gridGates.forEach(item => {
-            const gridMatchList = item.querySelector("div span")
-            if (!gridMatchList.innerText.trim().toLowerCase().includes(search)) {
-              item.style.display = "none"
-            } else {
-              item.style.display = "block"
-              found = true
-            }
-          })
-          if (found == false) {
-            if (!item.classList.contains("group-gate-name-not-found")) {
-              item.classList.add("group-gate-name-not-found")
-            }
-          } else {
-            if (item.classList.contains("group-gate-name-not-found")) {
-              item.classList.remove("group-gate-name-not-found")
-            }
-          }
-        })
-      }
-      else {
-        listGates.forEach(item => {
-          item.style.display = "block"
-        })
-        groupGates.forEach(item => {
-          if (item.classList.contains("group-gate-name-not-found")) {
-            item.classList.remove("group-gate-name-not-found")
-          }
-          const gridGates = item.querySelectorAll('.grid-view')
-          gridGates.forEach(item => {
-            item.style.display = "block"
-          })
-        })
-      }
-    }
-
-    function toggleLeftSideBar() {
-      let state = document.getElementById("gate-area-header-close-btn")
-      if (state.getAttribute("data-gate") == "show") {
-        state.setAttribute("data-gate", "hide")
-        const gateList = document.querySelectorAll('.gateList')
-        const gateGrid = document.querySelectorAll('.gateGrid')
-        gateList.forEach(item => {
-          item.style.display = 'block'
-        })
-        gateGrid.forEach(item => {
-          item.style.display = 'none'
-        })
-      } else {
-        state.setAttribute("data-gate", "show")
-      }
-    }
-  </script>
 
   <script>
     //noinspection InnerHTMLJS
