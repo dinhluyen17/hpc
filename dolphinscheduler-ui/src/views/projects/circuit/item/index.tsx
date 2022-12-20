@@ -70,13 +70,16 @@ const circuitItem = defineComponent({
     }
 
     const handleChangeCircuitName = () => {
-      updateCircuitData(variables.data.id, {
-        name: variables.data.name
-      })
+      if (variables.currentValue !== variables.data.name) {
+        updateCircuitData(variables.data.id, {
+          name: variables.data.name
+        })
+      }
       variables.isChangeName = false
     }
 
     const handleChangeName = () => {
+      variables.currentValue = variables.data.name
       variables.isChangeName = true
     }
 
@@ -190,7 +193,7 @@ const circuitItem = defineComponent({
                   placeholder={t('circuit.detail.change_name_tips')}
                 />
                 <NButton size='small' type='primary' onClick={this.handleChangeCircuitName}>
-                  {t('circuit.detail.update_circuit_name')}
+                  {this.currentValue === this.data.name ? t('circuit.detail.exit') : t('circuit.detail.update_circuit_name')}
                 </NButton>
               </NSpace> :
               //Project Name Edit

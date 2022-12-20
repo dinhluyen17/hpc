@@ -26,7 +26,8 @@ export function useCircuit() {
     loadingRef: ref(false),
     isChangeName: ref(false),
     isCircuitTab: ref(true),
-    isSaveCircuit: ref(true)
+    isSaveCircuit: ref(true),
+    currentValue: ''
   })
 
   const getCircuitData = (id: number) => {
