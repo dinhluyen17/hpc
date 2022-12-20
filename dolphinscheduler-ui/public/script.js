@@ -112,6 +112,19 @@ function grabGate(gate) {
 }
 
 const circuitEdit = {
+
+    buttonControls: function (button, i) {
+        var groupNum = button.className.match(/\d+$/);
+        if (groupNum !== null) {
+            const toggleElement = document.getElementById(`${"group-num-" + groupNum[0]}`)
+            if (toggleElement != null && !toggleElement.className.includes('show-and-hide-gate-list')) {
+                toggleElement.setAttribute("class", "show-and-hide-gate-list")
+            } else if (toggleElement != null && toggleElement.className.includes('show-and-hide-gate-list')) {
+                toggleElement.classList.remove("show-and-hide-gate-list")
+            }
+        }
+    },
+
     //Hanlde all DOM events in Circuit Edit Page
     handleDomEvents: function () {
         //Handle sidebar header button click
@@ -200,7 +213,19 @@ const circuitEdit = {
             }
         })
 
-        //Handle Toggle Sidebar
+        //Handle Colapse Gate List
+        let buttons = document.querySelectorAll('button.toggle-gate-list'); //returns a nodelist
+        for (let i = 0; i < buttons.length; i++) {
+            buttons[i].addEventListener("click", function () {
+                circuitEdit.buttonControls(this, i);
+                const dataState = buttons[i].getAttribute("data-state")
+                if (dataState == "open") {
+                    buttons[i].setAttribute("data-state", "closed")
+                } else {
+                    buttons[i].setAttribute("data-state", "open")
+                }
+            }, false);
+        }
     },
 
     start: function () {

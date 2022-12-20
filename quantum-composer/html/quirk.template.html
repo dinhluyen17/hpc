@@ -241,35 +241,6 @@
 
     //toggle show and hide gate list in a specific gate group
   </script>
-
-  <script language="JavaScript" defer>
-      let buttons = document.querySelectorAll('button.toggle-gate-list'); //returns a nodelist
-    for (let i = 0; i < buttons.length; i++) {
-      buttons[i].addEventListener("click", function () {
-        buttonsControl(this, i);
-        const dataState = buttons[i].getAttribute("data-state")
-        if (dataState == "open") {
-          buttons[i].setAttribute("data-state", "closed")
-        } else {
-          buttons[i].setAttribute("data-state", "open")
-        }
-      }, false);
-    }
-
-    function buttonsControl(button, i) {
-      console.log(i);
-      var groupNum = button.className.match(/\d+$/);
-      if (groupNum !== null) {
-        const toggleElement = document.getElementById(`${"group-num-" + groupNum[0]}`)
-        console.log("remove elemetn", toggleElement);
-        if (toggleElement != null && !toggleElement.className.includes('show-and-hide-gate-list')) {
-          toggleElement.setAttribute("class", "show-and-hide-gate-list")
-        } else if (toggleElement != null && toggleElement.className.includes('show-and-hide-gate-list')) {
-          toggleElement.classList.remove("show-and-hide-gate-list")
-        }
-      }
-    }
-  </script>
 </body>
 
 </html>
