@@ -216,6 +216,7 @@ body {
 }
 
 .circuit-area-header-btn {
+    cursor: pointer;
     background-color: white;
     border: none;
     width: 65px;
@@ -260,15 +261,14 @@ body {
 }
 
 #circuit-area-chart-close-btn {
+    cursor: pointer;
     position: absolute;
     top: 0px;
     right: 8px;
-    /*width: 44px;*/
-    /*height: 44px;*/
     width: 2rem;
     height: 2rem;
     transform: rotate(270deg);
-    background-color: transparent;
+    background-color: #FFFFFF;
     border: .5px solid;
     margin-top: 8px;
     display: flex;
@@ -276,25 +276,34 @@ body {
     justify-content: center;
 }
 
+#circuit-area-chart-close-btn svg {
+    fill: #000000;
+}
+
 #circuit-area-chart-close-btn:hover {
-    background-color: #9e9d9d;
+    background-color: #000000;
+}
+
+#circuit-area-chart-close-btn:hover svg {
+    fill: #FFFFFF;
 }
 
 #stateBarChartFilterZero {
+    cursor: pointer;
     position: absolute;
     top: 0px;
     right: 52px;
-    /*height: 44px;*/
-    /*width: 105px;*/
     height: 2rem;
     width: 7rem;
-    background-color: transparent;
+    background-color: #FFFFFF;
+    color: #000000;
     border: .5px solid;
     margin-top: 8px;
 }
 
 #stateBarChartFilterZero:hover {
-    background-color: #9e9d9d;
+    background-color: #000000;
+    color: #FFFFFF;
 }
 
 .content .code-area {
@@ -304,15 +313,14 @@ body {
 }
 
 #code-area-close-btn {
+    cursor: pointer;
     position: absolute;
     top: 0px;
     left: 4px;
-    /*width: 44px;*/
-    /*height: 44px;*/
     width: 2rem;
     height: 2rem;
     transform: rotate(180deg);
-    background-color: transparent;
+    background-color: #FFFFFF;
     border: .5px solid;
     margin-top: 8px;
     display: flex;
@@ -320,8 +328,16 @@ body {
     justify-content: center;
 }
 
+#code-area-close-btn svg {
+    fill: #000000;
+}
+
 #code-area-close-btn:hover {
-    background-color: #9e9d9d;
+    background-color: #000000;
+}
+
+#code-area-close-btn:hover svg {
+    fill: #FFFFFF;
 }
 
 #common-gates {

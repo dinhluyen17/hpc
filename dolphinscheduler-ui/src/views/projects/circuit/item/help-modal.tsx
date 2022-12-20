@@ -16,41 +16,41 @@
  */
 
 import {
-    defineComponent,
-    PropType
+  defineComponent,
+  PropType
 } from 'vue'
 import Modal from '@/components/modal'
 
 const props = {
-    showHelpModalRef: {
-        type: Boolean as PropType<boolean>,
-        default: false
-    }
+  showHelpModalRef: {
+    type: Boolean as PropType<boolean>,
+    default: false
+  }
 }
 
 const HelpModal = defineComponent({
-    name: 'ProjectModal',
-    props,
-    emits: ['confirmModal'],
-    setup(props, ctx) {
+  name: 'ProjectModal',
+  props,
+  emits: ['confirmModal'],
+  setup(props, ctx) {
 
-        const confirmModal = () => {
-            ctx.emit('confirmModal', props.showHelpModalRef)
-        }
-        return { confirmModal }
-    },
-    render() {
-        return (
-            <Modal
-                title={'Help Content'}
-                show={this.showHelpModalRef}
-                onConfirm={this.confirmModal}
-                cancelShow={false}
-            >
-                {'aaaa'}
-            </Modal>
-        )
+    const confirmModal = () => {
+      ctx.emit('confirmModal', props.showHelpModalRef)
     }
+    return { confirmModal }
+  },
+  render() {
+    return (
+      <Modal
+        title={'Help Content'}
+        show={this.showHelpModalRef}
+        onConfirm={this.confirmModal}
+        cancelShow={false}
+      >
+        {'aaaa'}
+      </Modal>
+    )
+  }
 })
 
 export default HelpModal
