@@ -109,7 +109,8 @@ const changeTab = (tab) => {
         e2.classList.add("hidden");
         let e2T = document.getElementById("simulateTab");
         e2T.setAttribute("data-state","inactive");
-    
+        document.getElementById("vectFilter").style.color = "blue"
+
         viewState.getInstance().currentTab = 'circuit';
         const canvas = document.getElementById("circuit-area-body");
         let canvasBox = canvas.getBoundingClientRect();
