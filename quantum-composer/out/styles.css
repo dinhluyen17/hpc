@@ -345,6 +345,7 @@ body {
     display: flex;
     flex-direction: row;
     flex-wrap: wrap;
+    overflow-x: hidden;
 }
 
 #common-gates-grid {
@@ -363,6 +364,7 @@ body {
     display: flex;
     flex-direction: row;
     flex-wrap: wrap;
+    overflow-x: hidden;
 }
 
 #advanced-gates-grid {
@@ -409,7 +411,7 @@ body {
     left: 100%;
     background-color: #8e928d;
     padding: .5em;
-    z-index: 1;
+    z-index: 3;
     line-height: 0.55;
     border-radius: 10px
 }
@@ -466,7 +468,6 @@ body {
     overflow-x: scroll;
     overflow-y: scroll;
     width: 100%;
-    /*text-align: center;*/
 }
 
 #drawCanvasSim {
