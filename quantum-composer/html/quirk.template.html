@@ -188,22 +188,24 @@
             </canvas>
           </div>
           <div id="simulateOutput">
-            <div style="display: flex">
+            <div class="table-action">
               <button id="vectFilter">Hide zero states</button>
-              <input id="vectSearch">
+              <input id="vectSearch" placeholder="Enter Your State" type="number">
             </div>
-            <table id="vectorTable">
-              <thead>
-                <tr>
-                  <th>State</th>
-                  <th>Vector</th>
-                  <th>Phase Angle</th>
-                  <th>Probability</th>
-                </tr>
-              </thead>
-              <tbody id="dataOutput">
-              </tbody>
-            </table>
+            <div class="table-content">
+              <table id="vectorTable">
+                <thead>
+                  <tr>
+                    <th>State</th>
+                    <th>Vector</th>
+                    <th>Phase Angle</th>
+                    <th>Probability</th>
+                  </tr>
+                </thead>
+                <tbody id="dataOutput">
+                </tbody>
+              </table>
+            </div>
           </div>
         </div>
       </div>
