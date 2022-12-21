@@ -177,28 +177,23 @@
       <button id="paste-menu-popup-btn">Paste</button>
     </div>
     <div class="simulate-area hidden" id="simulate">
-      <h3 class="simTitle">
-          <span class="simTitleLeft">
-            Simulation Amplitudes
-          </span>
-        <span class="simTitleRight">
-            Simulation Output
-          </span>
-      </h3>
       <div class="simWrapper">
-
         <div id="canvasSimWrapper">
+          <h3 class="simTitle">Simulation Amplitudes</h3>
           <canvas id="drawCanvasSim">
           </canvas>
         </div>
         <div id="simulateOutput">
+          <h3 class="simTitle">Simulation Output</h3>
           <table id="vectorTable">
-            <tr>
-              <th>State</th>
-              <th>Vector</th>
-              <th>Phase angle</th>
-              <th id="vectFilter" style="color: blue; cursor: pointer">Probability</th>
-            </tr>
+            <thead>
+              <tr>
+                <th>State</th>
+                <th>Vector</th>
+                <th>Phase Angle</th>
+                <th id="vectFilter" style="color: blue; cursor: pointer">Probability</th>
+              </tr>
+            </thead>
             <tbody id="dataOutput">
             </tbody>
           </table>
