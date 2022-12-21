@@ -258,6 +258,10 @@ let simStatCalc = () => {
     }
     let printVect = document.getElementById("dataOutput");
     printVect.innerHTML = "";
+    /**
+     * Code for data. Create element + append variant
+     * ~550ms for load at 16 qubits
+     */
     for (let i = 0; i < qVector.length; i++){
         let output = document.createElement("tr");
         let state = document.createElement("td");
@@ -271,6 +275,22 @@ let simStatCalc = () => {
         output.append(state,vect,rad,prob)
         printVect.appendChild(output)
     }
+    /**
+     * Code for data. Array of object variant
+     * ~112ms for load at 16 qubits
+     */
+    // let dataSet = []
+    // let data = {}
+    // for (let i = 0; i < qVector.length; i++){
+    //     data = {
+    //         "state": qStates[i],
+    //         "vect": qVector[i],
+    //         "rad": qPhase[i],
+    //         "prob": qProb[i]
+    //     }
+    //     dataSet.push(data)
+    // }
+    // console.log(dataSet)
     document.getElementById("vectorTable").appendChild(printVect)
 }
 let vectFilterSwitch = false;
