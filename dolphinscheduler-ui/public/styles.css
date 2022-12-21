@@ -469,7 +469,7 @@ body {
 }
 
 #drawCanvasSim {
-    max-width: 100%;
+    /*max-width: 100%;*/
 }
 
 #canvasSimWrapper,
@@ -548,7 +548,6 @@ body {
     box-sizing: border-box;
     text-indent: initial;
     border-color: grey;
-    margin-top: 20px;
 }
 
 #simulateOutput table thead {
