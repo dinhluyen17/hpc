@@ -130,6 +130,8 @@ const circuitEdit = {
                 $('.gateGrid').show();
             } else {
                 let state = document.getElementById("gate-area-header-close-btn")
+                let no_data_top = document.getElementById("no-data")
+                let no_data_bottom = document.getElementById("no-data2")
                 if (state.getAttribute("data-gate") == "show") {
                     state.setAttribute("data-gate", "hide")
                     const gateList = document.querySelectorAll('.gateList')
@@ -140,8 +142,20 @@ const circuitEdit = {
                     gateGrid.forEach(item => {
                         item.style.display = 'none'
                     })
+                    if(!no_data_top.hasAttribute('class') || !no_data_top.classList.contains('no-data')){
+                        no_data_top.setAttribute('class', 'no-data')
+                    }
+                    if(!no_data_bottom.hasAttribute('class') || !no_data_bottom.classList.contains('no-data')){
+                        no_data_bottom.setAttribute('class', 'no-data')
+                    }
                 } else {
                     state.setAttribute("data-gate", "show")
+                    if(no_data_top.hasAttribute('class')){
+                        no_data_top.classList.remove('no-data')
+                    }
+                    if(no_data_bottom.hasAttribute('class')){
+                        no_data_bottom.classList.remove('no-data')
+                    }
                 }
             }
             if (!$(this).hasClass('active')) {
@@ -156,16 +170,56 @@ const circuitEdit = {
 
             const listGates = document.querySelectorAll('.list-view')
             const groupGates = document.querySelectorAll('.gate-group')
+
+            let foundListTop = false
+            let foundListBottom = false
+            let foundGroupTop = false //flag to check whether to show div with no "data" content
+            let foundGroupBottom = false //flag to check whether to show div with no "data" content
+
             if (search != null && search != '' && search != undefined) {
+                let i = 0
                 listGates.forEach(item => {
                     const matchList = item.querySelector("span") //element contains gate name
                     if (!matchList.innerText.trim().toLowerCase().includes(search)) {
                         item.style.display = "none"
                     } else {
                         item.style.display = "block"
+                        if(i <= 52) { //52 is total common gates, from index 53 is advanced gate
+                            foundListTop = true
+                        } else {
+                            foundListBottom = true
+                        }
                     }
+                    i++
                 })
-
+                if(!foundListTop) {
+                    if(document.getElementById("no-data") == null) {
+                        const parentList = document.getElementById("common-gates")
+                        let noData = document.createElement("div"); noData.setAttribute('id', 'no-data')
+                        noData.innerHTML = "No data"
+                        parentList.appendChild(noData)
+                    }
+                } else {
+                    let node = document.getElementById("no-data");
+                    if (node != null && node.parentNode) {
+                      node.parentNode.removeChild(node);
+                    }  
+                }
+                if(!foundListBottom) {
+                    if(document.getElementById("no-data2") == null) {
+                        const parentList = document.getElementById("advanced-gates")
+                        let noData = document.createElement("div"); noData.setAttribute('id', 'no-data2')
+                        noData.innerHTML = "No data"
+                        parentList.appendChild(noData)
+                    }
+                } else {
+                    let node = document.getElementById("no-data2");
+                    if (node != null && node.parentNode) {
+                      node.parentNode.removeChild(node);
+                    }  
+                }
+                
+                let j = 0
                 groupGates.forEach(item => {
                     let found = false
                     const gridGates = item.querySelectorAll('.grid-view')
@@ -176,6 +230,11 @@ const circuitEdit = {
                         } else {
                             item.style.display = "block"
                             found = true
+                            if(j <= 9) { //9 is number of top group
+                                foundGroupTop = true
+                            } else {
+                                foundGroupBottom = true
+                            }
                         }
                     })
                     if (found == false) {
@@ -187,7 +246,34 @@ const circuitEdit = {
                             item.classList.remove("group-gate-name-not-found")
                         }
                     }
+                    j++
                 })
+                if(!foundGroupTop) {
+                    if(document.getElementById("no-data-group-top") == null) {
+                        const parentList = document.getElementById("common-gates-grid")
+                        let noData = document.createElement("div"); noData.setAttribute('id', 'no-data-group-top')
+                        noData.innerHTML = "No data"
+                        parentList.appendChild(noData)
+                    }
+                } else {
+                    let node = document.getElementById("no-data-group-top");
+                    if (node != null && node.parentNode) {
+                      node.parentNode.removeChild(node);
+                    }  
+                }
+                if(!foundGroupBottom) {
+                    if(document.getElementById("no-data-group-bottom") == null) {
+                        const parentList = document.getElementById("advanced-gates-grid")
+                        let noData = document.createElement("div"); noData.setAttribute('id', 'no-data-group-bottom')
+                        noData.innerHTML = "No data"
+                        parentList.appendChild(noData)
+                    }
+                } else {
+                    let node = document.getElementById("no-data-group-bottom");
+                    if (node != null && node.parentNode) {
+                      node.parentNode.removeChild(node);
+                    }  
+                }
             }
             else {
                 listGates.forEach(item => {
@@ -202,6 +288,25 @@ const circuitEdit = {
                         item.style.display = "block"
                     })
                 })
+
+                //hide "No data div element" in the list view
+                const nodataTop = document.getElementById("no-data")
+                const nodataBottom = document.getElementById("no-data2")
+                const nodata_grid_top = document.getElementById("no-data-group-top")
+                const nodata_grid_bottom = document.getElementById("no-data-group-bottom")
+
+                if(nodataTop != null && nodataTop.parentNode) {
+                    nodataTop.parentNode.removeChild(nodataTop);
+                }
+                if(nodataBottom != null && nodataBottom.parentNode) {
+                    nodataBottom.parentNode.removeChild(nodataBottom);
+                }
+                if(nodata_grid_top != null && nodata_grid_top.parentNode) {
+                    nodata_grid_top.parentNode.removeChild(nodata_grid_top);
+                }
+                if(nodata_grid_bottom != null && nodata_grid_bottom.parentNode) {
+                    nodata_grid_bottom.parentNode.removeChild(nodata_grid_bottom);
+                }
             }
         })
 
@@ -228,3 +333,8 @@ const circuitEdit = {
 $(document).ready(function () {
     circuitEdit.start();
 });
+
+//handle pop up gate name
+function popUpGateName() {
+
+}
