@@ -437,6 +437,16 @@ body {
     display: block;
 }
 
+.tooltipLeft{
+    bottom: 5%;
+    right: 90% !important;
+  }
+  
+  .tooltipRight{
+    bottom: 5%;
+    left: 90% !important;
+  }
+
 .circuit-area-chart .barTooltip {
     background: #b0c4de;
     border: 0;
@@ -564,13 +574,3 @@ body {
     -webkit-box-shadow: 0px 0px 0px 1px rgba(196, 195, 195, 0.6);
     -moz-box-shadow: 0px 0px 0px 1px rgba(196, 195, 195, 0.6);
 }
-
-.tooltipLeft{
-    bottom: 5%;
-    right: 100% !important;
-  }
-  
-  .tooltipRight{
-    bottom: 5%;
-    left: 100% !important;
-  }
