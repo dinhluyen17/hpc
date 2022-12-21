@@ -185,13 +185,17 @@
         </div>
         <div id="simulateOutput">
           <h3 class="simTitle">Simulation Output</h3>
+          <div style="display: flex">
+            <button id="vectFilter">Hide zero states</button>
+            <input id="vectSearch">
+          </div>
           <table id="vectorTable">
             <thead>
               <tr>
                 <th>State</th>
                 <th>Vector</th>
                 <th>Phase Angle</th>
-                <th id="vectFilter" style="color: blue; cursor: pointer">Probability</th>
+                <th>Probability</th>
               </tr>
             </thead>
             <tbody id="dataOutput">
