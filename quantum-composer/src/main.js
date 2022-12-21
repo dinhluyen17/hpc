@@ -133,8 +133,14 @@ const changeTab = (tab) => {
         e2T.setAttribute("data-state","active");
     
         viewState.getInstance().currentTab = 'simulate';
-        let canvas = document.getElementById("drawCanvasSim");
+        // let canvas = document.getElementById("drawCanvasSim");
+        let canvas = document.getElementById("canvasSimWrapper")
         let canvasBox = canvas.getBoundingClientRect();
+        const canvasWrapper = document.getElementById("canvasSimWrapper");
+        canvasWrapper.addEventListener("scroll", event => {
+            viewState.getInstance().canvasScrollX = canvasWrapper.scrollLeft;
+            viewState.getInstance().canvasScrollY = canvasWrapper.scrollTop;
+        }, { passive: true });
         viewState.getInstance().canvasBoundingRect = {
             clientX: canvasBox.left,
             clientY: canvasBox.top,
@@ -313,7 +319,7 @@ document.addEventListener('contextmenu', function (e) {
 document.addEventListener("DOMContentLoaded", function (){
     document.D3_FUNCTION.bar(stateBarCalc())
 })
-let barDataFilterSwitch = false;
+let barDataFilterSwitch = true;
 const stateBarChartFilter = document.getElementById("stateBarChartFilterZero");
 stateBarChartFilter.addEventListener('click',()=>{
     barDataFilterSwitch = !barDataFilterSwitch;

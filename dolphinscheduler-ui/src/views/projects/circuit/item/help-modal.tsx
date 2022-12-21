@@ -100,7 +100,7 @@ const HelpModal = defineComponent({
                         &nbsp; icon to minimise the gate lists, the bar chart or the code display
                     </li>
                     <li>Change the initial qubit state: Click on the |0&gt; at the left of the circuit to cycle through qubit states</li>
-                    <li>Bar chart legibility: Click on the <b>Hide zero states</b> button to display only states with more than 0% probability. Click on the same button to revert the display</li>
+                    <li>Bar chart legibility: Click on the <b>Show all states</b> button to display all possible states. Click on the same button to revert the display</li>
                     <li>View circuit simulation: Click the <b>Simulation</b> tab on the top of the screen to switch to the simulation screen</li>
                     <li>View circuit results: Hover mouse over the bar graph to see the qubit state and probability <b>OR</b> switch to the simulation tab to view the state, vector, probability and phase angle of qubits</li>
                     <li>Vector table legibility: Click on the table header titled <b>Probability</b> to display only states with more than 0% probability. Click on the same button to revert the display</li>

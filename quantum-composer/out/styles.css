@@ -471,7 +471,13 @@ body {
 }
 
 #drawCanvasSim {
-    max-width: 2000px;
+    /*max-width: 2000px;*/
+}
+
+#canvasSimWrapper {
+    max-width: 50%;
+    max-height: 50rem;
+    overflow: auto;
 }
 
 #paste-menu-popup {
@@ -502,7 +508,7 @@ body {
 
 #simulateOutput {
     float: right;
-    right: 5%;
+    /*right: 5%;*/
     position: relative;
     height: 800px;
     overflow: auto;
@@ -521,17 +527,17 @@ body {
 }
 
 .simTitle .simTitleLeft {
-    margin-left: 40%;
+    margin-left: 20%;
     margin-right: auto;
 }
 
 .simTitle .simTitleRight {
-    margin-right: 40%;
+    margin-right: 20%;
     margin-left: auto;
 }
 
 .simWrapper {
-    display: block;
+    display: flex;
     overflow: auto;
 }
 
