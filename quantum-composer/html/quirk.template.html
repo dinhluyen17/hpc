@@ -178,25 +178,29 @@
     </div>
     <div class="simulate-area hidden" id="simulate">
       <div class="simWrapper">
-        <div id="canvasSimWrapper">
-          <h3 class="simTitle">Simulation Amplitudes</h3>
-          <canvas id="drawCanvasSim">
-          </canvas>
+        <div class="simulate-title">
+          <div class="title">Simulation Amplitudes</div>
+          <div class="title">Simulation Output</div>
         </div>
-        <div id="simulateOutput">
-          <h3 class="simTitle">Simulation Output</h3>
-          <table id="vectorTable">
-            <thead>
-              <tr>
-                <th>State</th>
-                <th>Vector</th>
-                <th>Phase Angle</th>
-                <th id="vectFilter" style="color: blue; cursor: pointer">Probability</th>
-              </tr>
-            </thead>
-            <tbody id="dataOutput">
-            </tbody>
-          </table>
+        <div class="simulate-content">
+          <div id="canvasSimWrapper">
+            <canvas id="drawCanvasSim">
+            </canvas>
+          </div>
+          <div id="simulateOutput">
+            <table id="vectorTable">
+              <thead>
+                <tr>
+                  <th>State</th>
+                  <th>Vector</th>
+                  <th>Phase Angle</th>
+                  <th id="vectFilter" style="color: blue; cursor: pointer">Probability</th>
+                </tr>
+              </thead>
+              <tbody id="dataOutput">
+              </tbody>
+            </table>
+          </div>
         </div>
       </div>
     </div>
