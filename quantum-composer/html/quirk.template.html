@@ -115,7 +115,7 @@
               </path>
             </svg>
           </button>
-          <button id="stateBarChartFilterZero">Hide zero states</button>
+          <button id="stateBarChartFilterZero">Show all states</button>
           <!--          <input type="checkbox" id="stateBarBool">-->
           <!--          <label>Use bar graph when above 12 qubits (may cause performance issues)</label>-->
           <div id="stateBarChart"></div>
@@ -178,27 +178,35 @@
     </div>
     <div class="simulate-area hidden" id="simulate">
       <div class="simWrapper">
-        <h3 class="simTitle">
-          <span class="simTitleLeft">
-            Simulation Amplitudes
-          </span>
-          <span class="simTitleRight">
-            Simulation Output
-          </span>
-        </h3>
-        <canvas id="drawCanvasSim">
-        </canvas>
-        <div id="simulateOutput">
-          <table id="vectorTable">
-            <tr>
-              <th>State</th>
-              <th>Vector</th>
-              <th>Phase angle</th>
-              <th id="vectFilter" style="color: blue; cursor: pointer">Probability</th>
-            </tr>
-            <tbody id="dataOutput">
-            </tbody>
-          </table>
+        <div class="simulate-title">
+          <div class="title">Simulation Amplitudes</div>
+          <div class="title">Simulation Output</div>
+        </div>
+        <div class="simulate-content">
+          <div id="canvasSimWrapper">
+            <canvas id="drawCanvasSim">
+            </canvas>
+          </div>
+          <div id="simulateOutput">
+            <div class="table-action">
+              <button id="vectFilter">Hide zero states</button>
+              <input id="vectSearch" placeholder="Enter Your State" type="number">
+            </div>
+            <div class="table-content">
+              <table id="vectorTable">
+                <thead>
+                  <tr>
+                    <th>State</th>
+                    <th>Vector</th>
+                    <th>Phase Angle</th>
+                    <th>Probability</th>
+                  </tr>
+                </thead>
+                <tbody id="dataOutput">
+                </tbody>
+              </table>
+            </div>
+          </div>
         </div>
       </div>
     </div>

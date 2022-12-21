@@ -86,16 +86,16 @@ document.D3_FUNCTION = {
                     .style('top', `${d3.event.layerY}px`);
             })
             .on("mouseout", () => tooltip.transition().duration(500).style("opacity", 0))
-        switch (barData.length){
-            case 256:
-                document.getElementById("simulateOutput").style.width = "725px"
-                break;
-            case 8192:
-                document.getElementById("simulateOutput").style.width = "675px"
-            case 16384:
-                document.getElementById("simulateOutput").style.width = "625px"
-                break;
-        }
+        // switch (barData.length){
+        //     case 256:
+        //         document.getElementById("simulateOutput").style.width = "625px"
+        //         break;
+        //     case 8192:
+        //         document.getElementById("simulateOutput").style.width = "575px"
+        //     case 16384:
+        //         document.getElementById("simulateOutput").style.width = "525px"
+        //         break;
+        // }
     }
 }
 

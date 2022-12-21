@@ -109,7 +109,6 @@ const changeTab = (tab) => {
         e2.classList.add("hidden");
         let e2T = document.getElementById("simulateTab");
         e2T.setAttribute("data-state","inactive");
-        document.getElementById("vectFilter").style.color = "blue"
 
         viewState.getInstance().currentTab = 'circuit';
         const canvas = document.getElementById("circuit-area-body");
@@ -133,8 +132,14 @@ const changeTab = (tab) => {
         e2T.setAttribute("data-state","active");
     
         viewState.getInstance().currentTab = 'simulate';
-        let canvas = document.getElementById("drawCanvasSim");
+        // let canvas = document.getElementById("drawCanvasSim");
+        let canvas = document.getElementById("canvasSimWrapper")
         let canvasBox = canvas.getBoundingClientRect();
+        const canvasWrapper = document.getElementById("canvasSimWrapper");
+        canvasWrapper.addEventListener("scroll", event => {
+            viewState.getInstance().canvasScrollX = canvasWrapper.scrollLeft;
+            viewState.getInstance().canvasScrollY = canvasWrapper.scrollTop;
+        }, { passive: true });
         viewState.getInstance().canvasBoundingRect = {
             clientX: canvasBox.left,
             clientY: canvasBox.top,
@@ -245,13 +250,17 @@ let simStatCalc = () => {
         if (i % 2 == 0){
             let k = i/2;
             let j = Math.pow(y,2) + Math.pow(z, 2);
-            qVector[k] = (y < 0 ? "-":"+") + y.toFixed(5) + (z < 0 ? "-":"+") + z.toFixed(5) + "i";
+            qVector[k] = (y < 0 ? "":"+") + y.toFixed(5) + (z < 0 ? "":"+") + z.toFixed(5) + "i";
             qPhase[k] = Math.atan2(z,y).toFixed(5) + "°";
             qProb[k] = (j*100).toFixed(4);
         }
     }
     let printVect = document.getElementById("dataOutput");
     printVect.innerHTML = "";
+    /**
+     * Code for data. Create element + append variant
+     * ~550ms for load at 16 qubits
+     */
     for (let i = 0; i < qVector.length; i++){
         let output = document.createElement("tr");
         let state = document.createElement("td");
@@ -265,6 +274,22 @@ let simStatCalc = () => {
         output.append(state,vect,rad,prob)
         printVect.appendChild(output)
     }
+    /**
+     * Code for data. Array of object variant
+     * ~112ms for load at 16 qubits
+     */
+    // let dataSet = []
+    // let data = {}
+    // for (let i = 0; i < qVector.length; i++){
+    //     data = {
+    //         "state": qStates[i],
+    //         "vect": qVector[i],
+    //         "rad": qPhase[i],
+    //         "prob": qProb[i]
+    //     }
+    //     dataSet.push(data)
+    // }
+    // console.log(dataSet)
     document.getElementById("vectorTable").appendChild(printVect)
 }
 let vectFilterSwitch = false;
@@ -273,7 +298,8 @@ document.getElementById("vectFilter").addEventListener('click', function (e) {
     let table = document.getElementById("vectorTable");
     let tr = table.getElementsByTagName("tr")
     if (vectFilterSwitch == true) {
-        document.getElementById("vectFilter").style.color = "red"
+        document.getElementById("vectFilter").innerHTML = "Show all states"
+        document.getElementById("vectSearch").innerHTML = ""
         for (let i = 0; i < tr.length; i++) {
             let td = tr[i].getElementsByTagName("td")[3];
             if (td) {
@@ -286,8 +312,29 @@ document.getElementById("vectFilter").addEventListener('click', function (e) {
             }
         }
     } else {
-        document.getElementById("vectFilter").style.color = "blue"
+        document.getElementById("vectFilter").innerHTML = "Hide zero states"
+        document.getElementById("vectSearch").innerHTML = ""
         simStatCalc();
+    }
+})
+document.getElementById("vectSearch").addEventListener("input", function (e) {
+    let search = document.getElementById("vectSearch").value;
+    let table = document.getElementById("vectorTable");
+    let tr = table.getElementsByTagName("tr")
+    if (search != null && search != '' && search != undefined){
+        for (let i = 0; i < tr.length; i++){
+            let td = tr[i].getElementsByTagName("td")[0];
+            if (td) {
+                let value = td.textContent || td.innerText;
+                if (value.indexOf(search)){
+                    tr[i].style.display = 'none';
+                } else {
+                    tr[i].style.display = "";
+                }
+            }
+        }
+    } else {
+        simStatCalc()
     }
 })
 document.addEventListener('contextmenu', function (e) {
@@ -313,7 +360,7 @@ document.addEventListener('contextmenu', function (e) {
 document.addEventListener("DOMContentLoaded", function (){
     document.D3_FUNCTION.bar(stateBarCalc())
 })
-let barDataFilterSwitch = false;
+let barDataFilterSwitch = true;
 const stateBarChartFilter = document.getElementById("stateBarChartFilterZero");
 stateBarChartFilter.addEventListener('click',()=>{
     barDataFilterSwitch = !barDataFilterSwitch;

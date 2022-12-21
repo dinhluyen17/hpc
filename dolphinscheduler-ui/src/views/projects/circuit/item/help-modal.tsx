@@ -100,7 +100,7 @@ const HelpModal = defineComponent({
                         &nbsp; icon to minimise the gate lists, the bar chart or the code display
                     </li>
                     <li>Change the initial qubit state: Click on the |0&gt; at the left of the circuit to cycle through qubit states</li>
-                    <li>Bar chart legibility: Click on the <b>Hide zero states</b> button to display only states with more than 0% probability. Click on the same button to revert the display</li>
+                    <li>Bar chart legibility: Click on the <b>Show all states</b> button to display all possible states. Click on the same button to revert the display</li>
                     <li>View circuit simulation: Click the <b>Simulation</b> tab on the top of the screen to switch to the simulation screen</li>
                     <li>View circuit results: Hover mouse over the bar graph to see the qubit state and probability <b>OR</b> switch to the simulation tab to view the state, vector, probability and phase angle of qubits</li>
                     <li>Vector table legibility: Click on the table header titled <b>Probability</b> to display only states with more than 0% probability. Click on the same button to revert the display</li>
@@ -108,8 +108,12 @@ const HelpModal = defineComponent({
                 <h3>Advanced Actions</h3>
                 <ul>
                     <li>Copy gate: <b>Shift + drag</b> gate in circuit <b>OR</b> click on a gate in circuit, click <b>Copy</b>, right-click and click <b>Paste</b> where you want to copy the gate</li>
-                    <li>Move column: <b>Ctrl/CMD + drag</b> in circuit</li>
-                    <li>Copy column: <b>Ctrl/CMD + shift + drag</b> in circuit</li>
+                    <li>Move column: <b>Ctrl/
+                        <svg xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="xMidYMid meet" width="20" height="20" viewBox="0 0 32 32" style="transform: translateY(.45rem);"> <g> <path fill="none" d="M0 0h24v24H0z"/> <path fill-rule="nonzero" d="M10 8h4V6.5a3.5 3.5 0 1 1 3.5 3.5H16v4h1.5a3.5 3.5 0 1 1-3.5 3.5V16h-4v1.5A3.5 3.5 0 1 1 6.5 14H8v-4H6.5A3.5 3.5 0 1 1 10 6.5V8zM8 8V6.5A1.5 1.5 0 1 0 6.5 8H8zm0 8H6.5A1.5 1.5 0 1 0 8 17.5V16zm8-8h1.5A1.5 1.5 0 1 0 16 6.5V8zm0 8v1.5a1.5 1.5 0 1 0 1.5-1.5H16zm-6-6v4h4v-4h-4z"/> </g> </svg>
+                        + drag</b> in circuit</li>
+                    <li>Copy column: <b>Ctrl/
+                        <svg xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="xMidYMid meet" width="20" height="20" viewBox="0 0 32 32" style="transform: translateY(.45rem);"> <g> <path fill="none" d="M0 0h24v24H0z"/> <path fill-rule="nonzero" d="M10 8h4V6.5a3.5 3.5 0 1 1 3.5 3.5H16v4h1.5a3.5 3.5 0 1 1-3.5 3.5V16h-4v1.5A3.5 3.5 0 1 1 6.5 14H8v-4H6.5A3.5 3.5 0 1 1 10 6.5V8zM8 8V6.5A1.5 1.5 0 1 0 6.5 8H8zm0 8H6.5A1.5 1.5 0 1 0 8 17.5V16zm8-8h1.5A1.5 1.5 0 1 0 16 6.5V8zm0 8v1.5a1.5 1.5 0 1 0 1.5-1.5H16zm-6-6v4h4v-4h-4z"/> </g> </svg>
+                        + shift + drag</b> in circuit</li>
                 </ul>
                 <h3>File Management</h3>
                 <ul>

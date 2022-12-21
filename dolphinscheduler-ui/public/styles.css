@@ -465,13 +465,23 @@ body {
     flex: 1;
     margin-top: 10px;
     border: 1px solid #EDECF3;
-    overflow-x: scroll;
-    overflow-y: scroll;
     width: 100%;
 }
 
 #drawCanvasSim {
-    max-width: 2000px;
+    /*max-width: 100%;*/
+}
+
+#canvasSimWrapper,
+#simulateOutput {
+    width: 50%;
+    overflow: auto;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: flex-start;
+    border: 1px solid #DDDDDD;
+    max-height: 100vh;
 }
 
 #paste-menu-popup {
@@ -500,51 +510,144 @@ body {
     cursor: pointer;
 }
 
-#simulateOutput {
-    float: right;
-    right: 5%;
-    position: relative;
-    height: 800px;
-    overflow: auto;
-    /*min-width: 500px;*/
-    /*max-width: 500px;*/
-}
-
 #simulateOutput ul {
     list-style-type: none;
     margin-top: 20%;
 }
 
-.simTitle {
-    margin-top: 2%;
+.simWrapper {
+    display: flex;
+    flex-direction: column;
+}
+
+.simWrapper .simulate-title,
+.simWrapper .simulate-content {
     display: flex;
 }
 
-.simTitle .simTitleLeft {
-    margin-left: 40%;
-    margin-right: auto;
+.simWrapper .simulate-title .title {
+    width: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 16px 12px;
+    font-size: 16px;
+    font-weight: 500;
+    border: 1px solid #DDDDDD;
 }
 
-.simTitle .simTitleRight {
-    margin-right: 40%;
-    margin-left: auto;
+#simulateOutput .table-action {
+    width: 100%;
+    padding: 12px 16px;
+    display: flex;
+    justify-content: right;
 }
 
-.simWrapper {
-    display: block;
-    overflow: auto;
-}
-
-#simulateOutput table, #dataOutput tr, #dataOutput th, #dataOutput td {
-    /*border: solid black 1px;*/
+#simulateOutput .table-action button {
+    margin: 0;
+    font-weight: 400;
+    line-height: 1;
+    font-family: inherit;
+    padding: 0 10px;
+    height: 28px;
+    font-size: 14px;
+    border-radius: 3px;
+    color: #FFFFFF;
+    background-color: #1890FF;
+    width: initial;
+    white-space: nowrap;
+    outline: none;
+    position: relative;
+    z-index: auto;
+    border: none;
+    display: inline-flex;
+    flex-wrap: nowrap;
+    flex-shrink: 0;
+    align-items: center;
+    justify-content: center;
+    user-select: none;
     text-align: center;
-    padding: 10px 45px 0px 45px;
-    /*margin-top: 45px*/
-    margin-top: .75rem;
+    cursor: pointer;
+    text-decoration: none;
+    transition: color .3s cubic-bezier(0.4, 0, 0.2, 1), background-color .3s cubic-bezier(0.4, 0, 0.2, 1), opacity .3s cubic-bezier(0.4, 0, 0.2, 1), border-color .3s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
-#simulateOutput #dataOutput tr {
-    box-shadow: 0px 0px 0px 1px rgba(196, 195, 195, 0.6);
-    -webkit-box-shadow: 0px 0px 0px 1px rgba(196, 195, 195, 0.6);
-    -moz-box-shadow: 0px 0px 0px 1px rgba(196, 195, 195, 0.6);
+#simulateOutput .table-action button:hover {
+    color: #FFFFFF;
+    background-color: #40a9ff;
+}
+
+#simulateOutput .table-action input {
+    margin: 0;
+    font-weight: 400;
+    font-family: inherit;
+    padding: 10px 5px;
+    height: 28px;
+    line-height: 28px;
+    font-size: 14px;
+    white-space: nowrap;
+    outline: none;
+    position: relative;
+    z-index: auto;
+    transition: color .3s cubic-bezier(0.4, 0, 0.2, 1), background-color .3s cubic-bezier(0.4, 0, 0.2, 1), opacity .3s cubic-bezier(0.4, 0, 0.2, 1), border-color .3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+#simulateOutput .table-content {
+    width: 100%;
+    max-height: 100vh;
+    overflow: scroll;
+}
+
+#simulateOutput table {
+    font-variant-numeric: tabular-nums;
+    width: 100%;
+    word-break: break-word;
+    border-collapse: separate;
+    border-spacing: 0;
+    background-color: #FFFFFF;
+    display: table;
+    border-collapse: separate;
+    box-sizing: border-box;
+    text-indent: initial;
+    border-color: grey;
+}
+
+#simulateOutput table thead {
+    background-color: #FAFAFC;
+}
+
+#simulateOutput table thead tr,
+#simulateOutput table tbody tr {
+    box-sizing: border-box;
+    background-clip: padding-box;
+}
+
+#simulateOutput table thead tr th,
+#simulateOutput table tbody tr td {
+    padding: 12px;
+    position: relative;
+    text-align: start;
+    box-sizing: border-box;
+    background-color: #FAFAFC;
+    border-color: rgba(239, 239, 245, 1);
+    border-bottom: 1px solid rgba(239, 239, 245, 1);
+    color: rgb(31, 34, 37);
+    font-weight: 500;
+    font-size: 14px;
+}
+
+#simulateOutput table tbody tr td {
+    background-color: #FFFFFF;
+    font-weight: 300;
+}
+
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+
+input[type=number] {
+  -moz-appearance: textfield;
 }
