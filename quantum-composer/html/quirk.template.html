@@ -178,29 +178,33 @@
     </div>
     <div class="simulate-area hidden" id="simulate">
       <div class="simWrapper">
-        <div id="canvasSimWrapper">
-          <h3 class="simTitle">Simulation Amplitudes</h3>
-          <canvas id="drawCanvasSim">
-          </canvas>
+        <div class="simulate-title">
+          <div class="title">Simulation Amplitudes</div>
+          <div class="title">Simulation Output</div>
         </div>
-        <div id="simulateOutput">
-          <h3 class="simTitle">Simulation Output</h3>
-          <div style="display: flex">
-            <button id="vectFilter">Hide zero states</button>
-            <input id="vectSearch">
+        <div class="simulate-content">
+          <div id="canvasSimWrapper">
+            <canvas id="drawCanvasSim">
+            </canvas>
           </div>
-          <table id="vectorTable">
-            <thead>
-              <tr>
-                <th>State</th>
-                <th>Vector</th>
-                <th>Phase Angle</th>
-                <th>Probability</th>
-              </tr>
-            </thead>
-            <tbody id="dataOutput">
-            </tbody>
-          </table>
+          <div id="simulateOutput">
+            <div style="display: flex">
+              <button id="vectFilter">Hide zero states</button>
+              <input id="vectSearch">
+            </div>
+            <table id="vectorTable">
+              <thead>
+                <tr>
+                  <th>State</th>
+                  <th>Vector</th>
+                  <th>Phase Angle</th>
+                  <th>Probability</th>
+                </tr>
+              </thead>
+              <tbody id="dataOutput">
+              </tbody>
+            </table>
+          </div>
         </div>
       </div>
     </div>
