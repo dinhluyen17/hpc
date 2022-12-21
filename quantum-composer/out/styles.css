@@ -536,6 +536,68 @@ body {
     border: 1px solid #DDDDDD;
 }
 
+#simulateOutput .table-action {
+    width: 100%;
+    padding: 12px 16px;
+    display: flex;
+    justify-content: right;
+}
+
+#simulateOutput .table-action button {
+    margin: 0;
+    font-weight: 400;
+    line-height: 1;
+    font-family: inherit;
+    padding: 0 10px;
+    height: 28px;
+    font-size: 14px;
+    border-radius: 3px;
+    color: #FFFFFF;
+    background-color: #1890FF;
+    width: initial;
+    white-space: nowrap;
+    outline: none;
+    position: relative;
+    z-index: auto;
+    border: none;
+    display: inline-flex;
+    flex-wrap: nowrap;
+    flex-shrink: 0;
+    align-items: center;
+    justify-content: center;
+    user-select: none;
+    text-align: center;
+    cursor: pointer;
+    text-decoration: none;
+    transition: color .3s cubic-bezier(0.4, 0, 0.2, 1), background-color .3s cubic-bezier(0.4, 0, 0.2, 1), opacity .3s cubic-bezier(0.4, 0, 0.2, 1), border-color .3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+#simulateOutput .table-action button:hover {
+    color: #FFFFFF;
+    background-color: #40a9ff;
+}
+
+#simulateOutput .table-action input {
+    margin: 0;
+    font-weight: 400;
+    font-family: inherit;
+    padding: 10px 5px;
+    height: 28px;
+    line-height: 28px;
+    font-size: 14px;
+    white-space: nowrap;
+    outline: none;
+    position: relative;
+    z-index: auto;
+    transition: color .3s cubic-bezier(0.4, 0, 0.2, 1), background-color .3s cubic-bezier(0.4, 0, 0.2, 1), opacity .3s cubic-bezier(0.4, 0, 0.2, 1), border-color .3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+#simulateOutput .table-content {
+    width: 100%;
+    max-height: 100vh;
+    overflow: scroll;
+}
+
 #simulateOutput table {
     font-variant-numeric: tabular-nums;
     width: 100%;
@@ -576,4 +638,16 @@ body {
 
 #simulateOutput table tbody tr td {
     background-color: #FFFFFF;
+    font-weight: 300;
+}
+
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+
+input[type=number] {
+  -moz-appearance: textfield;
 }
