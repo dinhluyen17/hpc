@@ -85,7 +85,7 @@ const initGateViews = () => {
           newIconLink = iconLink
         }
         gateView.innerHTML = `
-                    <img onmousedown="grabGate('${gate.serializedId}')" onmouseover="popUpGateName()" src=${newIconLink} style="width:36px; height:36px; margin: 5px 6px;"/>
+                    <img onmousedown="grabGate('${gate.serializedId}')" src=${newIconLink} style="width:36px; height:36px; margin: 5px 6px;"/>
                     <span class="tooltip-content">${gate.name}</span>
                 `;
         commonGates.appendChild(gateView)
@@ -111,7 +111,6 @@ const initGateViews = () => {
     let gateGroupList = document.createElement('div'); gateGroupList.setAttribute("id", `${"group-num-" + groupNum}`); groupNum++;
     gateGroup.appendChild(gateGroupList)
     group.gates.forEach(gate => {
-      console.log(gate)
       if (gate != undefined && !unsupportedGates.includes(gate.name)) {
         const gateView = document.createElement('div');
         gateView.setAttribute("class", "grid-view")

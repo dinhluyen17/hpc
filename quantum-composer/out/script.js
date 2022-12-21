@@ -142,18 +142,18 @@ const circuitEdit = {
                     gateGrid.forEach(item => {
                         item.style.display = 'none'
                     })
-                    if(!no_data_top.hasAttribute('class') || !no_data_top.classList.contains('no-data')){
+                    if(no_data_top != null && (!no_data_top.hasAttribute('class') || !no_data_top.classList.contains('no-data'))){
                         no_data_top.setAttribute('class', 'no-data')
                     }
-                    if(!no_data_bottom.hasAttribute('class') || !no_data_bottom.classList.contains('no-data')){
+                    if(no_data_bottom != null && (!no_data_bottom.hasAttribute('class') || !no_data_bottom.classList.contains('no-data'))){
                         no_data_bottom.setAttribute('class', 'no-data')
                     }
                 } else {
                     state.setAttribute("data-gate", "show")
-                    if(no_data_top.hasAttribute('class')){
+                    if(no_data_top != null && no_data_top.hasAttribute('class')){
                         no_data_top.classList.remove('no-data')
                     }
-                    if(no_data_bottom.hasAttribute('class')){
+                    if(no_data_bottom != null && no_data_bottom.hasAttribute('class')){
                         no_data_bottom.classList.remove('no-data')
                     }
                 }
@@ -323,6 +323,23 @@ const circuitEdit = {
                 }
             }, false);
         }
+
+        //css tooltip popup gate name
+        $(".tooltip-wrap").hover(function () {
+            var bodyWidth = $(".gate-area").width();
+            var halfbodyWidth = bodyWidth / 2 - 50;
+            var position = $(this).position().left;
+            if (position >= halfbodyWidth) {
+                $(".tooltip-content").removeClass("tooltipLeft tooltipRight");
+                $(this).find('.tooltip-content').addClass("tooltipLeft");
+            }
+            else {
+                $(".tooltip-content").removeClass("tooltipLeft tooltipRight");
+                $(this).find('.tooltip-content').addClass("tooltipRight");
+            }
+            console.log("stop here");
+        });
+
     },
 
     start: function () {
@@ -333,8 +350,3 @@ const circuitEdit = {
 $(document).ready(function () {
     circuitEdit.start();
 });
-
-//handle pop up gate name
-function popUpGateName() {
-
-}

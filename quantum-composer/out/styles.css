@@ -423,18 +423,18 @@ body {
 .tooltip-wrap .tooltip-content {
     display: none;
     position: absolute;
-    bottom: 5%;
-    left: 100%;
+    /* bottom: 5%;
+    left: 100%; */
     background-color: #8e928d;
     padding: .5em;
     z-index: 3;
     line-height: 0.55;
-    border-radius: 10px
+    border-radius: 10px;
+    font-size: small;
 }
 
 .tooltip-wrap:hover .tooltip-content {
     display: block;
-    font-size: small;
 }
 
 .circuit-area-chart .barTooltip {
@@ -564,3 +564,13 @@ body {
     -webkit-box-shadow: 0px 0px 0px 1px rgba(196, 195, 195, 0.6);
     -moz-box-shadow: 0px 0px 0px 1px rgba(196, 195, 195, 0.6);
 }
+
+.tooltipLeft{
+    bottom: 5%;
+    right: 100% !important;
+  }
+  
+  .tooltipRight{
+    bottom: 5%;
+    left: 100% !important;
+  }
