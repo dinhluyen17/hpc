@@ -55,7 +55,7 @@ class DisplayedInspector {
         return Math.max(
             this.displayedToolboxTop.desiredWidth(),
             Math.max(
-                this.displayedCircuit.desiredWidth(),
+                this.displayedCircuit.desiredWidth() + 50,
                 this.displayedToolboxBottom.desiredWidth()));
     }
 
