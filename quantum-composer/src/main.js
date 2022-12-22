@@ -335,7 +335,16 @@ document.getElementById("vectSearch").addEventListener("input", function (e) {
                 }
             }
         }
+        if ($("#dataOutput").children(":visible").length == 0 && $('#no-data3').length == 0){
+            let noData = document.createElement("div");
+            noData.setAttribute('id', 'no-data3')
+            noData.innerHTML = "No data"
+            document.getElementById("simulateOutput").appendChild(noData)
+        } else if ($("#dataOutput").children(":visible").length != 0) {
+            $('#no-data3').remove()
+        }
     } else {
+        $('#no-data3').remove()
         simStatCalc()
     }
 })
