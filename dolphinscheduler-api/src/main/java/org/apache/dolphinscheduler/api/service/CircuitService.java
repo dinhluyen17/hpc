@@ -30,13 +30,13 @@ import java.util.Map;
  */
 public interface CircuitService {
 
-    Map<String, Object> create(Integer userId, CircuitCreateRequest circuitCreateRequest);
+    Result create(Integer userId, CircuitCreateRequest circuitCreateRequest);
 
     Map<String, Object> get(Integer id);
 
     Result search(Integer userId, String keyword, String criteria, String direction, Integer pageNo, Integer pageSize);
 
-    Map<String, Object> update(Integer id, CircuitUpdateRequest circuitUpdateRequest) throws IOException;
+    Result update(Integer id, CircuitUpdateRequest circuitUpdateRequest) throws IOException;
 
     Map<String, Object> delete(List<Integer> ids) throws IOException;
 

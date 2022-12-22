@@ -24,7 +24,10 @@ import org.apache.dolphinscheduler.api.enums.Status;
 import org.apache.dolphinscheduler.api.utils.PageInfo;
 import org.apache.dolphinscheduler.api.utils.Result;
 import org.apache.dolphinscheduler.common.constants.Constants;
+import org.apache.dolphinscheduler.common.enums.AuthorizationType;
+import org.apache.dolphinscheduler.common.utils.CodeGenerateUtils;
 import org.apache.dolphinscheduler.dao.entity.Circuit;
+import org.apache.dolphinscheduler.dao.entity.Project;
 import org.apache.dolphinscheduler.dao.mapper.CircuitMapper;
 import org.apache.dolphinscheduler.api.dto.circuit.CircuitCreateRequest;
 import org.apache.dolphinscheduler.api.dto.circuit.CircuitUpdateRequest;
@@ -39,6 +42,8 @@ import java.io.IOException;
 import java.text.MessageFormat;
 import java.util.*;
 
+import static org.apache.dolphinscheduler.api.constants.ApiFuncIdentificationConstant.PROJECT_CREATE;
+
 /**
  * circuit service impl
  */
@@ -52,28 +57,51 @@ public class CircuitServiceImpl extends BaseServiceImpl implements CircuitServic
 
     @Override
     @Transactional(rollbackFor = Exception.class)
-    public Map<String, Object> create(Integer userId, CircuitCreateRequest circuitCreateRequest) {
-        Map<String, Object> result = new HashMap<>();
+    public Result create(Integer userId, CircuitCreateRequest circuitCreateRequest) {
+        Result result = new Result();
 
-        Circuit circuit = new Circuit();
-        circuit.setUserId(userId);
-        circuit.setName(circuitCreateRequest.getName());
-        circuit.setDescription(circuitCreateRequest.getDescription());
-        circuit.setJson(circuitCreateRequest.getJson());
-        circuit.setQasm(circuitCreateRequest.getQasm());
-        circuit.setQiskit(circuitCreateRequest.getQiskit());
-        Date date = new Date();
-        circuit.setCreateTime(date);
-        circuit.setUpdateTime(date);
-        circuit.setUpdateTime(date);
-        circuit.setProjectCode(circuitCreateRequest.getProjectCode());
+        checkDesc(result, circuitCreateRequest.getDescription());
+        if (result.getCode() != Status.SUCCESS.getCode()) {
+            return result;
+        }
 
-        // save user
-        circuitMapper.insert(circuit);
+        String name = circuitCreateRequest.getName();
+        Circuit circuit = circuitMapper.queryByName(name);
+        if (circuit != null) {
+            logger.warn("Circuit {} already exists.", circuit.getName());
+            putMsg(result, Status.CIRCUIT_ALREADY_EXISTS, name);
+            return result;
+        }
 
-        logger.info("Circuit is created and id is {}.", circuit.getId());
-        result.put(Constants.DATA_LIST, circuit);
-        putMsg(result, Status.SUCCESS);
+        Date now = new Date();
+
+        try {
+            circuit = Circuit
+                    .builder()
+                    .userId(userId)
+                    .name(name)
+                    .json(circuitCreateRequest.getJson())
+                    .qasm(circuitCreateRequest.getQasm())
+                    .qiskit(circuitCreateRequest.getQiskit())
+                    .description(circuitCreateRequest.getDescription())
+                    .createTime(now)
+                    .updateTime(now)
+                    .projectCode(circuitCreateRequest.getProjectCode())
+                    .build();
+        } catch (CodeGenerateUtils.CodeGenerateException e) {
+            logger.error("Generate process definition code error.", e);
+            putMsg(result, Status.CREATE_CIRCUIT_ERROR);
+            return result;
+        }
+
+        if (circuitMapper.insert(circuit) > 0) {
+            logger.info("Circuit is created and id is :{}", circuit.getId());
+            result.setData(circuit);
+            putMsg(result, Status.SUCCESS);
+        } else {
+            logger.error("Circuit create error, circuitName:{}.", circuit.getName());
+            putMsg(result, Status.CREATE_CIRCUIT_ERROR);
+        }
         return result;
     }
 
@@ -105,20 +133,31 @@ public class CircuitServiceImpl extends BaseServiceImpl implements CircuitServic
     }
 
     @Override
-    public Map<String, Object> update(Integer id, CircuitUpdateRequest circuitUpdateRequest) throws IOException {
-        Map<String, Object> result = new HashMap<>();
-        result.put(Constants.STATUS, false);
+    public Result update(Integer id, CircuitUpdateRequest circuitUpdateRequest) throws IOException {
+        Result result = new Result();
+
+        checkDesc(result, circuitUpdateRequest.getDescription());
+        if (result.getCode() != Status.SUCCESS.getCode()) {
+            return result;
+        }
 
         Circuit circuit = circuitMapper.selectById(id);
         if (circuit == null) {
             logger.error("circuit does not exist, id:{}.", id);
-            putMsg(result, Status.USER_NOT_EXIST, id);
+            putMsg(result, Status.CIRCUIT_NOT_EXIST, id);
             return result;
         }
-        if (StringUtils.isNotEmpty(circuitUpdateRequest.getName())) {
-            circuit.setName(circuitUpdateRequest.getName());
-        }
 
+        String name = circuitUpdateRequest.getName();
+        if (StringUtils.isNotEmpty(name)) {
+            circuit.setName(circuitUpdateRequest.getName());
+
+            Circuit tempCircuit = circuitMapper.queryByName(name);
+            if (tempCircuit != null && Objects.equals(tempCircuit.getProjectCode(), circuitUpdateRequest.getProjectCode())) {
+                putMsg(result, Status.CIRCUIT_ALREADY_EXISTS, name);
+                return result;
+            }
+        }
         if (circuitUpdateRequest.getDescription() != null) {
             circuit.setDescription(circuitUpdateRequest.getDescription());
         }
@@ -133,19 +172,16 @@ public class CircuitServiceImpl extends BaseServiceImpl implements CircuitServic
         }
         Date now = new Date();
         circuit.setUpdateTime(now);
-        // updateProcessInstance user
-        if (circuitUpdateRequest.getProjectCode() != null) {
-            circuit.setProjectCode(circuitUpdateRequest.getProjectCode());
-        }
+
         int update = circuitMapper.updateById(circuit);
         if (update > 0) {
-            logger.info("Circuit is updated and id is :{}.", id);
+            logger.info("Circuit is updated and id is :{}", circuit.getId());
+            result.setData(circuit);
             putMsg(result, Status.SUCCESS);
         } else {
-            logger.error("Circuit update error, id:{}.", id);
-            putMsg(result, Status.UPDATE_USER_ERROR);
+            logger.error("Circuit update error, id:{}, name:{}.", circuit.getId(), circuit.getName());
+            putMsg(result, Status.UPDATE_PROJECT_ERROR);
         }
-
         return result;
     }
 
@@ -164,7 +200,7 @@ public class CircuitServiceImpl extends BaseServiceImpl implements CircuitServic
                 totalFailed++;
                 Map<String, String> failedBody = new HashMap<>();
                 failedBody.put("id", String.valueOf(id));
-                Status status = Status.DELETE_RESOURCE_ERROR;
+                Status status = Status.DELETE_CIRCUIT_ERROR;
                 String errorMessage = MessageFormat.format(status.getMsg(), id);
                 failedBody.put("msg", errorMessage);
                 failedInfo.add(failedBody);
@@ -193,5 +229,21 @@ public class CircuitServiceImpl extends BaseServiceImpl implements CircuitServic
         result.put(Constants.DATA_LIST, insertResult);
         putMsg(result, Status.SUCCESS);
         return result;
+    }
+
+    /**
+     * check circuit description
+     *
+     * @param result
+     * @param desc   desc
+     */
+    public static void checkDesc(Result result, String desc) {
+        if (!StringUtils.isEmpty(desc) && desc.codePointCount(0, desc.length()) > 255) {
+            logger.warn("Parameter description check failed.");
+            result.setCode(Status.REQUEST_PARAMS_NOT_VALID_ERROR.getCode());
+            result.setMsg(MessageFormat.format(Status.REQUEST_PARAMS_NOT_VALID_ERROR.getMsg(), "desc length"));
+        } else {
+            result.setCode(Status.SUCCESS.getCode());
+        }
     }
 }
