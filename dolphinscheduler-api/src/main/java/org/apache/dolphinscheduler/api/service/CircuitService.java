@@ -32,7 +32,7 @@ public interface CircuitService {
 
     Result create(Integer userId, CircuitCreateRequest circuitCreateRequest);
 
-    Map<String, Object> get(Integer id);
+    Result get(Integer id);
 
     Result search(Integer userId, String keyword, String criteria, String direction, Integer pageNo, Integer pageSize);
 

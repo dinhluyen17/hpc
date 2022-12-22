@@ -75,8 +75,7 @@ public class CircuitController extends BaseController {
     @ResponseStatus(HttpStatus.OK)
     @ApiException(GET_CIRCUIT_INFO_ERROR)
     public Result getCircuit(@RequestParam(value = "id") Integer id) {
-        Map<String, Object> result = circuitService.get(id);
-        return returnDataList(result);
+        return circuitService.get(id);
     }
 
     @Operation(summary = "create", description = "CREATE_CIRCUIT_NOTES")
@@ -171,8 +170,8 @@ public class CircuitController extends BaseController {
     @ResponseBody
     @ApiException(EXPORT_CIRCUIT_ERROR)
     public ResponseEntity exportCircuit(@RequestParam(value = "id") Integer id) {
-        Map<String, Object> result = circuitService.get(id);
-        Circuit circuit = (Circuit) result.get("data");
+        Result result = circuitService.get(id);
+        Circuit circuit = (Circuit) result.getData();
         String name = circuit.getName();
         String json = circuit.getJson();
         byte[] logBytes = json.getBytes();
@@ -197,8 +196,8 @@ public class CircuitController extends BaseController {
         ZipOutputStream zipOutputStream = new ZipOutputStream(bufferedOutputStream);
 
         for (Integer circuitId : id) {
-            Map<String, Object> result = circuitService.get(circuitId);
-            Circuit circuit = (Circuit) result.get("data");
+            Result result = circuitService.get(circuitId);
+            Circuit circuit = (Circuit) result.getData();
             String name = circuit.getName();
             String json = circuit.getJson();
             byte[] logBytes = json.getBytes();

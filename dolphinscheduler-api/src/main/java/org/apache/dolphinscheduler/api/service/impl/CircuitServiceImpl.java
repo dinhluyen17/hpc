@@ -106,10 +106,10 @@ public class CircuitServiceImpl extends BaseServiceImpl implements CircuitServic
     }
 
     @Override
-    public Map<String, Object> get(Integer id) {
-        Map<String, Object> result = new HashMap<>();
+    public Result get(Integer id) {
+        Result result = new Result();
         Circuit circuit = circuitMapper.selectById(id);
-        result.put(Constants.DATA_LIST, circuit);
+        result.setData(circuit);
         putMsg(result, Status.SUCCESS);
         return result;
     }
@@ -153,7 +153,10 @@ public class CircuitServiceImpl extends BaseServiceImpl implements CircuitServic
             circuit.setName(circuitUpdateRequest.getName());
 
             Circuit tempCircuit = circuitMapper.queryByName(name);
-            if (tempCircuit != null && Objects.equals(tempCircuit.getProjectCode(), circuitUpdateRequest.getProjectCode())) {
+            if (tempCircuit != null
+                    && !Objects.equals(tempCircuit.getId(), id)
+                    && Objects.equals(tempCircuit.getProjectCode(), circuitUpdateRequest.getProjectCode())
+            ) {
                 putMsg(result, Status.CIRCUIT_ALREADY_EXISTS, name);
                 return result;
             }
