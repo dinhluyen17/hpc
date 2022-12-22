@@ -135,21 +135,15 @@ const changeTab = (tab) => {
         // let canvas = document.getElementById("drawCanvasSim");
         let canvas = document.getElementById("canvasSimWrapper")
         let canvasBox = canvas.getBoundingClientRect();
-        const canvasWrapper = document.getElementById("canvasSimWrapper");
-        canvasWrapper.addEventListener("scroll", event => {
-            viewState.getInstance().canvasScrollX = canvasWrapper.scrollLeft;
-            viewState.getInstance().canvasScrollY = canvasWrapper.scrollTop;
-        }, { passive: true });
         viewState.getInstance().canvasBoundingRect = {
             clientX: canvasBox.left,
             clientY: canvasBox.top,
             width: canvasBox.width,
             height: canvasBox.height
         }
-        simStatCalc();
+        document.simStat.table(simStatCalc())
     }
 }
-
 window.addEventListener('message', (e) => {
     // handle message from vuejs
     if (e.data) {
@@ -263,36 +257,37 @@ let simStatCalc = () => {
      * Code for data. Create element + append variant
      * ~550ms for load at 16 qubits
      */
-    for (let i = 0; i < qVector.length; i++){
-        let output = document.createElement("tr");
-        let state = document.createElement("td");
-        state.innerText = qStates[i];
-        let vect = document.createElement("td");
-        vect.innerText = qVector[i];
-        let rad = document.createElement("td");
-        rad.innerText = qPhase[i];
-        let prob = document.createElement("td");
-        prob.innerText = qProb[i] + "%";
-        output.append(state,vect,rad,prob)
-        printVect.appendChild(output)
-    }
+    // for (let i = 0; i < qVector.length; i++){
+    //     let output = document.createElement("tr");
+    //     let state = document.createElement("td");
+    //     state.innerText = qStates[i];
+    //     let vect = document.createElement("td");
+    //     vect.innerText = qVector[i];
+    //     let rad = document.createElement("td");
+    //     rad.innerText = qPhase[i];
+    //     let prob = document.createElement("td");
+    //     prob.innerText = qProb[i] + "%";
+    //     output.append(state,vect,rad,prob)
+    //     printVect.appendChild(output)
+    // }
     /**
      * Code for data. Array of object variant
      * ~112ms for load at 16 qubits
      */
-    // let dataSet = []
-    // let data = {}
-    // for (let i = 0; i < qVector.length; i++){
-    //     data = {
-    //         "state": qStates[i],
-    //         "vect": qVector[i],
-    //         "rad": qPhase[i],
-    //         "prob": qProb[i]
-    //     }
-    //     dataSet.push(data)
-    // }
+    let dataSet = []
+    let data = {}
+    for (let i = 0; i < qVector.length; i++){
+        data = {
+            "state": qStates[i],
+            "vect": qVector[i],
+            "rad": qPhase[i],
+            "prob": qProb[i]
+        }
+        dataSet.push(data)
+    }
+    return dataSet
     // console.log(dataSet)
-    document.getElementById("vectorTable").appendChild(printVect)
+    // document.getElementById("vectorTable").appendChild(printVect)
 }
 let vectFilterSwitch = false;
 document.getElementById("vectFilter").addEventListener('click', function (e) {
@@ -316,7 +311,7 @@ document.getElementById("vectFilter").addEventListener('click', function (e) {
     } else {
         document.getElementById("vectFilter").innerHTML = "Hide zero states"
         document.getElementById("vectSearch").innerHTML = ""
-        simStatCalc();
+        document.simStat.table(simStatCalc())
     }
 })
 document.getElementById("vectSearch").addEventListener("input", function (e) {
@@ -348,6 +343,8 @@ document.getElementById("vectSearch").addEventListener("input", function (e) {
         simStatCalc()
     }
 })
+
+
 document.addEventListener('contextmenu', function (e) {
     if (viewState.getInstance().currentTab == 'circuit') {
         const hoverPos = viewState.getInstance().currentHoverPos;

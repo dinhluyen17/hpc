@@ -41,7 +41,7 @@ let isMiddleClicking = ev => ev.which === 2;
 function eventPosRelativeTo(ev, element) {
     let simDState = document.querySelector("#simulateTab");
     if (simDState.dataset.state == "active"){
-            return new Point(ev.clientX - viewState.getInstance().canvasBoundingRect.clientX + viewState.getInstance().canvasScrollX, ev.clientY - viewState.getInstance().canvasBoundingRect.clientY + viewState.getInstance().canvasScrollY);
+            return new Point(ev.clientX - viewState.getInstance().canvasBoundingRect.clientX + viewState.getInstance().simScrollX, ev.clientY - viewState.getInstance().canvasBoundingRect.clientY + viewState.getInstance().simScrollY);
     }
     return new Point(ev.clientX - viewState.getInstance().canvasBoundingRect.clientX + viewState.getInstance().canvasScrollX, ev.clientY - viewState.getInstance().canvasBoundingRect.clientY + viewState.getInstance().canvasScrollY);
 }

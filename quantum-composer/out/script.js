@@ -98,6 +98,14 @@ document.D3_FUNCTION = {
         // }
     }
 }
+document.simStat = {
+    table: (data) => {
+        let table = document.getElementById('dataOutput');
+        for (let i = 0; i < data.length; i++){
+            table.innerHTML += `<tr><td>${data[i].state}</td><td>${data[i].vect}</td><td>${data[i].rad}</td><td>${data[i].prob}</td></tr>`
+        }
+    }
+}
 
 function grabGate(gate) {
     document.GRAB_GATE = gate;

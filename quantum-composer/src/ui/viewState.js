@@ -25,6 +25,9 @@ class ViewState {
     this.canvasScrollX = 0;
     this.canvasScrollY = 0;
 
+    this.simScrollX = 0;
+    this.simScrollY = 0;
+
     this.highlightGate = null;
     this.gateMenuPos = null;
     this.canShowGateMenu = true;
@@ -48,6 +51,12 @@ class ViewState {
     canvasWrapper.addEventListener("scroll", event => {
       this.canvasScrollX = canvasWrapper.scrollLeft;
       this.canvasScrollY = canvasWrapper.scrollTop;
+    }, { passive: true });
+
+    const simWrapper = document.getElementById("canvasSimWrapper");
+    simWrapper.addEventListener("scroll", event => {
+      viewState.getInstance().simScrollX = simWrapper.scrollLeft;
+      viewState.getInstance().simScrollY = simWrapper.scrollTop;
     }, { passive: true });
   }
 }
