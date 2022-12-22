@@ -189,7 +189,6 @@ let stateBarCalc = () =>{
         qStates[i] = Util.bin(i,qNumWire);
     }
     let qProb = [];
-    let qVector = [];
     for (let i = 0; i < mostRecentStats.get().finalState._buffer.length; i++) {
         let x = mostRecentStats.get().finalState._buffer;
         let y = x[i];
@@ -197,7 +196,6 @@ let stateBarCalc = () =>{
         if (i % 2 == 0){
             let k = i/2;
             let j = Math.pow(y,2) + Math.pow(z, 2);
-            qVector[k] = (y < 0 ? "":"+") + y.toFixed(5) + "+" + z.toFixed(5) + "i";
             qProb[k] = (j*100).toFixed(4);
         }
     }
@@ -229,6 +227,10 @@ let stateBarCalc = () =>{
     //         {id: 1, Probability: "0.0000", State: "1"}
     //     ]
     // }
+    /**
+     *
+     *3043ms
+     */
     const data2 = stateObj.reduce((a, c) => (a[c.id] = c, a), {})
     data = probObj.map(o => Object.assign(o, data2[o.id]))
     return data;
@@ -380,9 +382,10 @@ revision.latestActiveCommit().subscribe(jsonText => {
     if (barDataFilterSwitch == false) {
         document.D3_FUNCTION.bar(stateBarCalc());
     } else {
-        let barDataFilter = stateBarCalc().filter(val => !val.Probability.includes('0.0000'));
+        let barDataFilter = stateBarCalc().filter(val => !val.Probability.match(/^0.0000$/));
         document.D3_FUNCTION.bar(barDataFilter);
     }
+
 });
 /**
  * @param {!DisplayedInspector} curInspector
