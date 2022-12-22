@@ -21,6 +21,7 @@ import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import org.apache.dolphinscheduler.dao.entity.Circuit;
+import org.apache.dolphinscheduler.dao.entity.Project;
 import org.apache.ibatis.annotations.Param;
 import org.springframework.cache.annotation.CacheConfig;
 import org.springframework.cache.annotation.CacheEvict;
@@ -36,6 +37,8 @@ public interface CircuitMapper extends BaseMapper<Circuit> {
 
     @Cacheable(sync = true)
     Circuit selectById(Integer id);
+
+    Circuit queryByName(@Param("name") String name);
 
     @CacheEvict
     int deleteById(Integer id);

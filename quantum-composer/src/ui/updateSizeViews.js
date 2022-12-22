@@ -24,6 +24,7 @@ import {
 const updateSizeViews = (parentDiv) => {
   // GateArea
   const gateArea = document.getElementsByClassName('gate-area')[0];
+  gateArea.style.width = getGateAreaWidth() + 'px';
   gateArea.style.maxWidth = getGateAreaWidth() + 'px';
 
   // Circuit body
@@ -38,6 +39,7 @@ const updateSizeViews = (parentDiv) => {
 
   const circuitChart = document.getElementById('stateBarChart');
   circuitChart.style.width = circuitBody.style.width;
+  circuitChart.style.height = getChartAreaHeight() + 'px';
   circuitChart.style.maxHeight = getChartAreaHeight() + 'px';
   
   const commonGates = document.getElementById('common-gates');
@@ -56,10 +58,12 @@ const updateSizeViews = (parentDiv) => {
 
   // Code area
   const codeArea = document.getElementsByClassName('code-area')[0];
+  codeArea.style.width = getCodeAreaWidth() + 'px';
   codeArea.style.maxWidth = getCodeAreaWidth() + 'px';
 
   // Chart area
   const chartArea = document.getElementsByClassName('circuit-area-chart')[0];
+  chartArea.style.height = getChartAreaHeight() + 'px';
   chartArea.style.maxHeight = getChartAreaHeight() + 'px';
 
   const canvas = document.getElementById("circuit-area-body");
@@ -80,11 +84,13 @@ const initSizeViews = (parentDiv) => {
   closeGateAreaBtn.addEventListener('click', () => {
     viewState.getInstance().expandGateArea = !viewState.getInstance().expandGateArea;
     if (viewState.getInstance().expandGateArea) {
+      viewState.getInstance().gateAreaWidth = 320;
       gridGateBtn.style.display = 'flex';
       listGateBtn.style.display = 'flex';
       searchGateBox.style.display = 'flex';
     }
     else {
+      viewState.getInstance().gateAreaWidth = 130;
       gridGateBtn.style.display = 'none';
       listGateBtn.style.display = 'none';
       searchGateBox.style.display = 'none';
@@ -100,6 +106,12 @@ const initSizeViews = (parentDiv) => {
       closeCodeAreaBtn.setAttribute("data-gate", "show")
     }
     viewState.getInstance().expandCodeArea = !viewState.getInstance().expandCodeArea;
+    if (viewState.getInstance().expandCodeArea) {
+      viewState.getInstance().codeAreaWidth = 300;
+    }
+    else {
+      viewState.getInstance().codeAreaWidth = 50;
+    }
     updateSizeViews(parentDiv);
   });
 
@@ -111,6 +123,12 @@ const initSizeViews = (parentDiv) => {
       closeChartAreaBtn.setAttribute("data-gate", "show")
     }
     viewState.getInstance().expandChartArea = !viewState.getInstance().expandChartArea;
+    if (viewState.getInstance().expandChartArea) {
+      viewState.getInstance().chartAreaHeight = 200;
+    }
+    else {
+      viewState.getInstance().chartAreaHeight = 50;
+    }
     updateSizeViews(parentDiv);
   });
   updateSizeViews(parentDiv);
