@@ -131,7 +131,7 @@ const initGateViews = () => {
     ['×A^-1\nmod R', '×A<sup>-1</sup><br><small>mod R</small>'],
     ['×B^A\nmod R', '×B<sup>A</sup><br><small>mod R</small>'],
     ['×B^-A\nmod R', '×B<sup>-A</sup><br><small>mod R</small>'],
-
+    ['', '-']
   ]);
 
   //show top gate as normal list
