@@ -414,7 +414,7 @@ class DisplayedCircuit {
                 }
                 // Phu: draw label for wire
                 painter.print(`|${v}⟩`, 40, y, 'right', 'middle', '#646464', '14px sans-serif', 20, Config.WIRE_SPACING);
-                painter.print(`q${row}`, this.currentDesiredWidth, y, 'right', 'middle', '#646464', '14px sans-serif', 20, Config.WIRE_SPACING);
+                painter.print(`q${row}`, this.currentDesiredWidth - (this.currentDesiredWidth <= 700 ? 50 : 40), y, 'right', 'middle', '#646464', '14px sans-serif', 20, Config.WIRE_SPACING);
             }
         }
 
