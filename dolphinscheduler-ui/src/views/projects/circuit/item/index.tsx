@@ -31,6 +31,7 @@ const circuitItem = defineComponent({
   name: 'circuitItem',
   setup() {
     let quantumRef: any = ref(null);
+    let importFileRef: any = ref(null);
     let isIFrameReady: any = ref(false);
 
     const { t } = useI18n()
@@ -55,6 +56,39 @@ const circuitItem = defineComponent({
           actionType,
           detailData
         }));
+      }
+    }
+
+    const handleSelectFile = () => {
+      if (importFileRef.value) {
+        importFileRef.value.click();                
+      }
+    }
+
+    const handleImportFileJson = (event: Event) => {
+      const files = event?.target?.files;
+      if (files && files.length > 0) {
+        const fileReader = new FileReader();
+        fileReader.onload = () => {
+          try {
+            const jsonString = fileReader.result;
+            if (jsonString && typeof jsonString == "string") {
+              const json = JSON.parse(jsonString);
+              if (json.cols && json.cols.constructor == Array) {
+                sendMessageToIFrame(MESSAGE.setCircuitJson, jsonString);
+              }
+              else {
+                window.$message.error('Please import a valid json file!');
+              }
+            }
+            else {
+              window.$message.error('Please import a valid json file!');
+            }
+          } catch (e) {
+            window.$message.error('Please import a valid json file!');
+          }
+        }
+        fileReader.readAsText(files[0]);
       }
     }
 
@@ -172,15 +206,18 @@ const circuitItem = defineComponent({
       handleChangeTabCircuit,
       handleChangeTabSimulate,
       handleSaveCircuit,
+      handleSelectFile,
       handleExportCircuit,
       handleConfirmModal,
       handleShowHelpModal,
+      handleImportFileJson,
       quantumRef,
+      importFileRef,
       trim
     }
   },
   render() {
-    const { t, data } = this;
+    const { t, data, handleImportFileJson } = this;
     return (
       <Card style={{ width: '100%', height: '100%' }}>
         <NSpace justify='space-between' align='center'>
@@ -219,17 +256,18 @@ const circuitItem = defineComponent({
           <NSpace>
             <NButton size='large' focusable={false} style={{ width: '200px' }} onClick={(e) => this.handleChangeTabCircuit(e)} class={`tab-button ${this.isCircuitTab ? 'active' : ''}`}>
               {t('circuit.detail.circuit')}
-            </NButton>
+            </NButton>            
             <NButton size='large' focusable={false} style={{ width: '200px' }} onClick={(e) => this.handleChangeTabSimulate(e)} class={`tab-button ${this.isCircuitTab ? '' : 'active'}`}>
               {t('circuit.detail.simulate')}
             </NButton>
           </NSpace>
           {/* Button area */}
           <NSpace>
+            <input ref="importFileRef" type='file' onChange={handleImportFileJson} hidden/>
             <NButton size='small' type='primary' onClick={this.handleSaveCircuit}>
               {t('circuit.detail.save_circuit')}
-            </NButton>
-            <NButton size='small' type='warning'>
+            </NButton>            
+            <NButton size='small' type='warning' onClick={this.handleSelectFile}>
               {t('circuit.detail.import_circuit')}
             </NButton>
             <NButton size='small' type='warning' onClick={this.handleExportCircuit}>
