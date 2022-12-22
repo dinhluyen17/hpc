@@ -18,6 +18,10 @@ class ViewState {
   constructor() {
     this.currentTab = 'circuit';
     
+    this.gateAreaWidth = 320;
+    this.codeAreaWidth = 300;
+    this.chartAreaHeight = 200;
+
     this.expandGateArea = true;
     this.expandCodeArea = true;
     this.expandChartArea = true;
@@ -75,22 +79,13 @@ const SIZE_INFO = {
 };
 
 const getGateAreaWidth = () => {
-  if (viewState.getInstance().expandGateArea) {
-    return 320;
-  }
-  return 130;
+  return viewState.getInstance().gateAreaWidth;
 };
 const getCodeAreaWidth = () => {
-  if (viewState.getInstance().expandCodeArea) {
-    return 300;
-  }
-  return 50;
+  return viewState.getInstance().codeAreaWidth;
 };
 const getChartAreaHeight = () => {
-  if (viewState.getInstance().expandChartArea) {
-    return 200;
-  }
-  return 50;
+  return viewState.getInstance().chartAreaHeight; 
 };
 
 
