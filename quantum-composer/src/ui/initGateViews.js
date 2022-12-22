@@ -141,7 +141,7 @@ const initGateViews = () => {
         const gateView = document.createElement('span');
         gateView.setAttribute("class", "list-view tooltip-wrap")
         gateView.innerHTML = `
-                      <div onmousedown="grabGate('${gate.serializedId}')" style='display: flex; align-items:center; justify-content:center; width:40px; height:40px; margin:0.3rem 0.25rem; border: 1px solid black' class="${group.hint}">
+                      <div onmousedown="grabGate('${gate.serializedId}')" style='cursor: grab; display: flex; align-items:center; justify-content:center; width:40px; height:40px; margin:0.3rem 0.25rem; border: 1px solid black' class="${group.hint}">
                         <div style='text-align:center;'>
                           ${(newIcon.get(gate.symbol) != null) ? newIcon.get(gate.symbol) : gate.symbol}
                         </div>
@@ -176,7 +176,7 @@ const initGateViews = () => {
         gateView.setAttribute("class", "grid-view")
         gateView.innerHTML = `
                     <div style="display:flex; align-items: center; padding: 2px">
-                      <div onmousedown="grabGate('${gate.serializedId}')" style='display: flex; align-items:center; justify-content:center; width:40px; height:40px; margin:0.3rem 0.25rem; border: 1px solid black; margin:2px 3px;' class="${group.hint}">
+                      <div onmousedown="grabGate('${gate.serializedId}')" style='cursor: grab; display: flex; align-items:center; justify-content:center; width:40px; height:40px; margin:0.3rem 0.25rem; border: 1px solid black; margin:2px 3px;' class="${group.hint}">
                         <div style='text-align:center;'>
                           ${(newIcon.get(gate.symbol) != null) ? newIcon.get(gate.symbol) : gate.symbol}
                         </div>
@@ -197,7 +197,7 @@ const initGateViews = () => {
         const gateView = document.createElement("span");
         gateView.setAttribute("class", "list-view tooltip-wrap");
         gateView.innerHTML = `
-                  <div onmousedown="grabGate('${gate.serializedId}')" style='display: flex; align-items:center; justify-content:center; width:40px; height:40px; margin:0.3rem 0.25rem; border: 1px solid black' class="${group.hint}">
+                  <div onmousedown="grabGate('${gate.serializedId}')" style='cursor: grab; display: flex; align-items:center; justify-content:center; width:40px; height:40px; margin:0.3rem 0.25rem; border: 1px solid black' class="${group.hint}">
                     <div style='text-align:center;'>
                       ${newIcon.get(gate.symbol) != null? newIcon.get(gate.symbol) : gate.symbol}
                     </div>
@@ -230,7 +230,7 @@ const initGateViews = () => {
         gateView.setAttribute("class", "grid-view")
         gateView.innerHTML = `
                     <div style="display:flex; align-items: center; padding: 2px">
-                      <div onmousedown="grabGate('${gate.serializedId}')" style='display: flex; align-items:center; justify-content:center; width:40px; height:40px; margin:0.3rem 0.25rem; border: 1px solid black; margin:2px 3px;' class="${group.hint}">
+                      <div onmousedown="grabGate('${gate.serializedId}')" style='cursor: grab; display: flex; align-items:center; justify-content:center; width:40px; height:40px; margin:0.3rem 0.25rem; border: 1px solid black; margin:2px 3px;' class="${group.hint}">
                         <div style='text-align:center;'>
                           ${(newIcon.get(gate.symbol) != null) ? newIcon.get(gate.symbol) : gate.symbol}
                         </div>
