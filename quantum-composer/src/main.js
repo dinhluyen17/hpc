@@ -51,6 +51,14 @@ import {initGateViews} from "./ui/initGateViews.js";
 import {initSizeViews, updateSizeViews} from "./ui/updateSizeViews.js";
 import { viewState } from "./ui/viewState.js";
 
+const codeArea = document.getElementById("code-area");
+const gateArea = document.getElementById("gate-area");
+const chartArea = document.getElementById("circuit-chart");
+let startResizeCodeArea = false;
+let startResizeGateArea = false;
+let startResizeChartArea = false;
+let posResize;
+
 initSerializer(
     GatePainting.LABEL_DRAWER,
     GatePainting.MATRIX_DRAWER,
@@ -189,7 +197,6 @@ let stateBarCalc = () =>{
         qStates[i] = Util.bin(i,qNumWire);
     }
     let qProb = [];
-    let qVector = [];
     for (let i = 0; i < mostRecentStats.get().finalState._buffer.length; i++) {
         let x = mostRecentStats.get().finalState._buffer;
         let y = x[i];
@@ -197,7 +204,6 @@ let stateBarCalc = () =>{
         if (i % 2 == 0){
             let k = i/2;
             let j = Math.pow(y,2) + Math.pow(z, 2);
-            qVector[k] = (y < 0 ? "":"+") + y.toFixed(5) + "+" + z.toFixed(5) + "i";
             qProb[k] = (j*100).toFixed(4);
         }
     }
@@ -229,6 +235,10 @@ let stateBarCalc = () =>{
     //         {id: 1, Probability: "0.0000", State: "1"}
     //     ]
     // }
+    /**
+     *
+     *3043ms
+     */
     const data2 = stateObj.reduce((a, c) => (a[c.id] = c, a), {})
     data = probObj.map(o => Object.assign(o, data2[o.id]))
     return data;
@@ -333,7 +343,16 @@ document.getElementById("vectSearch").addEventListener("input", function (e) {
                 }
             }
         }
+        if ($("#dataOutput").children(":visible").length == 0 && $('#no-data3').length == 0){
+            let noData = document.createElement("div");
+            noData.setAttribute('id', 'no-data3')
+            noData.innerHTML = "No data"
+            document.getElementById("simulateOutput").appendChild(noData)
+        } else if ($("#dataOutput").children(":visible").length != 0) {
+            $('#no-data3').remove()
+        }
     } else {
+        $('#no-data3').remove()
         simStatCalc()
     }
 })
@@ -380,9 +399,10 @@ revision.latestActiveCommit().subscribe(jsonText => {
     if (barDataFilterSwitch == false) {
         document.D3_FUNCTION.bar(stateBarCalc());
     } else {
-        let barDataFilter = stateBarCalc().filter(val => !val.Probability.includes('0.0000'));
+        let barDataFilter = stateBarCalc().filter(val => !val.Probability.match(/^0.0000$/));
         document.D3_FUNCTION.bar(barDataFilter);
     }
+
 });
 /**
  * @param {!DisplayedInspector} curInspector
@@ -600,7 +620,23 @@ watchDrags(canvasDiv,
     });
 
 // Middle-click to delete a gate.
-canvasDiv.addEventListener('mousedown', ev => {
+canvasDiv.addEventListener('mousedown', ev => {    
+    const codeAreaBox = codeArea.getBoundingClientRect();
+    const gateAreaBox = gateArea.getBoundingClientRect();
+    const chartAreaBox = chartArea.getBoundingClientRect();
+    if (Math.abs(codeAreaBox.left - ev.clientX) < 4) {
+        startResizeCodeArea = true;
+        posResize = ev.clientX;
+    } 
+    else if (Math.abs(gateAreaBox.right - ev.clientX) < 4) {
+        startResizeGateArea = true;
+        posResize = ev.clientX;
+    } 
+    else if (Math.abs(chartAreaBox.top - ev.clientY) < 4) {
+        startResizeChartArea = true;
+        posResize = ev.clientY;
+    }
+    
     document.GRAB_GATE = undefined;
     viewState.getInstance().highlightGate = null;
     viewState.getInstance().canShowGateMenu = true;
@@ -631,6 +667,9 @@ canvasDiv.addEventListener('mousedown', ev => {
 
 // When mouse moves without dragging, track it (for showing hints and things).
 canvasDiv.addEventListener('mousemove', ev => {
+    resizeCodeArea(ev);
+    resizeGateArea(ev);
+    resizeChartArea(ev);
     viewState.getInstance().canShowGateMenu = false;
     if (!displayed.get().hand.isBusy()) {
         let newHand = displayed.get().hand.withPos(eventPosRelativeTo(ev, canvas));
@@ -639,7 +678,15 @@ canvasDiv.addEventListener('mousemove', ev => {
     }
     
 });
+canvasDiv.addEventListener('mouseup', () => {
+    startResizeCodeArea = false;
+    startResizeGateArea = false;
+    startResizeChartArea = false;
+})
 canvasDiv.addEventListener('mouseleave', () => {
+    startResizeCodeArea = false;
+    startResizeGateArea = false;
+    startResizeChartArea = false;
     document.GRAB_GATE = undefined;
     viewState.getInstance().highlightGate = null;
     viewState.getInstance().canShowGateMenu = true;
@@ -773,3 +820,37 @@ window.parent.postMessage(JSON.stringify({
     actionType: 'setup_finish'
 }));
 hideAllMenu();
+
+function resizeCodeArea(e) {
+    if (startResizeCodeArea) {
+        const dx = posResize - e.clientX;
+        posResize = e.clientX;
+        viewState.getInstance().codeAreaWidth += dx;
+        if (viewState.getInstance().codeAreaWidth < 50) {
+            viewState.getInstance().codeAreaWidth = 50;
+        }
+        updateSizeViews(canvasDiv);
+    }
+}
+function resizeGateArea(e) {
+    if (startResizeGateArea) {
+        const dx = posResize - e.clientX;
+        posResize = e.clientX;
+        viewState.getInstance().gateAreaWidth -= dx;
+        if (viewState.getInstance().gateAreaWidth < 100) {
+            viewState.getInstance().gateAreaWidth = 100;
+        }
+        updateSizeViews(canvasDiv);
+    }
+}
+function resizeChartArea(e) {
+    if (startResizeChartArea) {
+        const dy = posResize - e.clientY;
+        posResize = e.clientY;
+        viewState.getInstance().chartAreaHeight += dy;
+        if (viewState.getInstance().chartAreaHeight < 50) {
+            viewState.getInstance().chartAreaHeight = 50;
+        }
+        updateSizeViews(canvasDiv);
+    }
+}

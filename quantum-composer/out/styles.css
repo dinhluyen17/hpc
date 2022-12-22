@@ -23,6 +23,9 @@ body {
     height: 100vh;
     overflow: hidden;
     position: relative;
+    -webkit-user-select: none; /* Safari */
+    -ms-user-select: none; /* IE 10 and IE 11 */
+    user-select: none; /* Standard syntax */
 }
 
 /* App Header */
@@ -81,8 +84,16 @@ body {
     flex-direction: column;
     width: 320px;
     border: 2px solid #EDECF3;
+    position: relative;
 }
-
+.gate-area::after {
+    content: '';
+    position: absolute;
+    right: -2px;
+    width: 4px;
+    height: 100%;
+    cursor: ew-resize;
+}
 .gate-area-header {
     height: 50px;
     display: flex;
@@ -146,7 +157,7 @@ body {
     flex-direction: column;
 }
 
-#no-data, #no-data2 {
+#no-data, #no-data2, #no-data3 {
     margin: auto;
     padding: 5rem;
 }
@@ -282,6 +293,7 @@ small.smaller {
     /* border: 1px solid #373737; */
     overflow-x: scroll;
     overflow-y: scroll;
+    margin: 2px;
 }
 
 ::-webkit-scrollbar {
@@ -306,6 +318,15 @@ small.smaller {
     border-width: 2px 0 2px 0px;
     display: flex;
     flex-direction: column;
+}
+
+.circuit-area-chart::after {
+    content: '';
+    position: absolute;
+    top: -2px;
+    height: 4px;
+    width: 100%;
+    cursor: ns-resize;
 }
 
 #circuit-area-chart-close-btn {
@@ -358,6 +379,15 @@ small.smaller {
     position: relative;
     width: 300px;
     border: 2px solid #EDECF3;
+}
+
+.code-area::after {
+    content: '';
+    position: absolute;
+    left: -2px;
+    width: 4px;
+    height: 100%;
+    cursor: ew-resize;
 }
 
 #code-area-close-btn {

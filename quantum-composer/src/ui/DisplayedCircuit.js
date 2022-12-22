@@ -83,6 +83,7 @@ class DisplayedCircuit {
          * @private
          */
         this._extraWireStartIndex = extraWireStartIndex;
+        this.currentDesiredWidth = 0;
     }
 
     /**
@@ -140,7 +141,8 @@ class DisplayedCircuit {
         //  return this.opRect(this.circuitDefinition.columns.length - 1).right() + CIRCUIT_OP_LEFT_SPACING;
         //}
         // return this._rectForSuperpositionDisplay().right() + 101;
-        return Math.max(this.opRect(this.circuitDefinition.columns.length - 1).right() + CIRCUIT_OP_LEFT_SPACING + 350, 700);
+        this.currentDesiredWidth = Math.max(this.opRect(this.circuitDefinition.columns.length - 1).right() + CIRCUIT_OP_LEFT_SPACING + 350, 700);
+        return this.currentDesiredWidth;
     }
 
     /**
@@ -412,6 +414,7 @@ class DisplayedCircuit {
                 }
                 // Phu: draw label for wire
                 painter.print(`|${v}⟩`, 40, y, 'right', 'middle', '#646464', '14px sans-serif', 20, Config.WIRE_SPACING);
+                painter.print(`q${row}`, this.currentDesiredWidth - (this.currentDesiredWidth <= 700 ? 50 : 40), y, 'right', 'middle', '#646464', '14px sans-serif', 20, Config.WIRE_SPACING);
             }
         }
 
@@ -433,11 +436,21 @@ class DisplayedCircuit {
                     let x = this.opRect(col).center().x;
                     if (this.circuitDefinition.locIsMeasured(new Point(col, row))) {
                         // Measured wire.
-                        trace.line(lastX, y-1, x, y-1);
-                        trace.line(lastX, y+1, x, y+1);
+                        if (x >= painter.canvas.width - 50) {
+
+                        }
+                        else {
+                            trace.line(lastX, y-1, x, y-1);
+                            trace.line(lastX, y+1, x, y+1);
+                        }
                     } else {
                         // Unmeasured wire.
-                        trace.line(lastX, y, x, y);
+                        if (x >= painter.canvas.width - 50) {
+                            //trace.line(lastX, y, x, y);
+                        }
+                        else {
+                            trace.line(lastX, y, x, y);
+                        }                        
                     }
                     lastX = x;
                 }

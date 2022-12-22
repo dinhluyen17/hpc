@@ -73,27 +73,23 @@ public class CircuitController extends BaseController {
     })
     @GetMapping(value = "/get")
     @ResponseStatus(HttpStatus.OK)
-    @ApiException(GET_USER_INFO_ERROR)
+    @ApiException(GET_CIRCUIT_INFO_ERROR)
     public Result getCircuit(@RequestParam(value = "id") Integer id) {
-        Map<String, Object> result = circuitService.get(id);
-        return returnDataList(result);
+        return circuitService.get(id);
     }
 
     @Operation(summary = "create", description = "CREATE_CIRCUIT_NOTES")
     @PostMapping(value = "/create", consumes = {"application/json"})
     @ResponseStatus(HttpStatus.CREATED)
-    @ApiException(CREATE_USER_ERROR)
+    @ApiException(CREATE_CIRCUIT_ERROR)
     @AccessLogAnnotation(ignoreRequestArgs = "loginUser")
     public Result createCircuit(@Parameter(hidden = true) @RequestAttribute(value = Constants.SESSION_USER) User loginUser,
                                 @RequestBody CircuitCreateRequest circuitCreateRequest) {
         Integer userId = loginUser.getId();
-        Map<String, Object> result =
-                circuitService.create(userId, circuitCreateRequest);
-        return returnDataList(result);
+        return circuitService.create(userId, circuitCreateRequest);
     }
 
-
-    @Operation(summary = "search", description = "QUERY_USER_LIST_NOTES")
+    @Operation(summary = "search", description = "QUERY_CIRCUIT_LIST_NOTES")
     @Parameters({
             @Parameter(name = "pageNo", description = "PAGE_NO", required = true, schema = @Schema(implementation = int.class, example = "1")),
             @Parameter(name = "pageSize", description = "PAGE_SIZE", required = true, schema = @Schema(implementation = int.class, example = "10")),
@@ -103,7 +99,7 @@ public class CircuitController extends BaseController {
     })
     @GetMapping(value = "/search")
     @ResponseStatus(HttpStatus.OK)
-    @ApiException(QUERY_USER_LIST_PAGING_ERROR)
+    @ApiException(QUERY_CIRCUIT_LIST_PAGING_ERROR)
     @AccessLogAnnotation(ignoreRequestArgs = "loginUser")
     public Result queryCircuitList(@Parameter(hidden = true) @RequestAttribute(value = Constants.SESSION_USER) User loginUser,
                                    @RequestParam("pageNo") Integer pageNo,
@@ -129,23 +125,21 @@ public class CircuitController extends BaseController {
     @Operation(summary = "update", description = "UPDATE_CIRCUIT_NOTES")
     @PatchMapping(value = "/update", consumes = {"application/json"})
     @ResponseStatus(HttpStatus.CREATED)
-    @ApiException(UPDATE_USER_ERROR)
+    @ApiException(UPDATE_CIRCUIT_ERROR)
     @AccessLogAnnotation(ignoreRequestArgs = "loginUser")
     public Result update(@RequestParam(value = "id") Integer id,
                          @RequestBody CircuitUpdateRequest circuitUpdateRequest) throws Exception {
-        Map<String, Object> result =
-                circuitService.update(id, circuitUpdateRequest);
-        return returnDataList(result);
+        return circuitService.update(id, circuitUpdateRequest);
     }
 
 
-    @Operation(summary = "delete", description = "DELETE_USER_BY_ID_NOTES")
+    @Operation(summary = "delete", description = "DELETE_CIRCUIT_NOTES")
     @Parameters({
             @Parameter(name = "id", description = "CIRCUIT_ID", required = true, schema = @Schema(implementation = List.class, example = "[100]"))
     })
     @DeleteMapping(value = "/delete")
     @ResponseStatus(HttpStatus.OK)
-    @ApiException(DELETE_USER_BY_ID_ERROR)
+    @ApiException(DELETE_CIRCUIT_ERROR)
     @AccessLogAnnotation
     public Result delete(@RequestParam(value = "id") List<Integer> id) throws Exception {
         Map<String, Object> result = circuitService.delete(id);
@@ -160,7 +154,7 @@ public class CircuitController extends BaseController {
     })
     @PostMapping(value = "/duplicate")
     @ResponseStatus(HttpStatus.OK)
-    @ApiException(GET_USER_INFO_ERROR)
+    @ApiException(DUPLICATE_CIRCUIT_ERROR)
     public Result duplicateCircuit(@RequestParam(value = "id") Integer id,
                                    @RequestParam(value = "name") String name,
                                    @RequestParam(value = "description", required = false) String description) {
@@ -168,16 +162,16 @@ public class CircuitController extends BaseController {
         return returnDataList(result);
     }
 
-    @Operation(summary = "export", description = "DOWNLOAD_RESOURCE_FILE_NOTES")
+    @Operation(summary = "export", description = "EXPORT_CIRCUIT_NOTES")
     @Parameters({
             @Parameter(name = "id", description = "CIRCUIT_ID", required = true, schema = @Schema(implementation = Integer.class, example = "1"))
     })
     @GetMapping(value = "/export")
     @ResponseBody
-    @ApiException(DOWNLOAD_RESOURCE_FILE_ERROR)
+    @ApiException(EXPORT_CIRCUIT_ERROR)
     public ResponseEntity exportCircuit(@RequestParam(value = "id") Integer id) {
-        Map<String, Object> result = circuitService.get(id);
-        Circuit circuit = (Circuit) result.get("data");
+        Result result = circuitService.get(id);
+        Circuit circuit = (Circuit) result.getData();
         String name = circuit.getName();
         String json = circuit.getJson();
         byte[] logBytes = json.getBytes();
@@ -189,21 +183,21 @@ public class CircuitController extends BaseController {
                 .body(logBytes);
     }
 
-    @Operation(summary = "batchExport", description = "DOWNLOAD_RESOURCE_FILE_NOTES")
+    @Operation(summary = "batchExport", description = "BATCH_EXPORT_CIRCUIT_NOTES")
     @Parameters({
             @Parameter(name = "id", description = "ID", required = true, schema = @Schema(implementation = List.class, example = "[1, 2]"))
     })
     @GetMapping(value = "/batchExport", produces="application/zip")
     @ResponseBody
-    @ApiException(DOWNLOAD_RESOURCE_FILE_ERROR)
+    @ApiException(BATCH_EXPORT_CIRCUIT_ERROR)
     public ResponseEntity exportCircuit(@RequestParam(value = "id") List<Integer> id) throws IOException {
         ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
         BufferedOutputStream bufferedOutputStream = new BufferedOutputStream(byteArrayOutputStream);
         ZipOutputStream zipOutputStream = new ZipOutputStream(bufferedOutputStream);
 
         for (Integer circuitId : id) {
-            Map<String, Object> result = circuitService.get(circuitId);
-            Circuit circuit = (Circuit) result.get("data");
+            Result result = circuitService.get(circuitId);
+            Circuit circuit = (Circuit) result.getData();
             String name = circuit.getName();
             String json = circuit.getJson();
             byte[] logBytes = json.getBytes();
@@ -226,21 +220,4 @@ public class CircuitController extends BaseController {
                         "attachment; filename=\"batch.zip\"")
                 .body(byteArrayOutputStream.toByteArray());
     }
-
-//    @Operation(summary = "import", description = "UPLOAD_RESOURCE_FILE_NOTES")
-//    @Parameters({
-//            @Parameter(name = "id", description = "ID", required = true, schema = @Schema(implementation = Integer.class, example = "1")),
-//            @Parameter(name = "file", description = "FILE", required = true, schema = @Schema(implementation = MultipartFile.class))
-//    })
-//    @PostMapping(value = "/import")
-//    @ResponseStatus(HttpStatus.OK)
-//    @ApiException(UPDATE_USER_ERROR)
-//    public Result importCircuit(@RequestParam(value = "id") Integer id,
-//                                @RequestParam(value = "file") MultipartFile file) throws Exception {
-//        String json = new String(file.getBytes());
-//        CircuitUpdateRequest circuitUpdateRequest = new CircuitUpdateRequest();
-//        circuitUpdateRequest.setJson(json);
-//        Map<String, Object> result = circuitService.update(id, circuitUpdateRequest);
-//        return returnDataList(result);
-//    }
 }

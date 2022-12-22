@@ -46,7 +46,13 @@ export function useCircuit() {
 
   const updateCircuitData = (id: number, updateData: any) => {
     const { state } = useAsyncState(
-      updateCircuit(updateData, id),
+      updateCircuit(updateData, id)
+      .then(() => {
+        window.$message.success('Update circuit successful!');        
+      })
+      .catch(() => {
+        window.$message.success('Update circuit failed, please try again!');
+      }),
       {}
     )
     return state

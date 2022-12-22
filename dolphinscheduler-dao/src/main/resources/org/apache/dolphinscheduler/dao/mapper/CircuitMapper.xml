@@ -25,6 +25,14 @@
        ${alias}.id, ${alias}.user_id, ${alias}.name, ${alias}.description, ${alias}.json, ${alias}.qasm, ${alias}.qiskit, ${alias}.create_time, ${alias}.update_time, ${alias}.project_code
     </sql>
 
+    <select id="queryByName" resultType="org.apache.dolphinscheduler.dao.entity.Circuit">
+        select
+        <include refid="baseSql"/>
+        from t_ds_circuit
+        where name = #{name}
+        limit 1
+    </select>
+
     <select id="queryCircuitPaging" resultType="org.apache.dolphinscheduler.dao.entity.Circuit">
         select
         <include refid="baseSql"/>
