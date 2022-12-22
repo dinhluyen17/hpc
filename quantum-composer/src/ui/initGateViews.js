@@ -141,7 +141,7 @@ const initGateViews = () => {
         const gateView = document.createElement('span');
         gateView.setAttribute("class", "list-view tooltip-wrap")
         gateView.innerHTML = `
-                      <div style='display: flex; align-items:center; justify-content:center; width:40px; height:40px; margin:0.3rem 0.25rem; border: 1px solid black'>
+                      <div onmousedown="grabGate('${gate.serializedId}')" style='display: flex; align-items:center; justify-content:center; width:40px; height:40px; margin:0.3rem 0.25rem; border: 1px solid black' class="${group.hint}">
                         <div style='text-align:center;'>
                           ${(newIcon.get(gate.symbol) != null) ? newIcon.get(gate.symbol) : gate.symbol}
                         </div>
@@ -174,32 +174,13 @@ const initGateViews = () => {
       if (gate != undefined && !unsupportedGates.includes(gate.name)) {
         const gateView = document.createElement('div');
         gateView.setAttribute("class", "grid-view")
-        const iconLink = `./icon/${gate.serializedId}.png`
-        let newIconLink = ''
-        if (iconLink.includes("Z^(A/2^n)")) {
-          newIconLink = iconLink.replace("Z^(A/2^n)", "Z^(A:2^n)")
-        }
-        else if (iconLink.includes("Z^(-A/2^n)")) {
-          newIconLink = iconLink.replace("Z^(-A/2^n)", "Z^(-A:2^n)")
-        }
-        else if (iconLink.includes("Y^(A/2^n)")) {
-          newIconLink = iconLink.replace("Y^(A/2^n)", "Y^(A:2^n)")
-        }
-        else if (iconLink.includes("Y^(-A/2^n)")) {
-          newIconLink = iconLink.replace("Y^(-A/2^n)", "Y^(-A:2^n)")
-        }
-        else if (iconLink.includes("X^(A/2^n)")) {
-          newIconLink = iconLink.replace("X^(A/2^n)", "X^(A:2^n)")
-        }
-        else if (iconLink.includes("X^(-A/2^n)")) {
-          newIconLink = iconLink.replace("X^(-A/2^n)", "X^(-A:2^n)")
-        }
-        else {
-          newIconLink = iconLink
-        }
         gateView.innerHTML = `
                     <div style="display:flex; align-items: center; padding: 2px">
-                    <img onmousedown="grabGate('${gate.serializedId}')" src=${newIconLink} style="border:1px solid black; width:33px; height:33px; margin:2px 3px;"/>
+                      <div onmousedown="grabGate('${gate.serializedId}')" style='display: flex; align-items:center; justify-content:center; width:40px; height:40px; margin:0.3rem 0.25rem; border: 1px solid black; margin:2px 3px;' class="${group.hint}">
+                        <div style='text-align:center;'>
+                          ${(newIcon.get(gate.symbol) != null) ? newIcon.get(gate.symbol) : gate.symbol}
+                        </div>
+                      </div>
                       <span> ${gate.name}</span>
                     </div>
                 `;
@@ -216,7 +197,7 @@ const initGateViews = () => {
         const gateView = document.createElement("span");
         gateView.setAttribute("class", "list-view tooltip-wrap");
         gateView.innerHTML = `
-                  <div style='display: flex; align-items:center; justify-content:center; width:40px; height:40px; margin:0.3rem 0.25rem; border: 1px solid black'>
+                  <div onmousedown="grabGate('${gate.serializedId}')" style='display: flex; align-items:center; justify-content:center; width:40px; height:40px; margin:0.3rem 0.25rem; border: 1px solid black' class="${group.hint}">
                     <div style='text-align:center;'>
                       ${newIcon.get(gate.symbol) != null? newIcon.get(gate.symbol) : gate.symbol}
                     </div>
@@ -247,40 +228,15 @@ const initGateViews = () => {
       if (gate != undefined && !unsupportedGates.includes(gate.name)) {
         const gateView = document.createElement('div');
         gateView.setAttribute("class", "grid-view")
-        const iconLink = `./icon/${gate.serializedId}.png`
-        let newIconLink = ''
-        if (iconLink.includes(">>3")) {
-          newIconLink = iconLink.replace(">>3", "2greater")
-        }
-        else if (iconLink.includes("(/)")) {
-          newIconLink = iconLink.replace("(/)", "(:)")
-        }
-        else if (iconLink.includes("|/⟩⟨/|")) {
-          newIconLink = iconLink.replace("|/⟩⟨/|", "|:⟩⟨:|")
-        }
-        else if (iconLink.includes("/A2")) {
-          newIconLink = iconLink.replace("/A2", ":A2")
-        }
-        else if (iconLink.includes("^A>B")) {
-          newIconLink = iconLink.replace("^A>B", "^AgreaterB")
-        }
-        else if (iconLink.includes("^A>=B")) {
-          newIconLink = iconLink.replace("^A>=B", "^Agreater=B")
-        }
-        else if (iconLink.includes("/AmodR2")) {
-          newIconLink = iconLink.replace("/AmodR2", ":AmodR2")
-        }
-        else if (iconLink.includes("/BToAmodR2")) {
-          newIconLink = iconLink.replace("/BToAmodR2", ":BToAmodR2")
-        }
-        else {
-          newIconLink = iconLink
-        }
         gateView.innerHTML = `
-                  <div style="display:flex; align-items: center; padding: 2px">
-                  <img onmousedown="grabGate('${gate.serializedId}')" src=${newIconLink} style="border:1px solid black; width:33px; height:33px; margin:2px 3px;"/>
-                    <span> ${gate.name}</span>
-                  </div>
+                    <div style="display:flex; align-items: center; padding: 2px">
+                      <div onmousedown="grabGate('${gate.serializedId}')" style='display: flex; align-items:center; justify-content:center; width:40px; height:40px; margin:0.3rem 0.25rem; border: 1px solid black; margin:2px 3px;' class="${group.hint}">
+                        <div style='text-align:center;'>
+                          ${(newIcon.get(gate.symbol) != null) ? newIcon.get(gate.symbol) : gate.symbol}
+                        </div>
+                      </div>
+                      <span> ${gate.name}</span>
+                    </div>
                 `;
         gateGroupList.appendChild(gateView)
       }

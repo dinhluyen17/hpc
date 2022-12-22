@@ -166,6 +166,34 @@ small.smaller {
     font-size: xx-small;
 }
 
+.Displays {
+    background-color: #0cff18;
+}
+
+.Quarter {
+    background-color: #c7bdbd;
+}
+
+.Spinning, .Formulaic {
+    background-color: #Edf1b5;
+}
+
+.Parity {
+    color: orangered;
+}
+
+.Order {
+    background-color: #A1af05;
+}
+
+.Inputs {
+    background-color: #dcdfdb;
+}
+
+.Modular {
+    background-color: #8fc2ec;
+}
+
 .gate-area-body-section-label {
     font-size: 16px;
     font-weight: 400;
