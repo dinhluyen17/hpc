@@ -558,17 +558,17 @@ small.smaller {
 
 #drawCanvasSim {
     /*max-width: 100%;*/
-    margin-left: 10%;
+    /*margin-left: 10%;*/
 }
 
 #canvasSimWrapper,
 #simulateOutput {
     width: 50%;
     overflow: auto;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: flex-start;
+    /*display: flex;*/
+    /*flex-direction: column;*/
+    /*align-items: center;*/
+    /*justify-content: flex-start;*/
     border: 1px solid #DDDDDD;
     max-height: 100vh;
 }
