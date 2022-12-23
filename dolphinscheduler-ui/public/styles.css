@@ -173,6 +173,38 @@ body {
     border: none !important;
 }
 
+small.smaller {
+    font-size: xx-small;
+}
+
+/* .Displays {
+    background-color: #0cff18;
+}
+
+.Quarter {
+    background-color: #c7bdbd;
+}
+
+.Spinning, .Formulaic {
+    background-color: #Edf1b5;
+}
+
+.Parity {
+    color: orangered;
+}
+
+.Order {
+    background-color: #A1af05;
+}
+
+.Inputs {
+    background-color: #dcdfdb;
+}
+
+.Modular {
+    background-color: #8fc2ec;
+} */
+
 .gate-area-body-section-label {
     font-size: 16px;
     font-weight: 400;
@@ -596,8 +628,8 @@ body {
 #simulateOutput .table-action {
     width: 100%;
     padding: 12px 16px;
-    display: flex;
-    justify-content: right;
+    /*display: flex;*/
+    /*justify-content: right;*/
 }
 
 #simulateOutput .table-action button {
@@ -627,6 +659,7 @@ body {
     cursor: pointer;
     text-decoration: none;
     transition: color .3s cubic-bezier(0.4, 0, 0.2, 1), background-color .3s cubic-bezier(0.4, 0, 0.2, 1), opacity .3s cubic-bezier(0.4, 0, 0.2, 1), border-color .3s cubic-bezier(0.4, 0, 0.2, 1);
+    float: right;
 }
 
 #simulateOutput .table-action button:hover {
@@ -683,7 +716,8 @@ body {
 #simulateOutput table tbody tr td {
     padding: 12px;
     position: relative;
-    text-align: start;
+    /*text-align: start;*/
+    text-align: center;
     box-sizing: border-box;
     background-color: #FAFAFC;
     border-color: rgba(239, 239, 245, 1);

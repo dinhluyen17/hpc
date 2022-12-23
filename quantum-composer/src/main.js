@@ -834,8 +834,8 @@ function resizeGateArea(e) {
         const dx = posResize - e.clientX;
         posResize = e.clientX;
         viewState.getInstance().gateAreaWidth -= dx;
-        if (viewState.getInstance().gateAreaWidth < 100) {
-            viewState.getInstance().gateAreaWidth = 100;
+        if (viewState.getInstance().gateAreaWidth < 130) {
+            viewState.getInstance().gateAreaWidth = 130;
         }
         updateSizeViews(canvasDiv);
     }
@@ -847,6 +847,9 @@ function resizeChartArea(e) {
         viewState.getInstance().chartAreaHeight += dy;
         if (viewState.getInstance().chartAreaHeight < 50) {
             viewState.getInstance().chartAreaHeight = 50;
+        }
+        if (viewState.getInstance().chartAreaHeight > 200) {
+            viewState.getInstance().chartAreaHeight = 200;
         }
         updateSizeViews(canvasDiv);
     }
