@@ -65,7 +65,7 @@ const circuitItem = defineComponent({
       }
     }
 
-    const handleImportFileJson = (event: Event) => {
+    const handleImportFileJson = (event: Event) => {      
       const files = event?.target?.files;
       if (files && files.length > 0) {
         const fileReader = new FileReader();
@@ -90,6 +90,7 @@ const circuitItem = defineComponent({
         }
         fileReader.readAsText(files[0]);
       }
+      importFileRef.value.value = '';
     }
 
     const handleExportCircuit = () => {
