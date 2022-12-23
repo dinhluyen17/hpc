@@ -1,9 +1,12 @@
 //Draw energy graph
 document.D3_FUNCTION = {
     bar: (barData) => {
+        let divWrapper = document.getElementById("stateBarChart");
+
         let margin = { top: 30, right: 30, bottom: 70, left: 60 },
             width = (barData.length * 15) - margin.left - margin.right,
-            height = 190 - margin.top - margin.bottom;
+            height = parseInt(divWrapper.style.height) - margin.top - margin.bottom - 20;
+            // height = 190 - margin.top - margin.bottom;
         if (width <= 600) {
             width = 600;
         }
@@ -86,24 +89,14 @@ document.D3_FUNCTION = {
                     .style('top', `${d3.event.layerY}px`);
             })
             .on("mouseout", () => tooltip.transition().duration(500).style("opacity", 0))
-        // switch (barData.length){
-        //     case 256:
-        //         document.getElementById("simulateOutput").style.width = "625px"
-        //         break;
-        //     case 8192:
-        //         document.getElementById("simulateOutput").style.width = "575px"
-        //     case 16384:
-        //         document.getElementById("simulateOutput").style.width = "525px"
-        //         break;
-        // }
     }
 }
 document.simStat = {
     table: (data) => {
-        let table = document.getElementById('dataOutput');
-        for (let i = 0; i < data.length; i++){
-            table.innerHTML += `<tr><td>${data[i].state}</td><td>${data[i].vect}</td><td>${data[i].rad}</td><td>${data[i].prob}</td></tr>`
-        }
+        // let table = document.getElementById('dataOutput');
+        // for (let i = 0; i < data.length; i++){
+        //     table.innerHTML += `<tr><td>${data[i].state}</td><td>${data[i].vect}</td><td>${data[i].rad}</td><td>${data[i].prob}</td></tr>`
+        // }
     }
 }
 
@@ -345,7 +338,7 @@ const circuitEdit = {
                 $(".tooltip-content").removeClass("tooltipLeft tooltipRight");
                 $(this).find('.tooltip-content').addClass("tooltipRight");
             }
-            console.log("stop here");
+            // console.log("stop here");
         });
 
     },

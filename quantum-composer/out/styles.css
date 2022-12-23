@@ -370,7 +370,20 @@ small.smaller {
     margin-top: 8px;
 }
 
-#stateBarChartFilterZero:hover {
+#sortBar {
+    cursor: pointer;
+    position: absolute;
+    top: 0px;
+    right: 176px;
+    height: 2rem;
+    width: 3rem;
+    background-color: #FFFFFF;
+    color: #000000;
+    border: .5px solid;
+    margin-top: 8px;
+}
+
+#stateBarChartFilterZero:hover, #sortBar:hover {
     background-color: #000000;
     color: #FFFFFF;
 }
@@ -649,7 +662,7 @@ small.smaller {
     position: relative;
     z-index: auto;
     border: none;
-    display: inline-flex;
+    /*display: inline-flex;*/
     flex-wrap: nowrap;
     flex-shrink: 0;
     align-items: center;
@@ -661,20 +674,53 @@ small.smaller {
     transition: color .3s cubic-bezier(0.4, 0, 0.2, 1), background-color .3s cubic-bezier(0.4, 0, 0.2, 1), opacity .3s cubic-bezier(0.4, 0, 0.2, 1), border-color .3s cubic-bezier(0.4, 0, 0.2, 1);
     float: right;
 }
-
+#vectSearchCancel {
+    font-weight: 400;
+    line-height: 1;
+    font-family: inherit;
+    padding: 0 10px;
+    height: 24px;
+    font-size: 10px;
+    border-radius: 3px;
+    color: #FFFFFF;
+    width: initial;
+    white-space: nowrap;
+    outline: none;
+    position: relative;
+    z-index: auto;
+    border: none;
+    flex-wrap: nowrap;
+    flex-shrink: 0;
+    align-items: center;
+    justify-content: center;
+    user-select: none;
+    text-align: center;
+    cursor: pointer;
+    text-decoration: none;
+    transition: color .3s cubic-bezier(0.4, 0, 0.2, 1), background-color .3s cubic-bezier(0.4, 0, 0.2, 1), opacity .3s cubic-bezier(0.4, 0, 0.2, 1), border-color .3s cubic-bezier(0.4, 0, 0.2, 1);
+    float: right;
+    margin: 0 0 0 -5rem;
+}
+#vectorTable svg {
+    cursor: pointer;
+}
 #simulateOutput .table-action button:hover {
     color: #FFFFFF;
     background-color: #40a9ff;
 }
 
-#simulateOutput .table-action input {
+#simulateOutput #stateHeader {
+    line-height: 20px;
+}
+
+#simulateOutput #stateHeader input {
     margin: 0;
     font-weight: 400;
     font-family: inherit;
     padding: 10px 5px;
-    height: 28px;
+    height: 25px;
     line-height: 28px;
-    font-size: 14px;
+    font-size: 10px;
     white-space: nowrap;
     outline: none;
     position: relative;
@@ -725,6 +771,7 @@ small.smaller {
     color: rgb(31, 34, 37);
     font-weight: 500;
     font-size: 14px;
+    max-width: 10px;
 }
 
 #simulateOutput table tbody tr td {

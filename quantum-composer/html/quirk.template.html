@@ -116,10 +116,10 @@
             </svg>
           </button>
           <button id="stateBarChartFilterZero">Show all states</button>
+          <button id="sortBar">Sort</button>
           <!--          <input type="checkbox" id="stateBarBool">-->
           <!--          <label>Use bar graph when above 12 qubits (may cause performance issues)</label>-->
           <div id="stateBarChart"></div>
-          <div id="stateVectorChart"></div>
         </div>
       </div>
       <div class="code-area" id="code-area">
@@ -188,18 +188,35 @@
             </canvas>
           </div>
           <div id="simulateOutput">
-            <div class="table-action">
-              <input id="vectSearch" placeholder="Search for state" type="search">
-              <button id="vectFilter">Hide zero states</button>
-            </div>
             <div class="table-content">
               <table id="vectorTable">
                 <thead>
                   <tr>
-                    <th>State</th>
+                    <th id="stateHeader"><span id="stateHeaderText">State</span> <span>
+                      <svg width="10px" height="10px" viewBox="0 -0.24 28.423 28.423" id="stateSearchButton" data-name="02 - Search Button" xmlns="http://www.w3.org/2000/svg">
+                        <path id="Path_215" data-name="Path 215" d="M14.953,2.547A12.643,12.643,0,1,0,27.6,15.19,12.649,12.649,0,0,0,14.953,2.547Zm0,2A10.643,10.643,0,1,1,4.31,15.19,10.648,10.648,0,0,1,14.953,4.547Z" transform="translate(-2.31 -2.547)" fill-rule="evenodd"/>
+                        <path id="Path_216" data-name="Path 216" d="M30.441,28.789l-6.276-6.276a1,1,0,1,0-1.414,1.414L29.027,30.2a1,1,0,1,0,1.414-1.414Z" transform="translate(-2.31 -2.547)" fill-rule="evenodd"/>
+                      </svg>
+                    </span>
+                      <input id="vectSearch" class="hidden" placeholder="Search for state" type="text">
+                      <svg id="vectSearchCancel" class="hidden" width="10px" height="10px" viewBox="0 0 24 24" role="img" xmlns="http://www.w3.org/2000/svg" aria-labelledby="cancelIconTitle" stroke="#000000" stroke-width="1" stroke-linecap="square" stroke-linejoin="miter" fill="none" color="#000000"> <title id="cancelIconTitle">Cancel</title>
+                        <path d="M15.5355339 15.5355339L8.46446609 8.46446609M15.5355339 8.46446609L8.46446609 15.5355339"/>
+<!--                        <path d="M4.92893219,19.0710678 C1.02368927,15.1658249 1.02368927,8.83417511 4.92893219,4.92893219 C8.83417511,1.02368927 15.1658249,1.02368927 19.0710678,4.92893219 C22.9763107,8.83417511 22.9763107,15.1658249 19.0710678,19.0710678 C15.1658249,22.9763107 8.83417511,22.9763107 4.92893219,19.0710678 Z"/> -->
+                      </svg>
+                    </th>
                     <th>Vector</th>
                     <th>Phase Angle</th>
-                    <th>Probability</th>
+                    <th><span id="probHeader">Probability (Full)</span><span>
+                      <svg id="vectFilter" width="10px" height="10px" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M2.75 6a.75.75 0 000 1.5h18.5a.75.75 0 000-1.5H2.75zM6 11.75a.75.75 0 01.75-.75h10.5a.75.75 0 010 1.5H6.75a.75.75 0 01-.75-.75zm4 4.938a.75.75 0 01.75-.75h2.5a.75.75 0 010 1.5h-2.5a.75.75 0 01-.75-.75z"/></svg>
+                    </span>
+                      <span><span id="sortTable">
+                        <svg id="sortTableDown" width="10px" height="10px" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" aria-labelledby="sortDownIconTitle" stroke="#000000" stroke-width="1" stroke-linecap="square" stroke-linejoin="miter" fill="none" color="#000000"> <title id="sortDownIconTitle">Sort in descending order</title> <path d="M11 9H17"/> <path d="M11 5H19"/> <path d="M11 13H15"/> <path d="M10 17L7 20L4 17"/> <path d="M7 5V19"/> </svg>
+                        <svg id="sortTableUp" class="hidden" width="10px" height="10px" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" aria-labelledby="sortUpIconTitle" stroke="#000000" stroke-width="1" stroke-linecap="square" stroke-linejoin="miter" fill="none" color="#000000"> <title id="sortUpIconTitle">Sort in ascending order</title> <path d="M11 16H17"/> <path d="M11 20H19"/> <path d="M11 12H15"/> <path d="M4 8L7 5L10 8"/> <path d="M7 20L7 6"/> </svg>
+                      </span></span>
+                      <span><span id="cancelSortTable">
+                        <svg width="10px" height="10px" viewBox="0 0 50 50" xmlns="http://www.w3.org/2000/svg"><path d="M25 42c-9.4 0-17-7.6-17-17S15.6 8 25 8s17 7.6 17 17-7.6 17-17 17zm0-32c-8.3 0-15 6.7-15 15s6.7 15 15 15 15-6.7 15-15-6.7-15-15-15z"/><path d="M16 24h18v2H16z"/></svg>
+                      </span> </span>
+                    </th>
                   </tr>
                 </thead>
                 <tbody id="dataOutput">

@@ -193,7 +193,7 @@ const initGateViews = () => {
   Gates.BottomToolboxGroups.forEach((group) => {
     group.gates.forEach(gate => {
       if (gate != undefined && !unsupportedGates.includes(gate.name)) {
-        console.log("object", gate);
+        // console.log("object", gate);
         const gateView = document.createElement("span");
         gateView.setAttribute("class", "list-view tooltip-wrap");
         gateView.innerHTML = `

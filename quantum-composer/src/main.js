@@ -149,7 +149,8 @@ const changeTab = (tab) => {
             width: canvasBox.width,
             height: canvasBox.height
         }
-        document.simStat.table(simStatCalc())
+        // document.simStat.table(simStatCalc())
+        simStatCalc();
     }
 }
 window.addEventListener('message', (e) => {
@@ -182,7 +183,7 @@ window.addEventListener('message', (e) => {
         }
     }
 });
-
+let barData = [];
 let stateBarCalc = () =>{
     let qHeight = mostRecentStats.get().finalState.height();
     let qNumWire = mostRecentStats.get().circuitDefinition.numWires;
@@ -235,8 +236,35 @@ let stateBarCalc = () =>{
      */
     const data2 = stateObj.reduce((a, c) => (a[c.id] = c, a), {})
     data = probObj.map(o => Object.assign(o, data2[o.id]))
+    barData = data;
     return data;
 }
+function compareData(a,b){
+    const dataA = a.Probability;
+    const dataB = b.Probability;
+
+    // let comp = 0;
+    // if (dataA > dataB){
+    //     comp = -1;
+    // } else if (dataB < dataA){
+    //     comp = 1;
+    // }
+    // return comp*-1;
+    return dataB-dataA;
+}
+let sortSwitch = false;
+let handleSortedData = (barData) => {
+    let sortedData = barData.sort(compareData);
+    document.D3_FUNCTION.bar(sortedData);
+}
+document.getElementById("sortBar").addEventListener("click", function (e){
+    sortSwitch = !sortSwitch;
+    if (sortSwitch == false){
+        document.D3_FUNCTION.bar(stateBarCalc())
+    } else {
+        handleSortedData(barData)
+    }
+})
 let simStatCalc = () => {
     let qHeight = mostRecentStats.get().finalState.height();
     let qNumWire = mostRecentStats.get().circuitDefinition.numWires;
@@ -265,45 +293,105 @@ let simStatCalc = () => {
      * Code for data. Create element + append variant
      * ~550ms for load at 16 qubits
      */
-    // for (let i = 0; i < qVector.length; i++){
-    //     let output = document.createElement("tr");
-    //     let state = document.createElement("td");
-    //     state.innerText = qStates[i];
-    //     let vect = document.createElement("td");
-    //     vect.innerText = qVector[i];
-    //     let rad = document.createElement("td");
-    //     rad.innerText = qPhase[i];
-    //     let prob = document.createElement("td");
-    //     prob.innerText = qProb[i] + "%";
-    //     output.append(state,vect,rad,prob)
-    //     printVect.appendChild(output)
-    // }
+    for (let i = 0; i < qVector.length; i++){
+        let output = document.createElement("tr");
+        let state = document.createElement("td");
+        state.innerText = qStates[i];
+        let vect = document.createElement("td");
+        vect.innerText = qVector[i];
+        let rad = document.createElement("td");
+        rad.innerText = qPhase[i];
+        let prob = document.createElement("td");
+        prob.innerText = qProb[i] + "%";
+        output.append(state,vect,rad,prob)
+        printVect.appendChild(output)
+    }
     /**
      * Code for data. Array of object variant
      * ~112ms for load at 16 qubits
      */
-    let dataSet = []
-    let data = {}
-    for (let i = 0; i < qVector.length; i++){
-        data = {
-            "state": qStates[i],
-            "vect": qVector[i],
-            "rad": qPhase[i],
-            "prob": qProb[i]
-        }
-        dataSet.push(data)
-    }
-    return dataSet
-    // console.log(dataSet)
-    // document.getElementById("vectorTable").appendChild(printVect)
+    // let dataSet = []
+    // let data = {}
+    // for (let i = 0; i < qVector.length; i++){
+    //     data = {
+    //         "state": qStates[i],
+    //         "vect": qVector[i],
+    //         "rad": qPhase[i],
+    //         "prob": qProb[i]
+    //     }
+    //     dataSet.push(data)
+    // }
+    // return dataSet
+    document.getElementById("vectorTable").appendChild(printVect)
 }
+let tableSortSwitch = false;
+let sortTable = () => {
+    let table, rows, switching, i, x, y, shouldSwitch;
+    table = document.getElementById("dataOutput");
+    switching = true;
+    if (tableSortSwitch == false) {
+        while (switching) {
+            switching = false;
+            rows = table.rows;
+            for (i = 0; i < rows.length; i++) {
+                shouldSwitch = false;
+                x = rows[i].getElementsByTagName("td")[3];
+                y = rows[i + 1].getElementsByTagName("td")[3];
+                if (parseFloat(x.innerHTML) > parseFloat(y.innerHTML)) {
+                    shouldSwitch = true;
+                    break;
+                }
+            }
+            if (shouldSwitch) {
+                rows[i].parentNode.insertBefore(rows[i + 1], rows[i]);
+                switching = true;
+            }
+        }
+    } else {
+        while (switching) {
+            switching = false;
+            rows = table.rows;
+            for (i = 0; i < rows.length; i++) {
+                shouldSwitch = false;
+                x = rows[i].getElementsByTagName("td")[3];
+                y = rows[i + 1].getElementsByTagName("td")[3];
+                if (parseFloat(x.innerHTML) < parseFloat(y.innerHTML)) {
+                    shouldSwitch = true;
+                    break;
+                }
+            }
+            if (shouldSwitch) {
+                rows[i].parentNode.insertBefore(rows[i + 1], rows[i]);
+                switching = true;
+            }
+        }
+    }
+}
+document.getElementById("sortTable").addEventListener("click", function (e){
+    tableSortSwitch = !tableSortSwitch;
+    if (tableSortSwitch){
+        document.getElementById("sortTableDown").classList.add("hidden")
+        document.getElementById("sortTableUp").classList.remove("hidden")
+    } else {
+        document.getElementById("sortTableDown").classList.remove("hidden")
+        document.getElementById("sortTableUp").classList.add("hidden")
+    }
+    sortTable();
+})
+document.getElementById("cancelSortTable").addEventListener("click", function (e){
+    tableSortSwitch = false;
+    document.getElementById("sortTableDown").classList.remove("hidden")
+    document.getElementById("sortTableUp").classList.add("hidden")
+    simStatCalc();
+})
 let vectFilterSwitch = false;
 document.getElementById("vectFilter").addEventListener('click', function (e) {
     vectFilterSwitch = !vectFilterSwitch;
     let table = document.getElementById("vectorTable");
     let tr = table.getElementsByTagName("tr")
     if (vectFilterSwitch == true) {
-        document.getElementById("vectFilter").innerHTML = "Show all states"
+        // document.getElementById("vectFilter").innerHTML = "Show all states"
+        document.getElementById("probHeader").innerHTML = "Probability (Filtered)"
         document.getElementById("vectSearch").innerHTML = ""
         for (let i = 0; i < tr.length; i++) {
             let td = tr[i].getElementsByTagName("td")[3];
@@ -317,10 +405,24 @@ document.getElementById("vectFilter").addEventListener('click', function (e) {
             }
         }
     } else {
-        document.getElementById("vectFilter").innerHTML = "Hide zero states"
+        // document.getElementById("vectFilter").innerHTML = "Hide zero states"
+        document.getElementById("probHeader").innerHTML = "Probability (Full)"
         document.getElementById("vectSearch").innerHTML = ""
-        document.simStat.table(simStatCalc())
+        // document.simStat.table(simStatCalc())
+        simStatCalc();
     }
+})
+document.getElementById("stateSearchButton").addEventListener("click", function (e){
+    document.getElementById("stateHeaderText").classList.add("hidden");
+    document.getElementById("stateSearchButton").classList.add("hidden");
+    document.getElementById("vectSearch").classList.remove("hidden");
+    document.getElementById("vectSearchCancel").classList.remove("hidden");
+})
+document.getElementById("vectSearchCancel").addEventListener("click", function (e){
+    document.getElementById("stateHeaderText").classList.remove("hidden");
+    document.getElementById("stateSearchButton").classList.remove("hidden");
+    document.getElementById("vectSearch").classList.add("hidden");
+    document.getElementById("vectSearchCancel").classList.add("hidden");
 })
 document.getElementById("vectSearch").addEventListener("input", function (e) {
     let search = document.getElementById("vectSearch").value;
@@ -382,11 +484,19 @@ stateBarChartFilter.addEventListener('click',()=>{
     barDataFilterSwitch = !barDataFilterSwitch;
     if (barDataFilterSwitch == false){
         stateBarChartFilter.innerHTML = "Hide zero states";
-        document.D3_FUNCTION.bar(stateBarCalc());
+        if (sortSwitch == false) {
+            document.D3_FUNCTION.bar(stateBarCalc());
+        } else {
+            handleSortedData(barData);
+        }
     } else {
         stateBarChartFilter.innerHTML = "Show all states";
         let barDataFilter = stateBarCalc().filter(val => !val.Probability.match(/^0.0000$/));
-        document.D3_FUNCTION.bar(barDataFilter);
+        if (sortSwitch == false) {
+            document.D3_FUNCTION.bar(barDataFilter);
+        } else {
+            handleSortedData(barDataFilter);
+        }
     }
 })
 revision.latestActiveCommit().subscribe(jsonText => {
@@ -394,10 +504,18 @@ revision.latestActiveCommit().subscribe(jsonText => {
     let newInspector = displayed.get().withCircuitDefinition(circuitDef);
     displayed.set(newInspector);
     if (barDataFilterSwitch == false) {
-        document.D3_FUNCTION.bar(stateBarCalc());
+        if (sortSwitch == false) {
+            document.D3_FUNCTION.bar(stateBarCalc());
+        } else {
+            handleSortedData(barData)
+        }
     } else {
         let barDataFilter = stateBarCalc().filter(val => !val.Probability.match(/^0.0000$/));
-        document.D3_FUNCTION.bar(barDataFilter);
+        if (sortSwitch == false) {
+            document.D3_FUNCTION.bar(barDataFilter);
+        } else {
+            handleSortedData(barDataFilter)
+        }
     }
 
 });
@@ -679,11 +797,40 @@ canvasDiv.addEventListener('mouseup', () => {
     startResizeCodeArea = false;
     startResizeGateArea = false;
     startResizeChartArea = false;
+    if (barDataFilterSwitch == false) {
+        if (sortSwitch == false) {
+            document.D3_FUNCTION.bar(stateBarCalc());
+        } else {
+            handleSortedData(barData)
+        }
+    } else {
+        let barDataFilter = stateBarCalc().filter(val => !val.Probability.match(/^0.0000$/));
+        if (sortSwitch == false){
+            document.D3_FUNCTION.bar(barDataFilter);
+        } else {
+            handleSortedData(barDataFilter)
+        }
+    }
+
 })
 canvasDiv.addEventListener('mouseleave', () => {
     startResizeCodeArea = false;
     startResizeGateArea = false;
     startResizeChartArea = false;
+    if (barDataFilterSwitch == false) {
+        if (sortSwitch == false) {
+            document.D3_FUNCTION.bar(stateBarCalc());
+        } else {
+            handleSortedData(barData)
+        }
+    } else {
+        let barDataFilter = stateBarCalc().filter(val => !val.Probability.match(/^0.0000$/));
+        if (sortSwitch == false){
+            document.D3_FUNCTION.bar(barDataFilter);
+        } else {
+            handleSortedData(barDataFilter)
+        }
+    }
     document.GRAB_GATE = undefined;
     viewState.getInstance().highlightGate = null;
     viewState.getInstance().canShowGateMenu = true;
