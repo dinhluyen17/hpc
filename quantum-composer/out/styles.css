@@ -177,33 +177,27 @@ small.smaller {
     font-size: xx-small;
 }
 
-/* .Displays {
-    background-color: #0cff18;
+.Probes, .Displays, .Half, .Quarter, .Eighth, .Spinning, .Formulaic, .Parametrized, .Sampling, .Parity, .Order, .Frequency, .Inputs, .Arithmetic, .Compare, .Modular, .Scalar, .Custom  {
+    border-radius: 10px;
+    border: none !important;
+    font-family: "Arial Narrow", Arial;
+    color: #ffffff;
 }
 
-.Quarter {
-    background-color: #c7bdbd;
+.Probes, .Displays {
+    background-color: #f1ac2e;
+    border-radius: 25%;
+    border: none !important;
+    font-family: "Arial Narrow", Arial;
 }
 
-.Spinning, .Formulaic {
-    background-color: #Edf1b5;
+.Half, .Quarter, .Eighth, .Spinning, .Formulaic, .Parametrized, .Sampling, .Parity {
+    background-color: #24b1a0;
 }
 
-.Parity {
-    color: orangered;
+.Order, .Frequency, .Inputs, .Arithmetic, .Compare, .Modular, .Scalar, .Custom {
+    background-color: #585df4;
 }
-
-.Order {
-    background-color: #A1af05;
-}
-
-.Inputs {
-    background-color: #dcdfdb;
-}
-
-.Modular {
-    background-color: #8fc2ec;
-} */
 
 .gate-area-body-section-label {
     font-size: 16px;
