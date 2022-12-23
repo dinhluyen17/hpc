@@ -995,9 +995,6 @@ function resizeChartArea(e) {
         if (viewState.getInstance().chartAreaHeight < 50) {
             viewState.getInstance().chartAreaHeight = 50;
         }
-        if (viewState.getInstance().chartAreaHeight > 200) {
-            viewState.getInstance().chartAreaHeight = 200;
-        }
         updateSizeViews(canvasDiv);
     }
 }
