@@ -102,8 +102,10 @@ const initGateViews = () => {
     ['ypar', 'y<br>[par]'],
     ['xpar', 'x<br>[par]'],
     ['Reverse', '<small class="smaller">Reverse</small>'],
-    ['Interleave', 'IL'],
-    ['Deinterleave', 'DIL'],
+    ['<<<', '<div style="display: flex; align-items:center; justify-content:center"><img src="./icon/<<3.png" style="width: 35px; height:35px; border:none" /></div>'],
+    ['>>>', '<div style="display: flex; align-items:center; justify-content:center"><img src="./icon/>>3.png" style="width: 35px; height:35px; border:none" /></div>'],
+    ['Interleave', '<div style="display: flex; align-items:center; justify-content:center"><img src="./icon/weave6.png" style="width: 35px; height:35px; border:none" /></div>'],
+    ['Deinterleave', '<div style="display: flex; align-items:center; justify-content:center"><img src="./icon/split6.png" style="width: 35px; height:35px; border:none" /></div>'],
     ['QFT^†', 'QFT<sup>†</sup>'],
     ['Grad^½', '<small>Grad</small><sup>½</sup>'],
     ['Grad^-½', '<small>Grad</small><sup>-½</sup>'],
@@ -193,7 +195,6 @@ const initGateViews = () => {
   Gates.BottomToolboxGroups.forEach((group) => {
     group.gates.forEach(gate => {
       if (gate != undefined && !unsupportedGates.includes(gate.name)) {
-        console.log("object", gate);
         const gateView = document.createElement("span");
         gateView.setAttribute("class", "list-view tooltip-wrap");
         gateView.innerHTML = `
