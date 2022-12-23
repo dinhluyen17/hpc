@@ -338,7 +338,6 @@ const circuitEdit = {
                 $(".tooltip-content").removeClass("tooltipLeft tooltipRight");
                 $(this).find('.tooltip-content').addClass("tooltipRight");
             }
-            // console.log("stop here");
         });
 
     },

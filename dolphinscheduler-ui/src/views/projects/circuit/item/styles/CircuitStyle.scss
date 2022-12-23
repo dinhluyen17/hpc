@@ -1,4 +1,8 @@
 .tab-button.active {
-    background-color: rgb(92, 92, 219);
+    background-color: rgb(0, 131, 250);
+    color: white;
+}
+.tab-button.active:hover {
+    background-color: rgb(0, 131, 250);
     color: white;
 }
