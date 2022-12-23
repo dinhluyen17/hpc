@@ -1460,7 +1460,7 @@ class DisplayedCircuit {
         let topRect = this.gateRect(0, col);
         let bottomRect = this.gateRect(numWire-1, col);
         // let gridRect = new Rect(topRect.x, topRect.y, 0, bottomRect.bottom() - topRect.y);
-        let gridRect = new Rect(50, topRect.y, 0, bottomRect.bottom());
+        let gridRect = new Rect(25, 25, 0, bottomRect.bottom());
         // let gridRect = new Rect(colCount == rowCount ? width/4 : width/3, topRect.y, 0, bottomRect.bottom() - topRect.y);
         // let gridRect = new Rect(0, topRect.y, 0, bottomRect.bottom() - topRect.y);
         return gridRect.withW(gridRect.h * (colCount/rowCount));
