@@ -216,12 +216,14 @@ small.smaller {
     margin: 10px 5px 10px 5px;
     border: 1px solid #EDECF3;
     flex: 1;
+    border-radius: 5px;
 }
 
 .gate-area-body-advanced-gates {
     margin: 10px 5px 10px 5px;
     border: 1px solid #EDECF3;
     flex: 1;
+    border-radius: 5px;
 }
 
 .group-gate-name {
