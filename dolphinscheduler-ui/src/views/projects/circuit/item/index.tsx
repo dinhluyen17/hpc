@@ -17,7 +17,7 @@
 
 import { useI18n } from 'vue-i18n'
 import { Router, useRoute, useRouter } from 'vue-router'
-import { defineComponent, onMounted, toRefs, ref, watch, getCurrentInstance } from 'vue'
+import { defineComponent, onMounted, onBeforeUnmount, toRefs, ref, watch, getCurrentInstance } from 'vue'
 import Card from '@/components/card'
 import { useCircuit } from './use-circuit'
 import { NButton, NGradientText, NIcon, NInput, NSpace } from 'naive-ui'
@@ -188,6 +188,10 @@ const circuitItem = defineComponent({
     onMounted(() => {
       requestData()
       window.addEventListener('message', handleReceiveMessage)
+    })
+
+    onBeforeUnmount(() => {
+      window.removeEventListener('message', handleReceiveMessage)
     })
 
     watch(
