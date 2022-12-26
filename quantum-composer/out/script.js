@@ -5,7 +5,7 @@ document.D3_FUNCTION = {
         if (barHeight == undefined){
             barHeight = parseInt(divWrapper.style.height);
         }
-        let margin = { top: 30, right: 30, bottom: 70, left: 60 },
+        let margin = { top: 30, right: 30, bottom: 90, left: 60 },
             width = ((barData.length*15) >= parseInt(divWrapper.style.width)?barData.length*15:parseInt(divWrapper.style.width)) - margin.left - margin.right,
             height = barHeight -margin.top - margin.bottom;
             // width = (barData.length * 15) - margin.left - margin.right,
@@ -34,10 +34,11 @@ document.D3_FUNCTION = {
         svg.append("text")
             .attr("class", "x label")
             .attr("text-anchor", "end")
-            .attr("dy", 2.5 + (Math.sqrt(barData.length) / 10) + "rem")
+            .attr("dy",3.2+((Math.log(barData.length)/Math.log(2))/10) + "rem")
             .attr("x", width)
             .attr("y", height)
             .text("Computational basis states")
+        console.log((Math.log(barData.length)/Math.log(2))/10)
         let y = d3.scaleLinear()
             // .domain([0,100])
             .range([height, 0])
@@ -67,15 +68,15 @@ document.D3_FUNCTION = {
         g.append("rect")
             .attr("class", "bar1")
             .attr("x", function (d) {
-               if (x.bandwidth() > width/10){
-                   return x(d.State) + x.bandwidth()/2 - width/10/2
+               if (x.bandwidth() > width/20){
+                   return x(d.State) + x.bandwidth()/2 - width/20/2
                } else {
                    return x(d.State)
                }
             })
             .attr("y", function (d) { return y(d.Probability); })
             .attr("width", function (d) {
-                return x.bandwidth() > width/10 ? width/10 : x.bandwidth()
+                return x.bandwidth() > width/20 ? width/20 : x.bandwidth()
             })
             .attr("height", function (d) { return height - y(d.Probability) })
             .attr("fill", "#5BB0F8")
@@ -88,9 +89,17 @@ document.D3_FUNCTION = {
             .on("mouseout", () => tooltip.transition().duration(500).style("opacity", 0))
         g.append("rect")
             .attr("class", "bar2")
-            .attr("x", function (d) { return x(d.State) })
+            .attr("x", function (d) {
+                if (x.bandwidth() > width/20){
+                    return x(d.State) + x.bandwidth()/2 - width/20/2
+                } else {
+                    return x(d.State)
+                }
+            })
             .attr("y", function (d) { return d.Probability > 50 ? 0 : d.Probability })
-            .attr("width", x.bandwidth())
+            .attr("width", function (d) {
+                return x.bandwidth() > width/20 ? width/20 : x.bandwidth()
+            })
             .attr("height", height)
             .style("opacity", 0)
             .on("mouseover", (d) => {
@@ -99,7 +108,9 @@ document.D3_FUNCTION = {
                     .style('left', `${d3.event.layerX}px`)
                     .style('top', `${d3.event.layerY}px`);
             })
-            .on("mouseout", () => tooltip.transition().duration(500).style("opacity", 0))
+            .on("mouseout", () => {
+                tooltip.transition().duration(500).style("opacity", 0)
+            })
     }
 }
 document.simStat = {
