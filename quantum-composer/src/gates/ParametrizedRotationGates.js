@@ -38,7 +38,7 @@ function configurableRotationDrawer(pattern, xyz, tScale) {
     let yScale = [1, 1, -0.5][xyz];
     return args => {
         GatePainting.paintBackground(args, Config.TIME_DEPENDENT_HIGHLIGHT_COLOR);
-        GatePainting.paintOutline(args);
+        //GatePainting.paintOutline(args);
         let text = pattern;
         if (!args.isInToolbox) {
             text = text.split('f(t)').join(args.gate.param);
@@ -62,7 +62,7 @@ function exponent_to_A_len_painter(args) {
     let denom_exponent = v === undefined ? 'ⁿ' : Util.digits_to_superscript_digits('' + v.length);
     let symbol = args.gate.symbol.replace('ⁿ', denom_exponent);
     GatePainting.paintBackground(args);
-    GatePainting.paintOutline(args);
+    //GatePainting.paintOutline(args);
     GatePainting.paintGateSymbol(args, symbol);
 }
 

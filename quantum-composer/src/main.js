@@ -883,3 +883,6 @@ function resizeChartArea(e) {
         updateSizeViews(canvasDiv);
     }
 }
+setTimeout(() => {
+    redrawThrottle.trigger();
+}, 500);

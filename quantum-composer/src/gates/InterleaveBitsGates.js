@@ -93,7 +93,7 @@ let interleavePainter = reverse => args => {
     }
 
     GatePainting.paintBackground(args);
-    GatePainting.paintOutline(args);
+    //GatePainting.paintOutline(args);
     GatePainting.paintResizeTab(args);
 
     let x1 = args.rect.x + 6;
@@ -111,7 +111,7 @@ let interleavePainter = reverse => args => {
             new Point(x1 + 8, y1),
             new Point(x2 - 8, y2),
             new Point(x2, y2)
-        ]);
+        ], 'white');
     }
 };
 

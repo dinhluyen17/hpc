@@ -243,6 +243,7 @@ class Gate {
          * @private
          */
         this._showAsReachesOtherWires = false;
+        this.colorIndex = 0;
     }
 
     /**
@@ -327,6 +328,15 @@ class Gate {
      * @param {undefined|!string|!number|!Array} value
      * @returns {!Gate}
      */
+    getBgColor() {
+        if (this.colorIndex == 2) {
+            return '#F3A339';
+        }
+        if (this.colorIndex == 1) {
+            return '#4E4FED';            
+        }
+        return '#00A895';
+    }
     withParam(value) {
         let g = this._copy();
         g.param = value;
@@ -491,6 +501,11 @@ class Gate {
 class GateBuilder {
     constructor() {
         this.gate = new Gate();
+    }
+
+    setColorIndex(index) {
+        this.gate.colorIndex = index;
+        return this;
     }
 
     setSerializedIdAndSymbol(id) {

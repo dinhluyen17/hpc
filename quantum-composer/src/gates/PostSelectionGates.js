@@ -18,6 +18,7 @@ import {Complex} from "../math/Complex.js"
 import {GateBuilder} from "../circuit/Gate.js"
 import {GatePainting} from "../draw/GatePainting.js"
 import {Matrix} from "../math/Matrix.js"
+import { Config } from "../Config.js";
 
 let PostSelectionGates = {};
 
@@ -25,20 +26,21 @@ let POST_SELECT_DRAWER = args => {
     if (args.isInToolbox  || args.isHighlighted) {
         GatePainting.DEFAULT_DRAWER(args);
     } else {
-        args.painter.fillRect(args.rect, 'white');
+        args.painter.fillRect(args.rect, args.gate.getBgColor());
         GatePainting.paintGateSymbol(args);
     }
 
     if (!args.isInToolbox) {
         let {x, y, w, h} = args.rect;
-        args.painter.print("post-", x + w / 2, y, 'center', 'hanging', 'red', '10px sans-serif', w, h / 2);
-        args.painter.print("select", x + w / 2, y + h, 'center', 'bottom', 'red', '10px sans-serif', w, h / 2);
+        //args.painter.print("post-", x + w / 2, y, 'center', 'hanging', 'white', '10px sans-serif', w, h / 2);
+        //args.painter.print("select", x + w / 2, y + h, 'center', 'bottom', 'white', '10px sans-serif', w, h / 2);
     }
 };
 
 /** @type {!Gate} */
 PostSelectionGates.PostSelectOff = new GateBuilder().
     setSerializedIdAndSymbol("|0⟩⟨0|").
+    setColorIndex(1).
     setTitle("Postselect Off").
     setBlurb("Keeps OFF states, discards/retries ON states.").
     setDrawer(POST_SELECT_DRAWER).
@@ -49,6 +51,7 @@ PostSelectionGates.PostSelectOff = new GateBuilder().
 PostSelectionGates.PostSelectOn = new GateBuilder().
     setAlternate(PostSelectionGates.PostSelectOff).
     setSerializedIdAndSymbol("|1⟩⟨1|").
+    setColorIndex(1).
     setTitle("Postselect On").
     setBlurb("Keeps On states, discards/retries Off states.").
     setDrawer(POST_SELECT_DRAWER).

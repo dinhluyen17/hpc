@@ -12,6 +12,7 @@ body {
     letter-spacing: .01rem;
     line-height: 1rem;
     text-align: left;
+    color: rgb(51, 54, 57);
     white-space: nowrap;
 }
 
@@ -204,9 +205,8 @@ small.smaller {
 }
 
 .gate-area-body-section-label {
-    font-size: 16px;
+    font-size: 0.9rem;
     font-weight: 400;
-    color: black;
     margin-left: 10px;
 }
 
@@ -214,12 +214,14 @@ small.smaller {
     margin: 10px 5px 10px 5px;
     border: 1px solid #EDECF3;
     flex: 1;
+    border-radius: 5px;
 }
 
 .gate-area-body-advanced-gates {
     margin: 10px 5px 10px 5px;
     border: 1px solid #EDECF3;
     flex: 1;
+    border-radius: 5px;
 }
 
 .group-gate-name {
@@ -496,13 +498,11 @@ small.smaller {
 .tooltip-wrap .tooltip-content {
     display: none;
     position: absolute;
-    /* bottom: 5%;
-    left: 100%; */
-    background-color: #8e928d;
+    background-color: #f5f6f8;
     padding: .5em;
     z-index: 3;
     line-height: 0.55;
-    border-radius: 10px;
+    border-radius: 8px;
     font-size: small;
 }
 
@@ -512,12 +512,12 @@ small.smaller {
 
 .tooltipLeft{
     bottom: 5%;
-    right: 90% !important;
+    right: 90%;
   }
   
   .tooltipRight{
     bottom: 5%;
-    left: 90% !important;
+    left: 90%;
   }
 
 .circuit-area-chart .barTooltip {
@@ -569,7 +569,6 @@ small.smaller {
 
 #drawCanvasSim {
     /*max-width: 100%;*/
-    /*margin-left: 10%;*/
 }
 
 #canvasSimWrapper,

@@ -1,9 +1,15 @@
 //Draw energy graph
 document.D3_FUNCTION = {
-    bar: (barData) => {
+    bar: (barData, barHeight) => {
+        let divWrapper = document.getElementById("stateBarChart");
+        if (barHeight == undefined){
+            barHeight = parseInt(divWrapper.style.height);
+        }
         let margin = { top: 30, right: 30, bottom: 70, left: 60 },
-            width = (barData.length * 15) - margin.left - margin.right,
-            height = 190 - margin.top - margin.bottom;
+            width = ((barData.length*15) >= parseInt(divWrapper.style.width)?barData.length*15:parseInt(divWrapper.style.width)) - margin.left - margin.right,
+            height = barHeight -margin.top - margin.bottom;
+            // width = (barData.length * 15) - margin.left - margin.right,
+            // height = 190 - margin.top - margin.bottom;
         if (width <= 600) {
             width = 600;
         }
@@ -16,7 +22,7 @@ document.D3_FUNCTION = {
             .append("g")
             .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
         let x = d3.scaleBand()
-            .range([0, width])
+            .range([0,width])
             .domain(barData.map(function (d) { return d.State; }))
             .padding(0.2);
         svg.append("g")
@@ -40,7 +46,7 @@ document.D3_FUNCTION = {
 
         svg.append("g")
             .call(d3.axisLeft(y)
-                .ticks(4)
+                .ticks(Math.ceil(barHeight/100)+1)
             );
         svg.append("text")
             .attr("class", "y label")
@@ -60,9 +66,17 @@ document.D3_FUNCTION = {
         //         .enter()
         g.append("rect")
             .attr("class", "bar1")
-            .attr("x", function (d) { return x(d.State); })
+            .attr("x", function (d) {
+               if (x.bandwidth() > width/10){
+                   return x(d.State) + x.bandwidth()/2 - width/10/2
+               } else {
+                   return x(d.State)
+               }
+            })
             .attr("y", function (d) { return y(d.Probability); })
-            .attr("width", x.bandwidth())
+            .attr("width", function (d) {
+                return x.bandwidth() > width/10 ? width/10 : x.bandwidth()
+            })
             .attr("height", function (d) { return height - y(d.Probability) })
             .attr("fill", "#5BB0F8")
             .on("mouseover", (d) => {
@@ -86,24 +100,14 @@ document.D3_FUNCTION = {
                     .style('top', `${d3.event.layerY}px`);
             })
             .on("mouseout", () => tooltip.transition().duration(500).style("opacity", 0))
-        // switch (barData.length){
-        //     case 256:
-        //         document.getElementById("simulateOutput").style.width = "625px"
-        //         break;
-        //     case 8192:
-        //         document.getElementById("simulateOutput").style.width = "575px"
-        //     case 16384:
-        //         document.getElementById("simulateOutput").style.width = "525px"
-        //         break;
-        // }
     }
 }
 document.simStat = {
     table: (data) => {
-        let table = document.getElementById('dataOutput');
-        for (let i = 0; i < data.length; i++){
-            table.innerHTML += `<tr><td>${data[i].state}</td><td>${data[i].vect}</td><td>${data[i].rad}</td><td>${data[i].prob}</td></tr>`
-        }
+        // let table = document.getElementById('dataOutput');
+        // for (let i = 0; i < data.length; i++){
+        //     table.innerHTML += `<tr><td>${data[i].state}</td><td>${data[i].vect}</td><td>${data[i].rad}</td><td>${data[i].prob}</td></tr>`
+        // }
     }
 }
 
@@ -345,7 +349,6 @@ const circuitEdit = {
                 $(".tooltip-content").removeClass("tooltipLeft tooltipRight");
                 $(this).find('.tooltip-content').addClass("tooltipRight");
             }
-            console.log("stop here");
         });
 
     },

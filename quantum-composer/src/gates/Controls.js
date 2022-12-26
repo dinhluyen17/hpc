@@ -23,6 +23,7 @@ import {Config} from "../Config.js"
 import {ketArgs, ketShaderPermute} from "../circuit/KetShaderUtil.js";
 import {WglArg} from "../webgl/WglArg.js";
 import {Util} from "../base/Util.js";
+import {Rect} from "../math/Rect.js"
 
 let Controls = {};
 
@@ -36,9 +37,9 @@ Controls.Control = new GateBuilder().
     setDrawer(args => {
         if (args.isInToolbox || args.isHighlighted) {
             GatePainting.paintBackground(args);
-            GatePainting.paintOutline(args);
+            //GatePainting.paintOutline(args);
         }
-        args.painter.fillCircle(args.rect.center(), 5, "black");
+        args.painter.fillCircle(args.rect.center(), 5, args.gate.getBgColor());
     }).
     gate;
 
@@ -53,11 +54,11 @@ Controls.AntiControl = new GateBuilder().
     setDrawer(args => {
         if (args.isInToolbox || args.isHighlighted) {
             GatePainting.paintBackground(args);
-            GatePainting.paintOutline(args);
+            //GatePainting.paintOutline(args);
         }
         let p = args.rect.center();
-        args.painter.fillCircle(p, 5);
-        args.painter.strokeCircle(p, 5);
+        args.painter.fillCircle(p, 5, 'white');
+        args.painter.strokeCircle(p, 5, args.gate.getBgColor());
     }).
     gate;
 
@@ -77,12 +78,12 @@ Controls.XAntiControl = new GateBuilder().
     setDrawer(args => {
         if (args.isInToolbox || args.isHighlighted) {
             GatePainting.paintBackground(args);
-            GatePainting.paintOutline(args);
+            //GatePainting.paintOutline(args);
         }
         let p = args.rect.center();
-        args.painter.fillCircle(p, 5);
-        args.painter.strokeCircle(p, 5);
-        args.painter.strokeLine(p.offsetBy(-5, 0), p.offsetBy(+5, 0));
+        args.painter.fillCircle(p, 5, 'white');
+        args.painter.strokeCircle(p, 5, args.gate.getBgColor());
+        args.painter.strokeLine(p.offsetBy(-5, 0), p.offsetBy(+5, 0), args.gate.getBgColor());
     }).
     gate;
 
@@ -103,13 +104,13 @@ Controls.XControl = new GateBuilder().
     setDrawer(args => {
         if (args.isInToolbox || args.isHighlighted) {
             GatePainting.paintBackground(args);
-            GatePainting.paintOutline(args);
+            //GatePainting.paintOutline(args);
         }
         let p = args.rect.center();
-        args.painter.fillCircle(p, 5);
-        args.painter.strokeCircle(p, 5);
-        args.painter.strokeLine(p.offsetBy(0, -5), p.offsetBy(0, +5));
-        args.painter.strokeLine(p.offsetBy(-5, 0), p.offsetBy(+5, 0));
+        args.painter.fillCircle(p, 5, 'white');
+        args.painter.strokeCircle(p, 5, args.gate.getBgColor());
+        args.painter.strokeLine(p.offsetBy(0, -5), p.offsetBy(0, +5), args.gate.getBgColor());
+        args.painter.strokeLine(p.offsetBy(-5, 0), p.offsetBy(+5, 0), args.gate.getBgColor());
     }).
     gate;
 
@@ -129,15 +130,15 @@ Controls.YAntiControl = new GateBuilder().
     setDrawer(args => {
         if (args.isInToolbox || args.isHighlighted) {
             GatePainting.paintBackground(args);
-            GatePainting.paintOutline(args);
+            //GatePainting.paintOutline(args);
         }
         let p = args.rect.center();
-        args.painter.fillCircle(p, 5);
-        args.painter.strokeCircle(p, 5);
+        args.painter.fillCircle(p, 5, 'white');
+        args.painter.strokeCircle(p, 5, args.gate.getBgColor());
         let r = 5*Math.sqrt(0.5)*1.1;
-        args.painter.strokeLine(p.offsetBy(+r, -r), p.offsetBy(-r, +r));
+        args.painter.strokeLine(p.offsetBy(+r, -r), p.offsetBy(-r, +r), args.gate.getBgColor());
         if (args.isInToolbox || args.isHighlighted) {
-            GatePainting.paintOutline(args);
+            //GatePainting.paintOutline(args);
         }
     }).
     gate;
@@ -159,16 +160,16 @@ Controls.YControl = new GateBuilder().
     setDrawer(ctx => {
         if (ctx.isInToolbox || ctx.isHighlighted) {
             GatePainting.paintBackground(ctx);
-            GatePainting.paintOutline(ctx);
+            //GatePainting.paintOutline(ctx);
         }
         let p = ctx.rect.center();
-        ctx.painter.fillCircle(p, 5);
-        ctx.painter.strokeCircle(p, 5);
+        ctx.painter.fillCircle(p, 5, 'white');
+        ctx.painter.strokeCircle(p, 5, ctx.gate.getBgColor());
         let r = 5*Math.sqrt(0.5);
-        ctx.painter.strokeLine(p.offsetBy(+r, +r), p.offsetBy(-r, -r));
-        ctx.painter.strokeLine(p.offsetBy(+r, -r), p.offsetBy(-r, +r));
+        ctx.painter.strokeLine(p.offsetBy(+r, +r), p.offsetBy(-r, -r), ctx.gate.getBgColor());
+        ctx.painter.strokeLine(p.offsetBy(+r, -r), p.offsetBy(-r, +r), ctx.gate.getBgColor());
         if (ctx.isInToolbox || ctx.isHighlighted) {
-            GatePainting.paintOutline(ctx);
+            //GatePainting.paintOutline(ctx);
         }
     }).
     gate;
@@ -218,15 +219,15 @@ function parityGatherScatter(ctx, order) {
 function parityDrawer(name) {
     return args => {
         if (args.isInToolbox || args.isHighlighted) {
-            GatePainting.paintBackground(args);
-            GatePainting.paintOutline(args);
+            //GatePainting.paintBackground(args);
+            //GatePainting.paintOutline(args);
         }
         let center = args.rect.paddedBy(-10);
-        args.painter.fillRect(center);
-        args.painter.strokeRect(center);
-        args.painter.fillRect(center.paddedBy(-4).skipBottom(-6).skipTop(-6));
-        args.painter.printLine(name, center, 0.5, undefined, undefined, undefined, 0);
-        args.painter.printLine('par', center, 0.5, 'red', 10, undefined, 1);
+        args.painter.fillRect(args.rect);
+        //args.painter.strokeRect(center);
+        //args.painter.fillRect(center.paddedBy(-4).skipBottom(-6).skipTop(-6));
+        args.painter.printLine(name, center, 0.5, 'white', undefined, undefined, 0);
+        args.painter.printLine('par', center, 0.5, 'white', 10, undefined, 1.5);
     }
 }
 

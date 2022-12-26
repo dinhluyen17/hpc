@@ -12,6 +12,7 @@ body {
     letter-spacing: .01rem;
     line-height: 1rem;
     text-align: left;
+    color: rgb(51, 54, 57);
     white-space: nowrap;
 }
 
@@ -109,18 +110,24 @@ body {
     padding: 5px 8px;
     box-sizing: border-box;
     height: 2rem;
+    border: none;
+    background-color: #f5f6f8;
+    border-radius: 5px;
 }
 
 .gate-area-header-btn {
     cursor: pointer;
     border: 1px solid #000000;
-    background-color: #FFFFFF;
+    background-color: #d1d0d7;
     margin-left: 8px;
     display: flex;
     justify-content: center;
     align-items: center;
     width: 2rem;
     height: 2rem;
+    border-radius: 5px;
+    background-color: #f5f6f8;
+    border: none;
 }
 
 .gate-area-header-btn svg {
@@ -129,7 +136,7 @@ body {
 
 .gate-area-header-btn:hover,
 .gate-area-header-btn.active {
-    background-color: #000000;
+    background-color: #56698e;
 }
 
 .gate-area-header-btn:hover svg,
@@ -177,38 +184,31 @@ small.smaller {
     font-size: xx-small;
 }
 
-/* .Displays {
-    background-color: #0cff18;
+.Probes, .Displays, .Half, .Quarter, .Eighth, .Spinning, .Formulaic, .Parametrized, .Sampling, .Parity, .Order, .Frequency, .Inputs, .Arithmetic, .Compare, .Modular, .Scalar, .Custom  {
+    border-radius: 10px;
+    border: none !important;
+    font-family: "Arial Narrow", Arial;
+    color: #ffffff;
 }
 
-.Quarter {
-    background-color: #c7bdbd;
+.Probes, .Displays {
+    background-color: #f1ac2e;
+    border-radius: 25%;
+    border: none !important;
+    font-family: "Arial Narrow", Arial;
 }
 
-.Spinning, .Formulaic {
-    background-color: #Edf1b5;
+.Half, .Quarter, .Eighth, .Spinning, .Formulaic, .Parametrized, .Sampling, .Parity {
+    background-color: #24b1a0;
 }
 
-.Parity {
-    color: orangered;
+.Order, .Frequency, .Inputs, .Arithmetic, .Compare, .Modular, .Scalar, .Custom {
+    background-color: #585df4;
 }
-
-.Order {
-    background-color: #A1af05;
-}
-
-.Inputs {
-    background-color: #dcdfdb;
-}
-
-.Modular {
-    background-color: #8fc2ec;
-} */
 
 .gate-area-body-section-label {
-    font-size: 16px;
+    font-size: 0.9rem;
     font-weight: 400;
-    color: black;
     margin-left: 10px;
 }
 
@@ -216,12 +216,14 @@ small.smaller {
     margin: 10px 5px 10px 5px;
     border: 1px solid #EDECF3;
     flex: 1;
+    border-radius: 5px;
 }
 
 .gate-area-body-advanced-gates {
     margin: 10px 5px 10px 5px;
     border: 1px solid #EDECF3;
     flex: 1;
+    border-radius: 5px;
 }
 
 .group-gate-name {
@@ -370,7 +372,20 @@ small.smaller {
     margin-top: 8px;
 }
 
-#stateBarChartFilterZero:hover {
+#sortBar {
+    cursor: pointer;
+    position: absolute;
+    top: 0px;
+    right: 176px;
+    height: 2rem;
+    width: 3rem;
+    background-color: #FFFFFF;
+    color: #000000;
+    border: .5px solid;
+    margin-top: 8px;
+}
+
+#stateBarChartFilterZero:hover, #sortBar:hover {
     background-color: #000000;
     color: #FFFFFF;
 }
@@ -398,12 +413,14 @@ small.smaller {
     width: 2rem;
     height: 2rem;
     transform: rotate(180deg);
-    background-color: #FFFFFF;
+    background-color: #f5f6f8;
     border: .5px solid;
     margin-top: 8px;
     display: flex;
     align-items: center;
     justify-content: center;
+    border: none;
+    border-radius: 5px;
 }
 
 #code-area-close-btn svg {
@@ -411,7 +428,7 @@ small.smaller {
 }
 
 #code-area-close-btn:hover {
-    background-color: #000000;
+    background-color: #56698e;
 }
 
 #code-area-close-btn:hover svg {
@@ -485,13 +502,11 @@ small.smaller {
 .tooltip-wrap .tooltip-content {
     display: none;
     position: absolute;
-    /* bottom: 5%;
-    left: 100%; */
-    background-color: #8e928d;
+    background-color: #f5f6f8;
     padding: .5em;
     z-index: 3;
     line-height: 0.55;
-    border-radius: 10px;
+    border-radius: 8px;
     font-size: small;
 }
 
@@ -501,12 +516,12 @@ small.smaller {
 
 .tooltipLeft{
     bottom: 5%;
-    right: 90% !important;
+    right: 90%;
   }
   
   .tooltipRight{
     bottom: 5%;
-    left: 90% !important;
+    left: 90%;
   }
 
 .circuit-area-chart .barTooltip {
@@ -558,17 +573,16 @@ small.smaller {
 
 #drawCanvasSim {
     /*max-width: 100%;*/
-    margin-left: 10%;
 }
 
 #canvasSimWrapper,
 #simulateOutput {
     width: 50%;
     overflow: auto;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: flex-start;
+    /*display: flex;*/
+    /*flex-direction: column;*/
+    /*align-items: center;*/
+    /*justify-content: flex-start;*/
     border: 1px solid #DDDDDD;
     max-height: 100vh;
 }
@@ -649,7 +663,7 @@ small.smaller {
     position: relative;
     z-index: auto;
     border: none;
-    display: inline-flex;
+    /*display: inline-flex;*/
     flex-wrap: nowrap;
     flex-shrink: 0;
     align-items: center;
@@ -661,20 +675,53 @@ small.smaller {
     transition: color .3s cubic-bezier(0.4, 0, 0.2, 1), background-color .3s cubic-bezier(0.4, 0, 0.2, 1), opacity .3s cubic-bezier(0.4, 0, 0.2, 1), border-color .3s cubic-bezier(0.4, 0, 0.2, 1);
     float: right;
 }
-
+#vectSearchCancel {
+    font-weight: 400;
+    line-height: 1;
+    font-family: inherit;
+    padding: 0 10px;
+    height: 24px;
+    font-size: 10px;
+    border-radius: 3px;
+    color: #FFFFFF;
+    width: initial;
+    white-space: nowrap;
+    outline: none;
+    position: relative;
+    z-index: auto;
+    border: none;
+    flex-wrap: nowrap;
+    flex-shrink: 0;
+    align-items: center;
+    justify-content: center;
+    user-select: none;
+    text-align: center;
+    cursor: pointer;
+    text-decoration: none;
+    transition: color .3s cubic-bezier(0.4, 0, 0.2, 1), background-color .3s cubic-bezier(0.4, 0, 0.2, 1), opacity .3s cubic-bezier(0.4, 0, 0.2, 1), border-color .3s cubic-bezier(0.4, 0, 0.2, 1);
+    float: right;
+    margin: 0 0 0 -5rem;
+}
+#vectorTable svg {
+    cursor: pointer;
+}
 #simulateOutput .table-action button:hover {
     color: #FFFFFF;
     background-color: #40a9ff;
 }
 
-#simulateOutput .table-action input {
+#simulateOutput #stateHeader {
+    line-height: 20px;
+}
+
+#simulateOutput #stateHeader input {
     margin: 0;
     font-weight: 400;
     font-family: inherit;
     padding: 10px 5px;
-    height: 28px;
+    height: 25px;
     line-height: 28px;
-    font-size: 14px;
+    font-size: 10px;
     white-space: nowrap;
     outline: none;
     position: relative;
@@ -725,6 +772,7 @@ small.smaller {
     color: rgb(31, 34, 37);
     font-weight: 500;
     font-size: 14px;
+    max-width: 10px;
 }
 
 #simulateOutput table tbody tr td {
