@@ -58,7 +58,8 @@ const initGateViews = () => {
   //new custom gate symbol
   const newIcon = new Map([
     ['Measure', '<small class="smaller">Measure</small>'],
-    ['◦', '<big class="bigger">◦</big>'],
+    ['◦', '<big class="bigger">○</big>'],
+    ['•', '<big class="bigger">●</big>'],
     ['Density', '<small class="smaller">Density</small>'],
     ['Bloch', '<small>Bloch</small>'],
     ['Chance', '<small class="smaller">Chance</small>'],
@@ -69,7 +70,7 @@ const initGateViews = () => {
     ['Y^-½', 'Y<sup>-½</sup>'],
     ['X^½', 'X<sup>½</sup>'],
     ['X^-½', 'X<sup>-½</sup>'],
-    ['T^-1', 'T<sup>-1</sup>'],
+    ['T^-1', 'X<sup>-1</sup>'],
     ['Y^¼', 'Y<sup>¼</sup>'],
     ['Y^-¼', 'Y<sup>-¼</sup>'],
     ['X^¼', 'X<sup>¼</sup>'],
