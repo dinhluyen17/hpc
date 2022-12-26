@@ -20,7 +20,7 @@ class ViewState {
     
     this.gateAreaWidth = 320;
     this.codeAreaWidth = 300;
-    this.chartAreaHeight = 200;
+    this.chartAreaHeight = 220;
 
     this.expandGateArea = true;
     this.expandCodeArea = true;

@@ -5,7 +5,7 @@ document.D3_FUNCTION = {
         if (barHeight == undefined){
             barHeight = parseInt(divWrapper.style.height);
         }
-        let margin = { top: 30, right: 30, bottom: 80, left: 60 },
+        let margin = { top: 50, right: 30, bottom: 80, left: 60 },
             width = ((barData.length*15) >= parseInt(divWrapper.style.width)?barData.length*15:parseInt(divWrapper.style.width)) - margin.left - margin.right,
             height = barHeight -margin.top - margin.bottom;
             // width = (barData.length * 15) - margin.left - margin.right,
