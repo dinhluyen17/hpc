@@ -330,12 +330,12 @@ class Gate {
      */
     getBgColor() {
         if (this.colorIndex == 2) {
-            return '#F2A339';
+            return '#F3A339';
         }
         if (this.colorIndex == 1) {
             return '#4E4FED';            
         }
-        return '#008F7F';
+        return '#00A895';
     }
     withParam(value) {
         let g = this._copy();

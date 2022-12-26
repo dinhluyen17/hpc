@@ -66,6 +66,8 @@ class ViewState {
     var image = new Image();
     image.src = './svg/measure_gate.svg';
     this.image = image;
+
+    this.minCircuitWidth = 700;
   }
 }
 

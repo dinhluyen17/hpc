@@ -39,7 +39,7 @@ GatePainting.paintOutline = args => {
 
 GatePainting.paintBackground =
     (args, toolboxFillColor = Config.GATE_FILL_COLOR, normalFillColor = Config.GATE_FILL_COLOR) => {
-        let backColor = args.isInToolbox ? toolboxFillColor : normalFillColor;
+        let backColor = args.isInToolbox ? toolboxFillColor : args.gate.getBgColor();
         if (args.isHighlighted) {
             backColor = Config.HIGHLIGHTED_GATE_FILL_COLOR;
         }
@@ -69,7 +69,7 @@ GatePainting.LABEL_DRAWER = args => {
 GatePainting.MAKE_HIGHLIGHTED_DRAWER =
     (toolboxFillColor = Config.GATE_FILL_COLOR, normalFillColor = Config.GATE_FILL_COLOR) => args => {
         // Phu: DrawGate
-        GatePainting.paintBackground(args, toolboxFillColor, normalFillColor);
+        GatePainting.paintBackground(args, toolboxFillColor, args.gate.getBgColor());
         //GatePainting.paintOutline(args);
         GatePainting.paintResizeTab(args);
         GatePainting.paintGateSymbol(args);
@@ -203,7 +203,7 @@ function _paintSymbolHandleLines(painter, symbol, rect) {
             rect.y + rect.h/2 + 9*i,
             'center',
             'hanging',
-            'black',
+            'white',
             GATE_SYMBOL_FONT,
             rect.w,
             16);
@@ -248,11 +248,11 @@ GatePainting.paintLocationIndependentFrame = (args,
         GatePainting.paintOutline(args);
         return;
     }
-
-    let backColor = args.isHighlighted ? Config.HIGHLIGHTED_GATE_FILL_COLOR : normalFillColor;
-    args.painter.trace(tracer => GatePainting.traceLocationIndependentOutline(args, tracer)).
-    thenFill(backColor).
-    thenStroke('black');
+    GatePainting.paintBackground(args);
+    //let backColor = args.isHighlighted ? Config.HIGHLIGHTED_GATE_FILL_COLOR : args.gate.getBgColor();
+    //args.painter.trace(tracer => GatePainting.traceLocationIndependentOutline(args, tracer)).
+    //thenFill(backColor);
+    //.thenStroke('black');
 };
 
 /**
@@ -322,7 +322,7 @@ GatePainting.makeDisplayDrawer = statePainter => args => {
     statePainter(args);
 
     if (args.isHighlighted) {
-        args.painter.strokeRect(args.rect, 'black', 1.5);
+        //args.painter.strokeRect(args.rect, 'black', 1.5);
     }
 
     args.painter.ctx.save();
@@ -502,7 +502,7 @@ GatePainting.PERMUTATION_DRAWER = args => {
             args.isResizeHighlighted ||
             args.stats.circuitDefinition.colHasControls(args.positionInCircuit.col)) {
         GatePainting.paintBackground(args, '#F3F3F3', '#F3F3F3');
-        GatePainting.paintOutline(args);
+        //GatePainting.paintOutline(args);
         GatePainting.paintResizeTab(args);
     } else {
         _eraseWiresForPermutation(args);

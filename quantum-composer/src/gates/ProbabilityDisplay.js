@@ -140,7 +140,7 @@ function _paintMultiProbabilityDisplay_grid(args) {
             tracer.line(x, y + d * i, x + w, y + d * i);
         }
     }).thenStroke('lightgray', r <= 0 ? 1 : 1 / r);
-    painter.strokeRect(args.rect, 'lightgray');
+    //painter.strokeRect(args.rect, 'lightgray');
 }
 
 function _paintMultiProbabilityDisplay_probabilityBars(args) {
@@ -164,7 +164,7 @@ function _paintMultiProbabilityDisplay_probabilityBars(args) {
 
     painter.ctx.strokeStyle = 'gray';
     painter.ctx.lineWidth = 1;
-    painter.ctx.stroke();
+    //painter.ctx.stroke();
     painter.ctx.fillStyle = Config.DISPLAY_GATE_FORE_COLOR;
     painter.ctx.fill();
     painter.ctx.restore();

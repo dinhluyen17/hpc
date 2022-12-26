@@ -72,7 +72,7 @@ class MathPainter {
                 drawArea.h);
         }
 
-        painter.strokeRect(drawArea, 'lightgray');
+        //painter.strokeRect(drawArea, 'lightgray');
 
 
         // Tool tips.
@@ -268,11 +268,11 @@ class MathPainter {
 
         if (!hasNaN) {
             // Squared magnitude levels.
-            if (amplitudeProbabilityFillColor !== undefined) {
-                traceCellsWith(MathPainter._traceAmplitudeProbabilitySquare).
-                    thenFill(amplitudeProbabilityFillColor).
-                    thenStroke('lightgray', 0.5);
-            }
+            // if (amplitudeProbabilityFillColor !== undefined) {
+            //     traceCellsWith(MathPainter._traceAmplitudeProbabilitySquare).
+            //         thenFill(amplitudeProbabilityFillColor).
+            //         thenStroke('lightgray', 0.5);
+            // }
 
             // Circles.
             if (amplitudeCircleFillColor !== undefined) {
@@ -581,9 +581,9 @@ class MathPainter {
         painter.fillRect(drawArea, backgroundColor);
 
         if (!hasNaN) {
-            traceDiagonalWith(MathPainter._traceProbabilitySquare).
-                thenFill(fillColor).
-                thenStroke('#040', 0.5);
+            //traceDiagonalWith(MathPainter._traceProbabilitySquare).
+                //thenFill(fillColor)
+                //.thenStroke('#040', 0.5);
 
             traceCouplingsWith(MathPainter._traceAmplitudeProbabilityCircle).
                 thenFill(fillColor).

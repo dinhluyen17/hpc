@@ -39,17 +39,17 @@ Config.TIME_DEPENDENT_HIGHLIGHT_COLOR = '#FFC';
 
 // Mixed-state displays are green.
 Config.DISPLAY_GATE_IN_TOOLBOX_FILL_COLOR = '#4F4';
-Config.DISPLAY_GATE_BACK_COLOR = '#EFE';
-Config.DISPLAY_GATE_FORE_COLOR = '#3F3';
+Config.DISPLAY_GATE_BACK_COLOR = '#fbe3c4';
+Config.DISPLAY_GATE_FORE_COLOR = '#F2A339';
 
 // Changes are yellow.
 Config.OPERATION_BACK_COLOR = '#FFE';
 Config.OPERATION_FORE_COLOR = '#FF0';
 
 // Pure-state displays are cyan.
-Config.SUPERPOSITION_BACK_COLOR = '#EFF';
-Config.SUPERPOSITION_MID_COLOR = '#8FF';
-Config.SUPERPOSITION_FORE_COLOR = '#0BB';
+Config.SUPERPOSITION_BACK_COLOR = '#fbe3c4';
+Config.SUPERPOSITION_MID_COLOR = '#f6bf74';
+Config.SUPERPOSITION_FORE_COLOR = '#F2A339';
 
 // Time constants.
 Config.CYCLE_DURATION_MS = 8000; // How long it takes for evolving gates to cycle, in milliseconds.

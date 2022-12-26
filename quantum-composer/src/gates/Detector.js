@@ -177,7 +177,7 @@ function drawHighlight(args) {
         args.painter.fillRect(
             args.rect,
             args.isHighlighted ? Config.HIGHLIGHTED_GATE_FILL_COLOR : Config.GATE_FILL_COLOR);
-        GatePainting.paintOutline(args);
+       //GatePainting.paintOutline(args);
     }
 }
 
@@ -196,7 +196,7 @@ function drawWedge(args, axis) {
     args.painter.trace(trace => {
         trace.ctx.arc(x, y, r, τ*3/4, τ/4);
         trace.ctx.lineTo(x, y - r - 1);
-    }).thenStroke('black', 2).thenFill(Config.TIME_DEPENDENT_HIGHLIGHT_COLOR);
+    }).thenStroke('black', 2).thenFill(args.gate.getBgColor());
     args.painter.printLine(axis, args.rect, 0.5, undefined, undefined, undefined, 0.5);
 }
 

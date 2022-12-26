@@ -160,6 +160,13 @@ class Painter {
         this.ctx.fill();
     }
 
+    fillRectWithoutRadius(rect, color = Config.DEFAULT_FILL_COLOR) {
+        this.ctx.beginPath();
+        this.ctx.roundRect(rect.x, rect.y, rect.w, rect.h,[0]);
+        this.ctx.fillStyle = color;
+        this.ctx.fill();
+    }
+
     /**
      * Draws the outside of a circle.
      * @param {!Point} center The center of the circle.
@@ -512,11 +519,11 @@ class Tracer {
         let dh = h / numRows;
         let x2 = x + numCols * dw;
         let y2 = y + numRows * dh;
-        for (let c = 0; c <= numCols; c++) {
+        for (let c = 1; c <= numCols - 1; c++) {
             this.ctx.moveTo(x + c * dw, y);
             this.ctx.lineTo(x + c * dw, y2);
         }
-        for (let r = 0; r <= numRows; r++) {
+        for (let r = 1; r <= numRows - 1; r++) {
             this.ctx.moveTo(x, y + r * dh);
             this.ctx.lineTo(x2, y + r * dh);
         }

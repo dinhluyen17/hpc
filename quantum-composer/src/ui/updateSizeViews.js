@@ -28,6 +28,7 @@ const updateSizeViews = (parentDiv) => {
   gateArea.style.maxWidth = getGateAreaWidth() + 'px';
 
   // Circuit body
+  viewState.getInstance().minCircuitWidth = (parentDiv.clientWidth - getGateAreaWidth() - getCodeAreaWidth() - 8);
   const circuitBody = document.getElementById('circuit-area-body');
   circuitBody.style.width = (parentDiv.clientWidth - getGateAreaWidth() - getCodeAreaWidth()) + 'px';
   circuitBody.style.maxHeight = (

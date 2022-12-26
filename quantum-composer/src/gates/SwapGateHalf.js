@@ -40,8 +40,8 @@ let SwapGateHalf = new GateBuilder().
 
         // A swap gate half is shown as a small X (joined by a line to the other half; that's handled elsewhere).
         let swapRect = Rect.centeredSquareWithRadius(args.rect.center(), args.rect.w / 6);
-        args.painter.strokeLine(swapRect.topLeft(), swapRect.bottomRight());
-        args.painter.strokeLine(swapRect.topRight(), swapRect.bottomLeft());
+        args.painter.strokeLine(swapRect.topLeft(), swapRect.bottomRight(), args.gate.getBgColor());
+        args.painter.strokeLine(swapRect.topRight(), swapRect.bottomLeft(), args.gate.getBgColor());
     }).
     setExtraDisableReasonFinder(args => {
         let col = args.innerColumn;
