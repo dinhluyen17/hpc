@@ -476,7 +476,8 @@ document.addEventListener('contextmenu', function (e) {
     }
 }, false);
 document.addEventListener("DOMContentLoaded", function (){
-    document.D3_FUNCTION.bar(stateBarCalc())
+        let barDataFilter = stateBarCalc().filter(val => !val.Probability.match(/^0.0000$/));
+            document.D3_FUNCTION.bar(barDataFilter,viewState.getInstance().chartAreaHeight);
 })
 let barDataFilterSwitch = true;
 const stateBarChartFilter = document.getElementById("stateBarChartFilterZero");
@@ -517,7 +518,6 @@ revision.latestActiveCommit().subscribe(jsonText => {
             handleSortedData(barDataFilter)
         }
     }
-
 });
 /**
  * @param {!DisplayedInspector} curInspector
@@ -797,40 +797,11 @@ canvasDiv.addEventListener('mouseup', () => {
     startResizeCodeArea = false;
     startResizeGateArea = false;
     startResizeChartArea = false;
-    if (barDataFilterSwitch == false) {
-        if (sortSwitch == false) {
-            document.D3_FUNCTION.bar(stateBarCalc());
-        } else {
-            handleSortedData(barData)
-        }
-    } else {
-        let barDataFilter = stateBarCalc().filter(val => !val.Probability.match(/^0.0000$/));
-        if (sortSwitch == false){
-            document.D3_FUNCTION.bar(barDataFilter);
-        } else {
-            handleSortedData(barDataFilter)
-        }
-    }
-
 })
 canvasDiv.addEventListener('mouseleave', () => {
     startResizeCodeArea = false;
     startResizeGateArea = false;
     startResizeChartArea = false;
-    if (barDataFilterSwitch == false) {
-        if (sortSwitch == false) {
-            document.D3_FUNCTION.bar(stateBarCalc());
-        } else {
-            handleSortedData(barData)
-        }
-    } else {
-        let barDataFilter = stateBarCalc().filter(val => !val.Probability.match(/^0.0000$/));
-        if (sortSwitch == false){
-            document.D3_FUNCTION.bar(barDataFilter);
-        } else {
-            handleSortedData(barDataFilter)
-        }
-    }
     document.GRAB_GATE = undefined;
     viewState.getInstance().highlightGate = null;
     viewState.getInstance().canShowGateMenu = true;
@@ -973,6 +944,20 @@ function resizeCodeArea(e) {
         if (viewState.getInstance().codeAreaWidth < 50) {
             viewState.getInstance().codeAreaWidth = 50;
         }
+        if (barDataFilterSwitch == false) {
+            if (sortSwitch == false) {
+                document.D3_FUNCTION.bar(barData,viewState.getInstance().chartAreaHeight);
+            } else {
+                handleSortedData(barData,viewState.getInstance().chartAreaHeight)
+            }
+        } else {
+            let barDataFilter = barData.filter(val => !val.Probability.match(/^0.0000$/));
+            if (sortSwitch == false){
+                document.D3_FUNCTION.bar(barDataFilter,viewState.getInstance().chartAreaHeight);
+            } else {
+                handleSortedData(barDataFilter,viewState.getInstance().chartAreaHeight)
+            }
+        }
         updateSizeViews(canvasDiv);
     }
 }
@@ -984,6 +969,20 @@ function resizeGateArea(e) {
         if (viewState.getInstance().gateAreaWidth < 130) {
             viewState.getInstance().gateAreaWidth = 130;
         }
+        if (barDataFilterSwitch == false) {
+            if (sortSwitch == false) {
+                document.D3_FUNCTION.bar(barData,viewState.getInstance().chartAreaHeight);
+            } else {
+                handleSortedData(barData,viewState.getInstance().chartAreaHeight)
+            }
+        } else {
+            let barDataFilter = barData.filter(val => !val.Probability.match(/^0.0000$/));
+            if (sortSwitch == false){
+                document.D3_FUNCTION.bar(barDataFilter,viewState.getInstance().chartAreaHeight);
+            } else {
+                handleSortedData(barDataFilter,viewState.getInstance().chartAreaHeight)
+            }
+        }
         updateSizeViews(canvasDiv);
     }
 }
@@ -994,6 +993,20 @@ function resizeChartArea(e) {
         viewState.getInstance().chartAreaHeight += dy;
         if (viewState.getInstance().chartAreaHeight < 50) {
             viewState.getInstance().chartAreaHeight = 50;
+        }
+        if (barDataFilterSwitch == false) {
+            if (sortSwitch == false) {
+                document.D3_FUNCTION.bar(barData,viewState.getInstance().chartAreaHeight);
+            } else {
+                handleSortedData(barData,viewState.getInstance().chartAreaHeight)
+            }
+        } else {
+            let barDataFilter = barData.filter(val => !val.Probability.match(/^0.0000$/));
+            if (sortSwitch == false){
+                document.D3_FUNCTION.bar(barDataFilter,viewState.getInstance().chartAreaHeight);
+            } else {
+                handleSortedData(barDataFilter,viewState.getInstance().chartAreaHeight)
+            }
         }
         updateSizeViews(canvasDiv);
     }
