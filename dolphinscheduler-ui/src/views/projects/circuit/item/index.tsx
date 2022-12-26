@@ -259,12 +259,12 @@ const circuitItem = defineComponent({
           </NSpace>
           {/* Tab change area */}
           <div>
-            <NButton size='large' focusable={false} style={{ width: '200px', borderRadius: 0 }} onClick={(e) => this.handleChangeTabCircuit(e)} class={`tab-button ${this.isCircuitTab ? 'active' : ''}`}>
+            <button style={{borderRadius: '5px 0 0 5px' }} onClick={(e) => this.handleChangeTabCircuit(e)} class={`tab-button ${this.isCircuitTab ? 'active' : ''}`}>
               {t('circuit.detail.circuit')}
-            </NButton>            
-            <NButton size='large' focusable={false} style={{ width: '200px', marginLeft: '-1px', borderRadius: 0 }} onClick={(e) => this.handleChangeTabSimulate(e)} class={`tab-button ${this.isCircuitTab ? '' : 'active'}`}>
+            </button>            
+            <button style={{ borderRadius: '0 5px 5px 0'}} onClick={(e) => this.handleChangeTabSimulate(e)} class={`tab-button ${this.isCircuitTab ? '' : 'active'}`}>
               {t('circuit.detail.simulate')}
-            </NButton>
+            </button>
           </div>
           {/* Button area */}
           <NSpace>
