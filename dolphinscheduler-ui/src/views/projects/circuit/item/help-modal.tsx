@@ -103,7 +103,45 @@ const HelpModal = defineComponent({
                     <li>Bar chart legibility: Click on the <b>Show all states</b> button to display all possible states. Click on the same button to revert the display</li>
                     <li>View circuit simulation: Click the <b>Simulation</b> tab on the top of the screen to switch to the simulation screen</li>
                     <li>View circuit results: Hover mouse over the bar graph to see the qubit state and probability <b>OR</b> switch to the simulation tab to view the state, vector, probability and phase angle of qubits</li>
-                    <li>Vector table legibility: Click on the table header titled <b>Probability</b> to display only states with more than 0% probability. Click on the same button to revert the display</li>
+                    <li>Vector table actions:
+                        <ul>
+                            <li>
+                                Search: Click on the&nbsp;
+                                <svg width="10px" height="10px" viewBox="0 -0.24 28.423 28.423"  data-name="02 - Search Button" xmlns="http://www.w3.org/2000/svg">
+                                    <path id="Path_215" data-name="Path 215" d="M14.953,2.547A12.643,12.643,0,1,0,27.6,15.19,12.649,12.649,0,0,0,14.953,2.547Zm0,2A10.643,10.643,0,1,1,4.31,15.19,10.648,10.648,0,0,1,14.953,4.547Z" transform="translate(-2.31 -2.547)" fill-rule="evenodd"/>
+                                    <path id="Path_216" data-name="Path 216" d="M30.441,28.789l-6.276-6.276a1,1,0,1,0-1.414,1.414L29.027,30.2a1,1,0,1,0,1.414-1.414Z" transform="translate(-2.31 -2.547)" fill-rule="evenodd"/>
+                                </svg>
+                                &nbsp;icon to search for states. Click on the X to close the search bar
+                            </li>
+                            <li>
+                                Filter: Click on the&nbsp;
+                                <svg id="vectFilter" width="10px" height="10px" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M2.75 6a.75.75 0 000 1.5h18.5a.75.75 0 000-1.5H2.75zM6 11.75a.75.75 0 01.75-.75h10.5a.75.75 0 010 1.5H6.75a.75.75 0 01-.75-.75zm4 4.938a.75.75 0 01.75-.75h2.5a.75.75 0 010 1.5h-2.5a.75.75 0 01-.75-.75z"/></svg>
+                                &nbsp;icon to filter the probabilities to only results greater than 0%. Click on the same button to revert the display
+                            </li>
+                            <li>
+                                Sort: Click on the&nbsp;
+                                <svg id="sortTableDown" width="10px" height="10px" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" aria-labelledby="sortDownIconTitle" stroke="#000000" stroke-width="1" stroke-linecap="square" stroke-linejoin="miter" fill="none" color="#000000"> <title id="sortDownIconTitle">Sort in descending order</title> <path d="M11 9H17"/> <path d="M11 5H19"/> <path d="M11 13H15"/> <path d="M10 17L7 20L4 17"/> <path d="M7 5V19"/> </svg>
+                                &nbsp;icon to sort the table in descending order. Click on the&nbsp;
+                                <svg id="sortTableUp" width="10px" height="10px" viewBox="0 0 24 24"
+                                     xmlns="http://www.w3.org/2000/svg" aria-labelledby="sortUpIconTitle"
+                                     stroke="#000000" stroke-width="1" stroke-linecap="square" stroke-linejoin="miter"
+                                     fill="none" color="#000000"><title id="sortUpIconTitle">Sort in ascending
+                                    order</title>
+                                    <path d="M11 16H17"/>
+                                    <path d="M11 20H19"/>
+                                    <path d="M11 12H15"/>
+                                    <path d="M4 8L7 5L10 8"/>
+                                    <path d="M7 20L7 6"/>
+                                </svg>
+                                &nbsp;icon to sort the table in ascending order
+                            </li>
+                            <li>
+                                Revert sort: Click on the&nbsp;
+                                <svg width="10px" height="10px" viewBox="0 0 50 50" xmlns="http://www.w3.org/2000/svg"><path d="M25 42c-9.4 0-17-7.6-17-17S15.6 8 25 8s17 7.6 17 17-7.6 17-17 17zm0-32c-8.3 0-15 6.7-15 15s6.7 15 15 15 15-6.7 15-15-6.7-15-15-15z"/><path d="M16 24h18v2H16z"/></svg>
+                                &nbsp;icon to revert all sorts
+                            </li>
+                        </ul>
+                    </li>
                 </ul>
                 <h3>Advanced Actions</h3>
                 <ul>

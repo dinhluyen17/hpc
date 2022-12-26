@@ -12,6 +12,7 @@ body {
     letter-spacing: .01rem;
     line-height: 1rem;
     text-align: left;
+    color: rgb(51, 54, 57);
     white-space: nowrap;
 }
 
@@ -109,18 +110,24 @@ body {
     padding: 5px 8px;
     box-sizing: border-box;
     height: 2rem;
+    border: none;
+    background-color: #f5f6f8;
+    border-radius: 5px;
 }
 
 .gate-area-header-btn {
     cursor: pointer;
     border: 1px solid #000000;
-    background-color: #FFFFFF;
+    background-color: #d1d0d7;
     margin-left: 8px;
     display: flex;
     justify-content: center;
     align-items: center;
     width: 2rem;
     height: 2rem;
+    border-radius: 5px;
+    background-color: #f5f6f8;
+    border: none;
 }
 
 .gate-area-header-btn svg {
@@ -129,7 +136,7 @@ body {
 
 .gate-area-header-btn:hover,
 .gate-area-header-btn.active {
-    background-color: #000000;
+    background-color: #56698e;
 }
 
 .gate-area-header-btn:hover svg,
@@ -200,9 +207,8 @@ small.smaller {
 }
 
 .gate-area-body-section-label {
-    font-size: 16px;
+    font-size: 0.9rem;
     font-weight: 400;
-    color: black;
     margin-left: 10px;
 }
 
@@ -210,12 +216,14 @@ small.smaller {
     margin: 10px 5px 10px 5px;
     border: 1px solid #EDECF3;
     flex: 1;
+    border-radius: 5px;
 }
 
 .gate-area-body-advanced-gates {
     margin: 10px 5px 10px 5px;
     border: 1px solid #EDECF3;
     flex: 1;
+    border-radius: 5px;
 }
 
 .group-gate-name {
@@ -405,12 +413,14 @@ small.smaller {
     width: 2rem;
     height: 2rem;
     transform: rotate(180deg);
-    background-color: #FFFFFF;
+    background-color: #f5f6f8;
     border: .5px solid;
     margin-top: 8px;
     display: flex;
     align-items: center;
     justify-content: center;
+    border: none;
+    border-radius: 5px;
 }
 
 #code-area-close-btn svg {
@@ -418,7 +428,7 @@ small.smaller {
 }
 
 #code-area-close-btn:hover {
-    background-color: #000000;
+    background-color: #56698e;
 }
 
 #code-area-close-btn:hover svg {
@@ -492,13 +502,11 @@ small.smaller {
 .tooltip-wrap .tooltip-content {
     display: none;
     position: absolute;
-    /* bottom: 5%;
-    left: 100%; */
-    background-color: #8e928d;
+    background-color: #f5f6f8;
     padding: .5em;
     z-index: 3;
     line-height: 0.55;
-    border-radius: 10px;
+    border-radius: 8px;
     font-size: small;
 }
 
@@ -508,12 +516,12 @@ small.smaller {
 
 .tooltipLeft{
     bottom: 5%;
-    right: 90% !important;
+    right: 90%;
   }
   
   .tooltipRight{
     bottom: 5%;
-    left: 90% !important;
+    left: 90%;
   }
 
 .circuit-area-chart .barTooltip {
