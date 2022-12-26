@@ -70,7 +70,7 @@ const initGateViews = () => {
     ['Y^-½', 'Y<sup>-½</sup>'],
     ['X^½', 'X<sup>½</sup>'],
     ['X^-½', 'X<sup>-½</sup>'],
-    ['T^-1', 'X<sup>-1</sup>'],
+    ['T^-1', 'T<sup>-1</sup>'],
     ['Y^¼', 'Y<sup>¼</sup>'],
     ['Y^-¼', 'Y<sup>-¼</sup>'],
     ['X^¼', 'X<sup>¼</sup>'],

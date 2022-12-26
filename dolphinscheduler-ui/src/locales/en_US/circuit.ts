@@ -45,7 +45,7 @@ export default {
     mass_delete_confirm: 'Sure you want to delete selected circuit?',
   },
   detail: {
-    exit: 'Exit',
+    exit: 'Cancel',
     return: 'Back',
     circuit: 'Circuit',
     simulate: 'Simulate',
