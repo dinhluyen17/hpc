@@ -62,6 +62,10 @@ class ViewState {
       viewState.getInstance().simScrollX = simWrapper.scrollLeft;
       viewState.getInstance().simScrollY = simWrapper.scrollTop;
     }, { passive: true });
+
+    var image = new Image();
+    image.src = './svg/measure_gate.svg';
+    this.image = image;
   }
 }
 

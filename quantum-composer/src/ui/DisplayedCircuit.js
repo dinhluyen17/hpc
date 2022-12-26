@@ -319,10 +319,10 @@ class DisplayedCircuit {
         let op = this.opRect(operationIndex);
         let wire = this.wireRect(wireIndex);
         let r = new Rect(
-            op.center().x - Config.GATE_RADIUS,
-            wire.center().y - Config.GATE_RADIUS,
-            2*Config.GATE_RADIUS + (width-1)*Config.WIRE_SPACING,
-            2*Config.GATE_RADIUS + (height-1)*Config.WIRE_SPACING);
+            op.center().x - Config.GATE_RADIUS - 1,
+            wire.center().y - Config.GATE_RADIUS - 1,
+            2*Config.GATE_RADIUS + (width-1)*Config.WIRE_SPACING + 2,
+            2*Config.GATE_RADIUS + (height-1)*Config.WIRE_SPACING + 2);
 
         return new Rect(Math.round(r.x - 0.5) + 0.5, Math.round(r.y - 0.5) + 0.5, Math.round(r.w), Math.round(r.h));
     }
@@ -377,7 +377,7 @@ class DisplayedCircuit {
 
         if (!forTooltip) {
             // Phu: disable draw output
-            this._drawOutputDisplays(painter, stats, hand);
+            //this._drawOutputDisplays(painter, stats, hand);
             // this._drawHintLabels(painter, stats);
         }
 

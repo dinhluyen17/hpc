@@ -33,7 +33,7 @@ Config.MIN_COL_COUNT = 5;
 Config.URL_CIRCUIT_PARAM_KEY = 'circuit';
 
 // Gate background colors.
-Config.GATE_FILL_COLOR = 'white';
+Config.GATE_FILL_COLOR = '#00A895';
 Config.HIGHLIGHTED_GATE_FILL_COLOR = '#17A7FB';
 Config.TIME_DEPENDENT_HIGHLIGHT_COLOR = '#FFC';
 
@@ -61,8 +61,8 @@ Config.REDRAW_COOLDOWN_MILLIS = 10; // Milliseconds. Rate-limit on redraws. Long
 Config.GATE_RADIUS = 20;
 Config.WIRE_SPACING = 50;
 
-Config.BACKGROUND_COLOR = 'white';
-Config.BACKGROUND_COLOR_CIRCUIT = 'white';
+Config.BACKGROUND_COLOR = '#00A895';
+Config.BACKGROUND_COLOR_CIRCUIT = '#00A895';
 
 // Toolbox layout.
 Config.BACKGROUND_COLOR_TOOLBOX = '#CCC';
@@ -83,11 +83,11 @@ Config.MINIMUM_CANVAS_HEIGHT = 408;
 Config.SUPPRESSED_GLSL_WARNING_PATTERNS = [];
 
 // Draw constants.
-Config.DEFAULT_FILL_COLOR = 'white';
+Config.DEFAULT_FILL_COLOR = '#00A895';
 Config.DEFAULT_STROKE_COLOR = 'black';
 Config.DEFAULT_TEXT_COLOR = 'black';
 Config.DEFAULT_FONT_SIZE = 13;
-Config.DEFAULT_FONT_FAMILY = 'sans-serif';
+Config.DEFAULT_FONT_FAMILY = 'myFirstFont';
 Config.DEFAULT_STROKE_THICKNESS = 1;
 
 // Calling WebGLRenderingContext.getError forces a CPU/GPU sync. It's very expensive.

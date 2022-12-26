@@ -26,7 +26,7 @@ import {Util} from "../base/Util.js"
  */
 class GatePainting {}
 
-const GATE_SYMBOL_FONT = '17px sans-serif';
+const GATE_SYMBOL_FONT = '18px myFirstFont';
 
 GatePainting.paintOutline = args => {
     if (args.isInToolbox) {
@@ -70,7 +70,7 @@ GatePainting.MAKE_HIGHLIGHTED_DRAWER =
     (toolboxFillColor = Config.GATE_FILL_COLOR, normalFillColor = Config.GATE_FILL_COLOR) => args => {
         // Phu: DrawGate
         GatePainting.paintBackground(args, toolboxFillColor, normalFillColor);
-        GatePainting.paintOutline(args);
+        //GatePainting.paintOutline(args);
         GatePainting.paintResizeTab(args);
         GatePainting.paintGateSymbol(args);
     };
@@ -101,12 +101,12 @@ GatePainting.paintResizeTab = args => {
     let rect = GatePainting.rectForResizeTab(args.rect);
     let trimRect = rect.skipLeft(2).skipRight(2);
     let {x: cx, y: cy} = trimRect.center();
-    let backColor = args.isResizeHighlighted ? Config.HIGHLIGHTED_GATE_FILL_COLOR : Config.GATE_FILL_COLOR;
-    let foreColor = args.isResizeHighlighted ? '#222' : 'gray';
+    let backColor = '#F2A339';//args.isResizeHighlighted ? Config.HIGHLIGHTED_GATE_FILL_COLOR : Config.GATE_FILL_COLOR;
+    let foreColor = 'white';//args.isResizeHighlighted ? '#222' : 'gray';
     args.painter.ctx.save();
     args.painter.ctx.globalAlpha *= args.isResizeHighlighted ? 1 : 0.7;
     args.painter.fillRect(trimRect, backColor);
-    args.painter.strokeRect(trimRect, 'gray');
+    //args.painter.strokeRect(trimRect, 'gray');
     args.painter.ctx.restore();
     args.painter.print('resize', cx, cy, 'center', 'middle', foreColor, 'monospace', trimRect.w - 4, trimRect.h - 4);
     args.painter.trace(tracer => {
@@ -149,7 +149,7 @@ GatePainting.paintGateSymbol = (args, symbolOverride=undefined, allowExponent=tr
             rect.y + rect.h/2 + offsetY,
             'center',
             'middle',
-            'black',
+            'white',
             GATE_SYMBOL_FONT,
             rect.w,
             rect.h);
@@ -170,7 +170,7 @@ GatePainting.paintGateSymbol = (args, symbolOverride=undefined, allowExponent=tr
         rect.y + rect.h/2 + offsetY,
         'right',
         'hanging',
-        'black',
+        'white',
         GATE_SYMBOL_FONT,
         divider,
         rect.h);
@@ -180,7 +180,7 @@ GatePainting.paintGateSymbol = (args, symbolOverride=undefined, allowExponent=tr
         rect.y + rect.h/2 + offsetY,
         'left',
         'alphabetic',
-        'black',
+        'white',
         GATE_SYMBOL_FONT,
         rect.w - divider,
         rect.h);
@@ -451,18 +451,18 @@ GatePainting.paintGateButton = args => {
 
     let buttonRect = GatePainting.gateButtonRect(args.rect);
     let buttonFocus = !args.focusPoints.every(pt => !buttonRect.containsPoint(pt));
-    args.painter.fillRect(buttonRect, buttonFocus ? 'red' : 'orange');
+    args.painter.fillRect(buttonRect, '#F2A339');
     args.painter.print(
         'change',
         buttonRect.center().x,
         buttonRect.center().y,
         'center',
         'middle',
-        'black',
+        'white',
         '12px sans-serif',
         buttonRect.w,
         buttonRect.h);
-    args.painter.strokeRect(buttonRect, 'black');
+    //args.painter.strokeRect(buttonRect, 'black');
 };
 
 
