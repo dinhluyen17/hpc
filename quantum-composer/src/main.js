@@ -140,7 +140,6 @@ const changeTab = (tab) => {
         e2T.setAttribute("data-state","active");
     
         viewState.getInstance().currentTab = 'simulate';
-        // let canvas = document.getElementById("drawCanvasSim");
         let canvas = document.getElementById("canvasSimWrapper")
         let canvasBox = canvas.getBoundingClientRect();
         viewState.getInstance().canvasBoundingRect = {
@@ -149,7 +148,6 @@ const changeTab = (tab) => {
             width: canvasBox.width,
             height: canvasBox.height
         }
-        // document.simStat.table(simStatCalc())
         simStatCalc();
     }
 }
@@ -183,6 +181,7 @@ window.addEventListener('message', (e) => {
         }
     }
 });
+//data for bar chart and simulation
 let barData = [];
 let stateBarCalc = () =>{
     let qHeight = mostRecentStats.get().finalState.height();
@@ -209,31 +208,7 @@ let stateBarCalc = () =>{
     const probObj = qProb.map((str, index) => ({
         id: index, Probability: qProb[index]
     }))
-
-    //Max 12 qubit before lag
-    // const data = stateObj.map((e,i)=>{
-    //     let temp = probObj.find(el => el.id === e.id)
-    //     e.id = temp.Probability
-    //     e.Probability = e.id
-    //     delete e.id
-    //     return e;
-    // })
-
-    //Max ~15 qubit before lag
     let data = {}
-    // if (qNumWire <= 12 || qNumWire > 12 && document.getElementById("stateBarBool").checked) {
-    //     const data2 = stateObj.reduce((a, c) => (a[c.id] = c, a), {})
-    //     data = probObj.map(o => Object.assign(o, data2[o.id]))
-    // } else {
-    //     data = [
-    //         {id: 0, Probability: "100.0000", State: "0"},
-    //         {id: 1, Probability: "0.0000", State: "1"}
-    //     ]
-    // }
-    /**
-     *
-     *3043ms
-     */
     const data2 = stateObj.reduce((a, c) => (a[c.id] = c, a), {})
     data = probObj.map(o => Object.assign(o, data2[o.id]))
     barData = data;
@@ -242,14 +217,6 @@ let stateBarCalc = () =>{
 function compareData(a,b){
     const dataA = a.Probability;
     const dataB = b.Probability;
-
-    // let comp = 0;
-    // if (dataA > dataB){
-    //     comp = -1;
-    // } else if (dataB < dataA){
-    //     comp = 1;
-    // }
-    // return comp*-1;
     return dataB-dataA;
 }
 let sortSwitch = false;
@@ -259,10 +226,19 @@ let handleSortedData = (barData) => {
 }
 document.getElementById("sortBar").addEventListener("click", function (e){
     sortSwitch = !sortSwitch;
-    if (sortSwitch == false){
-        document.D3_FUNCTION.bar(stateBarCalc())
+    if (barDataFilterSwitch == false){
+        if (sortSwitch == false){
+            document.D3_FUNCTION.bar(stateBarCalc())
+        } else {
+            handleSortedData(barData)
+        }
     } else {
-        handleSortedData(barData)
+        let barDataFilter = barData.filter(val => !val.Probability.match(/^0.0000$/));
+        if (sortSwitch == false){
+            document.D3_FUNCTION.bar(barDataFilter);
+        } else {
+            handleSortedData(barDataFilter)
+        }
     }
 })
 let simStatCalc = () => {
@@ -289,10 +265,6 @@ let simStatCalc = () => {
     }
     let printVect = document.getElementById("dataOutput");
     printVect.innerHTML = "";
-    /**
-     * Code for data. Create element + append variant
-     * ~550ms for load at 16 qubits
-     */
     for (let i = 0; i < qVector.length; i++){
         let output = document.createElement("tr");
         let state = document.createElement("td");
@@ -306,22 +278,6 @@ let simStatCalc = () => {
         output.append(state,vect,rad,prob)
         printVect.appendChild(output)
     }
-    /**
-     * Code for data. Array of object variant
-     * ~112ms for load at 16 qubits
-     */
-    // let dataSet = []
-    // let data = {}
-    // for (let i = 0; i < qVector.length; i++){
-    //     data = {
-    //         "state": qStates[i],
-    //         "vect": qVector[i],
-    //         "rad": qPhase[i],
-    //         "prob": qProb[i]
-    //     }
-    //     dataSet.push(data)
-    // }
-    // return dataSet
     document.getElementById("vectorTable").appendChild(printVect)
 }
 let tableSortSwitch = false;
@@ -384,6 +340,27 @@ document.getElementById("cancelSortTable").addEventListener("click", function (e
     document.getElementById("sortTableUp").classList.add("hidden")
     simStatCalc();
 })
+let barDataFilterSwitch = true;
+const stateBarChartFilter = document.getElementById("stateBarChartFilterZero");
+stateBarChartFilter.addEventListener('click',()=>{
+    barDataFilterSwitch = !barDataFilterSwitch;
+    if (barDataFilterSwitch == false){
+        stateBarChartFilter.innerHTML = "Hide zero states";
+        if (sortSwitch == false) {
+            document.D3_FUNCTION.bar(stateBarCalc());
+        } else {
+            handleSortedData(barData);
+        }
+    } else {
+        stateBarChartFilter.innerHTML = "Show all states";
+        let barDataFilter = stateBarCalc().filter(val => !val.Probability.match(/^0.0000$/));
+        if (sortSwitch == false) {
+            document.D3_FUNCTION.bar(barDataFilter);
+        } else {
+            handleSortedData(barDataFilter);
+        }
+    }
+})
 let vectFilterSwitch = false;
 document.getElementById("vectFilter").addEventListener('click', function (e) {
     vectFilterSwitch = !vectFilterSwitch;
@@ -405,10 +382,8 @@ document.getElementById("vectFilter").addEventListener('click', function (e) {
             }
         }
     } else {
-        // document.getElementById("vectFilter").innerHTML = "Hide zero states"
         document.getElementById("probHeader").innerHTML = "Probability (Full)"
         document.getElementById("vectSearch").innerHTML = ""
-        // document.simStat.table(simStatCalc())
         simStatCalc();
     }
 })
@@ -479,27 +454,7 @@ document.addEventListener("DOMContentLoaded", function (){
         let barDataFilter = stateBarCalc().filter(val => !val.Probability.match(/^0.0000$/));
             document.D3_FUNCTION.bar(barDataFilter,viewState.getInstance().chartAreaHeight);
 })
-let barDataFilterSwitch = true;
-const stateBarChartFilter = document.getElementById("stateBarChartFilterZero");
-stateBarChartFilter.addEventListener('click',()=>{
-    barDataFilterSwitch = !barDataFilterSwitch;
-    if (barDataFilterSwitch == false){
-        stateBarChartFilter.innerHTML = "Hide zero states";
-        if (sortSwitch == false) {
-            document.D3_FUNCTION.bar(stateBarCalc());
-        } else {
-            handleSortedData(barData);
-        }
-    } else {
-        stateBarChartFilter.innerHTML = "Show all states";
-        let barDataFilter = stateBarCalc().filter(val => !val.Probability.match(/^0.0000$/));
-        if (sortSwitch == false) {
-            document.D3_FUNCTION.bar(barDataFilter);
-        } else {
-            handleSortedData(barDataFilter);
-        }
-    }
-})
+
 revision.latestActiveCommit().subscribe(jsonText => {
     let circuitDef = fromJsonText_CircuitDefinition(jsonText);
     let newInspector = displayed.get().withCircuitDefinition(circuitDef);
@@ -595,8 +550,6 @@ const redrawNow = () => {
     if (dt < Infinity) {
         window.requestAnimationFrame(() => redrawThrottle.trigger());
     }
-    //Animated bar chart; will crash if qubit > 6
-    // document.D3_FUNCTION.bar(stateBarCalc());
 };
 
 redrawThrottle = new CooldownThrottle(redrawNow, Config.REDRAW_COOLDOWN_MILLIS, 0.1, true);
@@ -849,87 +802,6 @@ setTimeout(() => {
         console.error(ex);
     }
 }, 0);
-// document.getElementById("circuitTab").addEventListener('click', () => {
-//     let e = document.getElementById("circuit");
-//     e.classList.remove("hidden");
-//     let eT = document.getElementById("circuitTab");
-//     eT.setAttribute("data-state","active")
-//
-//     let e2 = document.getElementById("simulate");
-//     e2.classList.add("hidden");
-//     let e2T = document.getElementById("simulateTab");
-//     e2T.setAttribute("data-state","inactive");
-//
-//     viewState.getInstance().currentTab = 'circuit';
-//     const canvas = document.getElementById("circuit-area-body");
-//     let canvasBox = canvas.getBoundingClientRect();
-//     viewState.getInstance().canvasBoundingRect = {
-//         clientX: canvasBox.left,
-//         clientY: canvasBox.top,
-//         width: canvasBox.width,
-//         height: canvasBox.height
-//     }
-// });
-//
-// document.getElementById("simulateTab").addEventListener('click', () => {
-//
-//     let e = document.getElementById("circuit");
-//     e.classList.add("hidden");
-//     let eT = document.getElementById("circuitTab");
-//     eT.setAttribute("data-state","inactive");
-//
-//     let e2 = document.getElementById("simulate");
-//     e2.classList.remove("hidden");
-//     let e2T = document.getElementById("simulateTab");
-//     e2T.setAttribute("data-state","active");
-//
-//     viewState.getInstance().currentTab = 'simulate';
-//     let canvas = document.getElementById("drawCanvasSim");
-//     let canvasBox = canvas.getBoundingClientRect();
-//     viewState.getInstance().canvasBoundingRect = {
-//         clientX: canvasBox.left,
-//         clientY: canvasBox.top,
-//         width: canvasBox.width,
-//         height: canvasBox.height
-//     }
-//     let qHeight = mostRecentStats.get().finalState.height();
-//     let qNumWire = mostRecentStats.get().circuitDefinition.numWires;
-//     let qStates = [];
-//     for (let i = 0; i < qHeight; i++){
-//         qStates[i] = Util.bin(i,qNumWire);
-//     }
-//     let qProb = [];
-//     let qVector = [];
-//     let qPhase = [];
-//     for (let i = 0; i < mostRecentStats.get().finalState._buffer.length; i++) {
-//         let x = mostRecentStats.get().finalState._buffer;
-//         let y = x[i];
-//         let z = x[i + 1];
-//         if (i % 2 == 0){
-//             let k = i/2;
-//             let j = Math.pow(y,2) + Math.pow(z, 2);
-//             qVector[k] = (y < 0 ? "-":"+") + y.toFixed(5) + (z < 0 ? "-":"+") + z.toFixed(5) + "i";
-//             qPhase[k] = Math.atan2(z,y).toFixed(5) + "°";
-//             qProb[k] = (j*100).toFixed(4);
-//         }
-//     }
-//     let printVect = document.getElementById("dataOutput");
-//     printVect.innerHTML = "";
-//     for (let i = 0; i < qVector.length; i++){
-//         let output = document.createElement("tr");
-//         let state = document.createElement("td");
-//         state.innerText = qStates[i];
-//         let vect = document.createElement("td");
-//         vect.innerText = qVector[i];
-//         let rad = document.createElement("td");
-//         rad.innerText = qPhase[i];
-//         let prob = document.createElement("td");
-//         prob.innerText = qProb[i] + "%";
-//         output.append(state,vect,rad,prob)
-//         printVect.appendChild(output)
-//     }
-//     document.getElementById("vectorTable").appendChild(printVect)
-// });
 window.parent.postMessage(JSON.stringify({
     messageFrom: 'quantum_composer',
     actionType: 'setup_finish'

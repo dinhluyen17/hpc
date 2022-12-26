@@ -5,7 +5,7 @@ document.D3_FUNCTION = {
         if (barHeight == undefined){
             barHeight = parseInt(divWrapper.style.height);
         }
-        let margin = { top: 30, right: 30, bottom: 90, left: 60 },
+        let margin = { top: 30, right: 30, bottom: 80, left: 60 },
             width = ((barData.length*15) >= parseInt(divWrapper.style.width)?barData.length*15:parseInt(divWrapper.style.width)) - margin.left - margin.right,
             height = barHeight -margin.top - margin.bottom;
             // width = (barData.length * 15) - margin.left - margin.right,
@@ -38,9 +38,7 @@ document.D3_FUNCTION = {
             .attr("x", width)
             .attr("y", height)
             .text("Computational basis states")
-        console.log((Math.log(barData.length)/Math.log(2))/10)
         let y = d3.scaleLinear()
-            // .domain([0,100])
             .range([height, 0])
             .domain([0, d3.max(barData, function (d) { return Math.ceil(d.Probability) })])
             .nice(3)
@@ -62,9 +60,6 @@ document.D3_FUNCTION = {
         let g = svg.selectAll("mybar")
             .data(barData)
             .enter()
-        // svg.selectAll("mybar")
-        //         .data(barData)
-        //         .enter()
         g.append("rect")
             .attr("class", "bar1")
             .attr("x", function (d) {
@@ -113,15 +108,6 @@ document.D3_FUNCTION = {
             })
     }
 }
-document.simStat = {
-    table: (data) => {
-        // let table = document.getElementById('dataOutput');
-        // for (let i = 0; i < data.length; i++){
-        //     table.innerHTML += `<tr><td>${data[i].state}</td><td>${data[i].vect}</td><td>${data[i].rad}</td><td>${data[i].prob}</td></tr>`
-        // }
-    }
-}
-
 function grabGate(gate) {
     document.GRAB_GATE = gate;
 }
