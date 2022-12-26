@@ -191,9 +191,6 @@ small.smaller {
 
 .Probes, .Displays {
     background-color: #f1ac2e;
-    border-radius: 25%;
-    border: none !important;
-    font-family: "Arial Narrow", Arial;
 }
 
 .Half, .Quarter, .Eighth, .Spinning, .Formulaic, .Parametrized, .Sampling, .Parity {

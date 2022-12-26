@@ -1,3 +1,10 @@
+.tab-button {
+    border-width: 0px;
+    font-size: 15px;
+    cursor: pointer;
+    width: 200px;
+    height: 35px;
+}
 .tab-button.active {
     background-color: rgb(0, 131, 250);
     color: white;
