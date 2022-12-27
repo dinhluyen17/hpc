@@ -90,23 +90,48 @@
       </div>
       <div class="circuit-area">
         <div class="circuit-area-header">
-          <button class="circuit-area-header-btn" id="undo-button">
-            <svg focusable="false" preserveAspectRatio="xMidYMid meet" xmlns="http://www.w3.org/2000/svg" fill="currentColor" width="20" height="20"
-              viewBox="0 0 20 20" aria-hidden="true">
-              <path
-                d="M15,9.3c1.5,0,2.8,1.3,2.8,2.7c0,1.5-1.3,2.7-2.8,2.7h-4V16h4c2.3,0,4-1.7,4-4c0-2.2-1.8-4-4-4H3.4	l2.5-2.5L5,4.6l-4,4l4,4l0.9-0.9L3.4,9.3H15z">
-              </path>
-            </svg>
-          </button>
-          <button class="circuit-area-header-btn" id="redo-button">
-            <svg focusable="false" transform="scale(-1,1)" preserveAspectRatio="xMidYMid meet" xmlns="http://www.w3.org/2000/svg" fill="currentColor" width="20"
-              height="20" viewBox="0 0 20 20" aria-hidden="true">
-              <path
-                d="M15,9.3c1.5,0,2.8,1.3,2.8,2.7c0,1.5-1.3,2.7-2.8,2.7h-4V16h4c2.3,0,4-1.7,4-4c0-2.2-1.8-4-4-4H3.4	l2.5-2.5L5,4.6l-4,4l4,4l0.9-0.9L3.4,9.3H15z">
-              </path>
-            </svg>
-          </button>
-          <button class="circuit-area-header-btn" id="clear-button">Clear</button>
+          <div class="circuit-area-header-left">
+            <button class="circuit-area-header-btn" id="undo-button">
+              <svg focusable="false" preserveAspectRatio="xMidYMid meet" xmlns="http://www.w3.org/2000/svg" fill="currentColor" width="20" height="20"
+                viewBox="0 0 20 20" aria-hidden="true">
+                <path
+                  d="M15,9.3c1.5,0,2.8,1.3,2.8,2.7c0,1.5-1.3,2.7-2.8,2.7h-4V16h4c2.3,0,4-1.7,4-4c0-2.2-1.8-4-4-4H3.4	l2.5-2.5L5,4.6l-4,4l4,4l0.9-0.9L3.4,9.3H15z">
+                </path>
+              </svg>
+            </button>
+            <button class="circuit-area-header-btn" id="redo-button">
+              <svg focusable="false" transform="scale(-1,1)" preserveAspectRatio="xMidYMid meet" xmlns="http://www.w3.org/2000/svg" fill="currentColor" width="20"
+                height="20" viewBox="0 0 20 20" aria-hidden="true">
+                <path
+                  d="M15,9.3c1.5,0,2.8,1.3,2.8,2.7c0,1.5-1.3,2.7-2.8,2.7h-4V16h4c2.3,0,4-1.7,4-4c0-2.2-1.8-4-4-4H3.4	l2.5-2.5L5,4.6l-4,4l4,4l0.9-0.9L3.4,9.3H15z">
+                </path>
+              </svg>
+            </button>
+            <button class="circuit-area-header-btn" id="clear-button">Clear</button>
+          </div>
+          <div class="circuit-area-header-right">
+            <div class="circuit-area-header-right-lv1">
+              <span>Quantum End: </span>
+              <div class="circuit-area-header-right-lv2">
+                <div>
+                  <select>
+                    <option value="0">Client machine</option>
+                    <option value="1">3rd party machine</option>
+                  </select>
+                </div>
+              </div>
+            </div>
+            <div>
+              <button class="circuit-area-header-right-lv2">
+                <span class="run-icon">
+                  <svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M5 4.80566V15.1903C5 16.5949 6.49989 17.4629 7.67881 16.7391L16.1412 11.5483C16.4031 11.3879 16.6199 11.1608 16.7704 10.8893C16.9209 10.6177 17 10.3109 17 9.99874C17 9.6866 16.9209 9.3798 16.7704 9.10824C16.6199 8.83666 16.4031 8.6096 16.1412 8.44917L7.67881 3.25685C7.41048 3.09266 7.10439 3.00408 6.79169 3.00014C6.479 2.9962 6.17086 3.07703 5.89865 3.23441C5.62644 3.3918 5.39988 3.62011 5.24203 3.8961C5.08417 4.1721 5.00066 4.48593 5 4.80566Z" fill="white" fill-opacity="0.9"></path></svg>
+                </span>
+                <span>
+                  Run
+                </span>
+              </button>
+            </div>
+          </div>
         </div>
         <div class="circuit-area-body" id="circuit-area-body">
           <canvas id="drawCanvas">
