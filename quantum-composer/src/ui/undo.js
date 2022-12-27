@@ -40,6 +40,14 @@ function initUndoRedo(revision, obsIsAnyOverlayShowing, redrawThrottle) {
     redoButton.addEventListener('click', () => revision.redo());
     clearButton.addEventListener('click', () => {
         revision.commit('{"cols":[]}')
+        let barData = [
+            {
+                "Probability": "100.0000",
+                "State": "0",
+                "id": 0
+            }
+        ]
+        document.D3_FUNCTION.bar(barData)
     });
 
     const infoGateBtn = document.getElementById('gate-menu-popup-info-btn');

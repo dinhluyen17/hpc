@@ -13,6 +13,12 @@ document.D3_FUNCTION = {
         if (width <= 600) {
             width = 600;
         }
+        let dyMod;
+        if (document.getElementById("changeState").value == "Binary" || document.getElementById("changeState").value == "default") {
+            dyMod = 1/10;
+        } else {
+            dyMod = 0;
+        }
         let svg = d3.select("#stateBarChart");
         svg.selectAll("*").remove();
         svg = d3.select("#stateBarChart")
@@ -34,7 +40,7 @@ document.D3_FUNCTION = {
         svg.append("text")
             .attr("class", "x label")
             .attr("text-anchor", "end")
-            .attr("dy",3.2+((Math.log(barData.length)/Math.log(2))/10) + "rem")
+            .attr("dy",3.2+((Math.log(barData.length)/Math.log(2))*dyMod) + "rem")
             .attr("x", width)
             .attr("y", height)
             .text("Computational basis states")

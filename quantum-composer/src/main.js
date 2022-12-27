@@ -190,6 +190,43 @@ let stateBarCalc = () =>{
     for (let i = 0; i < qHeight; i++){
         qStates[i] = Util.bin(i,qNumWire);
     }
+    let select = document.getElementById("changeState");
+    let val = select.value;
+    let currentVal = "default";
+    switch (val){
+        case "Binary":
+            if (currentVal != "default")
+            for (let i in qStates){
+                let x = parseInt(qStates[i])
+                qStates[i] = x.toString(2)
+            }
+            currentVal = "Binary";
+            break;
+        case "Decimal":
+            for (let i in qStates){
+                let x;
+                if (currentVal == "Binary" || currentVal == "default") {
+                    x = parseInt(qStates[i], 2)
+                } else {
+                    x = qStates[i].toString(10)
+                }
+                qStates[i] = x
+            }
+            currentVal = "Decimal";
+            break;
+        case "Hexadecimal":
+            for (let i in qStates){
+                let x;
+                if (currentVal == "Binary" || currentVal == "default") {
+                    x = parseInt(qStates[i],2).toString(16).toUpperCase();
+                } else {
+                    x = qStates[i].toString(16).toUpperCase();
+                }
+                qStates[i] = x;
+            }
+            currentVal = "Hexadecimal";
+            break;
+    }
     let qProb = [];
     for (let i = 0; i < mostRecentStats.get().finalState._buffer.length; i++) {
         let x = mostRecentStats.get().finalState._buffer;
@@ -239,6 +276,13 @@ document.getElementById("sortBar").addEventListener("click", function (e){
         } else {
             handleSortedData(barDataFilter)
         }
+    }
+})
+document.getElementById("changeState").addEventListener("change", function (e){
+    if (document.getElementById("changeState").value !== "Binary" || document.getElementById("changeState").value !== "default") {
+        document.D3_FUNCTION.bar(stateBarCalc(),viewState.getInstance().chartAreaHeight + 50);
+    } else {
+        document.D3_FUNCTION.bar(stateBarCalc())
     }
 })
 let simStatCalc = () => {
@@ -445,9 +489,9 @@ document.addEventListener('contextmenu', function (e) {
                 element.style.display = 'block';
                 element.style.left = (hoverPos.x - viewState.getInstance().canvasScrollX + viewState.getInstance().canvasBoundingRect.clientX) + "px";
                 element.style.top = (hoverPos.y - viewState.getInstance().canvasScrollY + viewState.getInstance().canvasBoundingRect.clientY - 44) + "px";
-                e.preventDefault();        
-            }            
-        }   
+                e.preventDefault();
+            }
+        }
     }
 }, false);
 document.addEventListener("DOMContentLoaded", function (){
@@ -582,7 +626,7 @@ canvasDiv.addEventListener('click', ev => {
 
     if(pasteMenu.style.display == 'block') {
         pasteMenu.style.display = 'none';
-    }    
+    }
     else {
         if (viewState.getInstance().waitingInfoGate) {
             viewState.getInstance().waitingInfoGate = null;
@@ -688,23 +732,23 @@ watchDrags(canvasDiv,
     });
 
 // Middle-click to delete a gate.
-canvasDiv.addEventListener('mousedown', ev => {    
+canvasDiv.addEventListener('mousedown', ev => {
     const codeAreaBox = codeArea.getBoundingClientRect();
     const gateAreaBox = gateArea.getBoundingClientRect();
     const chartAreaBox = chartArea.getBoundingClientRect();
     if (Math.abs(codeAreaBox.left - ev.clientX) < 4) {
         startResizeCodeArea = true;
         posResize = ev.clientX;
-    } 
+    }
     else if (Math.abs(gateAreaBox.right - ev.clientX) < 4) {
         startResizeGateArea = true;
         posResize = ev.clientX;
-    } 
+    }
     else if (Math.abs(chartAreaBox.top - ev.clientY) < 4) {
         startResizeChartArea = true;
         posResize = ev.clientY;
     }
-    
+
     document.GRAB_GATE = undefined;
     viewState.getInstance().highlightGate = null;
     viewState.getInstance().canShowGateMenu = true;

@@ -378,6 +378,20 @@ small.smaller {
     border: none;
     margin-top: 8px;
 }
+#changeState {
+    border-radius: 5px;
+    cursor: pointer;
+    position: absolute;
+    text-align: center;
+    top: 0px;
+    right: 240px;
+    height: 2rem;
+    width: 6.5rem;
+    background-color: #f5f6f8;
+    color: #000000;
+    border: none;
+    margin-top: 8px;
+}
 
 #stateBarChartFilterZero:hover, #sortBar:hover, #circuit-area-chart-close-btn:hover {
     background-color: #56698e;
