@@ -783,3 +783,12 @@ input::-webkit-inner-spin-button {
 input[type=number] {
   -moz-appearance: textfield;
 }
+
+.grid line {
+    stroke: lightgrey;
+    stroke-opacity: .7;
+    shape-rendering: crispEdges;
+}
+.grid path {
+    stroke-width: 0;
+}
