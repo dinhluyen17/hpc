@@ -270,6 +270,7 @@ small.smaller {
     align-items: center;
     border: 1px solid #EDECF3;
     border-width: 2px 0 2px 0px;
+    justify-content: space-between;
 }
 
 .circuit-area-header-btn {
@@ -284,6 +285,64 @@ small.smaller {
 
 .circuit-area-header-btn:hover {
     background-color: #E1E1E1;
+}
+
+.circuit-area-header-left {
+    display: flex;
+}
+
+.circuit-area-header-right {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 2rem;
+    margin-right: 1rem;
+    border-left: 1px solid #EDECF3;
+}
+
+.circuit-area-header-right > div {
+    margin-right: 1rem;
+}
+
+.circuit-area-header-right-lv1 {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-left: 0.5rem;
+}
+
+.circuit-area-header-right-lv2 {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 2rem;
+}
+
+.circuit-area-header-right-lv2 > div > select {
+    height: 2rem;
+    border-radius: 5px;
+    margin-left: 0.5rem;
+    background-color: #f5f6f8;
+    border-color: #d1d0d7;
+    min-width: 10rem;
+}
+
+button.circuit-area-header-right-lv2 {
+    padding: 0 0.5rem;
+    border-radius: 5px;
+    border: none;
+    background-color: #000000;
+    color: #ffffff;
+}
+
+button.circuit-area-header-right-lv2:hover {
+   cursor: pointer;
+}
+
+.run-icon {
+    display: flex;
+    align-self: center;
+    margin-right: 0.3rem;
 }
 
 .circuit-area-body {
