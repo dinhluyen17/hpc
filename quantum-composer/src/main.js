@@ -185,71 +185,76 @@ window.addEventListener('message', (e) => {
 let barData = [];
 let stateBarCalc = () =>{
     let qHeight = mostRecentStats.get().finalState.height();
-    let qNumWire = mostRecentStats.get().circuitDefinition.numWires;
-    let qStates = [];
-    for (let i = 0; i < qHeight; i++){
-        qStates[i] = Util.bin(i,qNumWire);
-    }
-    let select = document.getElementById("changeState");
-    let val = select.value;
-    let currentVal = "default";
-    switch (val){
-        case "Binary":
-            if (currentVal != "default")
-            for (let i in qStates){
-                let x = parseInt(qStates[i])
-                qStates[i] = x.toString(2)
-            }
-            currentVal = "Binary";
-            break;
-        case "Decimal":
-            for (let i in qStates){
-                let x;
-                if (currentVal == "Binary" || currentVal == "default") {
-                    x = parseInt(qStates[i], 2)
-                } else {
-                    x = qStates[i].toString(10)
-                }
-                qStates[i] = x
-            }
-            currentVal = "Decimal";
-            break;
-        case "Hexadecimal":
-            for (let i in qStates){
-                let x;
-                if (currentVal == "Binary" || currentVal == "default") {
-                    x = parseInt(qStates[i],2).toString(16).toUpperCase();
-                } else {
-                    x = qStates[i].toString(16).toUpperCase();
-                }
-                qStates[i] = x;
-            }
-            currentVal = "Hexadecimal";
-            break;
-    }
-    let qProb = [];
-    for (let i = 0; i < mostRecentStats.get().finalState._buffer.length; i++) {
-        let x = mostRecentStats.get().finalState._buffer;
-        let y = x[i];
-        let z = x[i + 1];
-        if (i % 2 == 0){
-            let k = i/2;
-            let j = Math.pow(y,2) + Math.pow(z, 2);
-            qProb[k] = (j*100).toFixed(4);
+    if (qHeight <= 2048) {
+        let qNumWire = mostRecentStats.get().circuitDefinition.numWires;
+        let qStates = [];
+        for (let i = 0; i < qHeight; i++) {
+            qStates[i] = Util.bin(i, qNumWire);
         }
-    }
-    const stateObj = qStates.map((str, index)=>
-        ({
-            id: index, State: qStates[index]
+        let select = document.getElementById("changeState");
+        let val = select.value;
+        let currentVal = "default";
+        switch (val) {
+            case "Binary":
+                if (currentVal != "default")
+                    for (let i in qStates) {
+                        let x = parseInt(qStates[i])
+                        qStates[i] = x.toString(2)
+                    }
+                currentVal = "Binary";
+                break;
+            case "Decimal":
+                for (let i in qStates) {
+                    let x;
+                    if (currentVal == "Binary" || currentVal == "default") {
+                        x = parseInt(qStates[i], 2)
+                    } else {
+                        x = qStates[i].toString(10)
+                    }
+                    qStates[i] = x
+                }
+                currentVal = "Decimal";
+                break;
+            case "Hexadecimal":
+                for (let i in qStates) {
+                    let x;
+                    if (currentVal == "Binary" || currentVal == "default") {
+                        x = parseInt(qStates[i], 2).toString(16).toUpperCase();
+                    } else {
+                        x = qStates[i].toString(16).toUpperCase();
+                    }
+                    qStates[i] = x;
+                }
+                currentVal = "Hexadecimal";
+                break;
+        }
+        let qProb = [];
+        for (let i = 0; i < mostRecentStats.get().finalState._buffer.length; i++) {
+            let x = mostRecentStats.get().finalState._buffer;
+            let y = x[i];
+            let z = x[i + 1];
+            if (i % 2 == 0) {
+                let k = i / 2;
+                let j = Math.pow(y, 2) + Math.pow(z, 2);
+                qProb[k] = (j * 100).toFixed(4);
+            }
+        }
+        console.log(mostRecentStats.get().finalState._buffer)
+        const stateObj = qStates.map((str, index) =>
+            ({
+                id: index, State: qStates[index]
+            }))
+        const probObj = qProb.map((str, index) => ({
+            id: index, Probability: qProb[index]
         }))
-    const probObj = qProb.map((str, index) => ({
-        id: index, Probability: qProb[index]
-    }))
-    let data = {}
-    const data2 = stateObj.reduce((a, c) => (a[c.id] = c, a), {})
-    data = probObj.map(o => Object.assign(o, data2[o.id]))
-    barData = data;
-    return data;
+        let data = {}
+        const data2 = stateObj.reduce((a, c) => (a[c.id] = c, a), {})
+        data = probObj.map(o => Object.assign(o, data2[o.id]))
+        barData = data;
+        return data;
+    } else {
+        //NOT SUPPORT > 10 QUBITS
+    }
 }
 function compareData(a,b){
     const dataA = a.Probability;
@@ -287,42 +292,46 @@ document.getElementById("changeState").addEventListener("change", function (e){
 })
 let simStatCalc = () => {
     let qHeight = mostRecentStats.get().finalState.height();
-    let qNumWire = mostRecentStats.get().circuitDefinition.numWires;
-    let qStates = [];
-    for (let i = 0; i < qHeight; i++){
-        qStates[i] = Util.bin(i,qNumWire);
-    }
-    let qProb = [];
-    let qVector = [];
-    let qPhase = [];
-    for (let i = 0; i < mostRecentStats.get().finalState._buffer.length; i++) {
-        let x = mostRecentStats.get().finalState._buffer;
-        let y = x[i];
-        let z = x[i + 1];
-        if (i % 2 == 0){
-            let k = i/2;
-            let j = Math.pow(y,2) + Math.pow(z, 2);
-            qVector[k] = (y < 0 ? "":"+") + y.toFixed(5) + (z < 0 ? "":"+") + z.toFixed(5) + "i";
-            qPhase[k] = Math.atan2(z,y).toFixed(5) + "°";
-            qProb[k] = (j*100).toFixed(4);
+    if (qHeight <= 2048) {
+        let qNumWire = mostRecentStats.get().circuitDefinition.numWires;
+        let qStates = [];
+        for (let i = 0; i < qHeight; i++) {
+            qStates[i] = Util.bin(i, qNumWire);
         }
+        let qProb = [];
+        let qVector = [];
+        let qPhase = [];
+        for (let i = 0; i < mostRecentStats.get().finalState._buffer.length; i++) {
+            let x = mostRecentStats.get().finalState._buffer;
+            let y = x[i];
+            let z = x[i + 1];
+            if (i % 2 == 0) {
+                let k = i / 2;
+                let j = Math.pow(y, 2) + Math.pow(z, 2);
+                qVector[k] = (y < 0 ? "" : "+") + y.toFixed(5) + (z < 0 ? "" : "+") + z.toFixed(5) + "i";
+                qPhase[k] = Math.atan2(z, y).toFixed(5) + "°";
+                qProb[k] = (j * 100).toFixed(4);
+            }
+        }
+        let printVect = document.getElementById("dataOutput");
+        printVect.innerHTML = "";
+        for (let i = 0; i < qVector.length; i++) {
+            let output = document.createElement("tr");
+            let state = document.createElement("td");
+            state.innerText = qStates[i];
+            let vect = document.createElement("td");
+            vect.innerText = qVector[i];
+            let rad = document.createElement("td");
+            rad.innerText = qPhase[i];
+            let prob = document.createElement("td");
+            prob.innerText = qProb[i] + "%";
+            output.append(state, vect, rad, prob)
+            printVect.appendChild(output)
+        }
+        document.getElementById("vectorTable").appendChild(printVect)
+    } else {
+        //NOT SUPPORT > 10 QUBITS
     }
-    let printVect = document.getElementById("dataOutput");
-    printVect.innerHTML = "";
-    for (let i = 0; i < qVector.length; i++){
-        let output = document.createElement("tr");
-        let state = document.createElement("td");
-        state.innerText = qStates[i];
-        let vect = document.createElement("td");
-        vect.innerText = qVector[i];
-        let rad = document.createElement("td");
-        rad.innerText = qPhase[i];
-        let prob = document.createElement("td");
-        prob.innerText = qProb[i] + "%";
-        output.append(state,vect,rad,prob)
-        printVect.appendChild(output)
-    }
-    document.getElementById("vectorTable").appendChild(printVect)
 }
 let tableSortSwitch = false;
 let sortTable = () => {
