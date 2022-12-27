@@ -297,7 +297,7 @@ small.smaller {
     align-items: center;
     height: 2rem;
     margin-right: 1rem;
-    border-left: 1px solid #EDECF3;
+    border-left: 2px solid #EDECF3;
 }
 
 .circuit-area-header-right > div {
