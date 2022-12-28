@@ -595,14 +595,7 @@ class CircuitDefinition {
      * and assuming the gate positions are fixed (i.e. wires can only be added or removed from the bottom).
      */
     minimumRequiredWireCount() {
-        let best = 1;
-        for (let c of this.columns) {
-            best = Math.max(best, c.minimumRequiredWireCount());
-        }
-        for (let usedWire of this.customInitialValues.keys()) {
-            best = Math.max(best, usedWire + 1);
-        }
-        return best;
+        return this.numWires;
     }
 
     /**

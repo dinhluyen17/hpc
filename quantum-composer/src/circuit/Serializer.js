@@ -396,12 +396,12 @@ let toJson_CircuitDefinition = (v, context) => {
 
 let _cachedCircuit = undefined;
 let _cachedCircuit_Arg = undefined;
-function fromJsonText_CircuitDefinition(jsonText) {
-    if (_cachedCircuit_Arg === jsonText) {
+function fromJsonText_CircuitDefinition(jsonText, ignoreCache = false, desireNumWires = undefined) {
+    if (_cachedCircuit_Arg === jsonText && !ignoreCache) {
         return _cachedCircuit;
     }
     _cachedCircuit_Arg = jsonText;
-    _cachedCircuit = fromJson_CircuitDefinition(JSON.parse(jsonText), undefined);
+    _cachedCircuit = fromJson_CircuitDefinition(JSON.parse(jsonText), undefined, desireNumWires);
     return _cachedCircuit;
 }
 
@@ -443,7 +443,7 @@ function _fromJson_InitialState(json) {
  * @returns {!CircuitDefinition}
  * @throws
  */
-function fromJson_CircuitDefinition(json, context=undefined) {
+function fromJson_CircuitDefinition(json, context=undefined, desireNumWires=undefined) {
     let {cols} = json;
     let customGateSet = context ||
         (json.gates === undefined ? new CustomGateSet() : fromJson_CustomGateSet(json.gates));
@@ -455,7 +455,7 @@ function fromJson_CircuitDefinition(json, context=undefined) {
 
     let initialValues = _fromJson_InitialState(json);
 
-    let numWires = 0;
+    let numWires = desireNumWires ? desireNumWires : 0;
     for (let col of gateCols) {
         numWires = Math.max(numWires, col.minimumRequiredWireCount());
     }

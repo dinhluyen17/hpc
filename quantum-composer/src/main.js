@@ -105,7 +105,7 @@ const mostRecentStats = new ObservableValue(CircuitStats.EMPTY);
 
 /** @type {!Revision} */
 let revision = Revision.startingAt(displayed.get().snapshot());
-
+viewState.getInstance().revision = revision;
 const changeTab = (tab) => {
     if (tab == 'circuit') {
         let e = document.getElementById("circuit");
@@ -171,6 +171,7 @@ window.addEventListener('message', (e) => {
                     }));                                                    
                 }
                 else if (actionType == 'set_circuit_json') {
+                    viewState.getInstance().wireNumber = undefined;
                     revision.commit(obj.detailData);                                              
                 }
                 else if (actionType == 'change_tab') {
@@ -509,7 +510,7 @@ document.addEventListener("DOMContentLoaded", function (){
 })
 
 revision.latestActiveCommit().subscribe(jsonText => {
-    let circuitDef = fromJsonText_CircuitDefinition(jsonText);
+    let circuitDef = fromJsonText_CircuitDefinition(jsonText, true, viewState.getInstance().wireNumber);
     let newInspector = displayed.get().withCircuitDefinition(circuitDef);
     displayed.set(newInspector);
     if (barDataFilterSwitch == false) {
@@ -668,6 +669,7 @@ canvasDiv.addEventListener('click', ev => {
     if (clicked !== undefined) {
         revision.commit(clicked.afterTidyingUp().snapshot());
     }
+    viewState.getInstance().skipDeleteWire = false;
 });
 watchDrags(canvasDiv,
     /**
@@ -793,16 +795,26 @@ canvasDiv.addEventListener('mousemove', ev => {
     resizeChartArea(ev);
     viewState.getInstance().canShowGateMenu = false;
     if (!displayed.get().hand.isBusy()) {
-        let newHand = displayed.get().hand.withPos(eventPosRelativeTo(ev, canvas));
+        const pos = eventPosRelativeTo(ev, canvas);
+        let newHand = displayed.get().hand.withPos(pos);
         let newInspector = displayed.get().withHand(newHand);
         displayed.set(newInspector);
-    }
-    
+    }     
 });
-canvasDiv.addEventListener('mouseup', () => {
+canvasDiv.addEventListener('mouseup', ev => {
     startResizeCodeArea = false;
     startResizeGateArea = false;
     startResizeChartArea = false;
+
+    const pos = eventPosRelativeTo(ev, canvas);
+    if (viewState.getInstance().addWireBtnRect.containsPoint(pos)) {  
+        viewState.getInstance().skipDeleteWire = true;        
+        const currentWireNumber = displayed.get().displayedCircuit.circuitDefinition.numWires;
+        viewState.getInstance().wireNumber = currentWireNumber + 1;
+        let circuitDef = fromJsonText_CircuitDefinition(revision.getLatestCommit(), true, viewState.getInstance().wireNumber);
+        let newInspector = displayed.get().withCircuitDefinition(circuitDef);
+        displayed.set(newInspector);  
+    }
 })
 canvasDiv.addEventListener('mouseleave', () => {
     startResizeCodeArea = false;
@@ -869,20 +881,6 @@ function resizeCodeArea(e) {
         if (viewState.getInstance().codeAreaWidth < 50) {
             viewState.getInstance().codeAreaWidth = 50;
         }
-        if (barDataFilterSwitch == false) {
-            if (sortSwitch == false) {
-                document.D3_FUNCTION.bar(barData,viewState.getInstance().chartAreaHeight);
-            } else {
-                handleSortedData(barData,viewState.getInstance().chartAreaHeight)
-            }
-        } else {
-            let barDataFilter = barData.filter(val => !val.Probability.match(/^0.0000$/));
-            if (sortSwitch == false){
-                document.D3_FUNCTION.bar(barDataFilter,viewState.getInstance().chartAreaHeight);
-            } else {
-                handleSortedData(barDataFilter,viewState.getInstance().chartAreaHeight)
-            }
-        }
         updateSizeViews(canvasDiv);
     }
 }
@@ -893,20 +891,6 @@ function resizeGateArea(e) {
         viewState.getInstance().gateAreaWidth -= dx;
         if (viewState.getInstance().gateAreaWidth < 130) {
             viewState.getInstance().gateAreaWidth = 130;
-        }
-        if (barDataFilterSwitch == false) {
-            if (sortSwitch == false) {
-                document.D3_FUNCTION.bar(barData,viewState.getInstance().chartAreaHeight);
-            } else {
-                handleSortedData(barData,viewState.getInstance().chartAreaHeight)
-            }
-        } else {
-            let barDataFilter = barData.filter(val => !val.Probability.match(/^0.0000$/));
-            if (sortSwitch == false){
-                document.D3_FUNCTION.bar(barDataFilter,viewState.getInstance().chartAreaHeight);
-            } else {
-                handleSortedData(barDataFilter,viewState.getInstance().chartAreaHeight)
-            }
         }
         updateSizeViews(canvasDiv);
     }

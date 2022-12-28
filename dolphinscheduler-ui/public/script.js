@@ -5,13 +5,19 @@ document.D3_FUNCTION = {
         if (barHeight == undefined){
             barHeight = parseInt(divWrapper.style.height);
         }
-        let margin = { top: 30, right: 30, bottom: 80, left: 60 },
+        let margin = { top: 50, right: 30, bottom: 80, left: 60 },
             width = ((barData.length*15) >= parseInt(divWrapper.style.width)?barData.length*15:parseInt(divWrapper.style.width)) - margin.left - margin.right,
             height = barHeight -margin.top - margin.bottom;
             // width = (barData.length * 15) - margin.left - margin.right,
             // height = 190 - margin.top - margin.bottom;
         if (width <= 600) {
             width = 600;
+        }
+        let dyMod;
+        if (document.getElementById("changeState").value == "Binary" || document.getElementById("changeState").value == "default") {
+            dyMod = 1/10;
+        } else {
+            dyMod = 0;
         }
         let svg = d3.select("#stateBarChart");
         svg.selectAll("*").remove();
@@ -34,7 +40,7 @@ document.D3_FUNCTION = {
         svg.append("text")
             .attr("class", "x label")
             .attr("text-anchor", "end")
-            .attr("dy",3.2+((Math.log(barData.length)/Math.log(2))/10) + "rem")
+            .attr("dy",3.2+((Math.log(barData.length)/Math.log(2))*dyMod) + "rem")
             .attr("x", width)
             .attr("y", height)
             .text("Computational basis states")
@@ -54,6 +60,12 @@ document.D3_FUNCTION = {
             .attr("dy", "-2.5rem")
             .attr("transform", "rotate(-90)")
             .text("Probability(%)")
+        svg.append("g")
+            .attr("class","grid")
+            .call(d3.axisLeft(y)
+                .ticks(4)
+                .tickSize(-width)
+                .tickFormat(""))
         const tooltip = d3.select("#stateBarChart").append("div")
             .attr("class", "barTooltip")
             .style("opacity", 0)

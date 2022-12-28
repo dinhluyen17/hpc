@@ -19,6 +19,7 @@ import {equate} from "./Equate.js"
 import {DetailedError} from "./DetailedError.js"
 import {ObservableSource, ObservableValue} from "./Obs.js"
 import {fromJsonText_CircuitDefinition, Serializer} from "../circuit/Serializer.js"
+import { viewState } from "../ui/viewState.js"
 /**
  * A simple linear revision history tracker, for supporting undo and redo functionality.
  */
@@ -111,6 +112,23 @@ class Revision {
                 colGates[row] = 1;
             }
 
+            this.prepareCommit(JSON.stringify({
+                cols: cols
+            }));
+        }
+    }
+    deleteWire(wireIdx) {
+        viewState.getInstance().wireNumber -= 1;
+        const jsonStr = this.getLatestCommit();
+        const json = JSON.parse(jsonStr);
+        if (json && json.cols) {
+            const cols = json.cols;
+            for (let col = 0; col < cols.length; col++) {
+                const colArr = cols[col];
+                if (wireIdx < colArr.length) {
+                    colArr.splice(wireIdx, 1);
+                }
+            }
             this.prepareCommit(JSON.stringify({
                 cols: cols
             }));

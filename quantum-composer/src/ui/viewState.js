@@ -63,11 +63,21 @@ class ViewState {
       viewState.getInstance().simScrollY = simWrapper.scrollTop;
     }, { passive: true });
 
-    var image = new Image();
-    image.src = './svg/measure_gate.svg';
-    this.image = image;
+    const measureGateImage = new Image();
+    measureGateImage.src = './svg/measure_gate.svg';
+    this.measureGateImage = measureGateImage;
 
+    const addWireImage = new Image();
+    addWireImage.src = './icon/add_wire_btn.png';
+    this.addWireImage = addWireImage;
+
+    const deleteImage = new Image();
+    deleteImage.src = './svg/delete.svg';
+    this.deleteImage = deleteImage;
+    
     this.minCircuitWidth = 700;
+    this.skipDeleteWire = false;
+    this.wireNumber = undefined;
   }
 }
 

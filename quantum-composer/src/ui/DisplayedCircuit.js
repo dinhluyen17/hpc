@@ -36,7 +36,7 @@ import {viewState} from "./viewState.js"
 /** @type {!number} */
 let CIRCUIT_OP_HORIZONTAL_SPACING = 10;
 /** @type {!number} */
-let CIRCUIT_OP_LEFT_SPACING = 50;
+let CIRCUIT_OP_LEFT_SPACING = 70;
 
 const SUPERPOSITION_GRID_LABEL_SPAN = 50;
 
@@ -400,29 +400,39 @@ class DisplayedCircuit {
 
         // Initial value labels
         if (showLabels) {
-            for (let row = 0; row < drawnWireCount; row++) {
+            for (let row = 0; row <= drawnWireCount; row++) {
                 let wireRect = this.wireRect(row);
                 let y = wireRect.center().y;
-                let v = this.circuitDefinition.customInitialValues.get(row);
-                if (v === undefined) {
-                    v = '0';
+                if (row === this._extraWireStartIndex || row == drawnWireCount) {
+                    viewState.getInstance().addWireBtnRect = new Rect(20, y - 10, 50, 32);
+                    painter.ctx.drawImage(viewState.getInstance().addWireImage, 20, y - 10, 50, 32);
+                    break;
                 }
-                let rect = this._wireInitialStateClickableRect(row);
-                painter.noteTouchBlocker({rect, cursor: 'pointer'});
-                if (this._highlightedSlot === undefined && hand.pos !== undefined && rect.containsPoint(hand.pos)) {
-                    painter.fillRect(rect, Config.HIGHLIGHTED_GATE_FILL_COLOR);
+                else {
+                    let v = this.circuitDefinition.customInitialValues.get(row);
+                    if (v === undefined) {
+                        v = '0';
+                    }
+                    let rect = this._wireInitialStateClickableRect(row);
+                    painter.noteTouchBlocker({rect, cursor: 'pointer'});
+                    if (this._highlightedSlot === undefined && hand.pos !== undefined && rect.containsPoint(hand.pos) && !viewState.getInstance().skipDeleteWire) {
+                        const newRect = new Rect(rect.x, rect.y, rect.w - 27, rect.h);
+                        painter.fillRect(newRect, Config.HIGHLIGHTED_GATE_FILL_COLOR);
+                        painter.ctx.drawImage(viewState.getInstance().deleteImage, rect.x + 30, rect.y + 8, 20, 20);
+                    }
+                    // Phu: draw label for wire
+                    painter.print(`|${v}⟩`, 40, y, 'right', 'middle', '#646464', '14px sans-serif', 20, Config.WIRE_SPACING);
+                    painter.print(`q${row}`, this.currentDesiredWidth - 50, y, 'right', 'middle', '#646464', '14px sans-serif', 20, Config.WIRE_SPACING);
                 }
-                // Phu: draw label for wire
-                painter.print(`|${v}⟩`, 40, y, 'right', 'middle', '#646464', '14px sans-serif', 20, Config.WIRE_SPACING);
-                painter.print(`q${row}`, this.currentDesiredWidth - (this.currentDesiredWidth <= 700 ? 50 : 40), y, 'right', 'middle', '#646464', '14px sans-serif', 20, Config.WIRE_SPACING);
-            }
+            }            
         }
 
         // Wires (doubled-up for measured sections).
         painter.ctx.save();
         for (let row = 0; row < drawnWireCount; row++) {
             if (row === this._extraWireStartIndex) {
-                painter.ctx.globalAlpha *= 0.5;
+                //painter.ctx.globalAlpha *= 0.5;
+                break;
             }
             painter.trace(trace => {
                 let wireRect = this.wireRect(row);
@@ -430,27 +440,20 @@ class DisplayedCircuit {
                 // Phu: change wire label x
                 let lastX = CIRCUIT_OP_LEFT_SPACING;
                 //noinspection ForLoopThatDoesntUseLoopVariableJS
+                const maxX = painter.canvas.width - 80;
                 for (let col = 0;
-                        showLabels ? lastX < painter.canvas.width : col <= this.circuitDefinition.columns.length;
+                        showLabels ? lastX < maxX : col <= this.circuitDefinition.columns.length;
                         col++) {
                     let x = this.opRect(col).center().x;
                     if (this.circuitDefinition.locIsMeasured(new Point(col, row))) {
                         // Measured wire.
-                        if (x >= painter.canvas.width - 50) {
-
-                        }
-                        else {
-                            trace.line(lastX, y-1, x, y-1);
-                            trace.line(lastX, y+1, x, y+1);
-                        }
+                        x = Math.min(x, maxX);
+                        trace.line(lastX, y-1, x, y-1);
+                        trace.line(lastX, y+1, x, y+1);
                     } else {
                         // Unmeasured wire.
-                        if (x >= painter.canvas.width - 50) {
-                            //trace.line(lastX, y, x, y);
-                        }
-                        else {
-                            trace.line(lastX, y, x, y);
-                        }                        
+                        x = Math.min(x, maxX);
+                        trace.line(lastX, y, x, y);
                     }
                     lastX = x;
                 }
@@ -839,7 +842,7 @@ class DisplayedCircuit {
         // Use the grab offset instead of the gate height so that tall gates are 'sticky' when dragging downward: they
         // aren't removed until the hand actually leaves the circuit area.
         let handRowOffset = Math.floor(hand.holdOffset.y/Config.WIRE_SPACING);
-        if (modificationPoint.row + handRowOffset >= this.circuitDefinition.numWires) {
+        if (modificationPoint.row + handRowOffset >= this._extraWireStartIndex) {
             return this;
         }
 
@@ -1062,7 +1065,7 @@ class DisplayedCircuit {
         let r = this.wireRect(wire);
         r.x = 17;
         r.y += 5;
-        r.w = 30;
+        r.w = 55;
         r.h -= 10;
         return r;
     }
@@ -1071,6 +1074,23 @@ class DisplayedCircuit {
      * @param {!Point} pt
      * @returns {undefined|!int}
      */
+    findWireWithDeleteBtnContaining(pt) {
+        let wire = this.wireIndexAt(pt.y);
+        if (wire < 0 || wire >= this.circuitDefinition.numWires || viewState.getInstance().skipDeleteWire) {
+            return undefined;
+        }
+
+        // Is it inside the intended click area, instead of just off to the side?
+        let r = this._wireInitialStateClickableRect(wire);
+        r.x += 30;
+        r.w -= 30;
+        if (!r.containsPoint(pt)) {
+            return undefined;
+        }
+
+        // Good to go.
+        return wire;        
+    }
     findWireWithInitialStateAreaContaining(pt) {
         // Is it in the right vertical band; the one at the start of the circuit?
         // if (pt.x < 0 || pt.x > 30) {
@@ -1079,12 +1099,13 @@ class DisplayedCircuit {
 
         // Which wire is it? Is it one that's actually in the circuit?
         let wire = this.wireIndexAt(pt.y);
-        if (wire < 0 || wire >= this.circuitDefinition.numWires) {
+        if (wire < 0 || wire >= this.circuitDefinition.numWires || viewState.getInstance().skipDeleteWire) {
             return undefined;
         }
 
         // Is it inside the intended click area, instead of just off to the side?
         let r = this._wireInitialStateClickableRect(wire);
+        r.w -= 27;
         if (!r.containsPoint(pt)) {
             return undefined;
         }
@@ -1105,6 +1126,12 @@ class DisplayedCircuit {
         let clickedInitialStateWire = this.findWireWithInitialStateAreaContaining(hand.pos);
         if (clickedInitialStateWire !== undefined) {
             return this.withCircuit(this.circuitDefinition.withSwitchedInitialStateOn(clickedInitialStateWire))
+        }
+
+        let clickDeleteWire = this.findWireWithDeleteBtnContaining(hand.pos);
+        if (clickDeleteWire !== undefined) {
+            viewState.getInstance().revision.deleteWire(clickDeleteWire);       
+            return undefined;
         }
 
         let found = this.findGateWithButtonContaining(hand.pos);
