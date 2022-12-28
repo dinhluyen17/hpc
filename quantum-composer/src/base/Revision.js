@@ -95,7 +95,8 @@ class Revision {
                 cols.push(newCol);
             }
             this.prepareCommit(JSON.stringify({
-                cols: cols
+                cols: cols,
+                gates: json.gates
             }));
         }
     }
@@ -113,7 +114,8 @@ class Revision {
             }
 
             this.prepareCommit(JSON.stringify({
-                cols: cols
+                cols: cols,
+                gates: json.gates
             }));
         }
     }
@@ -130,7 +132,8 @@ class Revision {
                 }
             }
             this.prepareCommit(JSON.stringify({
-                cols: cols
+                cols: cols,
+                gates: json.gates
             }));
         }
     }
