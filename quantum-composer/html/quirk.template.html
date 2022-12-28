@@ -154,8 +154,10 @@
             <option id="hexState">Hexadecimal</option>
           </select>
           <!--          <input type="checkbox" id="stateBarBool">-->
-          <!--          <label>Use bar graph when above 12 qubits (may cause performance issues)</label>-->
           <div id="stateBarChart"></div>
+          <div id="barChartDes">
+            <label>The bar graph is only support for circuits using up to 10 qubits.</label>
+          </div>
         </div>
       </div>
       <div class="code-area" id="code-area">
@@ -224,6 +226,9 @@
             </canvas>
           </div>
           <div id="simulateOutput">
+            <div id="stateTableDes">
+              <label>The state table is only support for circuits using up to 10 qubits.</label>
+            </div>
             <div class="table-content">
               <table id="vectorTable">
                 <thead>
@@ -257,7 +262,7 @@
                 </thead>
                 <tbody id="dataOutput">
                 </tbody>
-              </table>
+              </table>              
             </div>
           </div>
         </div>

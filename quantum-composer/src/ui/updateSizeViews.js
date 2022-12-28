@@ -125,10 +125,10 @@ const initSizeViews = (parentDiv) => {
     }
     viewState.getInstance().expandChartArea = !viewState.getInstance().expandChartArea;
     if (viewState.getInstance().expandChartArea) {
-      viewState.getInstance().chartAreaHeight = 200;
+      viewState.getInstance().chartAreaHeight = 220;
     }
     else {
-      viewState.getInstance().chartAreaHeight = 50;
+      viewState.getInstance().chartAreaHeight = 70;
     }
     updateSizeViews(parentDiv);
   });

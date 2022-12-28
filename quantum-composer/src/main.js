@@ -106,6 +106,35 @@ const mostRecentStats = new ObservableValue(CircuitStats.EMPTY);
 /** @type {!Revision} */
 let revision = Revision.startingAt(displayed.get().snapshot());
 viewState.getInstance().revision = revision;
+
+const isSupportBarChart = () => {
+    const currentWireNumber = displayed.get().displayedCircuit.circuitDefinition.numWires;
+    if (currentWireNumber <= 10) {
+        document.getElementById("barChartDes").style.visibility = 'hidden';
+        document.getElementById("stateBarChart").style.visibility = 'visible';
+        return true;
+    } else {
+        //NOT SUPPORT > 10 QUBITS
+        document.getElementById("barChartDes").style.visibility = 'visible';
+        document.getElementById("stateBarChart").style.visibility = 'hidden';
+        return false;
+    }
+}
+
+const isSupportStateTable = () => {
+    const currentWireNumber = displayed.get().displayedCircuit.circuitDefinition.numWires;
+    if (currentWireNumber <= 10) {
+        document.getElementById("stateTableDes").style.display = 'none';
+        document.getElementById("vectorTable").style.display = 'table';
+        return true;
+    } else {
+        //NOT SUPPORT > 10 QUBITS
+        document.getElementById("stateTableDes").style.display = 'block';
+        document.getElementById("vectorTable").style.display = 'none';
+        return false;
+    }
+}
+
 const changeTab = (tab) => {
     if (tab == 'circuit') {
         let e = document.getElementById("circuit");
@@ -148,7 +177,9 @@ const changeTab = (tab) => {
             width: canvasBox.width,
             height: canvasBox.height
         }
-        simStatCalc();
+        if (isSupportStateTable()) {
+            simStatCalc();            
+        }        
     }
 }
 window.addEventListener('message', (e) => {
@@ -187,6 +218,8 @@ let barData = [];
 let stateBarCalc = () =>{
     let qHeight = mostRecentStats.get().finalState.height();
     if (qHeight <= 2048) {
+        document.getElementById("barChartDes").style.visibility = 'hidden';
+        document.getElementById("stateBarChart").style.visibility = 'visible';        
         let qNumWire = mostRecentStats.get().circuitDefinition.numWires;
         let qStates = [];
         for (let i = 0; i < qHeight; i++) {
@@ -255,6 +288,8 @@ let stateBarCalc = () =>{
         return data;
     } else {
         //NOT SUPPORT > 10 QUBITS
+        document.getElementById("barChartDes").style.visibility = 'visible';
+        document.getElementById("stateBarChart").style.visibility = 'hidden';   
     }
 }
 function compareData(a,b){
@@ -268,6 +303,9 @@ let handleSortedData = (barData) => {
     document.D3_FUNCTION.bar(sortedData);
 }
 document.getElementById("sortBar").addEventListener("click", function (e){
+    if (!isSupportBarChart()) {
+        return;
+    }
     sortSwitch = !sortSwitch;
     if (barDataFilterSwitch == false){
         if (sortSwitch == false){
@@ -285,6 +323,9 @@ document.getElementById("sortBar").addEventListener("click", function (e){
     }
 })
 document.getElementById("changeState").addEventListener("change", function (e){
+    if (!isSupportBarChart()) {
+        return;
+    }
     if (document.getElementById("changeState").value !== "Binary" || document.getElementById("changeState").value !== "default") {
         document.D3_FUNCTION.bar(stateBarCalc(),viewState.getInstance().chartAreaHeight + 50);
     } else {
@@ -330,8 +371,10 @@ let simStatCalc = () => {
             printVect.appendChild(output)
         }
         document.getElementById("vectorTable").appendChild(printVect)
+        document.getElementById("barChartDes").style.visibility = 'hidden';        
     } else {
         //NOT SUPPORT > 10 QUBITS
+        document.getElementById("barChartDes").style.visibility = 'visible';
     }
 }
 let tableSortSwitch = false;
@@ -389,6 +432,9 @@ document.getElementById("sortTable").addEventListener("click", function (e){
     sortTable();
 })
 document.getElementById("cancelSortTable").addEventListener("click", function (e){
+    if (!isSupportStateTable()) {
+        return;
+    }
     tableSortSwitch = false;
     document.getElementById("sortTableDown").classList.remove("hidden")
     document.getElementById("sortTableUp").classList.add("hidden")
@@ -397,6 +443,9 @@ document.getElementById("cancelSortTable").addEventListener("click", function (e
 let barDataFilterSwitch = true;
 const stateBarChartFilter = document.getElementById("stateBarChartFilterZero");
 stateBarChartFilter.addEventListener('click',()=>{
+    if (!isSupportBarChart()) {
+        return;
+    }
     barDataFilterSwitch = !barDataFilterSwitch;
     if (barDataFilterSwitch == false){
         stateBarChartFilter.innerHTML = "Hide zero states";
@@ -417,6 +466,9 @@ stateBarChartFilter.addEventListener('click',()=>{
 })
 let vectFilterSwitch = false;
 document.getElementById("vectFilter").addEventListener('click', function (e) {
+    if (!isSupportStateTable()) {
+        return;
+    }
     vectFilterSwitch = !vectFilterSwitch;
     let table = document.getElementById("vectorTable");
     let tr = table.getElementsByTagName("tr")
@@ -454,6 +506,9 @@ document.getElementById("vectSearchCancel").addEventListener("click", function (
     document.getElementById("vectSearchCancel").classList.add("hidden");
 })
 document.getElementById("vectSearch").addEventListener("input", function (e) {
+    if (!isSupportStateTable()) {
+        return;        
+    }
     let search = document.getElementById("vectSearch").value;
     let table = document.getElementById("vectorTable");
     let tr = table.getElementsByTagName("tr")
@@ -505,26 +560,31 @@ document.addEventListener('contextmenu', function (e) {
     }
 }, false);
 document.addEventListener("DOMContentLoaded", function (){
-        let barDataFilter = stateBarCalc().filter(val => !val.Probability.match(/^0.0000$/));
-            document.D3_FUNCTION.bar(barDataFilter,viewState.getInstance().chartAreaHeight);
+    if (!isSupportBarChart()) {
+        return;
+    }
+    let barDataFilter = stateBarCalc().filter(val => !val.Probability.match(/^0.0000$/));
+    document.D3_FUNCTION.bar(barDataFilter, viewState.getInstance().chartAreaHeight);
 })
 
 revision.latestActiveCommit().subscribe(jsonText => {
     let circuitDef = fromJsonText_CircuitDefinition(jsonText, true, viewState.getInstance().wireNumber);
     let newInspector = displayed.get().withCircuitDefinition(circuitDef);
     displayed.set(newInspector);
-    if (barDataFilterSwitch == false) {
-        if (sortSwitch == false) {
-            document.D3_FUNCTION.bar(stateBarCalc());
+    if (isSupportBarChart()) {
+        if (barDataFilterSwitch == false) {
+            if (sortSwitch == false) {
+                document.D3_FUNCTION.bar(stateBarCalc());
+            } else {
+                handleSortedData(barData)
+            }
         } else {
-            handleSortedData(barData)
-        }
-    } else {
-        let barDataFilter = stateBarCalc().filter(val => !val.Probability.match(/^0.0000$/));
-        if (sortSwitch == false) {
-            document.D3_FUNCTION.bar(barDataFilter);
-        } else {
-            handleSortedData(barDataFilter)
+            let barDataFilter = stateBarCalc().filter(val => !val.Probability.match(/^0.0000$/));
+            if (sortSwitch == false) {
+                document.D3_FUNCTION.bar(barDataFilter);
+            } else {
+                handleSortedData(barDataFilter)
+            }
         }
     }
 });
@@ -903,19 +963,21 @@ function resizeChartArea(e) {
         if (viewState.getInstance().chartAreaHeight < 50) {
             viewState.getInstance().chartAreaHeight = 50;
         }
-        if (barDataFilterSwitch == false) {
-            if (sortSwitch == false) {
-                document.D3_FUNCTION.bar(barData,viewState.getInstance().chartAreaHeight);
+        if (isSupportBarChart()) {
+            if (barDataFilterSwitch == false) {
+                if (sortSwitch == false) {
+                    document.D3_FUNCTION.bar(barData,viewState.getInstance().chartAreaHeight);
+                } else {
+                    handleSortedData(barData,viewState.getInstance().chartAreaHeight)
+                }
             } else {
-                handleSortedData(barData,viewState.getInstance().chartAreaHeight)
-            }
-        } else {
-            let barDataFilter = barData.filter(val => !val.Probability.match(/^0.0000$/));
-            if (sortSwitch == false){
-                document.D3_FUNCTION.bar(barDataFilter,viewState.getInstance().chartAreaHeight);
-            } else {
-                handleSortedData(barDataFilter,viewState.getInstance().chartAreaHeight)
-            }
+                let barDataFilter = barData.filter(val => !val.Probability.match(/^0.0000$/));
+                if (sortSwitch == false){
+                    document.D3_FUNCTION.bar(barDataFilter,viewState.getInstance().chartAreaHeight);
+                } else {
+                    handleSortedData(barDataFilter,viewState.getInstance().chartAreaHeight)
+                }
+            }            
         }
         updateSizeViews(canvasDiv);
     }
