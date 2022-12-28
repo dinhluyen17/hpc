@@ -24,6 +24,15 @@ const initGateViews = () => {
   const commonGatesGrid = document.getElementById('common-gates-grid');
   const advancedGates = document.getElementById('advanced-gates');
   const advancedGatesGrid = document.getElementById('advanced-gates-grid');
+
+  //clear content of gate area if has any
+  if(commonGates.firstChild || commonGates.firstChild || advancedGates.firstChild || advancedGatesGrid.firstChild) {
+    commonGates.innerHTML = ''
+    commonGatesGrid.innerHTML = ''
+    advancedGates.innerHTML = ''
+    advancedGates.innerHTML = ''
+  }
+
   //list all unsupported gates and currently show all unsupported gates
   const unsupportedGates = [
     /*     "Postselect Off",
