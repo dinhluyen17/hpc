@@ -194,8 +194,12 @@ small.smaller {
     background-color: #f1ac2e;
 }
 
-.Half, .Quarter, .Eighth, .Spinning, .Formulaic, .Parametrized, .Sampling, .Parity {
+.Half, .Quarter, .Eighth, .Parametrized, .Parity {
     background-color: #24b1a0;
+}
+
+.Spinning, .Formulaic, .Sampling {
+    background-color: #626c7a;
 }
 
 .Order, .Frequency, .Inputs, .Arithmetic, .Compare, .Modular, .Scalar, .Custom {

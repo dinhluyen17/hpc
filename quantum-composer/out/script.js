@@ -360,6 +360,19 @@ const circuitEdit = {
             }
         });
 
+        //css unsupported gate
+        const orderGateList = document.querySelectorAll(".Order")
+        orderGateList.forEach((item, index) => {
+            if(index == 0 || index == 1 || index == 7 || index == 8) {
+                item.style.backgroundColor = "#626c7a"
+            }
+        })
+        const frequencyGateList = document.querySelectorAll(".Frequency")
+        frequencyGateList.forEach((item, index) => {
+            if(index == 5 || index == 4 || index == 10 || index == 11) {
+                item.style.backgroundColor = "#626c7a"
+            }
+        })
     },
 
     start: function () {
