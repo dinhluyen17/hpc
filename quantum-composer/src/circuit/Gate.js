@@ -329,6 +329,9 @@ class Gate {
      * @returns {!Gate}
      */
     getBgColor() {
+        if (this.colorIndex == 3) {
+            return '#626c7a';
+        }        
         if (this.colorIndex == 2) {
             return '#F3A339';
         }

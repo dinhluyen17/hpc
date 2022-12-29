@@ -368,12 +368,33 @@ Gates.TopToolboxGroups.forEach((group, idx) => {
             }
         });
     }
+    else if (idx == 5 || idx == 6 || idx == 8) {
+        group.gates.forEach(gate => {
+            if (gate != undefined) {
+                gate.colorIndex = 3;
+            }
+        });
+    }
 })
 Gates.BottomToolboxGroups.forEach((group, idx) => {
     if (idx == 0) {
         group.gates.forEach(gate => {
             if (gate != undefined) {
                 gate.colorIndex = 2;
+            }
+        });
+    }
+    else if (idx == 1) {
+        group.gates.forEach((gate, subIndex) => {
+            if (gate != undefined) {
+                gate.colorIndex = subIndex <= 1 ? 3 : 1;
+            }
+        });
+    }
+    else if (idx == 2) {
+        group.gates.forEach((gate, subIndex) => {
+            if (gate != undefined) {
+                gate.colorIndex = subIndex >= 6 ? 3 : 1;
             }
         });
     }
@@ -420,11 +441,16 @@ const gateFamilyGroups =
     ModularMultiplicationGates.TimesBToTheAModRFamily,
     ModularMultiplicationGates.TimesInverseBToTheAModRFamily
 ];
-gateFamilyGroups.forEach((gateFamily) => {
+gateFamilyGroups.forEach((gateFamily, idx) => {
     if (gateFamily && gateFamily.all) {
-        gateFamily.all.forEach(gate => {
+        gateFamily.all.forEach((gate) => {
             if (gate != undefined) {
-                gate.colorIndex = 1;
+                if (idx <= 1 || idx == 11 || idx == 12) {
+                    gate.colorIndex = 3;
+                }                
+                else {
+                    gate.colorIndex = 1;
+                }
             }
         });        
     }

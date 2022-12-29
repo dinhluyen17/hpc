@@ -196,8 +196,8 @@ function drawWedge(args, axis) {
     args.painter.trace(trace => {
         trace.ctx.arc(x, y, r, τ*3/4, τ/4);
         trace.ctx.lineTo(x, y - r - 1);
-    }).thenStroke('black', 2).thenFill(args.gate.getBgColor());
-    args.painter.printLine(axis, args.rect, 0.5, undefined, undefined, undefined, 0.5);
+    }).thenStroke('white', 2).thenFill(args.gate.getBgColor());
+    args.painter.printLine(axis, args.rect, 0.5, 'white', undefined, undefined, 0.5);
 }
 
 /**
@@ -214,7 +214,7 @@ function drawClick(args, axis) {
     args.painter.ctx.save();
     args.painter.ctx.translate(args.rect.center().x, args.rect.center().y);
     args.painter.ctx.rotate(axis === undefined ? Math.PI/3 : Math.PI/4);
-    args.painter.ctx.strokeStyle = 'white';
+    args.painter.ctx.strokeStyle = args.gate.getBgColor();
     args.painter.ctx.lineWidth = 3;
     args.painter.print(
         '*click*',
@@ -222,7 +222,7 @@ function drawClick(args, axis) {
         axis === undefined ? 0 : -5,
         'center',
         'middle',
-        'black',
+        'white',
         'bold 16px sans-serif',
         r*2.8,
         r*2.8,
@@ -236,7 +236,7 @@ function drawClick(args, axis) {
             10,
             'center',
             'middle',
-            'black',
+            'white',
             'bold 16px sans-serif',
             r * 2.8,
             r * 2.8,
@@ -255,20 +255,20 @@ function drawControlBulb(args, axis) {
     let p = args.rect.center();
     switch (axis) {
         case 'X':
-            args.painter.fillCircle(p, 5);
-            args.painter.strokeCircle(p, 5);
-            args.painter.strokeLine(p.offsetBy(0, -5), p.offsetBy(0, +5));
-            args.painter.strokeLine(p.offsetBy(-5, 0), p.offsetBy(+5, 0));
+            args.painter.fillCircle(p, 5, args.gate.getBgColor());
+            args.painter.strokeCircle(p, 5, 'white');
+            args.painter.strokeLine(p.offsetBy(0, -5), p.offsetBy(0, +5), 'white');
+            args.painter.strokeLine(p.offsetBy(-5, 0), p.offsetBy(+5, 0), 'white');
             break;
         case 'Y':
-            args.painter.fillCircle(p, 5);
-            args.painter.strokeCircle(p, 5);
+            args.painter.fillCircle(p, 5, args.gate.getBgColor());
+            args.painter.strokeCircle(p, 5, 'white');
             let r = 5*Math.sqrt(0.5)*1.1;
-            args.painter.strokeLine(p.offsetBy(+r, -r), p.offsetBy(-r, +r));
-            args.painter.strokeLine(p.offsetBy(-r, -r), p.offsetBy(+r, +r));
+            args.painter.strokeLine(p.offsetBy(+r, -r), p.offsetBy(-r, +r), 'white');
+            args.painter.strokeLine(p.offsetBy(-r, -r), p.offsetBy(+r, +r), 'white');
             break;
         case 'Z':
-            args.painter.fillCircle(p, 5, "black");
+            args.painter.fillCircle(p, 5, args.gate.getBgColor());
             break;
         default:
             throw new DetailedError('Unrecognized axis.', {axis});

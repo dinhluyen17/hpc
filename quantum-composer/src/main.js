@@ -274,7 +274,6 @@ let stateBarCalc = () =>{
                 qProb[k] = (j * 100).toFixed(4);
             }
         }
-        console.log(mostRecentStats.get().finalState._buffer)
         const stateObj = qStates.map((str, index) =>
             ({
                 id: index, State: qStates[index]
