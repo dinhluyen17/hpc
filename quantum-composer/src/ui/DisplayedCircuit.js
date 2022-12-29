@@ -537,18 +537,18 @@ class DisplayedCircuit {
         }
 
         painter.ctx.save();
-        if (isHighlighted) {
-            painter.ctx.globalAlpha *= 0.3;
-        }
-        painter.ctx.globalAlpha *= 0.5;
-        painter.fillRect(gateRect.paddedBy(5), 'yellow');
-        painter.ctx.globalAlpha *= 2;
+        // if (isHighlighted) {
+        //     painter.ctx.globalAlpha *= 0.3;
+        // }
+        // painter.ctx.globalAlpha *= 0.5;
+        painter.fillRect(gateRect, 'yellow');
+        // painter.ctx.globalAlpha *= 2;
         painter.strokeLine(gateRect.topLeft(), gateRect.bottomRight(), 'orange', 3);
-        let r = painter.printParagraph(isDisabledReason, gateRect.paddedBy(5), new Point(0.5, 0.5), 'red');
-        painter.ctx.globalAlpha *= 0.5;
-        painter.fillRect(r.paddedBy(2), 'yellow');
-        painter.ctx.globalAlpha *= 2;
-        painter.printParagraph(isDisabledReason, gateRect.paddedBy(5), new Point(0.5, 0.5), 'red');
+        let r = painter.printParagraph(isDisabledReason, gateRect, new Point(0.5, 0.5), 'red');
+        // painter.ctx.globalAlpha *= 0.5;
+        painter.fillRect(r, 'yellow');
+        // painter.ctx.globalAlpha *= 2;
+        painter.printParagraph(isDisabledReason, gateRect, new Point(0.5, 0.5), 'red');
         painter.ctx.restore()
     }
 

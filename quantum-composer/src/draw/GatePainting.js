@@ -56,7 +56,7 @@ GatePainting.LABEL_DRAWER = args => {
     }
 
     let cut = Math.max(0, args.rect.h - Config.GATE_RADIUS*2)/2;
-    args.painter.fillRect(args.rect.skipTop(cut).skipBottom(cut), Config.GATE_FILL_COLOR);
+    args.painter.fillRect(args.rect.skipTop(cut).skipBottom(cut), args.gate.getBgColor());
 
     GatePainting.paintGateSymbol(args);
 };
@@ -341,7 +341,7 @@ GatePainting.MATRIX_DRAWER = args => {
         return;
     }
 
-    args.painter.fillRect(args.rect, args.isHighlighted ? Config.HIGHLIGHTED_GATE_FILL_COLOR : Config.GATE_FILL_COLOR);
+    args.painter.fillRect(args.rect, args.isHighlighted ? Config.HIGHLIGHTED_GATE_FILL_COLOR : args.gate.getBgColor());
     MathPainter.paintMatrix(
         args.painter,
         m,

@@ -50,6 +50,7 @@ import {Point} from "./math/Point.js";
 import {initGateViews} from "./ui/initGateViews.js";
 import {initSizeViews, updateSizeViews} from "./ui/updateSizeViews.js";
 import { viewState } from "./ui/viewState.js";
+import { Gates } from "./gates/AllGates.js";
 
 const codeArea = document.getElementById("code-area");
 const gateArea = document.getElementById("gate-area");
@@ -569,6 +570,22 @@ document.addEventListener("DOMContentLoaded", function (){
 
 revision.latestActiveCommit().subscribe(jsonText => {
     let circuitDef = fromJsonText_CircuitDefinition(jsonText, true, viewState.getInstance().wireNumber);
+    if (circuitDef.customGateSet && circuitDef.customGateSet.gates && circuitDef.customGateSet.gates.length > 0) {
+        let hasNewGate = false;
+        const newGateSet = new Set();
+        circuitDef.customGateSet.gates.forEach(gate => {
+            gate.colorIndex = 2;
+            if (!Gates.customGateSet.has(gate.serializedId)) {
+                hasNewGate = true;                
+            }
+            newGateSet.add(gate.serializedId);
+        })
+        if (hasNewGate) {
+            Gates.CustomGateGroups[0].gates = [...circuitDef.customGateSet.gates];
+            Gates.customGateSet = newGateSet;   
+            initGateViews();                                             
+        }        
+    }
     let newInspector = displayed.get().withCircuitDefinition(circuitDef);
     displayed.set(newInspector);
     if (isSupportBarChart()) {

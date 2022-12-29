@@ -23,6 +23,9 @@ class CustomGateSet {
     constructor(...gates) {
         /** @type {!Array.<!Gate>} */
         this.gates = gates;
+        this.gates.forEach(gate => {
+            gate.colorIndex = 2;
+        })
     }
 
     /**

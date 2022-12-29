@@ -202,7 +202,8 @@ const initGateViews = () => {
   })
 
   //show bottom gate as normal list
-  Gates.BottomToolboxGroups.forEach((group) => {
+  const bottomGates = [...Gates.BottomToolboxGroups, ...Gates.CustomGateGroups];
+  bottomGates.forEach((group) => {
     group.gates.forEach(gate => {
       if (gate != undefined && !unsupportedGates.includes(gate.name)) {
         const gateView = document.createElement("span");
@@ -221,7 +222,7 @@ const initGateViews = () => {
   })
 
   //show bottom gate as grid list
-  Gates.BottomToolboxGroups.forEach((group) => {
+  bottomGates.forEach((group) => {
     let gateGroup = document.createElement('div'); gateGroup.setAttribute("class", "gate-group")
     let gateGroupName = document.createElement('h4'); gateGroupName.setAttribute("class", `group-gate-name`);
     gateGroupName.innerText = group.hint

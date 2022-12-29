@@ -190,7 +190,7 @@ small.smaller {
     color: #ffffff;
 }
 
-.Probes, .Displays {
+.Probes, .Displays, .Custom {
     background-color: #f1ac2e;
 }
 
@@ -202,7 +202,7 @@ small.smaller {
     background-color: #626c7a;
 }
 
-.Order, .Frequency, .Inputs, .Arithmetic, .Compare, .Modular, .Scalar, .Custom {
+.Order, .Frequency, .Inputs, .Arithmetic, .Compare, .Modular, .Scalar {
     background-color: #585df4;
 }
 

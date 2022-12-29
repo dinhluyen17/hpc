@@ -353,6 +353,13 @@ Gates.BottomToolboxGroups = [
         ]
     },
 ];
+Gates.CustomGateGroups = [
+    {
+        hint: 'Custom',
+        gates: []
+    },
+];
+Gates.customGateSet = new Set();
 Gates.TopToolboxGroups.forEach((group, idx) => {
     if (idx == 0 || idx == 1) {
         group.gates.forEach(gate => {

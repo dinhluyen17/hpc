@@ -238,12 +238,13 @@ let fromJson_Gate_Matrix = props => {
     let width = props.symbol === '' ? height : 1;
     let matrix = _parseGateMatrix(props.matrix);
 
-    let builder = new GateBuilder().
+    let builder = new GateBuilder().        
         setSerializedId(props.id).
         setSymbol(props.symbol).
         setTitle(props.name).
         setHeight(height).
         setWidth(width).
+        setColorIndex(2).
         setDrawer(props.symbol === "" ? matrixDrawer
             : matrix.isIdentity() ? labelDrawer
             : matrix.isScaler() ? locationIndependentDrawer
@@ -266,6 +267,7 @@ let fromJson_Gate_Circuit = (props, context) => {
         setSerializedId(props.id).
         setSymbol(props.symbol).
         setTitle(props.name).
+        setColorIndex(2).
         setDrawer(circuitDrawer).
         gate;
 };
