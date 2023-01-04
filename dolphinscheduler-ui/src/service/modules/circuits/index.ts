@@ -71,3 +71,17 @@ export function massActionDeleteCircuit(ids: string): any {
   })
 }
 
+export function stateBarCalc(qStates: string[], qProb: string[]): any {
+  return axios({
+    url: '/circuit-calc/bar',
+    method: 'post',
+    headers: {
+      'Content-Type': 'application/json',
+      'accept': '*/*'
+    },
+    data: JSON.stringify({
+      qStates: qStates,
+      qProb: qProb
+    })
+  })
+}

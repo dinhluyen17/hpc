@@ -1,3 +1,4 @@
+/* eslint-disable */
 /*
  * Licensed to the Apache Software Foundation (ASF) under one or more
  * contributor license agreements.  See the NOTICE file distributed with
@@ -26,6 +27,8 @@ import MESSAGE, { QUANTUM_MESSAGE_FROM, VUEJS_MESSAGE_FROM } from './constants'
 import exportFile from '@/utils/exportFile'
 import './styles/CircuitStyle.scss'
 import HelpModal from './help-modal'
+import {stateBarCalc} from "@/service/modules/circuits";
+import {CircuitBarData} from "@/service/modules/circuits/types";
 
 const circuitItem = defineComponent({
   name: 'circuitItem',
@@ -170,6 +173,14 @@ const circuitItem = defineComponent({
                   }
                 } else {
                   exportFile(obj.detailData, variables.data.name, 'json')
+                }
+                break;
+              case MESSAGE.getCurrentCircuitData:
+                if (JSON.parse(obj.detailData).qProb[0] !== 'NaN') {
+                  stateBarCalc(JSON.parse(obj.detailData).qStates, JSON.parse(obj.detailData).qProb)
+                      .then((res) => {
+                        sendMessageToIFrame(MESSAGE.sendData,res)
+                      })
                 }
                 break;
             }

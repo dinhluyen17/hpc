@@ -59,10 +59,16 @@ interface CircuitRes {
   start: number
 }
 
+interface CircuitBarData {
+  qStates: string[]
+  qProb: string[]
+}
+
 export {
   GetReq,
   ListReq,
   CircuitReq,
   CircuitRes,
-  CircuitList
+  CircuitList,
+  CircuitBarData
 }
