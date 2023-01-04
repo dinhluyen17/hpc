@@ -288,7 +288,7 @@ const circuitItem = defineComponent({
         </NSpace>
         <iframe
           ref="quantumRef"
-          src="/quirk.html"
+          src={ process.env.NODE_ENV === 'production' ? "/dolphinscheduler/ui/quirk.html" : "/quirk.html" }
           style={{ width: '100%', height: 'calc(100% - 60px)', marginTop: '10px' }}
           frameborder="0">
         </iframe>

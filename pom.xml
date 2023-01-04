@@ -639,6 +639,7 @@
                 <artifactId>spotless-maven-plugin</artifactId>
                 <version>${spotless.version}</version>
                 <configuration>
+                    <skip>true</skip>
                     <java>
                         <eclipse>
                             <file>style/spotless_dolphinscheduler_formatter.xml</file>

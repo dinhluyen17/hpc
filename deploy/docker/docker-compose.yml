@@ -53,7 +53,7 @@ services:
       - dolphinscheduler
 
   dolphinscheduler-schema-initializer:
-    image: ${HUB}/dolphinscheduler-tools:${TAG}
+    image: hpc-tools
     env_file: .env
     profiles: ["schema"]
     command: [ tools/bin/upgrade-schema.sh ]
@@ -68,7 +68,7 @@ services:
       - dolphinscheduler
 
   dolphinscheduler-api:
-    image: ${HUB}/dolphinscheduler-api:${TAG}
+    image: hpc-api
     ports:
       - "12345:12345"
       - "25333:25333"
