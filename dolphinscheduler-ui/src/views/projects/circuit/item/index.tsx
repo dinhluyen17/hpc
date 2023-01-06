@@ -29,6 +29,7 @@ import './styles/CircuitStyle.scss'
 import HelpModal from './help-modal'
 import {stateBarCalc} from "@/service/modules/circuits";
 import {CircuitBarData} from "@/service/modules/circuits/types";
+import axios from 'axios';
 
 const circuitItem = defineComponent({
   name: 'circuitItem',
@@ -75,8 +76,21 @@ const circuitItem = defineComponent({
         fileReader.onload = () => {
           try {
             const jsonString = fileReader.result;
-            if (jsonString && typeof jsonString == "string") {
+            console.log("jsonString", jsonString)
+            console.log("type of", typeof(jsonString));
+            if(jsonString && jsonString.includes("OPENQASM")) {
+              console.log("ahihi");
+              let token = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJ1c2VybmFtZSIsImV4cCI6MTY3Mjk5ODE5OX0.Bv40NRDMJ2mDHG92zIhszJCwKEKIbz615TOBfCOLLFU"
+              const config = {
+                headers: { Authorization: `Bearer ${token}` }
+              };
+              axios.post('http://0.0.0.0:8000/qasm-to-json', jsonString, config)
+                .then(response => {console.log("ahihi reponse", response)})
+                .catch((error) => {console.log("catch error", error)})
+            }
+            else if (jsonString && typeof jsonString == "string") {
               const json = JSON.parse(jsonString);
+              console.log("log json", json);
               if (json.cols && json.cols.constructor == Array) {
                 sendMessageToIFrame(MESSAGE.setCircuitJson, jsonString);
               }
