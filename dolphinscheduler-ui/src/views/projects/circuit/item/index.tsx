@@ -80,18 +80,23 @@ const circuitItem = defineComponent({
             console.log("type of", typeof(jsonString));
             if(jsonString && jsonString.includes("OPENQASM")) {
               console.log("ahihi");
-              let token = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJ1c2VybmFtZSIsImV4cCI6MTY3Mjk5ODE5OX0.Bv40NRDMJ2mDHG92zIhszJCwKEKIbz615TOBfCOLLFU"
+              let token = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJ1c2VybmFtZSIsImV4cCI6MTY3MzIzMTE1Nn0.JYhUwKAO_s4r8sOuhZU8hoIZacAZ79escI2lRXRRru8"
               const config = {
                 headers: { Authorization: `Bearer ${token}` }
               };
               axios.post('http://0.0.0.0:8000/qasm-to-json', jsonString, config)
-                .then(response => {console.log("ahihi reponse", response)})
-                .catch((error) => {console.log("catch error", error)})
+                .then(response => {
+                  console.log("json send ", JSON.stringify(response.data));
+                  sendMessageToIFrame(MESSAGE.setCircuitJson, JSON.stringify(response.data));
+                })
+                .catch((error) =>
+                  window.$message.error('Please import a valid quasm text file!')
+                )
             }
             else if (jsonString && typeof jsonString == "string") {
               const json = JSON.parse(jsonString);
-              console.log("log json", json);
               if (json.cols && json.cols.constructor == Array) {
+                console.log("wis2 ", jsonString);
                 sendMessageToIFrame(MESSAGE.setCircuitJson, jsonString);
               }
               else {
