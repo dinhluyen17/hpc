@@ -80,7 +80,7 @@ const circuitItem = defineComponent({
             console.log("type of", typeof(jsonString));
             if(jsonString && jsonString.includes("OPENQASM")) {
               console.log("ahihi");
-              let token = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJ1c2VybmFtZSIsImV4cCI6MTY3MzIzMTE1Nn0.JYhUwKAO_s4r8sOuhZU8hoIZacAZ79escI2lRXRRru8"
+              let token = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJ1c2VybmFtZSIsImV4cCI6MTY3MzQwNjg3OH0.puiikQiEpro0dS-8ouSVopkOTCZrMopvSYYXJMAAk_I"
               const config = {
                 headers: { Authorization: `Bearer ${token}` }
               };
@@ -90,7 +90,7 @@ const circuitItem = defineComponent({
                   sendMessageToIFrame(MESSAGE.setCircuitJson, JSON.stringify(response.data));
                 })
                 .catch((error) =>
-                  window.$message.error('Please import a valid quasm text file!')
+                  window.$message.error('Please import a valid qasm .text file!')
                 )
             }
             else if (jsonString && typeof jsonString == "string") {
@@ -115,9 +115,20 @@ const circuitItem = defineComponent({
       importFileRef.value.value = '';
     }
 
-    const handleExportCircuit = () => {
-      variables.isSaveCircuit = false;
-      sendMessageToIFrame(MESSAGE.getCircuitJson, null);
+    const handleExportCircuit = (e) => {
+      console.log(">>>", e.value);
+      console.log(e);
+      if(e == 'json') {
+        variables.isSaveCircuit = false;
+        sendMessageToIFrame(MESSAGE.getCircuitJson, null);
+      }
+      else if(e == 'qasm') {
+        //call api to export qasm code
+      }
+      if(document.getElementById("download-option") != null) {
+        document.getElementById("download-option").selectedIndex = 0; //first option
+      }
+      return 
     }
 
     const handleSaveCircuit = () => {
@@ -305,9 +316,17 @@ const circuitItem = defineComponent({
             <NButton size='small' type='warning' onClick={this.handleSelectFile}>
               {t('circuit.detail.import_circuit')}
             </NButton>
-            <NButton size='small' type='warning' onClick={this.handleExportCircuit}>
+            {/* <NButton id='parent-download' size='small' type='warning' onClick={this.handleDownLoadOptions}>
               {t('circuit.detail.export_circuit')}
-            </NButton>
+            </NButton> */}
+            <div class="n-button n-button--warning-type n-button--small-type" id='download'>
+              <select class="n-button n-button--warning-type n-button--small-type" id="download-option" onChange={(e) => this.handleExportCircuit(e)}>
+                <option class="n-button__content" value={'none'}>{t('circuit.detail.export_circuit')}</option>
+                <option class="n-button__content" value='json'>JSON</option>
+                <option class="n-button__content" value='qasm'>QASM 2.0</option>
+              </select>
+            </div>
+            
             <NButton size='small' type='success'>
               {t('circuit.detail.share_circuit')}
             </NButton>
@@ -329,6 +348,9 @@ const circuitItem = defineComponent({
       </Card>
     )
   }
+
+  
 })
+
 
 export default circuitItem

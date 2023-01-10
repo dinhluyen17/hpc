@@ -13,3 +13,29 @@
     background-color: rgb(0, 131, 250);
     color: white;
 }
+
+.hide {
+    display: none;
+}
+
+#parent-download:hover #download {
+    display: block;
+    
+}
+
+#download {
+    height: 100%;
+    border: 5px;
+    background-color: #faad14;
+    width: 100%;
+}
+
+#download > select {
+    color: #ffffff;
+    background-color: #faad14;
+    max-width: 100%;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    text-indent: 1px;
+    text-overflow: '';
+}
