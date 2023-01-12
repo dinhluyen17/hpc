@@ -11,6 +11,7 @@
     }
     </style>
   <link rel="stylesheet" href="./styles.css">
+  <script src='./dist/plotly-2.16.1.min.js'></script>
 </head>
 
 <body>
@@ -34,6 +35,9 @@
       </div>
     </div>
     <div class="content" id="circuit">
+      <div id="bloch-sphere">
+        ahihi
+      </div>
       <div class="gate-area" id="gate-area">
         <div class="gate-area-header">
           <input type="search" class="gate-area-header-search" id="gate-area-header-search" placeholder="Search">
@@ -161,14 +165,32 @@
         </div>
       </div>
       <div class="code-area" id="code-area">
-        <button id="code-area-close-btn" data-gate="show">
-          <svg focusable="false" preserveAspectRatio="xMidYMid meet" xmlns="http://www.w3.org/2000/svg" fill="currentColor" width="20" height="20"
-            viewBox="0 0 32 32" aria-hidden="true" style="transform: rotate(90deg);">
-            <path
-              d="M4 18L15 18 15 24.172 12.414 21.586 11 23 16 28 21 23 19.586 21.586 17 24.172 17 18 28 18 28 16 4 16 4 18zM26 4H6A2 2 0 004 6v4a2 2 0 002 2H26a2 2 0 002-2V6A2 2 0 0026 4zm0 6H6V6H26z">
-            </path>
-          </svg>
-        </button>
+        <div id="code-area-header">
+          <div>
+            <button id="code-area-close-btn" data-gate="show">
+              <svg focusable="false" preserveAspectRatio="xMidYMid meet" xmlns="http://www.w3.org/2000/svg" fill="currentColor" width="20" height="20"
+                viewBox="0 0 32 32" aria-hidden="true" style="transform: rotate(90deg);">
+                <path
+                  d="M4 18L15 18 15 24.172 12.414 21.586 11 23 16 28 21 23 19.586 21.586 17 24.172 17 18 28 18 28 16 4 16 4 18zM26 4H6A2 2 0 004 6v4a2 2 0 002 2H26a2 2 0 002-2V6A2 2 0 0026 4zm0 6H6V6H26z">
+                </path>
+              </svg>
+            </button>
+          </div>
+          <div>
+            <select id="quantum-code-option">
+              <option value="1" selected>Open QASM 2.0</option>
+              <option value="2">Qiskit</option>
+            </select>
+          </div>
+        </div>
+        <div id="code-area-body">
+          <div id="text-code-wrapper">
+            <textarea name="text-code" id="text-code" class="text-code">
+            </textarea>
+            <div id="text-code-qiskit" class="text-code-qiskit hide">
+            </div>
+          </div>
+        </div>
       </div>
     </div>
     <div id="gate-menu-popup" style="z-index: 888;">
@@ -265,6 +287,9 @@
               </table>              
             </div>
           </div>
+          <!-- <div id="bloch-sphere">
+              ahihi
+          </div> -->
         </div>
       </div>
     </div>
@@ -307,5 +332,4 @@
     //toggle show and hide gate list in a specific gate group
   </script>
 </body>
-
 </html>
