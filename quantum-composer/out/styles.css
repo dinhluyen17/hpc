@@ -478,8 +478,8 @@ button.circuit-area-header-right-lv2:hover {
 }
 
 #code-area-close-btn {
+    margin-left: 4px;
     cursor: pointer;
-    position: absolute;
     top: 0px;
     left: 4px;
     width: 2rem;
@@ -487,7 +487,6 @@ button.circuit-area-header-right-lv2:hover {
     transform: rotate(180deg);
     background-color: #f5f6f8;
     border: none;
-    margin-top: 8px;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -887,4 +886,62 @@ input[type=number] {
 }
 .grid path {
     stroke-width: 0;
+}
+
+#code-area-header {
+    height: 48px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    border-bottom: 2px solid #EDECF3;
+}
+
+#code-area-header div:last-child {
+    display: flex;
+    align-self: center;
+    height: 2rem;
+    margin-right: 0.5rem;
+    background-color: #24b1a0;
+}
+
+#code-area-body {
+    height: 100%;
+    width: 90%;
+    margin: auto;
+}
+
+#code-area-body>div:first-child {
+    height: 100%;
+}
+
+#text-code,
+#text-code-qiskit {
+    font-size: 0.8rem;
+    width: 100%;
+    height: 100%;
+    padding: 0.3rem;
+    white-space: pre-wrap;
+    /* CSS3 */
+    white-space: -moz-pre-wrap;
+    /* Firefox */
+    white-space: -o-pre-wrap;
+    /* Opera 7 */
+    word-wrap: break-word;
+    /* IE */
+    line-height: 1.25em;
+}
+
+#text-code {
+    font-family: IBM Plex Sans, Helvetica Neue, Arial, sans-serif;
+    color: rgb(51, 54, 57);
+    border: none;
+    outline: none
+}
+
+#text-code:focus {
+    border: none;
+}
+
+.hide {
+    display: none !important;
 }

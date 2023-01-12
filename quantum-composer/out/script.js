@@ -140,239 +140,367 @@ const circuitEdit = {
 
     //Hanlde all DOM events in Circuit Edit Page
     handleDomEvents: function () {
-        //Handle sidebar header button click
-        $('.gate-area-header-btn').click(function () {
-            const type = $(this).data('type');
-            if (type === 'icon') {
-                $('.gateList').show();
-                $('.gateGrid').hide();
-            } else if (type === 'list') {
-                $('.gateList').hide();
-                $('.gateGrid').show();
-            } else {
-                let state = document.getElementById("gate-area-header-close-btn")
-                let no_data_top = document.getElementById("no-data")
-                let no_data_bottom = document.getElementById("no-data2")
-                if (state.getAttribute("data-gate") == "show") {
-                    state.setAttribute("data-gate", "hide")
-                    const gateList = document.querySelectorAll('.gateList')
-                    const gateGrid = document.querySelectorAll('.gateGrid')
-                    gateList.forEach(item => {
-                        item.style.display = 'block'
-                    })
-                    gateGrid.forEach(item => {
-                        item.style.display = 'none'
-                    })
-                    if(no_data_top != null && (!no_data_top.hasAttribute('class') || !no_data_top.classList.contains('no-data'))){
-                        no_data_top.setAttribute('class', 'no-data')
-                    }
-                    if(no_data_bottom != null && (!no_data_bottom.hasAttribute('class') || !no_data_bottom.classList.contains('no-data'))){
-                        no_data_bottom.setAttribute('class', 'no-data')
-                    }
-                } else {
-                    state.setAttribute("data-gate", "show")
-                    if(no_data_top != null && no_data_top.hasAttribute('class')){
-                        no_data_top.classList.remove('no-data')
-                    }
-                    if(no_data_bottom != null && no_data_bottom.hasAttribute('class')){
-                        no_data_bottom.classList.remove('no-data')
-                    }
-                }
+      //Handle sidebar header button click
+      $(".gate-area-header-btn").click(function () {
+        const type = $(this).data("type");
+        if (type === "icon") {
+          $(".gateList").show();
+          $(".gateGrid").hide();
+        } else if (type === "list") {
+          $(".gateList").hide();
+          $(".gateGrid").show();
+        } else {
+          let state = document.getElementById("gate-area-header-close-btn");
+          let no_data_top = document.getElementById("no-data");
+          let no_data_bottom = document.getElementById("no-data2");
+          if (state.getAttribute("data-gate") == "show") {
+            state.setAttribute("data-gate", "hide");
+            const gateList = document.querySelectorAll(".gateList");
+            const gateGrid = document.querySelectorAll(".gateGrid");
+            gateList.forEach((item) => {
+              item.style.display = "block";
+            });
+            gateGrid.forEach((item) => {
+              item.style.display = "none";
+            });
+            if (
+              no_data_top != null &&
+              (!no_data_top.hasAttribute("class") ||
+                !no_data_top.classList.contains("no-data"))
+            ) {
+              no_data_top.setAttribute("class", "no-data");
             }
-            if (!$(this).hasClass('active')) {
-                $('.gate-area-header-btn').removeClass('active');
-                $(this).addClass('active');
+            if (
+              no_data_bottom != null &&
+              (!no_data_bottom.hasAttribute("class") ||
+                !no_data_bottom.classList.contains("no-data"))
+            ) {
+              no_data_bottom.setAttribute("class", "no-data");
             }
-        });
-
-        //Handle Search Circuit
-        $('.gate-area-header-search').on('input', function () {
-            let search = document.getElementById("gate-area-header-search").value.toLowerCase();
-
-            const listGates = document.querySelectorAll('.list-view')
-            const groupGates = document.querySelectorAll('.gate-group')
-
-            let foundListTop = false
-            let foundListBottom = false
-            let foundGroupTop = false //flag to check whether to show div with no "data" content
-            let foundGroupBottom = false //flag to check whether to show div with no "data" content
-
-            if (search != null && search != '' && search != undefined) {
-                let i = 0
-                listGates.forEach(item => {
-                    const matchList = item.querySelector("span") //element contains gate name
-                    if (!matchList.innerText.trim().toLowerCase().includes(search)) {
-                        item.style.display = "none"
-                    } else {
-                        item.style.display = "block"
-                        if(i <= 52) { //52 is total common gates, from index 53 is advanced gate
-                            foundListTop = true
-                        } else {
-                            foundListBottom = true
-                        }
-                    }
-                    i++
-                })
-                if(!foundListTop) {
-                    if(document.getElementById("no-data") == null) {
-                        const parentList = document.getElementById("common-gates")
-                        let noData = document.createElement("div"); noData.setAttribute('id', 'no-data')
-                        noData.innerHTML = "No data"
-                        parentList.appendChild(noData)
-                    }
-                } else {
-                    let node = document.getElementById("no-data");
-                    if (node != null && node.parentNode) {
-                      node.parentNode.removeChild(node);
-                    }  
-                }
-                if(!foundListBottom) {
-                    if(document.getElementById("no-data2") == null) {
-                        const parentList = document.getElementById("advanced-gates")
-                        let noData = document.createElement("div"); noData.setAttribute('id', 'no-data2')
-                        noData.innerHTML = "No data"
-                        parentList.appendChild(noData)
-                    }
-                } else {
-                    let node = document.getElementById("no-data2");
-                    if (node != null && node.parentNode) {
-                      node.parentNode.removeChild(node);
-                    }  
-                }
-                
-                let j = 0
-                groupGates.forEach(item => {
-                    let found = false
-                    const gridGates = item.querySelectorAll('.grid-view')
-                    gridGates.forEach(item => {
-                        const gridMatchList = item.querySelector("div span")
-                        if (!gridMatchList.innerText.trim().toLowerCase().includes(search)) {
-                            item.style.display = "none"
-                        } else {
-                            item.style.display = "block"
-                            found = true
-                            if(j <= 9) { //9 is number of top group
-                                foundGroupTop = true
-                            } else {
-                                foundGroupBottom = true
-                            }
-                        }
-                    })
-                    if (found == false) {
-                        if (!item.classList.contains("group-gate-name-not-found")) {
-                            item.classList.add("group-gate-name-not-found")
-                        }
-                    } else {
-                        if (item.classList.contains("group-gate-name-not-found")) {
-                            item.classList.remove("group-gate-name-not-found")
-                        }
-                    }
-                    j++
-                })
-                if(!foundGroupTop) {
-                    if(document.getElementById("no-data-group-top") == null) {
-                        const parentList = document.getElementById("common-gates-grid")
-                        let noData = document.createElement("div"); noData.setAttribute('id', 'no-data-group-top')
-                        noData.innerHTML = "No data"
-                        parentList.appendChild(noData)
-                    }
-                } else {
-                    let node = document.getElementById("no-data-group-top");
-                    if (node != null && node.parentNode) {
-                      node.parentNode.removeChild(node);
-                    }  
-                }
-                if(!foundGroupBottom) {
-                    if(document.getElementById("no-data-group-bottom") == null) {
-                        const parentList = document.getElementById("advanced-gates-grid")
-                        let noData = document.createElement("div"); noData.setAttribute('id', 'no-data-group-bottom')
-                        noData.innerHTML = "No data"
-                        parentList.appendChild(noData)
-                    }
-                } else {
-                    let node = document.getElementById("no-data-group-bottom");
-                    if (node != null && node.parentNode) {
-                      node.parentNode.removeChild(node);
-                    }  
-                }
+          } else {
+            state.setAttribute("data-gate", "show");
+            if (no_data_top != null && no_data_top.hasAttribute("class")) {
+              no_data_top.classList.remove("no-data");
             }
-            else {
-                listGates.forEach(item => {
-                    item.style.display = "block"
-                })
-                groupGates.forEach(item => {
-                    if (item.classList.contains("group-gate-name-not-found")) {
-                        item.classList.remove("group-gate-name-not-found")
-                    }
-                    const gridGates = item.querySelectorAll('.grid-view')
-                    gridGates.forEach(item => {
-                        item.style.display = "block"
-                    })
-                })
-
-                //hide "No data div element" in the list view
-                const nodataTop = document.getElementById("no-data")
-                const nodataBottom = document.getElementById("no-data2")
-                const nodata_grid_top = document.getElementById("no-data-group-top")
-                const nodata_grid_bottom = document.getElementById("no-data-group-bottom")
-
-                if(nodataTop != null && nodataTop.parentNode) {
-                    nodataTop.parentNode.removeChild(nodataTop);
-                }
-                if(nodataBottom != null && nodataBottom.parentNode) {
-                    nodataBottom.parentNode.removeChild(nodataBottom);
-                }
-                if(nodata_grid_top != null && nodata_grid_top.parentNode) {
-                    nodata_grid_top.parentNode.removeChild(nodata_grid_top);
-                }
-                if(nodata_grid_bottom != null && nodata_grid_bottom.parentNode) {
-                    nodata_grid_bottom.parentNode.removeChild(nodata_grid_bottom);
-                }
+            if (
+              no_data_bottom != null &&
+              no_data_bottom.hasAttribute("class")
+            ) {
+              no_data_bottom.classList.remove("no-data");
             }
-        })
-
-        //Handle Colapse Gate List
-        let buttons = document.querySelectorAll('button.toggle-gate-list'); //returns a nodelist
-        for (let i = 0; i < buttons.length; i++) {
-            buttons[i].addEventListener("click", function () {
-                circuitEdit.buttonControls(this, i);
-                const dataState = buttons[i].getAttribute("data-state")
-                if (dataState == "open") {
-                    buttons[i].setAttribute("data-state", "closed")
-                } else {
-                    buttons[i].setAttribute("data-state", "open")
-                }
-            }, false);
+          }
         }
+        if (!$(this).hasClass("active")) {
+          $(".gate-area-header-btn").removeClass("active");
+          $(this).addClass("active");
+        }
+      });
 
-        //css tooltip popup gate name
-        $(".tooltip-wrap").hover(function () {
-            var bodyWidth = $(".gate-area").width();
-            var halfbodyWidth = bodyWidth / 2 - 50;
-            var position = $(this).position().left;
-            if (position >= halfbodyWidth) {
-                $(".tooltip-content").removeClass("tooltipLeft tooltipRight");
-                $(this).find('.tooltip-content').addClass("tooltipLeft");
-            }
-            else {
-                $(".tooltip-content").removeClass("tooltipLeft tooltipRight");
-                $(this).find('.tooltip-content').addClass("tooltipRight");
-            }
-        });
+      //Handle Search Circuit
+      $(".gate-area-header-search").on("input", function () {
+        let search = document
+          .getElementById("gate-area-header-search")
+          .value.toLowerCase();
 
-        //css unsupported gate
-        const orderGateList = document.querySelectorAll(".Order")
-        orderGateList.forEach((item, index) => {
-            if(index == 0 || index == 1 || index == 7 || index == 8) {
-                item.style.backgroundColor = "#626c7a"
+        const listGates = document.querySelectorAll(".list-view");
+        const groupGates = document.querySelectorAll(".gate-group");
+
+        let foundListTop = false;
+        let foundListBottom = false;
+        let foundGroupTop = false; //flag to check whether to show div with no "data" content
+        let foundGroupBottom = false; //flag to check whether to show div with no "data" content
+
+        if (search != null && search != "" && search != undefined) {
+          let i = 0;
+          listGates.forEach((item) => {
+            const matchList = item.querySelector("span"); //element contains gate name
+            if (!matchList.innerText.trim().toLowerCase().includes(search)) {
+              item.style.display = "none";
+            } else {
+              item.style.display = "block";
+              if (i <= 52) {
+                //52 is total common gates, from index 53 is advanced gate
+                foundListTop = true;
+              } else {
+                foundListBottom = true;
+              }
             }
-        })
-        const frequencyGateList = document.querySelectorAll(".Frequency")
-        frequencyGateList.forEach((item, index) => {
-            if(index == 5 || index == 4 || index == 10 || index == 11) {
-                item.style.backgroundColor = "#626c7a"
+            i++;
+          });
+          if (!foundListTop) {
+            if (document.getElementById("no-data") == null) {
+              const parentList = document.getElementById("common-gates");
+              let noData = document.createElement("div");
+              noData.setAttribute("id", "no-data");
+              noData.innerHTML = "No data";
+              parentList.appendChild(noData);
             }
+          } else {
+            let node = document.getElementById("no-data");
+            if (node != null && node.parentNode) {
+              node.parentNode.removeChild(node);
+            }
+          }
+          if (!foundListBottom) {
+            if (document.getElementById("no-data2") == null) {
+              const parentList = document.getElementById("advanced-gates");
+              let noData = document.createElement("div");
+              noData.setAttribute("id", "no-data2");
+              noData.innerHTML = "No data";
+              parentList.appendChild(noData);
+            }
+          } else {
+            let node = document.getElementById("no-data2");
+            if (node != null && node.parentNode) {
+              node.parentNode.removeChild(node);
+            }
+          }
+
+          let j = 0;
+          groupGates.forEach((item) => {
+            let found = false;
+            const gridGates = item.querySelectorAll(".grid-view");
+            gridGates.forEach((item) => {
+              const gridMatchList = item.querySelector("div span");
+              if (
+                !gridMatchList.innerText.trim().toLowerCase().includes(search)
+              ) {
+                item.style.display = "none";
+              } else {
+                item.style.display = "block";
+                found = true;
+                if (j <= 9) {
+                  //9 is number of top group
+                  foundGroupTop = true;
+                } else {
+                  foundGroupBottom = true;
+                }
+              }
+            });
+            if (found == false) {
+              if (!item.classList.contains("group-gate-name-not-found")) {
+                item.classList.add("group-gate-name-not-found");
+              }
+            } else {
+              if (item.classList.contains("group-gate-name-not-found")) {
+                item.classList.remove("group-gate-name-not-found");
+              }
+            }
+            j++;
+          });
+          if (!foundGroupTop) {
+            if (document.getElementById("no-data-group-top") == null) {
+              const parentList = document.getElementById("common-gates-grid");
+              let noData = document.createElement("div");
+              noData.setAttribute("id", "no-data-group-top");
+              noData.innerHTML = "No data";
+              parentList.appendChild(noData);
+            }
+          } else {
+            let node = document.getElementById("no-data-group-top");
+            if (node != null && node.parentNode) {
+              node.parentNode.removeChild(node);
+            }
+          }
+          if (!foundGroupBottom) {
+            if (document.getElementById("no-data-group-bottom") == null) {
+              const parentList = document.getElementById("advanced-gates-grid");
+              let noData = document.createElement("div");
+              noData.setAttribute("id", "no-data-group-bottom");
+              noData.innerHTML = "No data";
+              parentList.appendChild(noData);
+            }
+          } else {
+            let node = document.getElementById("no-data-group-bottom");
+            if (node != null && node.parentNode) {
+              node.parentNode.removeChild(node);
+            }
+          }
+        } else {
+          listGates.forEach((item) => {
+            item.style.display = "block";
+          });
+          groupGates.forEach((item) => {
+            if (item.classList.contains("group-gate-name-not-found")) {
+              item.classList.remove("group-gate-name-not-found");
+            }
+            const gridGates = item.querySelectorAll(".grid-view");
+            gridGates.forEach((item) => {
+              item.style.display = "block";
+            });
+          });
+
+          //hide "No data div element" in the list view
+          const nodataTop = document.getElementById("no-data");
+          const nodataBottom = document.getElementById("no-data2");
+          const nodata_grid_top = document.getElementById("no-data-group-top");
+          const nodata_grid_bottom = document.getElementById(
+            "no-data-group-bottom"
+          );
+
+          if (nodataTop != null && nodataTop.parentNode) {
+            nodataTop.parentNode.removeChild(nodataTop);
+          }
+          if (nodataBottom != null && nodataBottom.parentNode) {
+            nodataBottom.parentNode.removeChild(nodataBottom);
+          }
+          if (nodata_grid_top != null && nodata_grid_top.parentNode) {
+            nodata_grid_top.parentNode.removeChild(nodata_grid_top);
+          }
+          if (nodata_grid_bottom != null && nodata_grid_bottom.parentNode) {
+            nodata_grid_bottom.parentNode.removeChild(nodata_grid_bottom);
+          }
+        }
+      });
+
+      //Handle Colapse Gate List
+      let buttons = document.querySelectorAll("button.toggle-gate-list"); //returns a nodelist
+      for (let i = 0; i < buttons.length; i++) {
+        buttons[i].addEventListener(
+          "click",
+          function () {
+            circuitEdit.buttonControls(this, i);
+            const dataState = buttons[i].getAttribute("data-state");
+            if (dataState == "open") {
+              buttons[i].setAttribute("data-state", "closed");
+            } else {
+              buttons[i].setAttribute("data-state", "open");
+            }
+          },
+          false
+        );
+      }
+
+      //css tooltip popup gate name
+      $(".tooltip-wrap").hover(function () {
+        var bodyWidth = $(".gate-area").width();
+        var halfbodyWidth = bodyWidth / 2 - 50;
+        var position = $(this).position().left;
+        if (position >= halfbodyWidth) {
+          $(".tooltip-content").removeClass("tooltipLeft tooltipRight");
+          $(this).find(".tooltip-content").addClass("tooltipLeft");
+        } else {
+          $(".tooltip-content").removeClass("tooltipLeft tooltipRight");
+          $(this).find(".tooltip-content").addClass("tooltipRight");
+        }
+      });
+
+      //call api to generate circuit from qasm code
+      var delay = (function () {
+        var timer = 0;
+        return function (callback, ms) {
+          clearTimeout(timer);
+          timer = setTimeout(callback, ms);
+        };
+      })();
+      // $("#text-code").keydown(function () {
+      //   delay(function () {
+      //     const qasm = $("#text-code").val()
+      //     // console.log("log a", qasm);
+      //     if (qasm && qasm.length > 0) {
+      //       let token =
+      //         "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJ1c2VybmFtZSIsImV4cCI6MTY3MzQ5Mzc5OH0.Eb2g292ZducNlRFaRDV8yI_Krpm_AoaFnRMGijeLUJM";
+      //       fetch("http://0.0.0.0:8000/qasm-to-json", {
+      //         method: "POST",
+      //         headers: {
+      //           Authorization: `Bearer ${token}`,
+      //           "content-type": "text/html",
+      //         },
+      //         body: qasm,
+      //       })
+      //         .then((res) => {
+      //           return res.text();
+      //         })
+      //         .then((data) => {
+      //           console.log("data to draw", data);
+      //         })
+      //         .catch((error) => {
+      //           console.error("Error:", error);
+      //         });
+      //     }
+      //   }, 1000);
+      // });
+
+      //css unsupported gate
+      const orderGateList = document.querySelectorAll(".Order");
+      orderGateList.forEach((item, index) => {
+        if (index == 0 || index == 1 || index == 7 || index == 8) {
+          item.style.backgroundColor = "#626c7a";
+        }
+      });
+      const frequencyGateList = document.querySelectorAll(".Frequency");
+      frequencyGateList.forEach((item, index) => {
+        if (index == 5 || index == 4 || index == 10 || index == 11) {
+          item.style.backgroundColor = "#626c7a";
+        }
+      });
+
+      //css quantum code area toggle show and hide between qasm and qiskit
+      $("#quantum-code-option").change(function () {
+        const qasm = document.getElementById("text-code");
+        const qiskit = document.getElementById("text-code-qiskit");
+        let x = this.value;
+        if (x == 1) {
+          if (qasm.classList.contains("hide")) {
+            qasm.classList.remove("hide");
+          }
+          if (!qiskit.classList.contains("hide")) {
+            qiskit.classList.add("hide");
+          }
+        } else {
+          if (!qasm.classList.contains("hide")) {
+            qasm.classList.add("hide");
+          }
+          if (qiskit.classList.contains("hide")) {
+            qiskit.classList.remove("hide");
+          }
+        }
+      });
+
+      //css closed right section (quantum code)
+      $("#code-area-close-btn").click(function () {
+        console.log("object", $(this));
+        const quantumCodeText = document.getElementById("text-code-wrapper");
+        const quantumSelectOption = document.getElementById(
+          "quantum-code-option"
+        );
+        if ($(this).attr("data-gate") == "show") {
+          quantumCodeText.style.display = "block";
+          quantumSelectOption.style.display = "block";
+        } else {
+          quantumCodeText.style.display = "none";
+          quantumSelectOption.style.display = "none";
+        }
+      });
+
+      //block shere api call
+      $("#runButton").click(function () {
+        const qiskitCode = document.getElementById("text-code-qiskit");
+        const token = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJ1c2VybmFtZSIsImV4cCI6MTY3MzU5NTMwOH0.9zZti8dNuEbiXiebMKzqC9oc6Uyo33qNUGUZJ9g75hU"
+        fetch("http://0.0.0.0:8000/return-qsphere", {
+          method: "POST", 
+          headers: {
+            Authorization: `Bearer ${token}`,
+            "content-type": "text/plain",
+          },
+          body: qiskitCode.text,
         })
+          .then((res) => {
+            return res.text();
+          })
+          .then((data) => {
+            console.log("data", data);
+
+            const drawBlochSphere = document.getElementById("bloch-sphere")
+            drawBlochSphere.innerHTML = data
+      
+            const canvasSim = document.getElementById("drawCanvasSim")
+            canvasSim.style.display = "none"
+          })
+          .catch((error) => {
+            console.error("Error:", error);
+          });
+      });
     },
 
     start: function () {

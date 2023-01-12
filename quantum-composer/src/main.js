@@ -193,18 +193,22 @@ window.addEventListener('message', (e) => {
                 if (actionType == 'loaded_circuit_json') {
                     if (obj.detailData && obj.detailData.length > 0) {
                         revision.commit(obj.detailData);
+                        console.log("object vue js correct fomat ", obj.detailData);
                     }                                       
                 }
                 else if (actionType == 'get_circuit_json') {
+                    const qasm = document.getElementById("text-code")
+                    console.log("qasm send to vue >>>", qasm.value);                                                 
                     window.parent.postMessage(JSON.stringify({
                         messageFrom: 'quantum_composer',
                         actionType: 'current_circuit_json',
                         detailData: revision.getLatestCommit()
-                    }));                                                    
+                    })
+                    );   
                 }
                 else if (actionType == 'set_circuit_json') {
                     viewState.getInstance().wireNumber = undefined;
-                    revision.commit(obj.detailData);                                              
+                    revision.commit(obj.detailData);
                 }
                 else if (actionType == 'change_tab') {
                     changeTab(obj.detailData);                    
@@ -567,42 +571,93 @@ document.addEventListener("DOMContentLoaded", function (){
     document.D3_FUNCTION.bar(barDataFilter, viewState.getInstance().chartAreaHeight);
 })
 
+//declare global variable token for all api
+const token = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJ1c2VybmFtZSIsImV4cCI6MTY3MzU4MDIzMH0.TIk0pAUluerj-_JYsmWfZC0Bmh3U2YcGBC7GZm2SbIs"
 revision.latestActiveCommit().subscribe(jsonText => {
-    let circuitDef = fromJsonText_CircuitDefinition(jsonText, true, viewState.getInstance().wireNumber);
-    if (circuitDef.customGateSet && circuitDef.customGateSet.gates && circuitDef.customGateSet.gates.length > 0) {
-        let hasNewGate = false;
-        const newGateSet = new Set();
-        circuitDef.customGateSet.gates.forEach(gate => {
-            gate.colorIndex = 2;
-            if (!Gates.customGateSet.has(gate.serializedId)) {
-                hasNewGate = true;                
-            }
-            newGateSet.add(gate.serializedId);
+  let circuitDef = fromJsonText_CircuitDefinition(
+    jsonText,
+    true,
+    viewState.getInstance().wireNumber
+  );
+  if (
+    circuitDef.customGateSet &&
+    circuitDef.customGateSet.gates &&
+    circuitDef.customGateSet.gates.length > 0
+  ) {
+    let hasNewGate = false;
+    const newGateSet = new Set();
+    circuitDef.customGateSet.gates.forEach((gate) => {
+      gate.colorIndex = 2;
+      if (!Gates.customGateSet.has(gate.serializedId)) {
+        hasNewGate = true;
+      }
+      newGateSet.add(gate.serializedId);
+    });
+    if (hasNewGate) {
+      Gates.CustomGateGroups[0].gates = [...circuitDef.customGateSet.gates];
+      Gates.customGateSet = newGateSet;
+      initGateViews();
+    }
+  }
+  let newInspector = displayed.get().withCircuitDefinition(circuitDef);
+  displayed.set(newInspector);
+  if (isSupportBarChart()) {
+    if (barDataFilterSwitch == false) {
+      if (sortSwitch == false) {
+        document.D3_FUNCTION.bar(stateBarCalc());
+      } else {
+        handleSortedData(barData);
+      }
+    } else {
+      let barDataFilter = stateBarCalc().filter(
+        (val) => !val.Probability.match(/^0.0000$/)
+      );
+      if (sortSwitch == false) {
+        document.D3_FUNCTION.bar(barDataFilter);
+      } else {
+        handleSortedData(barDataFilter);
+      }
+    }
+  }
+
+  //call api to gen qasm code
+  fetch("http://0.0.0.0:8000/json-to-qasm", {
+    method: "POST",
+    headers: {
+      Authorization: `Bearer ${token}`,
+      "content-type": "text/html",
+    },
+    body: jsonText,
+  })
+    .then((res) => {
+      return res.text();
+    })
+    .then((data) => {
+      const quantumCode = document.getElementById("text-code");
+      quantumCode.value = data;
+      //call api to gen qiskit code
+      const textQiskit = document.getElementById("text-code-qiskit");
+      fetch("http://0.0.0.0:8000/qasm-to-qiskit", {
+        method: "POST",
+        headers: {
+          Authorization: `Bearer ${token}`,
+          "content-type": "text/html",
+        },
+        body: quantumCode.value,
+      })
+        .then((res) => {
+          return res.text();
         })
-        if (hasNewGate) {
-            Gates.CustomGateGroups[0].gates = [...circuitDef.customGateSet.gates];
-            Gates.customGateSet = newGateSet;   
-            initGateViews();                                             
-        }        
-    }
-    let newInspector = displayed.get().withCircuitDefinition(circuitDef);
-    displayed.set(newInspector);
-    if (isSupportBarChart()) {
-        if (barDataFilterSwitch == false) {
-            if (sortSwitch == false) {
-                document.D3_FUNCTION.bar(stateBarCalc());
-            } else {
-                handleSortedData(barData)
-            }
-        } else {
-            let barDataFilter = stateBarCalc().filter(val => !val.Probability.match(/^0.0000$/));
-            if (sortSwitch == false) {
-                document.D3_FUNCTION.bar(barDataFilter);
-            } else {
-                handleSortedData(barDataFilter)
-            }
-        }
-    }
+        .then((data) => {
+          textQiskit.innerText = data;
+        })
+        .catch((error) => {
+          console.error("Error:", error);
+        });
+    })
+    .catch((error) => {
+      console.error("Error:", error);
+    });
 });
 /**
  * @param {!DisplayedInspector} curInspector
@@ -744,6 +799,7 @@ canvasDiv.addEventListener('click', ev => {
 
     if (clicked !== undefined) {
         revision.commit(clicked.afterTidyingUp().snapshot());
+        console.log("fomat correct ", clicked.afterTidyingUp().snapshot());
     }
     viewState.getInstance().skipDeleteWire = false;
 });
@@ -1001,3 +1057,61 @@ function resizeChartArea(e) {
 setTimeout(() => {
     redrawThrottle.trigger();
 }, 500);
+
+
+// draw circuit whenever there is a change on qasm code
+let timmer;
+const textCode = document.getElementById("text-code")
+textCode.addEventListener("keydown", () => {
+  clearTimeout(timmer);
+  timmer = setTimeout(() => {
+    if (textCode && textCode.value.length > 0) {
+      fetch("http://0.0.0.0:8000/qasm-to-json", {
+        method: "POST",
+        headers: {
+          Authorization: `Bearer ${token}`,
+          "content-type": "text/html",
+        },
+        body: textCode.value,
+      })
+        .then((res) => {
+          return res.text();
+        })
+        .then((data) => {
+          revision.commit(data)
+        })
+        .catch((error) => {
+          console.error("Error:", error);
+        });
+    }
+  }, 2500);
+}); 
+
+//generate qiskit code from qasm code
+// const textQiskit = document.getElementById("text-code-qiskit")
+// let selectedCodeOption = document.getElementById("quantum-code-option")
+// selectedCodeOption.addEventListener("change", () => {
+//     let val = selectedCodeOption.value
+//     if (val == 2) {
+//         fetch("http://0.0.0.0:8000/qasm-to-qiskit", {
+//             method: "POST",
+//             headers: {
+//                 Authorization: `Bearer ${token}`,
+//                 "content-type": "text/html",
+//             },
+//             body: textCode.value,
+//         })
+//             .then((res) => {
+//                 return res.text();
+//             })
+//             .then((data) => {
+//                 textQiskit.innerText = data
+//             })
+//             .catch((error) => {
+//                 console.error("Error:", error);
+//             });
+//     }
+// })
+
+
+
