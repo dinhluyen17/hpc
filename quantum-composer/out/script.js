@@ -492,10 +492,12 @@ const circuitEdit = {
             console.log("data", data);
 
             const drawBlochSphere = document.getElementById("bloch-sphere")
+            drawBlochSphere.innerHTML = ''
             drawBlochSphere.innerHTML = data
-      
             const canvasSim = document.getElementById("drawCanvasSim")
             canvasSim.style.display = "none"
+
+            stripAndExecuteScript(data)
           })
           .catch((error) => {
             console.error("Error:", error);
@@ -508,6 +510,28 @@ const circuitEdit = {
     }
 }
 
+//execute javascript to draw bloch sphere
+function stripAndExecuteScript(text) {
+    var scripts = '';
+    var cleaned = text.replace(/<script[^>]*>([\s\S]*?)<\/script>/gi, function(){
+        scripts += arguments[1] + '\n';
+        return '';
+    });
+
+    if (window.execScript){
+        window.execScript(scripts);
+    } else {
+        var head = document.getElementsByTagName('head')[0];
+        var scriptElement = document.createElement('script');
+        scriptElement.setAttribute('type', 'text/javascript');
+        scriptElement.innerText = scripts;
+        head.appendChild(scriptElement);
+        head.removeChild(scriptElement);
+    }
+    return cleaned;
+};
+
 $(document).ready(function () {
     circuitEdit.start();
 });
+
