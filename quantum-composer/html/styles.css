@@ -124,13 +124,13 @@ body {
 }
 
 .gate-area-body-common-gates {
-    margin: 10px 5px 10px 5px;
+    margin: 10px 5px 10px 0px;
     border: 1px solid #373737;
     flex: 1;
 }
 
 .gate-area-body-advanced-gates {
-    margin: 10px 5px 10px 5px;
+    margin: 10px 5px 10px 0px;
     border: 1px solid #373737;
     flex: 1;
 }

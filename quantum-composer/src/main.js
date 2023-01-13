@@ -627,6 +627,9 @@ revision.latestActiveCommit().subscribe(jsonText => {
   }
 
   //call api to gen qasm code
+  const quantumCode = document.getElementById("text-code");
+  const textQiskit = document.getElementById("text-code-qiskit");
+  let quantumCodeTemp = quantumCode.value
   fetch("http://0.0.0.0:8000/json-to-qasm", {
     method: "POST",
     headers: {
@@ -639,10 +642,12 @@ revision.latestActiveCommit().subscribe(jsonText => {
       return res.text();
     })
     .then((data) => {
-      const quantumCode = document.getElementById("text-code");
-      quantumCode.value = data;
+        if(data.indexOf('detail') == -1) {
+            quantumCode.value = data;
+        } else {
+            quantumCode.value = quantumCodeTemp + "\n// Warning: newly added gate does not support compile to OPEN QASM code"
+        }
       //call api to gen qiskit code
-      const textQiskit = document.getElementById("text-code-qiskit");
       fetch("http://0.0.0.0:8000/qasm-to-qiskit", {
         method: "POST",
         headers: {

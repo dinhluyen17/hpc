@@ -213,14 +213,14 @@ small.smaller {
 }
 
 .gate-area-body-common-gates {
-    margin: 10px 5px 10px 5px;
+    margin: 10px 5px 10px 0px;
     border: 1px solid #EDECF3;
     flex: 1;
     border-radius: 5px;
 }
 
 .gate-area-body-advanced-gates {
-    margin: 10px 5px 10px 5px;
+    margin: 10px 5px 10px 0px;
     border: 1px solid #EDECF3;
     flex: 1;
     border-radius: 5px;
@@ -901,13 +901,18 @@ input[type=number] {
     align-self: center;
     height: 2rem;
     margin-right: 0.5rem;
-    background-color: #24b1a0;
+}
+
+#quantum-code-option {
+    border-radius: 5px;
+    border: 1px solid #d1d0d7;
+    outline: none;
 }
 
 #code-area-body {
     height: 100%;
-    width: 90%;
-    margin: auto;
+    width: 95%;
+    margin: 0 0 0 0.5rem;
 }
 
 #code-area-body>div:first-child {
@@ -944,4 +949,10 @@ input[type=number] {
 
 .hide {
     display: none !important;
+}
+
+#bloch-sphere {
+    display: flex;
+    align-items: center;
+    justify-content: center;
 }

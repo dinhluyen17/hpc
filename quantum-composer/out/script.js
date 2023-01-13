@@ -483,17 +483,14 @@ const circuitEdit = {
             Authorization: `Bearer ${token}`,
             "content-type": "text/plain",
           },
-          body: convert(qiskitCode),
+          body: convert(qiskitCode) + importPythonLibrary,
         })
           .then((res) => {
             return res.text();
           })
           .then((data) => {
-            console.log("data", data)
             const drawBlochSphere = document.getElementById("bloch-sphere")
             drawBlochSphere.innerHTML = data
-            const canvasSim = document.getElementById("drawCanvasSim")
-            canvasSim.style.display = "none"
             stripAndExecuteScript(data)
           })
           .catch((error) => {
@@ -550,3 +547,5 @@ const convert = (function() {
         return [].map.call(element.childNodes, convertElement).join("");
     };
 })();
+
+const importPythonLibrary = "\nfrom qiskit import BasicAer\nfrom kaleidoscope import *\nbackend = BasicAer.get_backend('statevector_simulator')\njob = execute(qc, backend=backend, shots=shots)\njob_result = job.result()\nstatevector = job_result.get_statevector()\ncounts = job_result.get_counts()"
