@@ -915,6 +915,10 @@ input[type=number] {
     margin: 0 0 0 0.5rem;
 }
 
+#error-notice {
+    white-space: normal;
+}
+
 #code-area-body>div:first-child {
     height: 100%;
 }
