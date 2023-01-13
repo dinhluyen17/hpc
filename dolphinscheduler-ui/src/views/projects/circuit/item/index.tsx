@@ -76,27 +76,23 @@ const circuitItem = defineComponent({
         fileReader.onload = () => {
           try {
             const jsonString = fileReader.result;
-            console.log("jsonString", jsonString)
-            console.log("type of", typeof(jsonString));
             if(jsonString && jsonString.includes("OPENQASM")) {
               console.log("ahihi");
-              let token = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJ1c2VybmFtZSIsImV4cCI6MTY3MzQwNjg3OH0.puiikQiEpro0dS-8ouSVopkOTCZrMopvSYYXJMAAk_I"
+              let token = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJ1c2VybmFtZSIsImV4cCI6MTY3MzQ5Mzc5OH0.Eb2g292ZducNlRFaRDV8yI_Krpm_AoaFnRMGijeLUJM"
               const config = {
                 headers: { Authorization: `Bearer ${token}` }
               };
               axios.post('http://0.0.0.0:8000/qasm-to-json', jsonString, config)
                 .then(response => {
-                  console.log("json send ", JSON.stringify(response.data));
                   sendMessageToIFrame(MESSAGE.setCircuitJson, JSON.stringify(response.data));
                 })
                 .catch((error) =>
-                  window.$message.error('Please import a valid qasm .text file!')
+                  window.$message.error('Please import a valid qasm text file!')
                 )
             }
             else if (jsonString && typeof jsonString == "string") {
               const json = JSON.parse(jsonString);
               if (json.cols && json.cols.constructor == Array) {
-                console.log("wis2 ", jsonString);
                 sendMessageToIFrame(MESSAGE.setCircuitJson, jsonString);
               }
               else {
@@ -125,7 +121,7 @@ const circuitItem = defineComponent({
       else if(e == 'qasm') {
         //call api to export qasm code
       }
-      if(document.getElementById("download-option") != null) {
+      if(document.getElementById("download-option") !== null) {
         document.getElementById("download-option").selectedIndex = 0; //first option
       }
       return 
@@ -198,7 +194,9 @@ const circuitItem = defineComponent({
                 if (variables.isSaveCircuit) {
                   if (typeof route.params.circuitId === 'string') {
                     updateCircuitData(parseInt(route.params.circuitId), {
-                      json: obj.detailData
+                      json: obj.detailData.json,
+                      qasm: obj.detailData.qasm,
+                      qiskit: obj.detailData.qiskit
                     })
                   }
                 } else {

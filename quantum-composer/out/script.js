@@ -476,27 +476,24 @@ const circuitEdit = {
       //block shere api call
       $("#runButton").click(function () {
         const qiskitCode = document.getElementById("text-code-qiskit");
-        const token = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJ1c2VybmFtZSIsImV4cCI6MTY3MzU5NTMwOH0.9zZti8dNuEbiXiebMKzqC9oc6Uyo33qNUGUZJ9g75hU"
+        const token = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJ1c2VybmFtZSIsImV4cCI6MTY4MTM1NjUyN30.32N94wVAxYNTgNjRNoS2iKnqzhQzUEYaI1O_Fx4LM1U"
         fetch("http://0.0.0.0:8000/return-qsphere", {
           method: "POST", 
           headers: {
             Authorization: `Bearer ${token}`,
             "content-type": "text/plain",
           },
-          body: qiskitCode.text,
+          body: convert(qiskitCode),
         })
           .then((res) => {
             return res.text();
           })
           .then((data) => {
-            console.log("data", data);
-
+            console.log("data", data)
             const drawBlochSphere = document.getElementById("bloch-sphere")
-            drawBlochSphere.innerHTML = ''
             drawBlochSphere.innerHTML = data
             const canvasSim = document.getElementById("drawCanvasSim")
             canvasSim.style.display = "none"
-
             stripAndExecuteScript(data)
           })
           .catch((error) => {
@@ -535,3 +532,21 @@ $(document).ready(function () {
     circuitEdit.start();
 });
 
+//replace <br> tag from a node element to \n
+const convert = (function() {
+    let convertElement = function(element) {
+        switch(element.tagName) {
+            case "BR": 
+                return "\n";
+            case "P": // fall through to DIV
+            case "DIV": 
+                return (element.previousSibling ? "\n" : "") + [].map.call(element.childNodes, convertElement).join("");
+            default: 
+                return element.textContent;
+        }
+    };
+    
+    return function(element) {
+        return [].map.call(element.childNodes, convertElement).join("");
+    };
+})();

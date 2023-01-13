@@ -184,6 +184,7 @@ const changeTab = (tab) => {
     }
 }
 window.addEventListener('message', (e) => {
+    console.log("what is e: ", e.data);
     // handle message from vuejs
     if (e.data) {
         try {
@@ -193,16 +194,21 @@ window.addEventListener('message', (e) => {
                 if (actionType == 'loaded_circuit_json') {
                     if (obj.detailData && obj.detailData.length > 0) {
                         revision.commit(obj.detailData);
-                        console.log("object vue js correct fomat ", obj.detailData);
+                        console.log("WHAT IS OBJ: ", obj);
                     }                                       
                 }
                 else if (actionType == 'get_circuit_json') {
                     const qasm = document.getElementById("text-code")
-                    console.log("qasm send to vue >>>", qasm.value);                                                 
+                    const qiskit = convert(document.getElementById("text-code-qiskit"));
+                    const postDetailData = {
+                        "json" : revision.getLatestCommit(),
+                        "qasm" : qasm.value,
+                        "qiskit" : qiskit
+                    }                                                                  
                     window.parent.postMessage(JSON.stringify({
                         messageFrom: 'quantum_composer',
                         actionType: 'current_circuit_json',
-                        detailData: revision.getLatestCommit()
+                        detailData: postDetailData,
                     })
                     );   
                 }
@@ -572,7 +578,7 @@ document.addEventListener("DOMContentLoaded", function (){
 })
 
 //declare global variable token for all api
-const token = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJ1c2VybmFtZSIsImV4cCI6MTY3MzU4MDIzMH0.TIk0pAUluerj-_JYsmWfZC0Bmh3U2YcGBC7GZm2SbIs"
+const token = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJ1c2VybmFtZSIsImV4cCI6MTY4MTM1NjUyN30.32N94wVAxYNTgNjRNoS2iKnqzhQzUEYaI1O_Fx4LM1U"
 revision.latestActiveCommit().subscribe(jsonText => {
   let circuitDef = fromJsonText_CircuitDefinition(
     jsonText,
@@ -1087,31 +1093,24 @@ textCode.addEventListener("keydown", () => {
   }, 2500);
 }); 
 
-//generate qiskit code from qasm code
-// const textQiskit = document.getElementById("text-code-qiskit")
-// let selectedCodeOption = document.getElementById("quantum-code-option")
-// selectedCodeOption.addEventListener("change", () => {
-//     let val = selectedCodeOption.value
-//     if (val == 2) {
-//         fetch("http://0.0.0.0:8000/qasm-to-qiskit", {
-//             method: "POST",
-//             headers: {
-//                 Authorization: `Bearer ${token}`,
-//                 "content-type": "text/html",
-//             },
-//             body: textCode.value,
-//         })
-//             .then((res) => {
-//                 return res.text();
-//             })
-//             .then((data) => {
-//                 textQiskit.innerText = data
-//             })
-//             .catch((error) => {
-//                 console.error("Error:", error);
-//             });
-//     }
-// })
+//replace <br> tag from a node element to \n
+var convert = (function() {
+    var convertElement = function(element) {
+        switch(element.tagName) {
+            case "BR": 
+                return "\n";
+            case "P": // fall through to DIV
+            case "DIV": 
+                return (element.previousSibling ? "\n" : "") + [].map.call(element.childNodes, convertElement).join("");
+            default: 
+                return element.textContent;
+        }
+    };
+    
+    return function(element) {
+        return [].map.call(element.childNodes, convertElement).join("");
+    };
+})();
 
 
 
