@@ -190,21 +190,21 @@ small.smaller {
     color: #ffffff;
 }
 
-.Probes, .Displays, .Custom {
+.Custom, .Formulaic {
     background-color: #f1ac2e;
 }
 
-.Half, .Quarter, .Eighth, .Parametrized, .Parity {
+.Half, .Quarter, .Eighth {
     background-color: #24b1a0;
 }
 
-.Spinning, .Formulaic, .Sampling {
+.Spinning, .Parametrized, .Sampling, .Probes, .Displays, .Frequency, .Inputs, .Arithmetic, .Compare, .Modular, .Scalar, .Order, .Parity {
     background-color: #626c7a;
 }
 
-.Order, .Frequency, .Inputs, .Arithmetic, .Compare, .Modular, .Scalar {
+/* .Order, .Frequency, .Inputs, .Arithmetic, .Compare, .Modular, .Scalar {
     background-color: #585df4;
-}
+} */
 
 .gate-area-body-section-label {
     font-size: 0.9rem;

@@ -51,6 +51,7 @@ import {initGateViews} from "./ui/initGateViews.js";
 import {initSizeViews, updateSizeViews} from "./ui/updateSizeViews.js";
 import { viewState } from "./ui/viewState.js";
 import { Gates } from "./gates/AllGates.js";
+import { PostSelectionGates } from "./gates/PostSelectionGates.js";
 
 const codeArea = document.getElementById("code-area");
 const gateArea = document.getElementById("gate-area");
@@ -578,7 +579,31 @@ document.addEventListener("DOMContentLoaded", function (){
 })
 
 //declare global variable token for all api
-const token = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJ1c2VybmFtZSIsImV4cCI6MTY4MTM1NjUyN30.32N94wVAxYNTgNjRNoS2iKnqzhQzUEYaI1O_Fx4LM1U"
+let token
+const userRoot = {
+    'username' : 'username',
+    'password' : 'secret'
+}
+let formBody = []
+for (var property in userRoot) {
+    var encodedKey = encodeURIComponent(property);
+    var encodedValue = encodeURIComponent(userRoot[property]);
+    formBody.push(encodedKey + "=" + encodedValue);
+  }
+  formBody = formBody.join("&");
+fetch("http://0.0.0.0:8000/token", {
+    method: "POST",
+    headers: {
+        'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8',
+      },
+    body: formBody
+})
+.then(res => {
+    return res.json()
+})
+.then(res => {
+    token = res.access_token
+})
 revision.latestActiveCommit().subscribe(jsonText => {
   let circuitDef = fromJsonText_CircuitDefinition(
     jsonText,
@@ -630,6 +655,7 @@ revision.latestActiveCommit().subscribe(jsonText => {
   const quantumCode = document.getElementById("text-code");
   const textQiskit = document.getElementById("text-code-qiskit");
   const error = document.getElementById("error-notice")
+
   fetch("http://0.0.0.0:8000/json-to-qasm", {
     method: "POST",
     headers: {
@@ -642,16 +668,18 @@ revision.latestActiveCommit().subscribe(jsonText => {
       return res.text();
     })
     .then((data) => {
-        if(data.indexOf('detail') == -1) {
+        console.log("type of data ", typeof(data));
+        console.log("object", data.indexOf('detail'));
+        if(data.indexOf('Detail') == -1) {
             quantumCode.value = data;
-            if(error.classList.contains("hide")) {
-                error.classList.remove("hide")
-            }
-        } else {
             if(!error.classList.contains("hide")) {
                 error.classList.add("hide")
             }
-            return
+        } else {
+            if(error.classList.contains("hide")) {
+                error.classList.remove("hide")
+            }
+            console.log("log quantum code ", quantumCode);
         }
       //call api to gen qiskit code
       fetch("http://0.0.0.0:8000/qasm-to-qiskit", {

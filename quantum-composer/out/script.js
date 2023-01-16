@@ -422,7 +422,7 @@ const circuitEdit = {
       // });
 
       //css unsupported gate
-      const orderGateList = document.querySelectorAll(".Order");
+    /*   const orderGateList = document.querySelectorAll(".Order");
       orderGateList.forEach((item, index) => {
         if (index == 0 || index == 1 || index == 7 || index == 8) {
           item.style.backgroundColor = "#626c7a";
@@ -433,7 +433,10 @@ const circuitEdit = {
         if (index == 5 || index == 4 || index == 10 || index == 11) {
           item.style.backgroundColor = "#626c7a";
         }
-      });
+      }); */
+      const mesuare = document.querySelectorAll(".Probes")
+      mesuare[0].style.backgroundColor = "#24b1a0"
+      mesuare[4].style.backgroundColor = "#f1ac2e"
 
       //css quantum code area toggle show and hide between qasm and qiskit
       $("#quantum-code-option").change(function () {
@@ -548,4 +551,4 @@ const convert = (function() {
     };
 })();
 
-const importPythonLibrary = "\nfrom qiskit import BasicAer\nfrom kaleidoscope import *\nbackend = BasicAer.get_backend('statevector_simulator')\njob = execute(qc, backend=backend, shots=shots)\njob_result = job.result()\nstatevector = job_result.get_statevector()\ncounts = job_result.get_counts()"
+const importPythonLibrary = "from qiskit import BasicAer\n\nbackend_statevector = BasicAer.get_backend('statevector_simulator')\nbackend_counts = Aer.get_backend('qasm_simulator')\ntrans_state = transpile(qc, backend_statevector)\ntrans_count = transpile(qc, backend_counts)\nresult_state = backend_statevector.run(trans_state).result()\nresult_count = backend_counts.run(trans_count).result()\nstatevector = result_state.get_statevector()\ncounts = result_count.get_counts()"
