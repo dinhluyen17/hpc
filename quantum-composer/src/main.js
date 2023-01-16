@@ -123,6 +123,23 @@ const isSupportBarChart = () => {
     }
 }
 
+const isSupportClientChart = () => {
+    if (simulatorType == "client") {
+        document.getElementById("stateBarChart").style.visibility = 'visible';
+        document.getElementById("stateBarChartFilterZero").style.visibility = "visible";
+        document.getElementById("stateBarChartFilterZero").disabled = false;
+        document.getElementById("sortBar").style.visibility = "visible";
+        document.getElementById("changeState").style.visibility = "visible";
+        return true;
+    } else {
+        document.getElementById("stateBarChart").style.visibility = "hidden";
+        document.getElementById("stateBarChartFilterZero").style.visibility = "hidden";
+        document.getElementById("sortBar").style.visibility = "hidden";
+        document.getElementById("changeState").style.visibility = "hidden";
+        return false;
+    }
+};
+
 const isSupportStateTable = () => {
     const currentWireNumber = displayed.get().displayedCircuit.circuitDefinition.numWires;
     if (currentWireNumber <= 10) {
@@ -225,82 +242,131 @@ window.addEventListener('message', (e) => {
         }
     }
 });
+const loader = document.getElementById("loading");
+const displayLoading = () => {
+    loader.classList.add("display");
+}
+const hideLoading = () => {
+    loader.classList.remove("display");
+}
+if (simulatorType == "qAer") {
+    $('#runButton').click(function () {
+        displayLoading();
+        const qiskitCode = document.getElementById("text-code-qiskit");
+        const token = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJ1c2VybmFtZSIsImV4cCI6MTY4MTM1NjUyN30.32N94wVAxYNTgNjRNoS2iKnqzhQzUEYaI1O_Fx4LM1U"
+        fetch("http://0.0.0.0:8000/return-histogram", {
+            method: "POST",
+            headers: {
+                Authorization: `Bearer ${token}`,
+                "content-type": "text/plain",
+            },
+            body: convert(qiskitCode) + importPythonLibrary,
+        })
+            .then((res) => {
+                return res.text()
+            })
+            .then((data) => {
+                hideLoading();
+                barData = jQuery.parseJSON(data)
+                document.getElementById("barChartDes").style.visibility = 'hidden';
+                document.getElementById("stateBarChart").style.visibility = 'visible';
+                document.getElementById("sortBar").style.visibility = "visible";
+                document.D3_FUNCTION.bar(barData)
+            })
+            .catch((error) => {
+                console.error("Error: ", error);
+            });
+    });
+}
 //data for bar chart and simulation
 let barData = [];
+const simulator = document.getElementById("simSelectId");
+let simulatorType = "client";
+simulator.addEventListener("change", function () {
+    simulatorType = simulator.value;
+    if (simulatorType == "client") {
+        document.D3_FUNCTION.bar(stateBarCalc())
+    }
+    isSupportClientChart();
+});
 let stateBarCalc = () =>{
-    let qHeight = mostRecentStats.get().finalState.height();
-    if (qHeight <= 2048) {
-        document.getElementById("barChartDes").style.visibility = 'hidden';
-        document.getElementById("stateBarChart").style.visibility = 'visible';        
-        let qNumWire = mostRecentStats.get().circuitDefinition.numWires;
-        let qStates = [];
-        for (let i = 0; i < qHeight; i++) {
-            qStates[i] = Util.bin(i, qNumWire);
-        }
-        let select = document.getElementById("changeState");
-        let val = select.value;
-        let currentVal = "default";
-        switch (val) {
-            case "Binary":
-                if (currentVal != "default")
-                    for (let i in qStates) {
-                        let x = parseInt(qStates[i])
-                        qStates[i] = x.toString(2)
-                    }
-                currentVal = "Binary";
-                break;
-            case "Decimal":
-                for (let i in qStates) {
-                    let x;
-                    if (currentVal == "Binary" || currentVal == "default") {
-                        x = parseInt(qStates[i], 2)
-                    } else {
-                        x = qStates[i].toString(10)
-                    }
-                    qStates[i] = x
-                }
-                currentVal = "Decimal";
-                break;
-            case "Hexadecimal":
-                for (let i in qStates) {
-                    let x;
-                    if (currentVal == "Binary" || currentVal == "default") {
-                        x = parseInt(qStates[i], 2).toString(16).toUpperCase();
-                    } else {
-                        x = qStates[i].toString(16).toUpperCase();
-                    }
-                    qStates[i] = x;
-                }
-                currentVal = "Hexadecimal";
-                break;
-        }
-        let qProb = [];
-        for (let i = 0; i < mostRecentStats.get().finalState._buffer.length; i++) {
-            let x = mostRecentStats.get().finalState._buffer;
-            let y = x[i];
-            let z = x[i + 1];
-            if (i % 2 == 0) {
-                let k = i / 2;
-                let j = Math.pow(y, 2) + Math.pow(z, 2);
-                qProb[k] = (j * 100).toFixed(4);
+    if (simulatorType == "client") {
+        let qHeight = mostRecentStats.get().finalState.height();
+        if (qHeight <= 2048) {
+            document.getElementById("barChartDes").style.visibility = 'hidden';
+            document.getElementById("stateBarChart").style.visibility = 'visible';
+            let qNumWire = mostRecentStats.get().circuitDefinition.numWires;
+            let qStates = [];
+            for (let i = 0; i < qHeight; i++) {
+                qStates[i] = Util.bin(i, qNumWire);
             }
-        }
-        const stateObj = qStates.map((str, index) =>
-            ({
-                id: index, State: qStates[index]
+            let select = document.getElementById("changeState");
+            let val = select.value;
+            let currentVal = "default";
+            switch (val) {
+                case "Binary":
+                    if (currentVal != "default")
+                        for (let i in qStates) {
+                            let x = parseInt(qStates[i])
+                            qStates[i] = x.toString(2)
+                        }
+                    currentVal = "Binary";
+                    break;
+                case "Decimal":
+                    for (let i in qStates) {
+                        let x;
+                        if (currentVal == "Binary" || currentVal == "default") {
+                            x = parseInt(qStates[i], 2)
+                        } else {
+                            x = qStates[i].toString(10)
+                        }
+                        qStates[i] = x
+                    }
+                    currentVal = "Decimal";
+                    break;
+                case "Hexadecimal":
+                    for (let i in qStates) {
+                        let x;
+                        if (currentVal == "Binary" || currentVal == "default") {
+                            x = parseInt(qStates[i], 2).toString(16).toUpperCase();
+                        } else {
+                            x = qStates[i].toString(16).toUpperCase();
+                        }
+                        qStates[i] = x;
+                    }
+                    currentVal = "Hexadecimal";
+                    break;
+            }
+            let qProb = [];
+            for (let i = 0; i < mostRecentStats.get().finalState._buffer.length; i++) {
+                let x = mostRecentStats.get().finalState._buffer;
+                let y = x[i];
+                let z = x[i + 1];
+                if (i % 2 == 0) {
+                    let k = i / 2;
+                    let j = Math.pow(y, 2) + Math.pow(z, 2);
+                    qProb[k] = (j * 100).toFixed(4);
+                }
+            }
+            const stateObj = qStates.map((str, index) =>
+                ({
+                    id: index, State: qStates[index]
+                }))
+            const probObj = qProb.map((str, index) => ({
+                id: index, Probability: qProb[index]
             }))
-        const probObj = qProb.map((str, index) => ({
-            id: index, Probability: qProb[index]
-        }))
-        let data = {}
-        const data2 = stateObj.reduce((a, c) => (a[c.id] = c, a), {})
-        data = probObj.map(o => Object.assign(o, data2[o.id]))
-        barData = data;
-        return data;
+            let data = {}
+            const data2 = stateObj.reduce((a, c) => (a[c.id] = c, a), {})
+            data = probObj.map(o => Object.assign(o, data2[o.id]))
+            barData = data;
+            return data;
+        } else {
+            //NOT SUPPORT > 10 QUBITS
+            document.getElementById("barChartDes").style.visibility = 'visible';
+            document.getElementById("stateBarChart").style.visibility = 'hidden';
+        }
     } else {
-        //NOT SUPPORT > 10 QUBITS
-        document.getElementById("barChartDes").style.visibility = 'visible';
-        document.getElementById("stateBarChart").style.visibility = 'hidden';   
+        return barData
     }
 }
 function compareData(a,b){
@@ -325,7 +391,7 @@ document.getElementById("sortBar").addEventListener("click", function (e){
             handleSortedData(barData)
         }
     } else {
-        let barDataFilter = barData.filter(val => !val.Probability.match(/^0.0000$/));
+        let barDataFilter = barData.filter(val => !val.Probability.match(/^0\.0+$/));
         if (sortSwitch == false){
             document.D3_FUNCTION.bar(barDataFilter);
         } else {
@@ -382,7 +448,7 @@ let simStatCalc = () => {
             printVect.appendChild(output)
         }
         document.getElementById("vectorTable").appendChild(printVect)
-        document.getElementById("barChartDes").style.visibility = 'hidden';        
+        document.getElementById("barChartDes").style.visibility = 'hidden';
     } else {
         //NOT SUPPORT > 10 QUBITS
         document.getElementById("barChartDes").style.visibility = 'visible';
@@ -467,7 +533,7 @@ stateBarChartFilter.addEventListener('click',()=>{
         }
     } else {
         stateBarChartFilter.innerHTML = "Show all states";
-        let barDataFilter = stateBarCalc().filter(val => !val.Probability.match(/^0.0000$/));
+        let barDataFilter = stateBarCalc().filter(val => !val.Probability.match(/^0\.0+$/));
         if (sortSwitch == false) {
             document.D3_FUNCTION.bar(barDataFilter);
         } else {
@@ -518,7 +584,7 @@ document.getElementById("vectSearchCancel").addEventListener("click", function (
 })
 document.getElementById("vectSearch").addEventListener("input", function (e) {
     if (!isSupportStateTable()) {
-        return;        
+        return;
     }
     let search = document.getElementById("vectSearch").value;
     let table = document.getElementById("vectorTable");
@@ -574,7 +640,7 @@ document.addEventListener("DOMContentLoaded", function (){
     if (!isSupportBarChart()) {
         return;
     }
-    let barDataFilter = stateBarCalc().filter(val => !val.Probability.match(/^0.0000$/));
+    let barDataFilter = stateBarCalc().filter(val => !val.Probability.match(/^0\.0+$/));
     document.D3_FUNCTION.bar(barDataFilter, viewState.getInstance().chartAreaHeight);
 })
 
@@ -632,7 +698,8 @@ revision.latestActiveCommit().subscribe(jsonText => {
   }
   let newInspector = displayed.get().withCircuitDefinition(circuitDef);
   displayed.set(newInspector);
-  if (isSupportBarChart()) {
+
+  if (isSupportBarChart() && isSupportClientChart()) {
     if (barDataFilterSwitch == false) {
       if (sortSwitch == false) {
         document.D3_FUNCTION.bar(stateBarCalc());
@@ -641,7 +708,7 @@ revision.latestActiveCommit().subscribe(jsonText => {
       }
     } else {
       let barDataFilter = stateBarCalc().filter(
-        (val) => !val.Probability.match(/^0.0000$/)
+        (val) => !val.Probability.match(/^0\.0+$/)
       );
       if (sortSwitch == false) {
         document.D3_FUNCTION.bar(barDataFilter);
@@ -976,7 +1043,7 @@ canvasDiv.addEventListener('mousemove', ev => {
         let newHand = displayed.get().hand.withPos(pos);
         let newInspector = displayed.get().withHand(newHand);
         displayed.set(newInspector);
-    }     
+    }
 });
 canvasDiv.addEventListener('mouseup', ev => {
     startResizeCodeArea = false;
@@ -984,13 +1051,13 @@ canvasDiv.addEventListener('mouseup', ev => {
     startResizeChartArea = false;
 
     const pos = eventPosRelativeTo(ev, canvas);
-    if (viewState.getInstance().addWireBtnRect.containsPoint(pos)) {  
-        viewState.getInstance().skipDeleteWire = true;        
+    if (viewState.getInstance().addWireBtnRect.containsPoint(pos)) {
+        viewState.getInstance().skipDeleteWire = true;
         const currentWireNumber = displayed.get().displayedCircuit.circuitDefinition.numWires;
         viewState.getInstance().wireNumber = currentWireNumber + 1;
         let circuitDef = fromJsonText_CircuitDefinition(revision.getLatestCommit(), true, viewState.getInstance().wireNumber);
         let newInspector = displayed.get().withCircuitDefinition(circuitDef);
-        displayed.set(newInspector);  
+        displayed.set(newInspector);
     }
 })
 canvasDiv.addEventListener('mouseleave', () => {
@@ -1088,7 +1155,7 @@ function resizeChartArea(e) {
                     handleSortedData(barData,viewState.getInstance().chartAreaHeight)
                 }
             } else {
-                let barDataFilter = barData.filter(val => !val.Probability.match(/^0.0000$/));
+                let barDataFilter = barData.filter(val => !val.Probability.match(/^0\.0+$/));
                 if (sortSwitch == false){
                     document.D3_FUNCTION.bar(barDataFilter,viewState.getInstance().chartAreaHeight);
                 } else {

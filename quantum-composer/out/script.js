@@ -551,4 +551,4 @@ const convert = (function() {
     };
 })();
 
-const importPythonLibrary = "from qiskit import BasicAer\n\nbackend_statevector = BasicAer.get_backend('statevector_simulator')\nbackend_counts = Aer.get_backend('qasm_simulator')\ntrans_state = transpile(qc, backend_statevector)\ntrans_count = transpile(qc, backend_counts)\nresult_state = backend_statevector.run(trans_state).result()\nresult_count = backend_counts.run(trans_count).result()\nstatevector = result_state.get_statevector()\ncounts = result_count.get_counts()"
+const importPythonLibrary = "from qiskit import BasicAer,transpile\n\nqc.measure_all()\nbackend_statevector = BasicAer.get_backend('statevector_simulator')\nbackend_counts = Aer.get_backend('qasm_simulator')\ntrans_state = transpile(qc, backend_statevector)\ntrans_count = transpile(qc, backend_counts)\nresult_state = backend_statevector.run(trans_state).result()\nresult_count = backend_counts.run(trans_count).result()\nstatevector = result_state.get_statevector()\ncounts = result_count.get_counts()"

@@ -420,7 +420,7 @@ button.circuit-area-header-right-lv2:hover {
     border-radius: 5px;
     position: absolute;
     top: 0px;
-    right: 60px;
+    right: 116px;
     height: 2rem;
     width: 7rem;
     background-color: #f5f6f8;
@@ -434,7 +434,7 @@ button.circuit-area-header-right-lv2:hover {
     cursor: pointer;
     position: absolute;
     top: 0px;
-    right: 184px;
+    right: 60px;
     height: 2rem;
     width: 3rem;
     background-color: #f5f6f8;
@@ -959,4 +959,38 @@ input[type=number] {
     display: flex;
     align-items: center;
     justify-content: center;
+}
+
+#loading {
+    position: absolute;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-left: 20px;
+    margin-top: 30px;
+    font-size: 16px;
+    color: #5BB0F8;
+    width: 100%;
+    height: 50%;
+    padding: 10px;
+    width: 2rem;
+    height: 2rem;
+    border: 5px solid #626c7a;
+    border-bottom-color: #5BB0F8;
+    border-radius: 50%;
+    visibility: hidden;
+    animation: spin 1s infinite linear;
+}
+#loading.display {
+    visibility: visible;
+}
+
+@keyframes spin {
+    from {
+        transform: rotate(0deg);
+    }
+    to {
+        transform: rotate(360deg);
+    }
+
 }

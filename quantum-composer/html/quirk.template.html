@@ -115,9 +115,9 @@
               <span>Choose a simulator: </span>
               <div class="circuit-area-header-right-lv2">
                 <div>
-                  <select>
-                    <option value="0">Client machine</option>
-                    <option value="1">3rd party machine</option>
+                  <select id="simSelectId">
+                    <option value="client">Client machine</option>
+                    <option value="qAer">Qiskit Aer backend</option>
                   </select>
                 </div>
               </div>
@@ -147,8 +147,8 @@
               </path>
             </svg>
           </button>
-          <button id="stateBarChartFilterZero">Show all states</button>
           <button id="sortBar">Sort</button>
+          <button id="stateBarChartFilterZero">Show all states</button>
           <select id="changeState">
             <option id="binState">Binary</option>
             <option id="decState">Decimal</option>
@@ -156,6 +156,7 @@
           </select>
           <!--          <input type="checkbox" id="stateBarBool">-->
           <div id="stateBarChart"></div>
+          <div id="loading"></div>
           <div id="barChartDes">
             <label>The bar graph is only support for circuits using up to 10 qubits.</label>
           </div>
