@@ -722,7 +722,6 @@ revision.latestActiveCommit().subscribe(jsonText => {
   const quantumCode = document.getElementById("text-code");
   const textQiskit = document.getElementById("text-code-qiskit");
   const error = document.getElementById("error-notice")
-
   fetch("http://0.0.0.0:8000/json-to-qasm", {
     method: "POST",
     headers: {
@@ -735,8 +734,7 @@ revision.latestActiveCommit().subscribe(jsonText => {
       return res.text();
     })
     .then((data) => {
-        console.log("type of data ", typeof(data));
-        console.log("object", data.indexOf('detail'));
+        console.log("object error  ", data.indexOf('detail'));
         if(data.indexOf('Detail') == -1) {
             quantumCode.value = data;
             if(!error.classList.contains("hide")) {
@@ -746,26 +744,10 @@ revision.latestActiveCommit().subscribe(jsonText => {
             if(error.classList.contains("hide")) {
                 error.classList.remove("hide")
             }
-            console.log("log quantum code ", quantumCode);
         }
-      //call api to gen qiskit code
-      fetch("http://0.0.0.0:8000/qasm-to-qiskit", {
-        method: "POST",
-        headers: {
-          Authorization: `Bearer ${token}`,
-          "content-type": "text/html",
-        },
-        body: quantumCode.value,
-      })
-        .then((res) => {
-          return res.text();
-        })
-        .then((data) => {
-          textQiskit.innerText = data;
-        })
-        .catch((error) => {
-          console.error("Error:", error);
-        });
+      //function to generate qiskit code
+        const dataTest = qasmToQiskit(quantumCode.value)
+        textQiskit.innerText = dataTest
     })
     .catch((error) => {
       console.error("Error:", error);
@@ -1194,7 +1176,7 @@ textCode.addEventListener("keydown", () => {
         })
         .catch((error) => {
           console.error("Error:", error);
-        });
+        });        
     }
   }, 2500);
 }); 
@@ -1227,7 +1209,7 @@ const qasmToQiskit = (qasm) => {
     return qiskit;
 };
 
-const qasmToJson = (qasm) => {
+const qasmToJson = (qasm) => { //not used at this moment 
     let circuit = new QuantumCircuit();
     circuit.importQASM(qasm);
     let json = circuit.exportQuirk(true);
