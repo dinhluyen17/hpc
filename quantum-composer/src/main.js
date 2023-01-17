@@ -1218,5 +1218,19 @@ var convert = (function() {
     };
 })();
 
+const qasmToQiskit = (qasm) => {
+    let circuit = new QuantumCircuit();
+    circuit.importQASM(qasm);
+    let qiskit = circuit.exportToQiskit()
+    let remove = "backend = Aer.get_backend('qasm_simulator')\njob = execute(qc, backend=backend, shots=shots)\njob_result = job.result()\nprint(job_result.get_counts(qc))"
+    qiskit = qiskit.replace(remove, "")
+    return qiskit;
+};
 
-
+const qasmToJson = (qasm) => {
+    let circuit = new QuantumCircuit();
+    circuit.importQASM(qasm);
+    let json = circuit.exportQuirk(true);
+    json = JSON.stringify(json);
+    return json
+};
