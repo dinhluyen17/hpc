@@ -93,7 +93,7 @@ body {
     position: absolute;
     right: -2px;
     width: 4px;
-    height: 100%;
+    height: 100vh;
     cursor: ew-resize;
 }
 .gate-area-header {
@@ -905,7 +905,6 @@ input[type=number] {
 
 #quantum-code-option {
     border-radius: 5px;
-    border: 1px solid #d1d0d7;
     outline: none;
 }
 
@@ -923,13 +922,14 @@ input[type=number] {
     height: 100%;
 }
 
-#text-code,
+.text-code-qasm,
 #text-code-qiskit {
+    margin-top: 1rem;
     font-size: 0.8rem;
     width: 100%;
-    height: 100%;
-    padding: 0.3rem;
-    white-space: pre-wrap;
+    height: 92%;
+    padding: 0rem;
+    white-space: normal;
     /* CSS3 */
     white-space: -moz-pre-wrap;
     /* Firefox */
@@ -937,14 +937,56 @@ input[type=number] {
     /* Opera 7 */
     word-wrap: break-word;
     /* IE */
-    line-height: 1.25em;
+    line-height: 1.3rem;
+    overflow-y: scroll;
+}
+
+/* qasm code  */
+.text-code-qasm {
+    display: inline-flex;
+}
+
+.line-numbers-qasm {
+    min-width: 1.2rem;
+    min-height: 1.2rem;
+    text-align: right;
+    margin-right: 1rem;
+}
+
+.line-numbers-qasm span {
+    counter-increment: linenumber;
+    color: #237893;
+    line-height: 1.3rem;
+}
+
+.line-numbers-qasm span::before {
+    content: counter(linenumber);
+    display: block;
+}
+
+/* qiskit code css */
+.code-line {
+    display: flex;
+}
+
+/* line number of qiskit code  */
+.line-number { 
+    min-width: 1.2rem;
+    max-width: 1.2rem;
+    text-align: right;
+    margin-right: 1rem;
+    color: #237893;
 }
 
 #text-code {
     font-family: IBM Plex Sans, Helvetica Neue, Arial, sans-serif;
     color: rgb(51, 54, 57);
+    outline: none;
+    width: 100%;
+    height: 100%;
+    resize: none;
     border: none;
-    outline: none
+    line-height: 1.3rem;
 }
 
 #text-code:focus {

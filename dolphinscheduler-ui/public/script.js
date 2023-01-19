@@ -393,54 +393,21 @@ const circuitEdit = {
           timer = setTimeout(callback, ms);
         };
       })();
-      // $("#text-code").keydown(function () {
-      //   delay(function () {
-      //     const qasm = $("#text-code").val()
-      //     // console.log("log a", qasm);
-      //     if (qasm && qasm.length > 0) {
-      //       let token =
-      //         "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJ1c2VybmFtZSIsImV4cCI6MTY3MzQ5Mzc5OH0.Eb2g292ZducNlRFaRDV8yI_Krpm_AoaFnRMGijeLUJM";
-      //       fetch("http://0.0.0.0:8000/qasm-to-json", {
-      //         method: "POST",
-      //         headers: {
-      //           Authorization: `Bearer ${token}`,
-      //           "content-type": "text/html",
-      //         },
-      //         body: qasm,
-      //       })
-      //         .then((res) => {
-      //           return res.text();
-      //         })
-      //         .then((data) => {
-      //           console.log("data to draw", data);
-      //         })
-      //         .catch((error) => {
-      //           console.error("Error:", error);
-      //         });
-      //     }
-      //   }, 1000);
-      // });
-
+  
       //css unsupported gate
-    /*   const orderGateList = document.querySelectorAll(".Order");
-      orderGateList.forEach((item, index) => {
-        if (index == 0 || index == 1 || index == 7 || index == 8) {
-          item.style.backgroundColor = "#626c7a";
-        }
-      });
-      const frequencyGateList = document.querySelectorAll(".Frequency");
-      frequencyGateList.forEach((item, index) => {
-        if (index == 5 || index == 4 || index == 10 || index == 11) {
-          item.style.backgroundColor = "#626c7a";
-        }
-      }); */
-      const mesuare = document.querySelectorAll(".Probes")
-      mesuare[0].style.backgroundColor = "#24b1a0"
-      mesuare[4].style.backgroundColor = "#f1ac2e"
+      const probesGates = document.querySelectorAll(".Probes")
+      probesGates.forEach((gate, idx) => {
+        if(idx == 0 || idx == 5) {
+          gate.style.backgroundColor = "#24b1a0"
+        } 
+        else if (idx == 4 || idx == 9) {
+          gate.style.backgroundColor = "#f1ac2e"
+        } 
+      })
 
       //css quantum code area toggle show and hide between qasm and qiskit
       $("#quantum-code-option").change(function () {
-        const qasm = document.getElementById("text-code");
+        const qasm = document.querySelector(".text-code-qasm");
         const qiskit = document.getElementById("text-code-qiskit");
         let x = this.value;
         if (x == 1) {
@@ -478,12 +445,12 @@ const circuitEdit = {
 
       //block shere api call
       $("#runButton").click(function () {
-        const qiskitCode = document.getElementById("text-code-qiskit");
-        const token = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJ1c2VybmFtZSIsImV4cCI6MTY4MTM1NjUyN30.32N94wVAxYNTgNjRNoS2iKnqzhQzUEYaI1O_Fx4LM1U"
+        const qiskitCode = document.querySelectorAll(".line-content");
+        const contentQiskit = getContentQiskit(qiskitCode)
+        console.log("log content ", contentQiskit);
         fetch("http://0.0.0.0:8000/return-qsphere", {
-          method: "POST", 
+          method: "POST",
           headers: {
-            Authorization: `Bearer ${token}`,
             "content-type": "text/plain",
           },
           body: convert(qiskitCode) + importPythonLibrary,
@@ -492,14 +459,26 @@ const circuitEdit = {
             return res.text();
           })
           .then((data) => {
-            const drawBlochSphere = document.getElementById("bloch-sphere")
-            drawBlochSphere.innerHTML = data
-            stripAndExecuteScript(data)
+            const drawBlochSphere = document.getElementById("bloch-sphere");
+            drawBlochSphere.innerHTML = data;
+            stripAndExecuteScript(data);
           })
           .catch((error) => {
             console.error("Error:", error);
           });
       });
+
+      const textCode = $("#text-code");
+      const lineNumbers = document.querySelector(".line-numbers-qasm");
+      textCode.keyup(function () {
+        const numberOfLines = textCode.val().split("\n").length;
+        console.log("num lines", numberOfLines);
+        lineNumbers.innerHTML = Array(numberOfLines)
+          .fill("<span></span>")
+          .join("");
+        console.log("line number la gi", lineNumbers);
+      });
+
     },
 
     start: function () {
@@ -550,5 +529,14 @@ const convert = (function() {
         return [].map.call(element.childNodes, convertElement).join("");
     };
 })();
+
+//get the content of qiskit code
+const getContentQiskit = (qiskit) => {
+  const content = ''
+  qiskit.forEach(lineOfCode => {
+    content = content + lineOfCode.innerText + "\n";
+  })
+  return content
+} 
 
 const importPythonLibrary = "from qiskit import BasicAer,transpile\n\nqc.measure_all()\nbackend_statevector = BasicAer.get_backend('statevector_simulator')\nbackend_counts = Aer.get_backend('qasm_simulator')\ntrans_state = transpile(qc, backend_statevector)\ntrans_count = transpile(qc, backend_counts)\nresult_state = backend_statevector.run(trans_state).result()\nresult_count = backend_counts.run(trans_count).result()\nstatevector = result_state.get_statevector()\ncounts = result_count.get_counts()"

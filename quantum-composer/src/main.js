@@ -734,23 +734,33 @@ revision.latestActiveCommit().subscribe(jsonText => {
       return res.text();
     })
     .then((data) => {
-        console.log("object error  ", data.indexOf('detail'));
-        if(data.indexOf('Detail') == -1) {
-            quantumCode.value = data;
-            if(!error.classList.contains("hide")) {
-                error.classList.add("hide")
-            }
-        } else {
-            if(error.classList.contains("hide")) {
-                error.classList.remove("hide")
-            }
-        }
+        quantumCode.value = data;
+        const lineNumbers = document.querySelector(".line-numbers-qasm");
+        const numberOfLines = quantumCode.value.split("\n").length;
+        lineNumbers.innerHTML = Array(numberOfLines)
+          .fill("<span></span>")
+          .join("");
       //function to generate qiskit code
         const dataTest = qasmToQiskit(quantumCode.value)
-        textQiskit.innerText = dataTest
+        const a = dataTest.split('\n')
+        textQiskit.innerHTML = ''
+        for(var i = 0; i < a.length; i++) {
+            const divElement = document.createElement('div'); divElement.setAttribute("class", "code-line")
+            const divLineCount =document.createElement("div"); divLineCount.setAttribute("class", "line-number")
+            const divLineContent = document.createElement("div"); divLineContent.setAttribute("class", "line-content")
+            if(a[i] != '') {
+                divLineContent.innerText = a[i]
+            } else {
+                divLineContent.appendChild(document.createElement('br'))
+            }
+            divLineCount.innerText = i + 1
+            divElement.appendChild(divLineCount)
+            divElement.appendChild(divLineContent)
+            textQiskit.appendChild(divElement)
+        }
     })
     .catch((error) => {
-      console.error("Error:", error);
+      console.error("Log error:", error);
     });
 });
 /**
