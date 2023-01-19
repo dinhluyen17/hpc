@@ -243,7 +243,7 @@ class Gate {
          * @private
          */
         this._showAsReachesOtherWires = false;
-        this.colorIndex = 0;
+        this.colorIndex = 3;
     }
 
     /**
@@ -330,15 +330,15 @@ class Gate {
      */
     getBgColor() {
         if (this.colorIndex == 3) {
-            return '#626c7a';
+            return '#626c7a'; //grey
         }        
         if (this.colorIndex == 2) {
-            return '#F3A339';
+            return '#F3A339'; // orange
         }
         if (this.colorIndex == 1) {
-            return '#4E4FED';            
+            return '#00A895'; //green           
         }
-        return '#00A895';
+        return '#4E4FED'; //purple
     }
     withParam(value) {
         let g = this._copy();

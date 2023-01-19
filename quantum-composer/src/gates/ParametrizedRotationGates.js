@@ -305,7 +305,7 @@ ParametrizedRotationGates.FormulaicRotationX = new GateBuilder().
     }).
     setWithParamPropertyRecomputeFunc(updateUsingFormula).
     promiseEffectIsUnitary().
-    gate.withParam('sin(pi t)');
+    gate.withParam('sin(pi*2)');
 
 ParametrizedRotationGates.FormulaicRotationY = new GateBuilder().
     setSerializedIdAndSymbol("Y^ft").

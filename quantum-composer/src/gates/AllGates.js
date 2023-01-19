@@ -361,7 +361,7 @@ Gates.CustomGateGroups = [
 ];
 Gates.customGateSet = new Set();
 Gates.TopToolboxGroups.forEach((group, idx) => {
-    if (idx == 0 || idx == 1) {
+    /* if (idx == 0 || idx == 1) {
         group.gates.forEach(gate => {
             if (gate != undefined) {
                 gate.colorIndex = 2;
@@ -374,10 +374,41 @@ Gates.TopToolboxGroups.forEach((group, idx) => {
                 gate.colorIndex = 3;
             }
         });
+    } */
+    if(idx == 0) {
+        group.gates.forEach((gate, subIdx) => {
+            if(subIdx == 0 && gate != undefined) {
+                gate.colorIndex = 1
+            } else if (subIdx == 5 && gate != undefined) {
+                gate.colorIndex = 2
+            } else if(gate != undefined){
+                gate.colorIndex = 3
+            }
+        })
+    }
+    else if (idx == 2 || idx == 3 || idx == 4) {
+        group.gates.forEach(gate => {
+            if(gate != undefined) {
+                gate.colorIndex = 1
+            }
+        })
+    }
+    else if(idx == 6) {
+        group.gates.forEach(gate => {
+            if(gate != undefined) {
+                gate.colorIndex = 2
+            }
+        })
+    } else {
+        group.gates.forEach(gate => {
+            if(gate != undefined) {
+                gate.colorIndex = 3
+            }
+        })
     }
 })
 Gates.BottomToolboxGroups.forEach((group, idx) => {
-    if (idx == 0) {
+/*     if (idx == 0) {
         group.gates.forEach(gate => {
             if (gate != undefined) {
                 gate.colorIndex = 2;
@@ -404,9 +435,14 @@ Gates.BottomToolboxGroups.forEach((group, idx) => {
                 gate.colorIndex = 1;
             }
         });
-    }
+    } */
+    group.gates.forEach(gate => {
+        if(gate != undefined) {
+            gate.colorIndex = 3
+        }
+    })
 })
-const gateFamilyGroups =
+/* const gateFamilyGroups =
 [
     CountingGates.CountingFamily,
     CountingGates.UncountingFamily,
@@ -454,7 +490,7 @@ gateFamilyGroups.forEach((gateFamily, idx) => {
             }
         });        
     }
-});
+}); */
 /** @type {!Map.<undefined|!string, !Array.<!Gate>>} */
 const INITIAL_STATES_TO_GATES = new Map([
     [undefined, []],

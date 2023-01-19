@@ -33,7 +33,7 @@ Config.MIN_COL_COUNT = 5;
 Config.URL_CIRCUIT_PARAM_KEY = 'circuit';
 
 // Gate background colors.
-Config.GATE_FILL_COLOR = '#00A895';
+Config.GATE_FILL_COLOR = 'red';
 Config.HIGHLIGHTED_GATE_FILL_COLOR = '#17A7FB';
 Config.TIME_DEPENDENT_HIGHLIGHT_COLOR = '#FFC';
 
@@ -61,8 +61,8 @@ Config.REDRAW_COOLDOWN_MILLIS = 10; // Milliseconds. Rate-limit on redraws. Long
 Config.GATE_RADIUS = 20;
 Config.WIRE_SPACING = 50;
 
-Config.BACKGROUND_COLOR = '#00A895';
-Config.BACKGROUND_COLOR_CIRCUIT = '#00A895';
+Config.BACKGROUND_COLOR = 'red';
+Config.BACKGROUND_COLOR_CIRCUIT = 'green';
 
 // Toolbox layout.
 Config.BACKGROUND_COLOR_TOOLBOX = '#CCC';
