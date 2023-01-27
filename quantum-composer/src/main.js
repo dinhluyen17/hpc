@@ -249,35 +249,6 @@ const displayLoading = () => {
 const hideLoading = () => {
     loader.classList.remove("display");
 }
-if (simulatorType == "qAer") {
-    $('#runButton').click(function () {
-        displayLoading();
-        const qiskitCode = document.getElementById("text-code-qiskit");
-        const token = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJ1c2VybmFtZSIsImV4cCI6MTY4MTM1NjUyN30.32N94wVAxYNTgNjRNoS2iKnqzhQzUEYaI1O_Fx4LM1U"
-        fetch("http://0.0.0.0:8000/return-histogram", {
-            method: "POST",
-            headers: {
-                Authorization: `Bearer ${token}`,
-                "content-type": "text/plain",
-            },
-            body: convert(qiskitCode) + importPythonLibrary,
-        })
-            .then((res) => {
-                return res.text()
-            })
-            .then((data) => {
-                hideLoading();
-                barData = jQuery.parseJSON(data)
-                document.getElementById("barChartDes").style.visibility = 'hidden';
-                document.getElementById("stateBarChart").style.visibility = 'visible';
-                document.getElementById("sortBar").style.visibility = "visible";
-                document.D3_FUNCTION.bar(barData)
-            })
-            .catch((error) => {
-                console.error("Error: ", error);
-            });
-    });
-}
 //data for bar chart and simulation
 let barData = [];
 const simulator = document.getElementById("simSelectId");
@@ -285,9 +256,90 @@ let simulatorType = "client";
 simulator.addEventListener("change", function () {
     simulatorType = simulator.value;
     if (simulatorType == "client") {
-        document.D3_FUNCTION.bar(stateBarCalc())
+        document.getElementById("runButton").disabled = true;
+        if (isSupportBarChart() && isSupportClientChart()) {
+            if (barDataFilterSwitch == false) {
+                if (sortSwitch == false) {
+                    document.D3_FUNCTION.bar(stateBarCalc());
+                } else {
+                    handleSortedData(barData);
+                }
+            } else {
+                let barDataFilter = stateBarCalc().filter(
+                    (val) => !val.Probability.match(/^0\.0+$/)
+                );
+                if (sortSwitch == false) {
+                    document.D3_FUNCTION.bar(barDataFilter);
+                } else {
+                    handleSortedData(barDataFilter);
+                }
+            }
+        }
+    }
+    if (simulatorType != "client") {
+        let printVect = document.getElementById("dataOutput");
+        printVect.innerHTML = "";
+        aerVector = "";
+        aerStates = "";
+        aerPhase = "";
+        aerProb = "";
+        aerKeys = "";
+        document.getElementById("runButton").disabled = false;
     }
     isSupportClientChart();
+});
+let aerVector;
+let aerStates;
+let aerPhase;
+let aerProb;
+let aerKeys;
+$('#runButton').click(function () {
+    if (simulatorType != "qAer") {
+        return
+    }
+    displayLoading();
+    const qiskitCode = document.querySelectorAll(".line-content");
+    const token = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJ1c2VybmFtZSIsImV4cCI6MTY4MTM1NjUyN30.32N94wVAxYNTgNjRNoS2iKnqzhQzUEYaI1O_Fx4LM1U"
+    fetch("http://0.0.0.0:8000/return-histogram", {
+        method: "POST",
+        headers: {
+            Authorization: `Bearer ${token}`,
+            "content-type": "text/plain",
+        },
+        body: getContentQiskit(qiskitCode) + importPythonLibraryCount,
+    })
+        .then((res) => {
+            return res.text()
+        })
+        .then((data) => {
+            hideLoading();
+            barData = jQuery.parseJSON(data)
+            document.getElementById("barChartDes").style.visibility = 'hidden';
+            document.getElementById("stateBarChart").style.visibility = 'visible';
+            document.getElementById("sortBar").style.visibility = "visible";
+            document.D3_FUNCTION.bar(barData)
+        })
+        .catch((error) => {
+            console.error("Error: ", error);
+        });
+    fetch("http://0.0.0.0:8000/return-sim-data", {
+        method: "POST",
+        headers: {
+            Authorization: `Bearer ${token}`,
+            "content-type": "text/plain"
+        },
+        body: getContentQiskit(qiskitCode) + importPythonLibrary,
+    })
+        .then((res) => {
+            return res.json();
+        })
+        .then((data) => {
+            aerVector = data.qVector;
+            aerStates = data.qStates;
+            aerPhase = data.qPhase;
+            aerProb = data.qProb;
+            simStatCalc()
+        });
 });
 let stateBarCalc = () =>{
     if (simulatorType == "client") {
@@ -410,48 +462,69 @@ document.getElementById("changeState").addEventListener("change", function (e){
     }
 })
 let simStatCalc = () => {
-    let qHeight = mostRecentStats.get().finalState.height();
-    if (qHeight <= 2048) {
-        let qNumWire = mostRecentStats.get().circuitDefinition.numWires;
-        let qStates = [];
-        for (let i = 0; i < qHeight; i++) {
-            qStates[i] = Util.bin(i, qNumWire);
-        }
-        let qProb = [];
-        let qVector = [];
-        let qPhase = [];
-        for (let i = 0; i < mostRecentStats.get().finalState._buffer.length; i++) {
-            let x = mostRecentStats.get().finalState._buffer;
-            let y = x[i];
-            let z = x[i + 1];
-            if (i % 2 == 0) {
-                let k = i / 2;
-                let j = Math.pow(y, 2) + Math.pow(z, 2);
-                qVector[k] = (y < 0 ? "" : "+") + y.toFixed(5) + (z < 0 ? "" : "+") + z.toFixed(5) + "i";
-                qPhase[k] = Math.atan2(z, y).toFixed(5) + "°";
-                qProb[k] = (j * 100).toFixed(4);
+    if (simulatorType == "client") {
+        let qHeight = mostRecentStats.get().finalState.height();
+        if (qHeight <= 2048) {
+            let qNumWire = mostRecentStats.get().circuitDefinition.numWires;
+            let qStates = [];
+            for (let i = 0; i < qHeight; i++) {
+                qStates[i] = Util.bin(i, qNumWire);
             }
+            let qProb = [];
+            let qVector = [];
+            let qPhase = [];
+            for (let i = 0; i < mostRecentStats.get().finalState._buffer.length; i++) {
+                let x = mostRecentStats.get().finalState._buffer;
+                let y = x[i];
+                let z = x[i + 1];
+                if (i % 2 == 0) {
+                    let k = i / 2;
+                    let j = Math.pow(y, 2) + Math.pow(z, 2);
+                    qVector[k] = (y < 0 ? "" : "+") + y.toFixed(5) + (z < 0 ? "" : "+") + z.toFixed(5) + "i";
+                    qPhase[k] = Math.atan2(z, y).toFixed(5) + "°";
+                    qProb[k] = (j * 100).toFixed(4);
+                }
+            }
+            let printVect = document.getElementById("dataOutput");
+            printVect.innerHTML = "";
+            for (let i = 0; i < qVector.length; i++) {
+                let output = document.createElement("tr");
+                let state = document.createElement("td");
+                state.innerText = qStates[i];
+                let vect = document.createElement("td");
+                vect.innerText = qVector[i];
+                let rad = document.createElement("td");
+                rad.innerText = qPhase[i];
+                let prob = document.createElement("td");
+                prob.innerText = qProb[i] + "%";
+                output.append(state, vect, rad, prob)
+                printVect.appendChild(output)
+            }
+            document.getElementById("vectorTable").appendChild(printVect)
+            document.getElementById("barChartDes").style.visibility = 'hidden';
+        } else {
+            //NOT SUPPORT > 10 QUBITS
+            document.getElementById("barChartDes").style.visibility = 'visible';
         }
+    } else {
         let printVect = document.getElementById("dataOutput");
         printVect.innerHTML = "";
-        for (let i = 0; i < qVector.length; i++) {
+        aerKeys = Object.keys(aerVector);
+        for (let i = 0; i < aerKeys.length; i++) {
+            let key = aerKeys[i]
             let output = document.createElement("tr");
             let state = document.createElement("td");
-            state.innerText = qStates[i];
+            state.innerText = aerStates[i];
             let vect = document.createElement("td");
-            vect.innerText = qVector[i];
+            vect.innerText = "+"+ aerVector[key].real + "+" + aerVector[key].imag + "i";
             let rad = document.createElement("td");
-            rad.innerText = qPhase[i];
+            rad.innerText = aerPhase[i] + " radian";
             let prob = document.createElement("td");
-            prob.innerText = qProb[i] + "%";
+            prob.innerText = aerProb[i] + "%";
             output.append(state, vect, rad, prob)
             printVect.appendChild(output)
         }
         document.getElementById("vectorTable").appendChild(printVect)
-        document.getElementById("barChartDes").style.visibility = 'hidden';
-    } else {
-        //NOT SUPPORT > 10 QUBITS
-        document.getElementById("barChartDes").style.visibility = 'visible';
     }
 }
 let tableSortSwitch = false;
@@ -558,6 +631,8 @@ document.getElementById("vectFilter").addEventListener('click', function (e) {
             if (td) {
                 let value = td.textContent || td.innerText
                 if (value.search(/^0.0000/) > -1) {
+                    tr[i].style.display = "none";
+                } else if (value.search(/^0\%/) > -1) {
                     tr[i].style.display = "none";
                 } else {
                     tr[i].style.display = "";

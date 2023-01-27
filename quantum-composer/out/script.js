@@ -445,6 +445,9 @@ const circuitEdit = {
 
       //block shere api call
       $("#runButton").click(function () {
+          if (document.getElementById("simSelectId").value != "qAer") {
+              return
+          }
         const qiskitCode = document.querySelectorAll(".line-content");
         fetch("http://0.0.0.0:8000/return-qsphere", {
           method: "POST",
@@ -535,4 +538,5 @@ const getContentQiskit = (qiskit) => {
   return content
 } 
 
-const importPythonLibrary = "from qiskit import BasicAer,transpile\n\nqc.measure_all()\nbackend_statevector = BasicAer.get_backend('statevector_simulator')\nbackend_counts = Aer.get_backend('qasm_simulator')\ntrans_state = transpile(qc, backend_statevector)\ntrans_count = transpile(qc, backend_counts)\nresult_state = backend_statevector.run(trans_state).result()\nresult_count = backend_counts.run(trans_count).result()\nstatevector = result_state.get_statevector()\ncounts = result_count.get_counts()"
+const importPythonLibrary = "from qiskit import BasicAer,transpile\n\nbackend_statevector = BasicAer.get_backend('statevector_simulator')\ntrans_state = transpile(qc, backend_statevector)\nresult_state = backend_statevector.run(trans_state).result()\nstatevector = result_state.get_statevector()"
+const importPythonLibraryCount = "from qiskit import BasicAer,transpile\n\nqc.measure_all()\nbackend_statevector = BasicAer.get_backend('statevector_simulator')\nbackend_counts = Aer.get_backend('qasm_simulator')\ntrans_state = transpile(qc, backend_statevector)\ntrans_count = transpile(qc, backend_counts)\nresult_state = backend_statevector.run(trans_state).result()\nresult_count = backend_counts.run(trans_count).result()\nstatevector = result_state.get_statevector()\ncounts = result_count.get_counts()"
