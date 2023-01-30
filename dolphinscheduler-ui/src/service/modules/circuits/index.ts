@@ -85,3 +85,25 @@ export function stateBarCalc(qStates: string[], qProb: string[]): any {
     })
   })
 }
+
+export function exportQasm(id: number): any {
+  let header
+  return axios({
+    url: `/circuit/downloadQasm?circuitId=${id}`,
+    method: 'get',
+    responseType: 'blob'
+  })
+  .then((res) => {
+    console.log("header test ", res.headers)
+    return res.text()
+  })
+  .then((response) => {
+    console.log("response la gi", response)
+    const fileURL = window.URL.createObjectURL(new Blob([response]))
+    const fileLink = document.createElement('a')
+    fileLink.href = fileURL
+    fileLink.setAttribute('download', 'file.txt')
+    document.body.appendChild(fileLink)
+    fileLink.click()
+  })
+}

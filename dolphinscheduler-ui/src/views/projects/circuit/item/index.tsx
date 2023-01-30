@@ -29,6 +29,7 @@ import './styles/CircuitStyle.scss'
 import HelpModal from './help-modal'
 import {stateBarCalc} from "@/service/modules/circuits";
 import {CircuitBarData} from "@/service/modules/circuits/types";
+import { exportQasm } from '@/service/modules/circuits'
 import axios from 'axios';
 
 const circuitItem = defineComponent({
@@ -114,6 +115,8 @@ const circuitItem = defineComponent({
     const handleExportCircuit = (e) => {
       console.log(">>>", e.value);
       console.log(e);
+      //export qasm code
+      exportQasm(variables.data.id)
       if(e == 'json') {
         variables.isSaveCircuit = false;
         sendMessageToIFrame(MESSAGE.getCircuitJson, null);
