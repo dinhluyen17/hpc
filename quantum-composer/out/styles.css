@@ -666,7 +666,7 @@ button.circuit-area-header-right-lv2:hover {
 #canvasSimWrapper,
 #simulateOutput {
     width: 50%;
-    overflow: auto;
+    /*overflow: auto;*/
     /*display: flex;*/
     /*flex-direction: column;*/
     /*align-items: center;*/
