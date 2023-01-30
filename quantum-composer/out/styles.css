@@ -666,7 +666,7 @@ button.circuit-area-header-right-lv2:hover {
 #canvasSimWrapper,
 #simulateOutput {
     width: 50%;
-    overflow: auto;
+    /*overflow: auto;*/
     /*display: flex;*/
     /*flex-direction: column;*/
     /*align-items: center;*/
@@ -1001,6 +1001,12 @@ input[type=number] {
     display: none !important;
 }
 
+#runButton:disabled,#runButton[disabled] {
+    background-color: #cccccc;
+    color: #666666;
+    cursor: default;
+}
+
 #bloch-sphere {
     display: flex;
     align-items: center;
@@ -1039,4 +1045,52 @@ input[type=number] {
         transform: rotate(360deg);
     }
 
+}
+
+.inline-notification[data-v-45f28762] {
+    align-items: center;
+    border-width: 1px;
+    border-left: 3px;
+    border-style: solid;
+    color: #262626;
+    display: flex;
+    font-size: .875rem;
+    font-weight: 400;
+    letter-spacing: .16px;
+    line-height: 1.42857;
+    max-width: none;
+    padding: 14px 20px;
+    margin-top: 5rem;
+}
+
+.inline-notification.error[data-v-45f28762] {
+    background: #fff1f1;
+    border-color: #da1e28;
+}
+
+.inline-notification.error .icon[data-v-45f28762] {
+    color: #da1e28;
+}
+
+.inline-notification .icon[data-v-45f28762] {
+    margin-right: 1rem;
+}
+
+.duo--Icon {
+    fill: currentColor;
+}
+
+.inline-notification svg {
+    display: inline;
+    vertical-align: initial;
+}
+
+.flex-1 {
+    flex: 1 1 0%;
+}
+
+ul[data-v-078d4a79] {
+    list-style: none;
+    margin: 0;
+    padding: 0;
 }
