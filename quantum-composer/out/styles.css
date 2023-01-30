@@ -931,7 +931,7 @@ input[type=number] {
     margin-top: 1rem;
     font-size: 0.8rem;
     width: 100%;
-    height: 100%;
+    height: 95%;
     padding: 0rem;
     white-space: normal;
     /* CSS3 */
@@ -951,7 +951,7 @@ input[type=number] {
 }
 
 .line-numbers-qasm {
-    min-width: 1.2rem;
+    min-width: 1.5rem;
     min-height: 1.2rem;
     text-align: right;
     margin-right: 1rem;
@@ -975,7 +975,7 @@ input[type=number] {
 
 /* line number of qiskit code  */
 .line-number { 
-    min-width: 1.2rem;
+    min-width: 1.5rem;
     max-width: 1.2rem;
     text-align: right;
     margin-right: 1rem;
@@ -987,10 +987,10 @@ input[type=number] {
     color: rgb(51, 54, 57);
     outline: none;
     width: 100%;
-    height: 100%;
     resize: none;
     border: none;
     line-height: 1.3rem;
+    overflow-y: visible;
 }
 
 #text-code:focus {
