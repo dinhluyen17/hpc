@@ -740,6 +740,19 @@ revision.latestActiveCommit().subscribe(jsonText => {
         lineNumbers.innerHTML = Array(numberOfLines)
           .fill("<span></span>")
           .join("");
+        //if data is not start with //generate then show error message
+        console.log("log data la gif ", data);
+        console.log("is this true ", data.startsWith('// Generated'));
+        if(!data.startsWith('// Generated')) {
+            if(error.classList.contains('hide')) {
+                error.classList.remove('hide')
+            }         
+        }
+        else {
+            if(!error.classList.contains('hide')) {
+                error.classList.add('hide')
+            }
+        }
       //function to generate qiskit code
         const dataTest = qasmToQiskit(quantumCode.value)
         const a = dataTest.split('\n')
