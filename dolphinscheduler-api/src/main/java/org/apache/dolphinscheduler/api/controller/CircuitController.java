@@ -220,4 +220,24 @@ public class CircuitController extends BaseController {
                         "attachment; filename=\"batch.zip\"")
                 .body(byteArrayOutputStream.toByteArray());
     }
+
+    @Operation(summary = "exportQASMCode", description = "Export_circuit_QASM_Code")
+    @Parameters({
+            @Parameter(name = "circuitId", description = "circuitId",  required = true, schema = @Schema(implementation = Integer.class, example = "1"))
+        })
+    @GetMapping(value = "/downloadQasm")
+    public ResponseEntity<?> downloadQasm(@RequestParam(value = "circuitId") Integer circuitId) {
+        Result result = circuitService.get(circuitId);
+        Circuit circuit = (Circuit) result.getData();
+        String name = circuit.getName();
+        String qasm = circuit.getQasm();
+
+        InputStream inputStream = new ByteArrayInputStream(qasm.getBytes());
+        DataInputStream dataInputStream = new DataInputStream(inputStream);
+        InputStreamResource resource = new InputStreamResource(dataInputStream);
+        return ResponseEntity.ok()
+                .header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=\"" + name + "\"")
+                .contentType(MediaType.APPLICATION_OCTET_STREAM)
+                .body(resource);
+    }
 }
