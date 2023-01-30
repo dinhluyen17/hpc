@@ -112,17 +112,16 @@ const circuitItem = defineComponent({
       importFileRef.value.value = '';
     }
 
-    const handleExportCircuit = (e) => {
-      console.log(">>>", e.value);
-      console.log(e);
+    const handleExportCircuit = (e: Event) => {
+      const value = (e.target as HTMLSelectElement).value;
       //export qasm code
-      exportQasm(variables.data.id)
-      if(e == 'json') {
+      if(value == 'json') {
         variables.isSaveCircuit = false;
         sendMessageToIFrame(MESSAGE.getCircuitJson, null);
       }
-      else if(e == 'qasm') {
+      else if(value == 'qasm') {
         //call api to export qasm code
+        exportQasm(variables.data.id)
       }
       if(document.getElementById("download-option") !== null) {
         document.getElementById("download-option").selectedIndex = 0; //first option
@@ -323,8 +322,8 @@ const circuitItem = defineComponent({
             <div class="n-button n-button--warning-type n-button--small-type" id='download'>
               <select class="n-button n-button--warning-type n-button--small-type" id="download-option" onChange={(e) => this.handleExportCircuit(e)}>
                 <option class="n-button__content" value={'none'}>{t('circuit.detail.export_circuit')}</option>
-                <option class="n-button__content" value='json'>JSON</option>
-                <option class="n-button__content" value='qasm'>QASM 2.0</option>
+                <option class="n-button__content" value={'json'}>JSON</option>
+                <option class="n-button__content" value={'qasm'}>QASM 2.0</option>
               </select>
             </div>
             
