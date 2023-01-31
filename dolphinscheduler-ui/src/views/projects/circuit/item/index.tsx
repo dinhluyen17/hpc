@@ -31,6 +31,7 @@ import {stateBarCalc} from "@/service/modules/circuits";
 import {CircuitBarData} from "@/service/modules/circuits/types";
 import { exportQasm } from '@/service/modules/circuits'
 import axios from 'axios';
+import {importQasmTxtFile} from '@/service/modules/circuits'
 
 const circuitItem = defineComponent({
   name: 'circuitItem',
@@ -78,12 +79,7 @@ const circuitItem = defineComponent({
           try {
             const jsonString = fileReader.result;
             if(jsonString && jsonString.includes("OPENQASM")) {
-              console.log("ahihi");
-              let token = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJ1c2VybmFtZSIsImV4cCI6MTY3MzQ5Mzc5OH0.Eb2g292ZducNlRFaRDV8yI_Krpm_AoaFnRMGijeLUJM"
-              const config = {
-                headers: { Authorization: `Bearer ${token}` }
-              };
-              axios.post('http://0.0.0.0:8000/qasm-to-json', jsonString, config)
+              importQasmTxtFile(jsonString)
                 .then(response => {
                   sendMessageToIFrame(MESSAGE.setCircuitJson, JSON.stringify(response.data));
                 })

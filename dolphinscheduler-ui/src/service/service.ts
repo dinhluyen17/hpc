@@ -56,8 +56,14 @@ const baseRequestConfig: AxiosRequestConfig = {
   }
 }
 
+const baseRequestConfigPython: AxiosRequestConfig = {
+  baseURL: 'localhost:8000/',
+  timeout: 15000
+}
+
 const service = axios.create(baseRequestConfig)
 const service2 = axios.create(baseRequestConfig)
+const service3 = axios.create(baseRequestConfigPython)
 
 const err = (err: AxiosError): Promise<AxiosError> => {
   if (err.response?.status === 401 || err.response?.status === 504) {
@@ -95,4 +101,4 @@ service.interceptors.response.use((res: AxiosResponse) => {
   }
 }, err)
 
-export { service as axios , service2 as axios2}
+export { service as axios, service2 as axios2, service3 as axious3 }

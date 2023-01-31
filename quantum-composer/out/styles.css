@@ -81,6 +81,10 @@ body {
     display: flex;
 }
 
+.gate-area, .circuit-area, .code-area {
+    height : 100vh;
+}
+
 .content .gate-area {
     display: flex;
     flex-direction: column;
