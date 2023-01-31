@@ -927,11 +927,10 @@ input[type=number] {
 
 .text-code-qasm,
 #text-code-qiskit {
-    margin-top: 1rem;
     font-size: 0.8rem;
     width: 100%;
     height: 95%;
-    padding: 0rem;
+    padding: 0.5rem 0rem;
     white-space: normal;
     /* CSS3 */
     white-space: -moz-pre-wrap;
@@ -989,7 +988,6 @@ input[type=number] {
     resize: none;
     border: none;
     line-height: 1.3rem;
-    overflow-y: visible;
 }
 
 #text-code:focus {

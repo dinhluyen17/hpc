@@ -235,7 +235,7 @@ public class CircuitController extends BaseController {
         DataInputStream dataInputStream = new DataInputStream(inputStream);
         InputStreamResource resource = new InputStreamResource(dataInputStream);
         return ResponseEntity.ok()
-                .header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=\"" + name + "\"")
+                .header(HttpHeaders.CONTENT_DISPOSITION, name)
                 .contentType(MediaType.APPLICATION_OCTET_STREAM)
                 .body(resource);
     }
