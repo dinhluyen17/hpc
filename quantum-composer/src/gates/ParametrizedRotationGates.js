@@ -305,7 +305,7 @@ ParametrizedRotationGates.FormulaicRotationX = new GateBuilder().
     }).
     setWithParamPropertyRecomputeFunc(updateUsingFormula).
     promiseEffectIsUnitary().
-    gate.withParam('sin(pi*2)');
+    gate.withParam('pi');
 
 ParametrizedRotationGates.FormulaicRotationY = new GateBuilder().
     setSerializedIdAndSymbol("Y^ft").
@@ -321,7 +321,7 @@ ParametrizedRotationGates.FormulaicRotationY = new GateBuilder().
     }).
     setWithParamPropertyRecomputeFunc(updateUsingFormula).
     promiseEffectIsUnitary().
-    gate.withParam('sin(pi t)');
+    gate.withParam('pi');
 
 ParametrizedRotationGates.FormulaicRotationZ = new GateBuilder().
     setSerializedIdAndSymbol("Z^ft").
@@ -337,7 +337,7 @@ ParametrizedRotationGates.FormulaicRotationZ = new GateBuilder().
     }).
     setWithParamPropertyRecomputeFunc(updateUsingFormula).
     promiseEffectOnlyPhases().
-    gate.withParam('sin(pi t)');
+    gate.withParam('pi');
 
 ParametrizedRotationGates.FormulaicRotationRx = new GateBuilder().
     setSerializedIdAndSymbol("Rxft").
@@ -350,7 +350,7 @@ ParametrizedRotationGates.FormulaicRotationRx = new GateBuilder().
     setEffectToTimeVaryingMatrix((t, formula) => XExp((parseTimeFormula(formula, t*2-1, true) || 0) / Math.PI / 4)).
     setWithParamPropertyRecomputeFunc(updateUsingFormula).
     promiseEffectIsUnitary().
-    gate.withParam('pi t^2');
+    gate.withParam('pi');
 
 ParametrizedRotationGates.FormulaicRotationRy = new GateBuilder().
     setSerializedIdAndSymbol("Ryft").
@@ -363,7 +363,7 @@ ParametrizedRotationGates.FormulaicRotationRy = new GateBuilder().
     setEffectToTimeVaryingMatrix((t, formula) => YExp((parseTimeFormula(formula, t*2-1, true) || 0) / Math.PI / 4)).
     setWithParamPropertyRecomputeFunc(updateUsingFormula).
     promiseEffectIsUnitary().
-    gate.withParam('pi t^2');
+    gate.withParam('pi');
 
 ParametrizedRotationGates.FormulaicRotationRz = new GateBuilder().
     setSerializedIdAndSymbol("Rzft").
@@ -376,7 +376,7 @@ ParametrizedRotationGates.FormulaicRotationRz = new GateBuilder().
     setEffectToTimeVaryingMatrix((t, formula) => ZExp((parseTimeFormula(formula, t*2-1, true) || 0) / Math.PI / 4)).
     setWithParamPropertyRecomputeFunc(updateUsingFormula).
     promiseEffectOnlyPhases().
-    gate.withParam('pi t^2');
+    gate.withParam('pi');
 
 ParametrizedRotationGates.all =[
     ParametrizedRotationGates.XToA,

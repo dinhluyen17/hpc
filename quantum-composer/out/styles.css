@@ -195,11 +195,11 @@ small.smaller {
 }
 
 .Custom, .Formulaic {
-    background-color: #f1ac2e;
+    background-color: #F3A339;
 }
 
 .Half, .Quarter, .Eighth {
-    background-color: #24b1a0;
+    background-color: #00A895;
 }
 
 .Spinning, .Parametrized, .Sampling, .Probes, .Displays, .Frequency, .Inputs, .Arithmetic, .Compare, .Modular, .Scalar, .Order, .Parity {

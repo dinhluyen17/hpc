@@ -101,4 +101,4 @@ service.interceptors.response.use((res: AxiosResponse) => {
   }
 }, err)
 
-export { service as axios, service2 as axios2, service3 as axious3 }
+export { service as axios, service2 as axios2, service3 as axios3 }
