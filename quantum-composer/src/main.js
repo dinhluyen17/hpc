@@ -811,21 +811,21 @@ revision.latestActiveCommit().subscribe(jsonText => {
     .then((data) => {
         quantumCode.value = data;
         const lineNumbers = document.querySelector(".line-numbers-qasm");
-        const numberOfLines = quantumCode.value.split("\n").length;
+        const numberOfLines = data.split("\n").length;
         lineNumbers.innerHTML = Array(numberOfLines)
           .fill("<span></span>")
           .join("");
+        //css height of text area qasm code
+        quantumCode.style.height = quantumCode.scrollHeight * 1.01 + "px" 
         //if data is not start with //generate then show error message
-        console.log("log data la gif ", data);
-        console.log("is this true ", data.startsWith('// Generated'));
-        if(!data.startsWith('// Generated')) {
-            if(error.classList.contains('hide')) {
-                error.classList.remove('hide')
+        if(data.startsWith('OPENQASM 2.0;')) {
+            if(!error.classList.contains('hide')) {
+                error.classList.add('hide')
             }         
         }
         else {
-            if(!error.classList.contains('hide')) {
-                error.classList.add('hide')
+            if(error.classList.contains('hide')) {
+                error.classList.remove('hide')
             }
         }
       //function to generate qiskit code
