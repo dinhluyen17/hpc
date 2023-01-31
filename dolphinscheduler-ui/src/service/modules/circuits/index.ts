@@ -15,7 +15,7 @@
  * limitations under the License.
  */
 
-import { axios } from '@/service/service'
+import { axios, axios2 } from '@/service/service'
 import { ListReq, CircuitReq } from './types'
 
 export function getCircuit(id: number): any {
@@ -87,23 +87,25 @@ export function stateBarCalc(qStates: string[], qProb: string[]): any {
 }
 
 export function exportQasm(id: number): any {
-  let header
-  return axios({
+  let headers;
+  return axios2({
     url: `/circuit/downloadQasm?circuitId=${id}`,
     method: 'get',
     responseType: 'blob'
   })
-  .then((res) => {
-    console.log("header test ", res.headers)
-    return res.text()
-  })
-  .then((response) => {
-    console.log("response la gi", response)
-    const fileURL = window.URL.createObjectURL(new Blob([response]))
-    const fileLink = document.createElement('a')
-    fileLink.href = fileURL
-    fileLink.setAttribute('download', 'file.txt')
-    document.body.appendChild(fileLink)
-    fileLink.click()
-  })
+      .then((res) => {
+        console.log("header test ", res.headers)
+        headers = res.headers;
+        return res.data.text()
+      })
+      .then((response) => {
+        console.log("response la gi", response)
+        const filename = headers['content-disposition']
+        const fileURL = window.URL.createObjectURL(new Blob([response]))
+        const fileLink = document.createElement('a')
+        fileLink.href = fileURL
+        fileLink.setAttribute('download', filename + '.txt')
+        document.body.appendChild(fileLink)
+        fileLink.click()
+      });
 }
