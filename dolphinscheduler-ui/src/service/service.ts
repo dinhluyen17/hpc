@@ -57,6 +57,7 @@ const baseRequestConfig: AxiosRequestConfig = {
 }
 
 const service = axios.create(baseRequestConfig)
+const service2 = axios.create(baseRequestConfig)
 
 const err = (err: AxiosError): Promise<AxiosError> => {
   if (err.response?.status === 401 || err.response?.status === 504) {
@@ -94,4 +95,4 @@ service.interceptors.response.use((res: AxiosResponse) => {
   }
 }, err)
 
-export { service as axios }
+export { service as axios , service2 as axios2}
