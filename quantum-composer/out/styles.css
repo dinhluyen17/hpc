@@ -912,7 +912,6 @@ input[type=number] {
     height: 95vh;
     width: 98%;
     margin: 0rem;
-    border: 1px solid red;
 }
 
 #error-notice {

@@ -818,14 +818,14 @@ revision.latestActiveCommit().subscribe(jsonText => {
         //css height of text area qasm code
         quantumCode.style.height = quantumCode.scrollHeight * 1.01 + "px" 
         //if data is not start with //generate then show error message
-        if(!data.startsWith('// Generated')) {
-            if(error.classList.contains('hide')) {
-                error.classList.remove('hide')
+        if(data.startsWith('OPENQASM 2.0;')) {
+            if(!error.classList.contains('hide')) {
+                error.classList.add('hide')
             }         
         }
         else {
-            if(!error.classList.contains('hide')) {
-                error.classList.add('hide')
+            if(error.classList.contains('hide')) {
+                error.classList.remove('hide')
             }
         }
       //function to generate qiskit code
