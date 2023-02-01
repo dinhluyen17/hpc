@@ -15,40 +15,40 @@
  */
 
 // It's important that the polyfills and error fallback get loaded first!
-import {} from "./browser/Polyfills.js"
-import {hookErrorHandler} from "./fallback.js"
+import { } from "./browser/Polyfills.js"
+import { hookErrorHandler } from "./fallback.js"
 hookErrorHandler();
-import {doDetectIssues} from "./issues.js"
+import { doDetectIssues } from "./issues.js"
 doDetectIssues();
 
-import {CircuitStats} from "./circuit/CircuitStats.js"
-import {CooldownThrottle} from "./base/CooldownThrottle.js"
-import {Config} from "./Config.js"
-import {DisplayedInspector} from "./ui/DisplayedInspector.js"
-import {Painter} from "./draw/Painter.js"
-import {Rect} from "./math/Rect.js"
-import {RestartableRng} from "./base/RestartableRng.js"
-import {Revision} from "./base/Revision.js"
-import {initSerializer, fromJsonText_CircuitDefinition} from "./circuit/Serializer.js"
-import {TouchScrollBlocker} from "./browser/TouchScrollBlocker.js"
-import {Util} from "./base/Util.js"
-import {initializedWglContext} from "./webgl/WglContext.js"
-import {watchDrags, isMiddleClicking, eventPosRelativeTo} from "./browser/MouseWatcher.js"
-import {ObservableValue, ObservableSource} from "./base/Obs.js"
-import {initExports, obsExportsIsShowing} from "./ui/exports.js"
-import {initForge, obsForgeIsShowing} from "./ui/forge.js"
-import {initMenu, obsMenuIsShowing, closeMenu} from "./ui/menu.js"
-import {initUndoRedo} from "./ui/undo.js"
-import {initClear} from "./ui/clear.js"
-import {initUrlCircuitSync} from "./ui/url.js"
-import {initTitleSync} from "./ui/title.js"
-import {simulate} from "./ui/sim.js"
-import {GatePainting} from "./draw/GatePainting.js"
-import {GATE_CIRCUIT_DRAWER} from "./ui/DisplayedCircuit.js"
-import {GateColumn} from "./circuit/GateColumn.js";
-import {Point} from "./math/Point.js";
-import {initGateViews} from "./ui/initGateViews.js";
-import {initSizeViews, updateSizeViews} from "./ui/updateSizeViews.js";
+import { CircuitStats } from "./circuit/CircuitStats.js"
+import { CooldownThrottle } from "./base/CooldownThrottle.js"
+import { Config } from "./Config.js"
+import { DisplayedInspector } from "./ui/DisplayedInspector.js"
+import { Painter } from "./draw/Painter.js"
+import { Rect } from "./math/Rect.js"
+import { RestartableRng } from "./base/RestartableRng.js"
+import { Revision } from "./base/Revision.js"
+import { initSerializer, fromJsonText_CircuitDefinition } from "./circuit/Serializer.js"
+import { TouchScrollBlocker } from "./browser/TouchScrollBlocker.js"
+import { Util } from "./base/Util.js"
+import { initializedWglContext } from "./webgl/WglContext.js"
+import { watchDrags, isMiddleClicking, eventPosRelativeTo } from "./browser/MouseWatcher.js"
+import { ObservableValue, ObservableSource } from "./base/Obs.js"
+import { initExports, obsExportsIsShowing } from "./ui/exports.js"
+import { initForge, obsForgeIsShowing } from "./ui/forge.js"
+import { initMenu, obsMenuIsShowing, closeMenu } from "./ui/menu.js"
+import { initUndoRedo } from "./ui/undo.js"
+import { initClear } from "./ui/clear.js"
+import { initUrlCircuitSync } from "./ui/url.js"
+import { initTitleSync } from "./ui/title.js"
+import { simulate } from "./ui/sim.js"
+import { GatePainting } from "./draw/GatePainting.js"
+import { GATE_CIRCUIT_DRAWER } from "./ui/DisplayedCircuit.js"
+import { GateColumn } from "./circuit/GateColumn.js";
+import { Point } from "./math/Point.js";
+import { initGateViews } from "./ui/initGateViews.js";
+import { initSizeViews, updateSizeViews } from "./ui/updateSizeViews.js";
 import { viewState } from "./ui/viewState.js";
 import { Gates } from "./gates/AllGates.js";
 import { PostSelectionGates } from "./gates/PostSelectionGates.js";
@@ -86,12 +86,12 @@ if (!canvasSim) {
 //canvas.height = window.innerHeight*0.9;
 let haveLoaded = false;
 const semiStableRng = (() => {
-    const target = {cur: new RestartableRng()};
+    const target = { cur: new RestartableRng() };
     let cycleRng;
     cycleRng = () => {
         target.cur = new RestartableRng();
         //noinspection DynamicallyGeneratedCodeJS
-        setTimeout(cycleRng, Config.SEMI_STABLE_RANDOM_VALUE_LIFETIME_MILLIS*0.99);
+        setTimeout(cycleRng, Config.SEMI_STABLE_RANDOM_VALUE_LIFETIME_MILLIS * 0.99);
     };
     cycleRng();
     return target;
@@ -159,12 +159,12 @@ const changeTab = (tab) => {
         let e = document.getElementById("circuit");
         e.classList.remove("hidden");
         let eT = document.getElementById("circuitTab");
-        eT.setAttribute("data-state","active")
-    
+        eT.setAttribute("data-state", "active")
+
         let e2 = document.getElementById("simulate");
         e2.classList.add("hidden");
         let e2T = document.getElementById("simulateTab");
-        e2T.setAttribute("data-state","inactive");
+        e2T.setAttribute("data-state", "inactive");
 
         viewState.getInstance().currentTab = 'circuit';
         const canvas = document.getElementById("circuit-area-body");
@@ -174,19 +174,19 @@ const changeTab = (tab) => {
             clientY: canvasBox.top,
             width: canvasBox.width,
             height: canvasBox.height
-        }        
+        }
     }
     else {
         let e = document.getElementById("circuit");
         e.classList.add("hidden");
         let eT = document.getElementById("circuitTab");
-        eT.setAttribute("data-state","inactive");
-    
+        eT.setAttribute("data-state", "inactive");
+
         let e2 = document.getElementById("simulate");
         e2.classList.remove("hidden");
         let e2T = document.getElementById("simulateTab");
-        e2T.setAttribute("data-state","active");
-    
+        e2T.setAttribute("data-state", "active");
+
         viewState.getInstance().currentTab = 'simulate';
         let canvas = document.getElementById("canvasSimWrapper")
         let canvasBox = canvas.getBoundingClientRect();
@@ -197,8 +197,8 @@ const changeTab = (tab) => {
             height: canvasBox.height
         }
         if (isSupportStateTable()) {
-            simStatCalc();            
-        }        
+            simStatCalc();
+        }
     }
 }
 let circuitName;
@@ -214,29 +214,29 @@ window.addEventListener('message', (e) => {
                     if (obj.detailData && obj.detailData.length > 0) {
                         revision.commit(obj.detailData);
                         console.log("WHAT IS OBJ: ", obj);
-                    }                                       
+                    }
                 }
                 else if (actionType == 'get_circuit_json') {
                     const qasm = document.getElementById("text-code")
                     const qiskit = convert(document.getElementById("text-code-qiskit"));
                     const postDetailData = {
-                        "json" : revision.getLatestCommit(),
-                        "qasm" : qasm.value,
-                        "qiskit" : qiskit
-                    }                                                                  
+                        "json": revision.getLatestCommit(),
+                        "qasm": qasm.value,
+                        "qiskit": qiskit
+                    }
                     window.parent.postMessage(JSON.stringify({
                         messageFrom: 'quantum_composer',
                         actionType: 'current_circuit_json',
                         detailData: postDetailData,
                     })
-                    );   
+                    );
                 }
                 else if (actionType == 'set_circuit_json') {
                     viewState.getInstance().wireNumber = undefined;
                     revision.commit(obj.detailData);
                 }
                 else if (actionType == 'change_tab') {
-                    changeTab(obj.detailData);                    
+                    changeTab(obj.detailData);
                 } else if (actionType == 'send_circuit_name') {
                     console.log(obj.detailData)
                     circuitName = obj.detailData;
@@ -365,7 +365,7 @@ $('#runButton').click(function () {
             console.error("Error: ", error)
         });
 });
-let stateBarCalc = () =>{
+let stateBarCalc = () => {
     if (simulatorType == "client") {
         let qHeight = mostRecentStats.get().finalState.height();
         if (qHeight <= 2048) {
@@ -425,9 +425,9 @@ let stateBarCalc = () =>{
                 }
             }
             const stateObj = qStates.map((str, index) =>
-                ({
-                    id: index, State: qStates[index]
-                }))
+            ({
+                id: index, State: qStates[index]
+            }))
             const probObj = qProb.map((str, index) => ({
                 id: index, Probability: qProb[index]
             }))
@@ -445,42 +445,42 @@ let stateBarCalc = () =>{
         return barData
     }
 }
-function compareData(a,b){
+function compareData(a, b) {
     const dataA = a.Probability;
     const dataB = b.Probability;
-    return dataB-dataA;
+    return dataB - dataA;
 }
 let sortSwitch = false;
 let handleSortedData = (barData) => {
     let sortedData = barData.sort(compareData);
     document.D3_FUNCTION.bar(sortedData);
 }
-document.getElementById("sortBar").addEventListener("click", function (e){
+document.getElementById("sortBar").addEventListener("click", function (e) {
     if (!isSupportBarChart()) {
         return;
     }
     sortSwitch = !sortSwitch;
-    if (barDataFilterSwitch == false){
-        if (sortSwitch == false){
+    if (barDataFilterSwitch == false) {
+        if (sortSwitch == false) {
             document.D3_FUNCTION.bar(stateBarCalc())
         } else {
             handleSortedData(barData)
         }
     } else {
         let barDataFilter = barData.filter(val => !val.Probability.match(/^0\.0+$/));
-        if (sortSwitch == false){
+        if (sortSwitch == false) {
             document.D3_FUNCTION.bar(barDataFilter);
         } else {
             handleSortedData(barDataFilter)
         }
     }
 })
-document.getElementById("changeState").addEventListener("change", function (e){
+document.getElementById("changeState").addEventListener("change", function (e) {
     if (!isSupportBarChart()) {
         return;
     }
     if (document.getElementById("changeState").value !== "Binary" || document.getElementById("changeState").value !== "default") {
-        document.D3_FUNCTION.bar(stateBarCalc(),viewState.getInstance().chartAreaHeight + 50);
+        document.D3_FUNCTION.bar(stateBarCalc(), viewState.getInstance().chartAreaHeight + 50);
     } else {
         document.D3_FUNCTION.bar(stateBarCalc())
     }
@@ -540,7 +540,7 @@ let simStatCalc = () => {
             let state = document.createElement("td");
             state.innerText = aerStates[i];
             let vect = document.createElement("td");
-            vect.innerText = "+"+ aerVector[key].real + "+" + aerVector[key].imag + "i";
+            vect.innerText = "+" + aerVector[key].real + "+" + aerVector[key].imag + "i";
             let rad = document.createElement("td");
             rad.innerText = aerPhase[i] + " radian";
             let prob = document.createElement("td");
@@ -594,9 +594,9 @@ let sortTable = () => {
         }
     }
 }
-document.getElementById("sortTable").addEventListener("click", function (e){
+document.getElementById("sortTable").addEventListener("click", function (e) {
     tableSortSwitch = !tableSortSwitch;
-    if (tableSortSwitch){
+    if (tableSortSwitch) {
         document.getElementById("sortTableDown").classList.add("hidden")
         document.getElementById("sortTableUp").classList.remove("hidden")
     } else {
@@ -605,7 +605,7 @@ document.getElementById("sortTable").addEventListener("click", function (e){
     }
     sortTable();
 })
-document.getElementById("cancelSortTable").addEventListener("click", function (e){
+document.getElementById("cancelSortTable").addEventListener("click", function (e) {
     if (!isSupportStateTable()) {
         return;
     }
@@ -616,12 +616,12 @@ document.getElementById("cancelSortTable").addEventListener("click", function (e
 })
 let barDataFilterSwitch = true;
 const stateBarChartFilter = document.getElementById("stateBarChartFilterZero");
-stateBarChartFilter.addEventListener('click',()=>{
+stateBarChartFilter.addEventListener('click', () => {
     if (!isSupportBarChart()) {
         return;
     }
     barDataFilterSwitch = !barDataFilterSwitch;
-    if (barDataFilterSwitch == false){
+    if (barDataFilterSwitch == false) {
         stateBarChartFilter.innerHTML = "Hide zero states";
         if (sortSwitch == false) {
             document.D3_FUNCTION.bar(stateBarCalc());
@@ -669,13 +669,13 @@ document.getElementById("vectFilter").addEventListener('click', function (e) {
         simStatCalc();
     }
 })
-document.getElementById("stateSearchButton").addEventListener("click", function (e){
+document.getElementById("stateSearchButton").addEventListener("click", function (e) {
     document.getElementById("stateHeaderText").classList.add("hidden");
     document.getElementById("stateSearchButton").classList.add("hidden");
     document.getElementById("vectSearch").classList.remove("hidden");
     document.getElementById("vectSearchCancel").classList.remove("hidden");
 })
-document.getElementById("vectSearchCancel").addEventListener("click", function (e){
+document.getElementById("vectSearchCancel").addEventListener("click", function (e) {
     document.getElementById("stateHeaderText").classList.remove("hidden");
     document.getElementById("stateSearchButton").classList.remove("hidden");
     document.getElementById("vectSearch").classList.add("hidden");
@@ -688,19 +688,19 @@ document.getElementById("vectSearch").addEventListener("input", function (e) {
     let search = document.getElementById("vectSearch").value;
     let table = document.getElementById("vectorTable");
     let tr = table.getElementsByTagName("tr")
-    if (search != null && search != '' && search != undefined){
-        for (let i = 0; i < tr.length; i++){
+    if (search != null && search != '' && search != undefined) {
+        for (let i = 0; i < tr.length; i++) {
             let td = tr[i].getElementsByTagName("td")[0];
             if (td) {
                 let value = td.textContent || td.innerText;
-                if (value.indexOf(search)){
+                if (value.indexOf(search)) {
                     tr[i].style.display = 'none';
                 } else {
                     tr[i].style.display = "";
                 }
             }
         }
-        if ($("#dataOutput").children(":visible").length == 0 && $('#no-data3').length == 0){
+        if ($("#dataOutput").children(":visible").length == 0 && $('#no-data3').length == 0) {
             let noData = document.createElement("div");
             noData.setAttribute('id', 'no-data3')
             noData.innerHTML = "No data"
@@ -735,7 +735,7 @@ document.addEventListener('contextmenu', function (e) {
         }
     }
 }, false);
-document.addEventListener("DOMContentLoaded", function (){
+document.addEventListener("DOMContentLoaded", function () {
     if (!isSupportBarChart()) {
         return;
     }
@@ -746,134 +746,134 @@ document.addEventListener("DOMContentLoaded", function (){
 //declare global variable token for all api
 let token
 const userRoot = {
-    'username' : 'username',
-    'password' : 'secret'
+    'username': 'username',
+    'password': 'secret'
 }
 let formBody = []
 for (var property in userRoot) {
     var encodedKey = encodeURIComponent(property);
     var encodedValue = encodeURIComponent(userRoot[property]);
     formBody.push(encodedKey + "=" + encodedValue);
-  }
-  formBody = formBody.join("&");
+}
+formBody = formBody.join("&");
 fetch("http://0.0.0.0:8000/token", {
     method: "POST",
     headers: {
         'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8',
-      },
+    },
     body: formBody
 })
-.then(res => {
-    return res.json()
-})
-.then(res => {
-    token = res.access_token
-})
+    .then(res => {
+        return res.json()
+    })
+    .then(res => {
+        token = res.access_token
+    })
 revision.latestActiveCommit().subscribe(jsonText => {
-  let circuitDef = fromJsonText_CircuitDefinition(
-    jsonText,
-    true,
-    viewState.getInstance().wireNumber
-  );
-  if (
-    circuitDef.customGateSet &&
-    circuitDef.customGateSet.gates &&
-    circuitDef.customGateSet.gates.length > 0
-  ) {
-    let hasNewGate = false;
-    const newGateSet = new Set();
-    circuitDef.customGateSet.gates.forEach((gate) => {
-      gate.colorIndex = 2;
-      if (!Gates.customGateSet.has(gate.serializedId)) {
-        hasNewGate = true;
-      }
-      newGateSet.add(gate.serializedId);
-    });
-    if (hasNewGate) {
-      Gates.CustomGateGroups[0].gates = [...circuitDef.customGateSet.gates];
-      Gates.customGateSet = newGateSet;
-      initGateViews();
-    }
-  }
-  let newInspector = displayed.get().withCircuitDefinition(circuitDef);
-  displayed.set(newInspector);
-
-  if (isSupportBarChart() && isSupportClientChart()) {
-    if (barDataFilterSwitch == false) {
-      if (sortSwitch == false) {
-        document.D3_FUNCTION.bar(stateBarCalc());
-      } else {
-        handleSortedData(barData);
-      }
-    } else {
-      let barDataFilter = stateBarCalc().filter(
-        (val) => !val.Probability.match(/^0\.0+$/)
-      );
-      if (sortSwitch == false) {
-        document.D3_FUNCTION.bar(barDataFilter);
-      } else {
-        handleSortedData(barDataFilter);
-      }
-    }
-  }
-
-  //call api to generate qasm code
-  const quantumCode = document.getElementById("text-code");
-  const textQiskit = document.getElementById("text-code-qiskit");
-  const error = document.getElementById("error-notice")
-  fetch("http://0.0.0.0:8000/json-to-qasm", {
-    method: "POST",
-    headers: {
-      Authorization: `Bearer ${token}`,
-      "content-type": "text/html",
-    },
-    body: jsonText,
-  })
-    .then((res) => {
-      return res.text();
-    })
-    .then((data) => {
-        quantumCode.value = data;
-        const lineNumbers = document.querySelector(".line-numbers-qasm");
-        const numberOfLines = data.split("\n").length;
-        lineNumbers.innerHTML = Array(numberOfLines)
-          .fill("<span></span>")
-          .join("");
-        //css height of text area qasm code
-        quantumCode.style.height = (quantumCode.scrollHeight > quantumCode.clientHeight) ? (quantumCode.scrollHeight) + "px" : "100%";
-        //if data is not start with //generate then show error message
-        if(data.startsWith('OPENQASM 2.0;')) {
-            if(!error.classList.contains('hide')) {
-                error.classList.add('hide')
-            }         
-        }
-        else {
-            if(error.classList.contains('hide')) {
-                error.classList.remove('hide')
+    let circuitDef = fromJsonText_CircuitDefinition(
+        jsonText,
+        true,
+        viewState.getInstance().wireNumber
+    );
+    if (
+        circuitDef.customGateSet &&
+        circuitDef.customGateSet.gates &&
+        circuitDef.customGateSet.gates.length > 0
+    ) {
+        let hasNewGate = false;
+        const newGateSet = new Set();
+        circuitDef.customGateSet.gates.forEach((gate) => {
+            gate.colorIndex = 2;
+            if (!Gates.customGateSet.has(gate.serializedId)) {
+                hasNewGate = true;
             }
+            newGateSet.add(gate.serializedId);
+        });
+        if (hasNewGate) {
+            Gates.CustomGateGroups[0].gates = [...circuitDef.customGateSet.gates];
+            Gates.customGateSet = newGateSet;
+            initGateViews();
         }
-      //function to generate qiskit code
-        const dataTest = qasmToQiskit(quantumCode.value)
-        const a = dataTest.split('\n')
-        textQiskit.innerHTML = ''
-        for(var i = 0; i < a.length; i++) {
-            const divElement = document.createElement('div'); divElement.setAttribute("class", "code-line")
-            const divLineCount =document.createElement("div"); divLineCount.setAttribute("class", "line-number")
-            const divLineContent = document.createElement("div"); divLineContent.setAttribute("class", "line-content")
-            if(a[i] != '') {
-                divLineContent.innerText = a[i]
+    }
+    let newInspector = displayed.get().withCircuitDefinition(circuitDef);
+    displayed.set(newInspector);
+
+    if (isSupportBarChart() && isSupportClientChart()) {
+        if (barDataFilterSwitch == false) {
+            if (sortSwitch == false) {
+                document.D3_FUNCTION.bar(stateBarCalc());
             } else {
-                divLineContent.appendChild(document.createElement('br'))
+                handleSortedData(barData);
             }
-            divLineCount.innerText = i + 1
-            divElement.appendChild(divLineCount)
-            divElement.appendChild(divLineContent)
-            textQiskit.appendChild(divElement)
+        } else {
+            let barDataFilter = stateBarCalc().filter(
+                (val) => !val.Probability.match(/^0\.0+$/)
+            );
+            if (sortSwitch == false) {
+                document.D3_FUNCTION.bar(barDataFilter);
+            } else {
+                handleSortedData(barDataFilter);
+            }
         }
+    }
+
+    //call api to generate qasm code
+    const quantumCode = document.getElementById("text-code");
+    const textQiskit = document.getElementById("text-code-qiskit");
+    const error = document.getElementById("error-notice")
+    fetch("http://0.0.0.0:8000/json-to-qasm", {
+        method: "POST",
+        headers: {
+            Authorization: `Bearer ${token}`,
+            "content-type": "text/html",
+        },
+        body: jsonText,
     })
-    .catch((error) => {
-      console.error("Log error:", error);
-    });
+        .then((res) => {
+            return res.text();
+        })
+        .then((data) => {
+            quantumCode.value = data;
+            const lineNumbers = document.querySelector(".line-numbers-qasm");
+            const numberOfLines = data.split("\n").length;
+            lineNumbers.innerHTML = Array(numberOfLines)
+                .fill("<span></span>")
+                .join("");
+            //css height of text area qasm code
+            quantumCode.style.height = (quantumCode.scrollHeight > quantumCode.clientHeight) ? (quantumCode.scrollHeight) + "px" : "100%";
+            //if data is not start with //generate then show error message
+            if (data.startsWith('OPENQASM 2.0;')) {
+                if (!error.classList.contains('hide')) {
+                    error.classList.add('hide')
+                }
+            }
+            else {
+                if (error.classList.contains('hide')) {
+                    error.classList.remove('hide')
+                }
+            }
+            //function to generate qiskit code
+            const dataTest = qasmToQiskit(quantumCode.value)
+            const a = dataTest.split('\n')
+            textQiskit.innerHTML = ''
+            for (var i = 0; i < a.length; i++) {
+                const divElement = document.createElement('div'); divElement.setAttribute("class", "code-line")
+                const divLineCount = document.createElement("div"); divLineCount.setAttribute("class", "line-number")
+                const divLineContent = document.createElement("div"); divLineContent.setAttribute("class", "line-content")
+                if (a[i] != '') {
+                    divLineContent.innerText = a[i]
+                } else {
+                    divLineContent.appendChild(document.createElement('br'))
+                }
+                divLineCount.innerText = i + 1
+                divElement.appendChild(divLineCount)
+                divElement.appendChild(divLineContent)
+                textQiskit.appendChild(divElement)
+            }
+        })
+        .catch((error) => {
+            console.error("Log error:", error);
+        });
 });
 /**
  * @param {!DisplayedInspector} curInspector
@@ -981,7 +981,7 @@ canvasDiv.addEventListener('click', ev => {
     const element = document.getElementById('gate-menu-popup');
     element.style.display = 'none';
 
-    if(pasteMenu.style.display == 'block') {
+    if (pasteMenu.style.display == 'block') {
         pasteMenu.style.display = 'none';
     }
     else {
@@ -1244,7 +1244,8 @@ function resizeGateArea(e) {
     }
 }
 function resizeChartArea(e) {
-    if (startResizeChartArea) {
+    const isChartResizableArea = e.target.classList.contains('circuit-area-body') || e.target.classList.contains('circuit-area-chart') || e.path[0].nodeName === "svg";
+    if (startResizeChartArea && isChartResizableArea) {
         const dy = posResize - e.clientY;
         posResize = e.clientY;
         viewState.getInstance().chartAreaHeight += dy;
@@ -1254,18 +1255,18 @@ function resizeChartArea(e) {
         if (isSupportBarChart()) {
             if (barDataFilterSwitch == false) {
                 if (sortSwitch == false) {
-                    document.D3_FUNCTION.bar(barData,viewState.getInstance().chartAreaHeight);
+                    document.D3_FUNCTION.bar(barData, viewState.getInstance().chartAreaHeight);
                 } else {
-                    handleSortedData(barData,viewState.getInstance().chartAreaHeight)
+                    handleSortedData(barData, viewState.getInstance().chartAreaHeight)
                 }
             } else {
                 let barDataFilter = barData.filter(val => !val.Probability.match(/^0\.0+$/));
-                if (sortSwitch == false){
-                    document.D3_FUNCTION.bar(barDataFilter,viewState.getInstance().chartAreaHeight);
+                if (sortSwitch == false) {
+                    document.D3_FUNCTION.bar(barDataFilter, viewState.getInstance().chartAreaHeight);
                 } else {
-                    handleSortedData(barDataFilter,viewState.getInstance().chartAreaHeight)
+                    handleSortedData(barDataFilter, viewState.getInstance().chartAreaHeight)
                 }
-            }            
+            }
         }
         updateSizeViews(canvasDiv);
     }
@@ -1279,45 +1280,45 @@ setTimeout(() => {
 let timmer;
 const textCode = document.getElementById("text-code")
 textCode.addEventListener("keydown", () => {
-  clearTimeout(timmer);
-  timmer = setTimeout(() => {
-    if (textCode && textCode.value.length > 0) {
-      fetch("http://0.0.0.0:8000/qasm-to-json", {
-        method: "POST",
-        headers: {
-          Authorization: `Bearer ${token}`,
-          "content-type": "text/html",
-        },
-        body: textCode.value,
-      })
-        .then((res) => {
-          return res.text();
-        })
-        .then((data) => {
-          revision.commit(data)
-        })
-        .catch((error) => {
-          console.error("Error:", error);
-        });        
-    }
-  }, 2500);
-}); 
+    clearTimeout(timmer);
+    timmer = setTimeout(() => {
+        if (textCode && textCode.value.length > 0) {
+            fetch("http://0.0.0.0:8000/qasm-to-json", {
+                method: "POST",
+                headers: {
+                    Authorization: `Bearer ${token}`,
+                    "content-type": "text/html",
+                },
+                body: textCode.value,
+            })
+                .then((res) => {
+                    return res.text();
+                })
+                .then((data) => {
+                    revision.commit(data)
+                })
+                .catch((error) => {
+                    console.error("Error:", error);
+                });
+        }
+    }, 2500);
+});
 
 //replace <br> tag from a node element to \n
-var convert = (function() {
-    var convertElement = function(element) {
-        switch(element.tagName) {
-            case "BR": 
+var convert = (function () {
+    var convertElement = function (element) {
+        switch (element.tagName) {
+            case "BR":
                 return "\n";
             case "P": // fall through to DIV
-            case "DIV": 
+            case "DIV":
                 return (element.previousSibling ? "\n" : "") + [].map.call(element.childNodes, convertElement).join("");
-            default: 
+            default:
                 return element.textContent;
         }
     };
-    
-    return function(element) {
+
+    return function (element) {
         return [].map.call(element.childNodes, convertElement).join("");
     };
 })();

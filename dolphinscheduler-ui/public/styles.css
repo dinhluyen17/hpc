@@ -81,6 +81,10 @@ body {
     display: flex;
 }
 
+.gate-area, .circuit-area, .code-area {
+    height : 100vh;
+}
+
 .content .gate-area {
     display: flex;
     flex-direction: column;
@@ -191,11 +195,11 @@ small.smaller {
 }
 
 .Custom, .Formulaic {
-    background-color: #f1ac2e;
+    background-color: #F3A339;
 }
 
 .Half, .Quarter, .Eighth {
-    background-color: #24b1a0;
+    background-color: #00A895;
 }
 
 .Spinning, .Parametrized, .Sampling, .Probes, .Displays, .Frequency, .Inputs, .Arithmetic, .Compare, .Modular, .Scalar, .Order, .Parity {
@@ -666,7 +670,7 @@ button.circuit-area-header-right-lv2:hover {
 #canvasSimWrapper,
 #simulateOutput {
     width: 50%;
-    overflow: auto;
+    /*overflow: auto;*/
     /*display: flex;*/
     /*flex-direction: column;*/
     /*align-items: center;*/
@@ -909,13 +913,16 @@ input[type=number] {
 }
 
 #code-area-body {
-    height: 100%;
-    width: 95%;
-    margin: 0 0 0 0.5rem;
+    height: 95vh;
+    width: 98%;
+    margin: 0rem;
 }
 
 #error-notice {
     white-space: normal;
+    padding: 0.8rem 0 0 0.8rem;
+    font-size: small;
+    color: brown;
 }
 
 #code-area-body>div:first-child {
@@ -924,11 +931,10 @@ input[type=number] {
 
 .text-code-qasm,
 #text-code-qiskit {
-    margin-top: 1rem;
     font-size: 0.8rem;
     width: 100%;
-    height: 92%;
-    padding: 0rem;
+    height: 95%;
+    padding: 0.5rem 0rem;
     white-space: normal;
     /* CSS3 */
     white-space: -moz-pre-wrap;
@@ -947,7 +953,7 @@ input[type=number] {
 }
 
 .line-numbers-qasm {
-    min-width: 1.2rem;
+    min-width: 1.5rem;
     min-height: 1.2rem;
     text-align: right;
     margin-right: 1rem;
@@ -971,7 +977,7 @@ input[type=number] {
 
 /* line number of qiskit code  */
 .line-number { 
-    min-width: 1.2rem;
+    min-width: 1.5rem;
     max-width: 1.2rem;
     text-align: right;
     margin-right: 1rem;
@@ -983,7 +989,6 @@ input[type=number] {
     color: rgb(51, 54, 57);
     outline: none;
     width: 100%;
-    height: 100%;
     resize: none;
     border: none;
     line-height: 1.3rem;
@@ -995,6 +1000,12 @@ input[type=number] {
 
 .hide {
     display: none !important;
+}
+
+#runButton:disabled,#runButton[disabled] {
+    background-color: #cccccc;
+    color: #666666;
+    cursor: default;
 }
 
 #bloch-sphere {
@@ -1035,4 +1046,52 @@ input[type=number] {
         transform: rotate(360deg);
     }
 
+}
+
+.inline-notification[data-v-45f28762] {
+    align-items: center;
+    border-width: 1px;
+    border-left: 3px;
+    border-style: solid;
+    color: #262626;
+    display: flex;
+    font-size: .875rem;
+    font-weight: 400;
+    letter-spacing: .16px;
+    line-height: 1.42857;
+    max-width: none;
+    padding: 14px 20px;
+    margin-top: 5rem;
+}
+
+.inline-notification.error[data-v-45f28762] {
+    background: #fff1f1;
+    border-color: #da1e28;
+}
+
+.inline-notification.error .icon[data-v-45f28762] {
+    color: #da1e28;
+}
+
+.inline-notification .icon[data-v-45f28762] {
+    margin-right: 1rem;
+}
+
+.duo--Icon {
+    fill: currentColor;
+}
+
+.inline-notification svg {
+    display: inline;
+    vertical-align: initial;
+}
+
+.flex-1 {
+    flex: 1 1 0%;
+}
+
+ul[data-v-078d4a79] {
+    list-style: none;
+    margin: 0;
+    padding: 0;
 }

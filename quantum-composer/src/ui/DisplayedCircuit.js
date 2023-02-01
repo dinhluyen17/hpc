@@ -14,25 +14,25 @@
  * limitations under the License.
  */
 
-import {CachablePainting} from "../draw/CachablePainting.js"
-import {CircuitDefinition} from "../circuit/CircuitDefinition.js"
-import {CircuitStats} from "../circuit/CircuitStats.js"
-import {Config} from "../Config.js"
-import {DetailedError} from "../base/DetailedError.js"
-import {equate} from "../base/Equate.js"
-import {Format} from "../base/Format.js"
-import {GateColumn} from "../circuit/GateColumn.js"
-import {GateDrawParams} from "../draw/GateDrawParams.js"
-import {GatePainting} from "../draw/GatePainting.js"
-import {Hand} from "../ui/Hand.js"
-import {MathPainter} from "../draw/MathPainter.js"
-import {Point} from "../math/Point.js"
-import {Matrix} from "../math/Matrix.js"
-import {Rect} from "../math/Rect.js"
-import {Util} from "../base/Util.js"
-import {seq, Seq} from "../base/Seq.js"
-import {paintBlochSphereDisplay} from "../gates/BlochSphereDisplay.js"
-import {viewState} from "./viewState.js"
+import { CachablePainting } from "../draw/CachablePainting.js"
+import { CircuitDefinition } from "../circuit/CircuitDefinition.js"
+import { CircuitStats } from "../circuit/CircuitStats.js"
+import { Config } from "../Config.js"
+import { DetailedError } from "../base/DetailedError.js"
+import { equate } from "../base/Equate.js"
+import { Format } from "../base/Format.js"
+import { GateColumn } from "../circuit/GateColumn.js"
+import { GateDrawParams } from "../draw/GateDrawParams.js"
+import { GatePainting } from "../draw/GatePainting.js"
+import { Hand } from "../ui/Hand.js"
+import { MathPainter } from "../draw/MathPainter.js"
+import { Point } from "../math/Point.js"
+import { Matrix } from "../math/Matrix.js"
+import { Rect } from "../math/Rect.js"
+import { Util } from "../base/Util.js"
+import { seq, Seq } from "../base/Seq.js"
+import { paintBlochSphereDisplay } from "../gates/BlochSphereDisplay.js"
+import { viewState } from "./viewState.js"
 /** @type {!number} */
 let CIRCUIT_OP_HORIZONTAL_SPACING = 10;
 /** @type {!number} */
@@ -54,10 +54,10 @@ class DisplayedCircuit {
      */
     constructor(top, circuitDefinition, compressedColumnIndex, highlightedSlot, extraWireStartIndex) {
         if (!Number.isFinite(top)) {
-            throw new DetailedError("Bad top", {top, circuitDefinition});
+            throw new DetailedError("Bad top", { top, circuitDefinition });
         }
         if (!(circuitDefinition instanceof CircuitDefinition)) {
-            throw new DetailedError("Bad circuitDefinition", {top, circuitDefinition});
+            throw new DetailedError("Bad circuitDefinition", { top, circuitDefinition });
         }
         /**
          * @type {!number}
@@ -124,7 +124,7 @@ class DisplayedCircuit {
      * @param {!boolean=true} forTooltip
      * @returns {!number}
      */
-    desiredHeight(forTooltip=false) {
+    desiredHeight(forTooltip = false) {
         if (forTooltip) {
             return this.circuitDefinition.numWires * Config.WIRE_SPACING;
         }
@@ -135,7 +135,7 @@ class DisplayedCircuit {
      * @param {!boolean=true} forTooltip
      * @returns {!number}
      */
-    desiredWidth(forTooltip=false) {
+    desiredWidth(forTooltip = false) {
         // Phu: change desire width
         //if (forTooltip) {
         //  return this.opRect(this.circuitDefinition.columns.length - 1).right() + CIRCUIT_OP_LEFT_SPACING;
@@ -152,7 +152,7 @@ class DisplayedCircuit {
     // Phu: draw wire in rect
     wireRect(wireIndex) {
         if (wireIndex < 0) {
-            throw new DetailedError("Bad wireIndex", {wireIndex});
+            throw new DetailedError("Bad wireIndex", { wireIndex });
         }
         return new Rect(CIRCUIT_OP_LEFT_SPACING, this.top + Config.WIRE_SPACING * wireIndex, Infinity, Config.WIRE_SPACING);
     }
@@ -182,7 +182,7 @@ class DisplayedCircuit {
      * @returns {undefined|!int}
      */
     indexOfDisplayedRowAt2(y) {
-        let i = Math.floor((y - this.top) / Config.WIRE_SPACING);        
+        let i = Math.floor((y - this.top) / Config.WIRE_SPACING);
         return i;
     }
     indexOfDisplayedRowAt(y) {
@@ -256,7 +256,7 @@ class DisplayedCircuit {
             return undefined;
         }
         let col = Math.ceil(halfColIndex);
-        return {col, row, halfColIndex};
+        return { col, row, halfColIndex };
     }
 
     /**
@@ -268,11 +268,11 @@ class DisplayedCircuit {
         if (loc === undefined) {
             return undefined;
         }
-        let {col, row, halfColIndex} = loc;
+        let { col, row, halfColIndex } = loc;
 
         let isInsert = Math.abs(halfColIndex % 1) === 0.5;
         if (col >= this.circuitDefinition.columns.length) {
-            return {col: col, row: row, isInsert: isInsert};
+            return { col: col, row: row, isInsert: isInsert };
         }
 
         if (!isInsert) {
@@ -287,7 +287,7 @@ class DisplayedCircuit {
             }
         }
 
-        return {col: col, row: row, isInsert: isInsert};
+        return { col: col, row: row, isInsert: isInsert };
     }
 
     /**
@@ -315,14 +315,14 @@ class DisplayedCircuit {
      * @param {!int=} width
      * @param {!int=} height
      */
-    gateRect(wireIndex, operationIndex, width=1, height=1) {
+    gateRect(wireIndex, operationIndex, width = 1, height = 1) {
         let op = this.opRect(operationIndex);
         let wire = this.wireRect(wireIndex);
         let r = new Rect(
             op.center().x - Config.GATE_RADIUS - 1,
             wire.center().y - Config.GATE_RADIUS - 1,
-            2*Config.GATE_RADIUS + (width-1)*Config.WIRE_SPACING + 2,
-            2*Config.GATE_RADIUS + (height-1)*Config.WIRE_SPACING + 2);
+            2 * Config.GATE_RADIUS + (width - 1) * Config.WIRE_SPACING + 2,
+            2 * Config.GATE_RADIUS + (height - 1) * Config.WIRE_SPACING + 2);
 
         return new Rect(Math.round(r.x - 0.5) + 0.5, Math.round(r.y - 0.5) + 0.5, Math.round(r.w), Math.round(r.h));
     }
@@ -366,7 +366,7 @@ class DisplayedCircuit {
      * @param {!boolean=false} forTooltip
      * @param {!boolean} showWires
      */
-    paint(painter, hand, stats, forTooltip=false, showWires=true) {
+    paint(painter, hand, stats, forTooltip = false, showWires = true) {
         if (showWires) {
             this._drawWires(painter, !forTooltip, hand);
         }
@@ -383,9 +383,9 @@ class DisplayedCircuit {
 
         this._drawRowDragHighlight(painter);
     }
-    simPaint(painter,hand,stats,forTooltip=false,showWires=false){
+    simPaint(painter, hand, stats, forTooltip = false, showWires = false) {
         if (!forTooltip) {
-            this._drawMatrixDisplays(painter,stats,hand);
+            this._drawMatrixDisplays(painter, stats, hand);
         }
     }
 
@@ -414,17 +414,18 @@ class DisplayedCircuit {
                         v = '0';
                     }
                     let rect = this._wireInitialStateClickableRect(row);
-                    painter.noteTouchBlocker({rect, cursor: 'pointer'});
+                    painter.noteTouchBlocker({ rect, cursor: 'pointer' });
                     if (this._highlightedSlot === undefined && hand.pos !== undefined && rect.containsPoint(hand.pos) && !viewState.getInstance().skipDeleteWire) {
                         const newRect = new Rect(rect.x, rect.y, rect.w - 27, rect.h);
                         painter.fillRect(newRect, Config.HIGHLIGHTED_GATE_FILL_COLOR);
                         painter.ctx.drawImage(viewState.getInstance().deleteImage, rect.x + 30, rect.y + 8, 20, 20);
                     }
                     // Phu: draw label for wire
-                    painter.print(`|${v}⟩`, 40, y, 'right', 'middle', '#646464', '14px sans-serif', 20, Config.WIRE_SPACING);
-                    painter.print(`q${row}`, this.currentDesiredWidth - 50, y, 'right', 'middle', '#646464', '14px sans-serif', 20, Config.WIRE_SPACING);
+                    // painter.print(`|${v}⟩`, 40, y, 'right', 'middle', '#646464', '14px sans-serif', 20, Config.WIRE_SPACING);
+                    // painter.print(`q${row}`, this.currentDesiredWidth - 50, y, 'right', 'middle', '#646464', '14px sans-serif', 20, Config.WIRE_SPACING);
+                    painter.print(`q${row}`, 40, y, 'right', 'middle', '#646464', '14px sans-serif', 20, Config.WIRE_SPACING);
                 }
-            }            
+            }
         }
 
         // Wires (doubled-up for measured sections).
@@ -442,14 +443,14 @@ class DisplayedCircuit {
                 //noinspection ForLoopThatDoesntUseLoopVariableJS
                 const maxX = painter.canvas.width - 80;
                 for (let col = 0;
-                        showLabels ? lastX < maxX : col <= this.circuitDefinition.columns.length;
-                        col++) {
+                    showLabels ? lastX < maxX : col <= this.circuitDefinition.columns.length;
+                    col++) {
                     let x = this.opRect(col).center().x;
                     if (this.circuitDefinition.locIsMeasured(new Point(col, row))) {
                         // Measured wire.
                         x = Math.min(x, maxX);
-                        trace.line(lastX, y-1, x, y-1);
-                        trace.line(lastX, y+1, x, y+1);
+                        trace.line(lastX, y - 1, x, y - 1);
+                        trace.line(lastX, y + 1, x, y + 1);
                     } else {
                         // Unmeasured wire.
                         x = Math.min(x, maxX);
@@ -519,7 +520,7 @@ class DisplayedCircuit {
         let isHighlighted = !isResizeHighlighted && seq(focusPosPts).any(isOverGate);
         let isResizeShowing = gate.canChangeInSize() && (isResizeHighlighted || isHighlighted);
 
-        return {isHighlighted, isResizeShowing, isResizeHighlighted};
+        return { isHighlighted, isResizeShowing, isResizeHighlighted };
     }
 
     /**
@@ -571,15 +572,15 @@ class DisplayedCircuit {
             let gate = gateColumn.gates[row];
             let gateRect = this.gateRect(row, col, gate.width, gate.height);
 
-            let {isHighlighted, isResizeShowing, isResizeHighlighted} =
+            let { isHighlighted, isResizeShowing, isResizeHighlighted } =
                 this._highlightStatusAt(col, row, hand.hoverPoints());
             if (isHighlighted && hand.heldRow != row && hand.heldColumn != col) {
-                viewState.getInstance().highlightGate = {row, col, gateRect};              
+                viewState.getInstance().highlightGate = { row, col, gateRect };
             }
             let drawer = gate.customDrawer || GatePainting.DEFAULT_DRAWER;
-            painter.noteTouchBlocker({rect: gateRect, cursor: 'pointer'});
+            painter.noteTouchBlocker({ rect: gateRect, cursor: 'pointer' });
             if (gate.canChangeInSize()) {
-                painter.noteTouchBlocker({rect: GatePainting.rectForResizeTab(gateRect), cursor: 'ns-resize'});
+                painter.noteTouchBlocker({ rect: GatePainting.rectForResizeTab(gateRect), cursor: 'ns-resize' });
             }
             drawer(new GateDrawParams(
                 painter,
@@ -591,7 +592,7 @@ class DisplayedCircuit {
                 gateRect,
                 gate,
                 stats,
-                {row, col},
+                { row, col },
                 this._highlightedSlot === undefined ? hand.hoverPoints() : [],
                 stats.customStatsForSlot(col, row)));
 
@@ -673,8 +674,8 @@ class DisplayedCircuit {
      */
     _drawRowDragHighlight(painter) {
         if (this._highlightedSlot !== undefined &&
-                this._highlightedSlot.col === undefined &&
-                this._highlightedSlot.row !== undefined) {
+            this._highlightedSlot.col === undefined &&
+            this._highlightedSlot.row !== undefined) {
 
             let row = this._highlightedSlot.row;
             let w = this.gateRect(row, this.clampedCircuitColCount() + 1).x;
@@ -702,12 +703,12 @@ class DisplayedCircuit {
             painter.ctx.restore();
         }
 
-        for (let {first, last, measured} of this.circuitDefinition.controlLinesRanges(columnIndex)) {
-            let y1 =  this.wireRect(first).center().y;
+        for (let { first, last, measured } of this.circuitDefinition.controlLinesRanges(columnIndex)) {
+            let y1 = this.wireRect(first).center().y;
             let y2 = this.wireRect(last).center().y;
             if (measured) {
-                painter.strokeLine(new Point(x+1, y1), new Point(x+1, y2));
-                painter.strokeLine(new Point(x-1, y1), new Point(x-1, y2));
+                painter.strokeLine(new Point(x + 1, y1), new Point(x + 1, y2));
+                painter.strokeLine(new Point(x - 1, y1), new Point(x - 1, y2));
             } else {
                 painter.strokeLine(new Point(x, y1), new Point(x, y2));
             }
@@ -721,8 +722,8 @@ class DisplayedCircuit {
     previewDrop(hand) {
         return hand.heldRow !== undefined ? this._previewDropMovedRow(hand) :
             hand.heldColumn !== undefined ? this._previewDropMovedGateColumn(hand) :
-            hand.heldGate !== undefined ? this._previewDropMovedGate(hand) :
-            this._previewResizedGate(hand);
+                hand.heldGate !== undefined ? this._previewDropMovedGate(hand) :
+                    this._previewResizedGate(hand);
     }
 
     /**
@@ -760,7 +761,7 @@ class DisplayedCircuit {
         let newCircuitDef = this.circuitDefinition.withColumns(newCols).withInitialStates(newInitialStates);
 
         return this.withCircuit(newCircuitDef).
-            _withHighlightedSlot({row: handWire, col: undefined, resizeStyle: false});
+            _withHighlightedSlot({ row: handWire, col: undefined, resizeStyle: false });
     }
 
     /**
@@ -795,7 +796,7 @@ class DisplayedCircuit {
         let newCircuitDef = this._shiftAndSpliceColumn(rowShift, [...hand.heldColumn.gates], col, isInsert);
 
         return this.withCircuit(newCircuitDef).
-            _withHighlightedSlot({row: undefined, col, resizeStyle: false}).
+            _withHighlightedSlot({ row: undefined, col, resizeStyle: false }).
             _withCompressedColumnIndex(isInsert ? col : undefined);
     }
 
@@ -841,7 +842,7 @@ class DisplayedCircuit {
 
         // Use the grab offset instead of the gate height so that tall gates are 'sticky' when dragging downward: they
         // aren't removed until the hand actually leaves the circuit area.
-        let handRowOffset = Math.floor(hand.holdOffset.y/Config.WIRE_SPACING);
+        let handRowOffset = Math.floor(hand.holdOffset.y / Config.WIRE_SPACING);
         if (modificationPoint.row + handRowOffset >= this._extraWireStartIndex) {
             return this;
         }
@@ -871,7 +872,7 @@ class DisplayedCircuit {
             withColumns(newCols).
             withWireCount(newWireCount);
         return this.withCircuit(newCircuitDef).
-            _withHighlightedSlot({row, col: modificationPoint.col, resizeStyle: false}).
+            _withHighlightedSlot({ row, col: modificationPoint.col, resizeStyle: false }).
             _withCompressedColumnIndex(isInserting ? i : undefined).
             _withFallbackExtraWireStartIndex(this.circuitDefinition.numWires);
     }
@@ -1013,7 +1014,7 @@ class DisplayedCircuit {
         let col2 = this.indexOfDisplayedColumnAt2(pos.x);
         let row2 = this.indexOfDisplayedRowAt2(pos.y);
 
-        viewState.getInstance().currentHoverPos = {x: pos.x, y: pos.y, row: row2, col: col2};
+        viewState.getInstance().currentHoverPos = { x: pos.x, y: pos.y, row: row2, col: col2 };
 
         if (col === undefined || row === undefined) {
             return undefined;
@@ -1029,7 +1030,7 @@ class DisplayedCircuit {
             return undefined;
         }
 
-        return {col: target.col, row: target.row, offset: pos.minus(gateRect.topLeft())};
+        return { col: target.col, row: target.row, offset: pos.minus(gateRect.topLeft()) };
     }
 
     /**
@@ -1052,7 +1053,7 @@ class DisplayedCircuit {
             return undefined;
         }
 
-        return {col: foundPt.col, row: foundPt.row, gate};
+        return { col: foundPt.col, row: foundPt.row, gate };
     }
 
     /**
@@ -1089,7 +1090,7 @@ class DisplayedCircuit {
         }
 
         // Good to go.
-        return wire;        
+        return wire;
     }
     findWireWithInitialStateAreaContaining(pt) {
         // Is it in the right vertical band; the one at the start of the circuit?
@@ -1130,7 +1131,7 @@ class DisplayedCircuit {
 
         let clickDeleteWire = this.findWireWithDeleteBtnContaining(hand.pos);
         if (clickDeleteWire !== undefined) {
-            viewState.getInstance().revision.deleteWire(clickDeleteWire);       
+            viewState.getInstance().revision.deleteWire(clickDeleteWire);
             return undefined;
         }
 
@@ -1156,13 +1157,13 @@ class DisplayedCircuit {
      * @param {!boolean=false} alt Whether or not to replace grabbed gates with their alternates.
      * @returns {!{newCircuit: !DisplayedCircuit, newHand: !Hand}}
      */
-    tryGrab(hand, duplicate=false, wholeColumn=false, ignoreResizeTabs=false, alt=false) {
+    tryGrab(hand, duplicate = false, wholeColumn = false, ignoreResizeTabs = false, alt = false) {
         if (wholeColumn) {
             let grabRowResult = this._tryGrabRow(hand, alt);
             if (grabRowResult !== undefined) {
                 return grabRowResult;
             }
-            return this._tryGrabWholeColumn(hand, duplicate, alt) || {newCircuit: this, newHand: hand};
+            return this._tryGrabWholeColumn(hand, duplicate, alt) || { newCircuit: this, newHand: hand };
         }
 
         let newHand = hand;
@@ -1175,7 +1176,7 @@ class DisplayedCircuit {
             }
         }
 
-        return newCircuit._tryGrabGate(newHand, duplicate, alt) || {newCircuit, newHand};
+        return newCircuit._tryGrabGate(newHand, duplicate, alt) || { newCircuit, newHand };
     }
 
     /**
@@ -1200,14 +1201,14 @@ class DisplayedCircuit {
             return undefined;
         }
 
-        let {newCircuit, initialState, rowGates} = this._cutRow(wire);
+        let { newCircuit, initialState, rowGates } = this._cutRow(wire);
         let holdOffset = new Point(0, hand.pos.y - r.y);
         if (alt) {
             rowGates = rowGates.map(e => e === undefined ? e : e.alternate);
         }
         return {
             newCircuit: this.withCircuit(newCircuit),
-            newHand: hand.withHeldRow({initialState, gates: rowGates}, holdOffset)
+            newHand: hand.withHeldRow({ initialState, gates: rowGates }, holdOffset)
         };
     }
 
@@ -1253,7 +1254,7 @@ class DisplayedCircuit {
             return undefined;
         }
 
-        let {col, row, offset} = foundPt;
+        let { col, row, offset } = foundPt;
         let gate = this.circuitDefinition.columns[col].gates[row];
         if (alt) {
             gate = gate.alternate;
@@ -1293,12 +1294,12 @@ class DisplayedCircuit {
                 if (gate === undefined) {
                     continue;
                 }
-                let {isResizeHighlighted} =
+                let { isResizeHighlighted } =
                     this._highlightStatusAt(col, row, hand.hoverPoints());
                 if (isResizeHighlighted) {
                     let offset = hand.pos.minus(this.gateRect(row + gate.height - 1, col, 1, 1).center());
                     return {
-                        newCircuit: this._withHighlightedSlot({col, row, resizeStyle: true}),
+                        newCircuit: this._withHighlightedSlot({ col, row, resizeStyle: true }),
                         newHand: hand.withResizeSlot(new Point(col, row), offset)
                     };
                 }
@@ -1329,7 +1330,7 @@ class DisplayedCircuit {
             newCols.splice(col, 1, GateColumn.empty(this.circuitDefinition.numWires));
         }
 
-        let holdOffset = new Point(0, this.wireIndexAt(hand.pos.y) * Config.WIRE_SPACING + Config.WIRE_SPACING/2);
+        let holdOffset = new Point(0, this.wireIndexAt(hand.pos.y) * Config.WIRE_SPACING + Config.WIRE_SPACING / 2);
         let grabbedGates = this.circuitDefinition.columns[col];
         if (alt) {
             grabbedGates = new GateColumn(grabbedGates.gates.map(e => e === undefined ? e : e.alternate));
@@ -1400,7 +1401,7 @@ class DisplayedCircuit {
      * @param {!Hand} hand
      * @private
      */
-    _drawMatrixDisplays(painter,stats,hand){
+    _drawMatrixDisplays(painter, stats, hand) {
         this._drawOutputSuperpositionDisplay(painter, stats, hand);
     }
 
@@ -1436,9 +1437,9 @@ class DisplayedCircuit {
             Config.SUPERPOSITION_BACK_COLOR);
         let forceSign = v => (v >= 0 ? '+' : '') + v.toFixed(2);
         MathPainter.paintMatrixTooltip(painter, amplitudeGrid, gridRect, hand.hoverPoints(),
-            (c, r) => `Amplitude of |${Util.bin(r*amplitudeGrid.width() + c, numWire)}⟩ (decimal ${r*amplitudeGrid.width() + c})`,
+            (c, r) => `Amplitude of |${Util.bin(r * amplitudeGrid.width() + c, numWire)}⟩ (decimal ${r * amplitudeGrid.width() + c})`,
             (c, r, v) => 'val:' + v.toString(new Format(false, 0, 5, ", ")),
-            (c, r, v) => `mag²:${(v.norm2()*100).toFixed(4)}%, phase:${forceSign(v.phase() * 180 / Math.PI)}°`);
+            (c, r, v) => `mag²:${(v.norm2() * 100).toFixed(4)}%, phase:${forceSign(v.phase() * 180 / Math.PI)}°`);
 
         this._drawOutputSuperpositionDisplay_labels(painter);
     }
@@ -1468,7 +1469,7 @@ class DisplayedCircuit {
             buf = r;
         }
 
-        let [colWires, rowWires] = [Math.floor(numWire/2), Math.ceil(numWire/2)];
+        let [colWires, rowWires] = [Math.floor(numWire / 2), Math.ceil(numWire / 2)];
         let [colCount, rowCount] = [1 << colWires, 1 << rowWires];
         //noinspection JSCheckFunctionSignatures
         return new Matrix(colCount, rowCount, buf);
@@ -1482,15 +1483,15 @@ class DisplayedCircuit {
     _rectForSuperpositionDisplay() {
         let col = this.clampedCircuitColCount() + EXTRA_COLS_FOR_SINGLE_QUBIT_DISPLAYS + 1;
         let numWire = this.importantWireCount();
-        let [colWires, rowWires] = [Math.floor(numWire/2), Math.ceil(numWire/2)];
+        let [colWires, rowWires] = [Math.floor(numWire / 2), Math.ceil(numWire / 2)];
         let [colCount, rowCount] = [1 << colWires, 1 << rowWires];
         let topRect = this.gateRect(0, col);
-        let bottomRect = this.gateRect(numWire-1, col);
+        let bottomRect = this.gateRect(numWire - 1, col);
         // let gridRect = new Rect(topRect.x, topRect.y, 0, bottomRect.bottom() - topRect.y);
         let gridRect = new Rect(25, 25, 0, bottomRect.bottom());
         // let gridRect = new Rect(colCount == rowCount ? width/4 : width/3, topRect.y, 0, bottomRect.bottom() - topRect.y);
         // let gridRect = new Rect(0, topRect.y, 0, bottomRect.bottom() - topRect.y);
-        return gridRect.withW(gridRect.h * (colCount/rowCount));
+        return gridRect.withW(gridRect.h * (colCount / rowCount));
     }
 
     /**
@@ -1536,7 +1537,7 @@ class DisplayedCircuit {
                 let rate = Math.round(survivalRate * 100);
                 let rateDesc = survivalRate === 0 ? "0" :
                     rate > 0 ? rate :
-                    "<1";
+                        "<1";
                 desc = `kept: ${rateDesc}%`;
             } else {
                 let factor = Math.round(survivalRate * 100);
@@ -1579,7 +1580,7 @@ class DisplayedCircuit {
         let lines = diagramText.split('\n').map(e => {
             let p = e.split('|');
             if (p.length !== 2) {
-                throw new DetailedError('Bad diagram', {diagramText, gateMap});
+                throw new DetailedError('Bad diagram', { diagramText, gateMap });
             }
             return p[1];
         });
@@ -1598,7 +1599,7 @@ class DisplayedCircuit {
         let pts = Seq.naturals().
             takeWhile(k => diagramText.indexOf(k) !== -1).
             map(k => {
-                let pos = seq(lines).mapWithIndex((line, row) => ({row, col: line.indexOf(k)})).
+                let pos = seq(lines).mapWithIndex((line, row) => ({ row, col: line.indexOf(k) })).
                     filter(e => e.col !== -1).
                     single();
                 if (lines[pos.row][pos.col + 1] === '^') {
@@ -1609,7 +1610,7 @@ class DisplayedCircuit {
                     pos.col * Config.WIRE_SPACING / 2 + 35.5,
                     pos.row * Config.WIRE_SPACING / 2 + 10.5);
             }).toArray();
-        return {circuit, pts};
+        return { circuit, pts };
     }
 }
 
@@ -1652,7 +1653,7 @@ function drawCircuitTooltip(painter, circuitDefinition, rect, showWires, time) {
     } finally {
         painter.ctx.restore();
     }
-    return {maxW: neededWidth*scaleX, maxH: neededHeight*scaleY};
+    return { maxW: neededWidth * scaleX, maxH: neededHeight * scaleY };
 }
 
 /**
@@ -1700,26 +1701,26 @@ function _drawLabelsReasonablyFast(painter, dy, n, labeller, boundingWidth) {
     painter.ctx.font = '12px monospace';
     let w = Math.max(
         painter.ctx.measureText(labeller(0)).width,
-        painter.ctx.measureText(labeller(n-1)).width);
+        painter.ctx.measureText(labeller(n - 1)).width);
     let h = ctx.measureText("0").width * 2.5;
-    let scale = Math.min(Math.min((boundingWidth-2) / w, dy / h), 1);
+    let scale = Math.min(Math.min((boundingWidth - 2) / w, dy / h), 1);
 
     // Row labels.
-    let step = dy/scale;
-    let pad = 1/scale;
+    let step = dy / scale;
+    let pad = 1 / scale;
     ctx.scale(scale, scale);
-    ctx.translate(0, dy*0.5/scale - h*0.5);
+    ctx.translate(0, dy * 0.5 / scale - h * 0.5);
     ctx.fillStyle = 'lightgray';
-    if (h < step*0.95) {
+    if (h < step * 0.95) {
         for (let i = 0; i < n; i++) {
-            ctx.fillRect(0, step*i, w + 2*pad, h);
+            ctx.fillRect(0, step * i, w + 2 * pad, h);
         }
     } else {
-        ctx.fillRect(0, 0, w + 2*pad, step*n);
+        ctx.fillRect(0, 0, w + 2 * pad, step * n);
     }
     ctx.fillStyle = 'black';
     for (let i = 0; i < n; i++) {
-        ctx.fillText(labeller(i), pad, h*0.5 + step*i);
+        ctx.fillText(labeller(i), pad, h * 0.5 + step * i);
     }
     ctx.restore();
 }
@@ -1730,7 +1731,7 @@ let _cachedRowLabelDrawer = new CachablePainting(
         height: (numWire - 1) * Config.WIRE_SPACING + 45 + numWire + Config.GATE_RADIUS * 2
     }),
     (painter, numWire) => {
-        let [colWires, rowWires] = [Math.floor(numWire/2), Math.ceil(numWire/2)];
+        let [colWires, rowWires] = [Math.floor(numWire / 2), Math.ceil(numWire / 2)];
         let rowCount = 1 << rowWires;
         //noinspection JSCheckFunctionSignatures
         let suffix = colWires < 4 ? "_".repeat(colWires) : "_..";
@@ -1745,7 +1746,7 @@ let _cachedRowLabelDrawer = new CachablePainting(
 
 let _cachedColLabelDrawer = new CachablePainting(
     numWire => {
-        let [colWires, rowWires] = [Math.floor(numWire/2), Math.ceil(numWire/2)];
+        let [colWires, rowWires] = [Math.floor(numWire / 2), Math.ceil(numWire / 2)];
         let [colCount, rowCount] = [1 << colWires, 1 << rowWires];
         let total_height = (numWire - 1) * Config.WIRE_SPACING + 45 + numWire + Config.GATE_RADIUS * 2;
         let cellDiameter = total_height / rowCount;
@@ -1755,12 +1756,12 @@ let _cachedColLabelDrawer = new CachablePainting(
         }
     },
     (painter, numWire) => {
-        let [colWires, rowWires] = [Math.floor(numWire/2), Math.ceil(numWire/2)];
+        let [colWires, rowWires] = [Math.floor(numWire / 2), Math.ceil(numWire / 2)];
         let colCount = 1 << colWires;
         let dw = painter.canvas.width / colCount;
 
-        painter.ctx.translate(colCount*dw, 0);
-        painter.ctx.rotate(Math.PI/2);
+        painter.ctx.translate(colCount * dw, 0);
+        painter.ctx.rotate(Math.PI / 2);
         //noinspection JSCheckFunctionSignatures
         let prefix = rowWires < 4 ? "_".repeat(rowWires) : ".._";
         //noinspection JSCheckFunctionSignatures
@@ -1768,8 +1769,8 @@ let _cachedColLabelDrawer = new CachablePainting(
             painter,
             dw,
             colCount,
-            i => prefix + Util.bin(colCount-1-i, colWires),
+            i => prefix + Util.bin(colCount - 1 - i, colWires),
             SUPERPOSITION_GRID_LABEL_SPAN);
     });
 
-export {DisplayedCircuit, drawCircuitTooltip, GATE_CIRCUIT_DRAWER}
+export { DisplayedCircuit, drawCircuitTooltip, GATE_CIRCUIT_DRAWER }

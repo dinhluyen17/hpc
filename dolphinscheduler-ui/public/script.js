@@ -445,15 +445,16 @@ const circuitEdit = {
 
       //block shere api call
       $("#runButton").click(function () {
+          if (document.getElementById("simSelectId").value != "qAer") {
+              return
+          }
         const qiskitCode = document.querySelectorAll(".line-content");
-        const contentQiskit = getContentQiskit(qiskitCode)
-        console.log("log content ", contentQiskit);
         fetch("http://0.0.0.0:8000/return-qsphere", {
           method: "POST",
           headers: {
             "content-type": "text/plain",
           },
-          body: convert(qiskitCode) + importPythonLibrary,
+          body: getContentQiskit(qiskitCode) + importPythonLibrary,
         })
           .then((res) => {
             return res.text();
@@ -468,17 +469,23 @@ const circuitEdit = {
           });
       });
 
+      //css line code count number qasm
       const textCode = $("#text-code");
       const lineNumbers = document.querySelector(".line-numbers-qasm");
       textCode.keyup(function () {
         const numberOfLines = textCode.val().split("\n").length;
-        console.log("num lines", numberOfLines);
         lineNumbers.innerHTML = Array(numberOfLines)
           .fill("<span></span>")
           .join("");
-        console.log("line number la gi", lineNumbers);
       });
 
+      //css heigh of text code qasm 
+      $("#text-code").each(function () {
+        this.setAttribute("style", "height:" + (this.scrollHeight) + "px;overflow-y:hidden;");
+      }).on("input", function () {
+        this.style.height = 0;
+        this.style.height = (this.scrollHeight) + "px";
+      });
     },
 
     start: function () {
@@ -512,31 +519,31 @@ $(document).ready(function () {
 });
 
 //replace <br> tag from a node element to \n
-const convert = (function() {
-    let convertElement = function(element) {
-        switch(element.tagName) {
-            case "BR": 
-                return "\n";
-            case "P": // fall through to DIV
-            case "DIV": 
-                return (element.previousSibling ? "\n" : "") + [].map.call(element.childNodes, convertElement).join("");
-            default: 
-                return element.textContent;
-        }
-    };
-    
-    return function(element) {
-        return [].map.call(element.childNodes, convertElement).join("");
-    };
-})();
+// const convert = (function() {
+//     let convertElement = function(element) {
+//         switch(element.tagName) {
+//             case "BR": 
+//                 return "\n";
+//             case "P": // fall through to DIV
+//             case "DIV": 
+//                 return (element.previousSibling ? "\n" : "") + [].map.call(element.childNodes, convertElement).join("");
+//             default: 
+//                 return element.textContent;
+//         }
+//     };
+//     return function(element) {
+//         return [].map.call(element.childNodes, convertElement).join("");
+//     };
+// })();
 
 //get the content of qiskit code
 const getContentQiskit = (qiskit) => {
-  const content = ''
+  let content = ''
   qiskit.forEach(lineOfCode => {
     content = content + lineOfCode.innerText + "\n";
   })
   return content
 } 
 
-const importPythonLibrary = "from qiskit import BasicAer,transpile\n\nqc.measure_all()\nbackend_statevector = BasicAer.get_backend('statevector_simulator')\nbackend_counts = Aer.get_backend('qasm_simulator')\ntrans_state = transpile(qc, backend_statevector)\ntrans_count = transpile(qc, backend_counts)\nresult_state = backend_statevector.run(trans_state).result()\nresult_count = backend_counts.run(trans_count).result()\nstatevector = result_state.get_statevector()\ncounts = result_count.get_counts()"
+const importPythonLibrary = "from qiskit import BasicAer,transpile\n\nbackend_statevector = BasicAer.get_backend('statevector_simulator')\ntrans_state = transpile(qc, backend_statevector)\nresult_state = backend_statevector.run(trans_state).result()\nstatevector = result_state.get_statevector()"
+const importPythonLibraryCount = "from qiskit import BasicAer,transpile\n\nqc.measure_all()\nbackend_statevector = BasicAer.get_backend('statevector_simulator')\nbackend_counts = Aer.get_backend('qasm_simulator')\ntrans_state = transpile(qc, backend_statevector)\ntrans_count = transpile(qc, backend_counts)\nresult_state = backend_statevector.run(trans_state).result()\nresult_count = backend_counts.run(trans_count).result()\nstatevector = result_state.get_statevector()\ncounts = result_count.get_counts()"
