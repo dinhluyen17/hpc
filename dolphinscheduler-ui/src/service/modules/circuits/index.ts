@@ -111,6 +111,10 @@ export function exportQasm(id: number): any {
 export function importQasmTxtFile(text: string): any {
   return axios3({
     url: '/qasm-to-json',
+    headers: {
+      'Content-Type': 'text/html',
+      'accept': '*/*'
+    },
     method: 'post',
     data: text
   })

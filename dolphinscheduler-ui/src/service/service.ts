@@ -41,7 +41,7 @@ const handleError = (res: AxiosResponse<any, any>) => {
 const baseRequestConfig: AxiosRequestConfig = {
   baseURL:
     import.meta.env.MODE === 'development'
-      ? '/dolphinscheduler'
+      ? import.meta.env.VITE_APP_DEV_WEB_URL + '/dolphinscheduler'
       : import.meta.env.VITE_APP_PROD_WEB_URL + '/dolphinscheduler',
   timeout: 15000,
   transformRequest: (params) => {
@@ -57,8 +57,21 @@ const baseRequestConfig: AxiosRequestConfig = {
 }
 
 const baseRequestConfigPython: AxiosRequestConfig = {
-  baseURL: 'localhost:8000/',
-  timeout: 15000
+  baseURL:
+    import.meta.env.MODE === 'development'
+      ? import.meta.env.VITE_APP_PYTHON_DEV_WEB_URL + '/'
+      : import.meta.env.VITE_APP_PYTHON_PROD_WEB_URL + '/',
+  timeout: 15000,
+  transformRequest: (params) => {
+    if (_.isPlainObject(params)) {
+      return qs.stringify(params, { arrayFormat: 'repeat' })
+    } else {
+      return params
+    }
+  },
+  paramsSerializer: (params) => {
+    return qs.stringify(params, { arrayFormat: 'repeat' })
+  }
 }
 
 const service = axios.create(baseRequestConfig)
