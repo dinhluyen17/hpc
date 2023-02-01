@@ -53,7 +53,7 @@ const circuitItem = defineComponent({
       variables.showHelpModalRef = false
     }
 
-    const sendMessageToIFrame = (actionType: string, detailData: string | null) => {
+    const sendMessageToIFrame = (actionType: string, detailData: string | number | null) => {
       if (isIFrameReady.value) {
         quantumRef.value.contentWindow.postMessage(JSON.stringify({
           messageFrom: VUEJS_MESSAGE_FROM,
@@ -177,6 +177,9 @@ const circuitItem = defineComponent({
                 isIFrameReady.value = true;
                 if (variables.data.json) {
                   sendMessageToIFrame(MESSAGE.loadedCircuitJson, variables.data.json);
+                }
+                if (variables.data.name) {
+                  sendMessageToIFrame(MESSAGE.sendName, parseInt(route.params.circuitId as string));
                 }
                 break;
               case MESSAGE.saveCircuitJson:

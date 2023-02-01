@@ -11,6 +11,7 @@ const SEND_GET_CIRCUIT_JSON = 'get_circuit_json'
 const SEND_SET_CIRCUIT_JSON = 'set_circuit_json'
 const SEND_CHANGE_TAB = 'change_tab'
 const SEND_CIRCUIT_DATA = 'send_circuit_data'
+const SEND_CIRCUIT_NAME = 'send_circuit_name'
 
 const MESSAGE = {
     //Send
@@ -19,6 +20,8 @@ const MESSAGE = {
     setCircuitJson: SEND_SET_CIRCUIT_JSON, /** Vuejs --> Composer: send message to set circuit json */
     changeTab: SEND_CHANGE_TAB, /** Vuejs --> Composer: change tab */
     sendData: SEND_CIRCUIT_DATA,
+    sendName: SEND_CIRCUIT_NAME,
+
     //Receive
     setupFinish: RECEIVE_SETUP_FINISH, /** Composer --> Vuejs: notify that composer is ready to receive message from Vuejs*/
     saveCircuitJson: RECEIVE_SAVE_CIRCUIT_JSON, /** Composer --> Vuejs: request save circuit json*/
