@@ -281,6 +281,7 @@ class Gate {
         g.symbol = this.symbol;
         g.name = this.name;
         g.blurb = this.blurb;
+        g.colorIndex = this.colorIndex;
         g.alternate = this.alternate;
         g.serializedId = this.serializedId;
         g.onClickGateFunc = this.onClickGateFunc;
