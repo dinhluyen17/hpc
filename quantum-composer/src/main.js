@@ -201,6 +201,7 @@ const changeTab = (tab) => {
         }        
     }
 }
+let circuitName;
 window.addEventListener('message', (e) => {
     console.log("what is e: ", e.data);
     // handle message from vuejs
@@ -236,6 +237,9 @@ window.addEventListener('message', (e) => {
                 }
                 else if (actionType == 'change_tab') {
                     changeTab(obj.detailData);                    
+                } else if (actionType == 'send_circuit_name') {
+                    console.log(obj.detailData)
+                    circuitName = obj.detailData;
                 }
             }
         } catch (e) {
@@ -339,6 +343,26 @@ $('#runButton').click(function () {
             aerPhase = data.qPhase;
             aerProb = data.qProb;
             simStatCalc()
+        });
+    fetch("http://0.0.0.0:8000/save-to-history", {
+        method: "POST",
+        headers: {
+            'Content-Type': 'application/json',
+        },
+        // body: getContentQiskit(qiskitCode) + importPythonLibraryCount
+        body: JSON.stringify({
+            "qiskitCode": getContentQiskit(qiskitCode) + importPythonLibraryCount,
+            "circuitName": circuitName
+        })
+    })
+        .then((res) => {
+            return res.json()
+        })
+        .then((data) => {
+            console.log(data)
+        })
+        .catch((error) => {
+            console.error("Error: ", error)
         });
 });
 let stateBarCalc = () =>{
