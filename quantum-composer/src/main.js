@@ -1238,8 +1238,8 @@ function resizeGateArea(e) {
   }
 }
 function resizeChartArea(e) {
-  const isChartResizableArea = e.target.classList.contains('circuit-area-body') || e.target.classList.contains('circuit-area-chart') || e.path[0].nodeName === "svg";
-  if (startResizeChartArea && isChartResizableArea) {
+  // const isChartResizableArea = e.target.classList.contains('circuit-area-body') || e.target.classList.contains('circuit-area-chart') || e.path[0].nodeName === "svg";
+  if (startResizeChartArea) {
     const dy = posResize - e.clientY;
     posResize = e.clientY;
     viewState.getInstance().chartAreaHeight += dy;
