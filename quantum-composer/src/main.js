@@ -816,13 +816,18 @@ revision.latestActiveCommit().subscribe(jsonText => {
   const quantumCode = document.getElementById("text-code");
   const textQiskit = document.getElementById("text-code-qiskit");
   const error = document.getElementById("error-notice")
+  const currentWireNumber = displayed.get().displayedCircuit.circuitDefinition.numWires;
   fetch("http://0.0.0.0:8000/json-to-qasm", {
     method: "POST",
     headers: {
       Authorization: `Bearer ${token}`,
       "content-type": "text/html",
     },
-    body: jsonText,
+    // body: jsonText,
+    body: JSON.stringify({
+      "circuit": jsonText,
+      "numWire": currentWireNumber
+    })
   })
     .then((res) => {
       return res.text();
