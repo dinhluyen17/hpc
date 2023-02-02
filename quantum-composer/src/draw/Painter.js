@@ -155,14 +155,22 @@ class Painter {
      */
     fillRect(rect, color = Config.DEFAULT_FILL_COLOR) {
         this.ctx.beginPath();
-        this.ctx.roundRect(rect.x, rect.y, rect.w, rect.h,[5]);
+        if (navigator.userAgent.indexOf("Firefox") != -1) {
+            this.ctx.fillRect(rect.x, rect.y, rect.w, rect.h);
+        } else {
+            this.ctx.roundRect(rect.x, rect.y, rect.w, rect.h,[5]);
+        }
         this.ctx.fillStyle = color;
         this.ctx.fill();
     }
 
     fillRectWithoutRadius(rect, color = Config.DEFAULT_FILL_COLOR) {
         this.ctx.beginPath();
-        this.ctx.roundRect(rect.x, rect.y, rect.w, rect.h,[0]);
+        if (navigator.userAgent.indexOf("Firefox") != -1) {
+            this.ctx.fillRect(rect.x, rect.y, rect.w, rect.h);
+        } else {
+            this.ctx.roundRect(rect.x, rect.y, rect.w, rect.h,[0]);
+        }
         this.ctx.fillStyle = color;
         this.ctx.fill();
     }
