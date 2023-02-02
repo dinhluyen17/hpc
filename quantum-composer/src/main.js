@@ -1134,8 +1134,9 @@ canvasDiv.addEventListener('mousedown', ev => {
 canvasDiv.addEventListener('mousemove', ev => {
   resizeCodeArea(ev);
   resizeGateArea(ev);
-  const isChartResizableArea = ev.target.classList.contains('circuit-area-body') || ev.target.classList.contains('circuit-area-chart') || ev.path[0].nodeName === "svg";
-  if (isChartResizableArea) resizeChartArea(ev);
+  const isChartResizableArea = ev.target.classList.contains('circuit-area-chart') || ev.target.nodeName === "svg" || ev.target.nodeName === "CANVAS";
+  if (isChartResizableArea)
+    resizeChartArea(ev);
   viewState.getInstance().canShowGateMenu = false;
   if (!displayed.get().hand.isBusy()) {
     const pos = eventPosRelativeTo(ev, canvas);
