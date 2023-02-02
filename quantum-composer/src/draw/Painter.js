@@ -155,7 +155,12 @@ class Painter {
      */
     fillRect(rect, color = Config.DEFAULT_FILL_COLOR) {
         this.ctx.beginPath();
-        this.ctx.roundRect(rect.x, rect.y, rect.w, rect.h,[5]);
+        try {
+            this.ctx.roundRect(rect.x, rect.y, rect.w, rect.h,[5]); //for google chrome users
+        }
+         catch(error) {
+            this.ctx.fillRect(rect.x, rect.y, rect.w, rect.h,[5]); //fall back to quare shape gate for firefox
+        }
         this.ctx.fillStyle = color;
         this.ctx.fill();
     }
