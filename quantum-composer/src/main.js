@@ -1210,6 +1210,7 @@ canvasDiv.addEventListener('mouseup', ev => {
     const textQiskit = document.getElementById("text-code-qiskit");
     const error = document.getElementById("error-notice");
     let jsonText = currentCircuitJson;
+    const textCode = document.getElementById("text-code")
     fetch("http://0.0.0.0:8000/json-to-qasm", {
       method: "POST",
       headers: {
@@ -1238,8 +1239,7 @@ canvasDiv.addEventListener('mouseup', ev => {
             if (!error.classList.contains('hide')) {
               error.classList.add('hide')
             }
-          }
-          else {
+          } else {
             if (error.classList.contains('hide')) {
               error.classList.remove('hide')
             }
@@ -1249,9 +1249,12 @@ canvasDiv.addEventListener('mouseup', ev => {
           const a = dataTest.split('\n')
           textQiskit.innerHTML = ''
           for (var i = 0; i < a.length; i++) {
-            const divElement = document.createElement('div'); divElement.setAttribute("class", "code-line")
-            const divLineCount = document.createElement("div"); divLineCount.setAttribute("class", "line-number")
-            const divLineContent = document.createElement("div"); divLineContent.setAttribute("class", "line-content")
+            const divElement = document.createElement('div');
+            divElement.setAttribute("class", "code-line")
+            const divLineCount = document.createElement("div");
+            divLineCount.setAttribute("class", "line-number")
+            const divLineContent = document.createElement("div");
+            divLineContent.setAttribute("class", "line-content")
             if (a[i] != '') {
               divLineContent.innerText = a[i]
             } else {
@@ -1262,6 +1265,34 @@ canvasDiv.addEventListener('mouseup', ev => {
             divElement.appendChild(divLineContent)
             textQiskit.appendChild(divElement)
           }
+        })
+        .then(() => {
+          fetch("http://0.0.0.0:8000/qasm-to-json", {
+            method: "POST",
+            headers: {
+              Authorization: `Bearer ${token}`,
+              "content-type": "text/html",
+            },
+            body: textCode.value,
+          })
+              .then((res) => {
+                firstLoad = false
+                return res.text();
+              })
+              .then((data) => {
+                revision.commit(data);
+              })
+              .catch((error) => {
+                const startText = `{"detail":`;
+                const errorMessage = error.message.length >= error.message.indexOf(startText) + startText.length
+                    ? error.message.substr(error.message.indexOf(startText) + startText.length).replace('}', '')
+                    : 'Something went wrong with qasm code. Please try again!';
+                window.parent.postMessage(JSON.stringify({
+                  messageFrom: 'quantum_composer',
+                  actionType: 'error_qasm_code_message',
+                  detailData: errorMessage
+                }));
+              });
         })
         .catch((error) => {
           console.error("Log error:", error);
