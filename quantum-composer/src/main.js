@@ -773,6 +773,7 @@ fetch("http://0.0.0.0:8000/token", {
     token = res.access_token
   })
 let currentCircuitJson = "";
+let firstLoad = true;
 revision.latestActiveCommit().subscribe(jsonText => {
   let circuitDef = fromJsonText_CircuitDefinition(
     jsonText,
@@ -826,6 +827,7 @@ revision.latestActiveCommit().subscribe(jsonText => {
   const quantumCode = document.getElementById("text-code");
   const textQiskit = document.getElementById("text-code-qiskit");
   const error = document.getElementById("error-notice")
+  const textCode = document.getElementById("text-code")
   const currentWireNumber = displayed.get().displayedCircuit.circuitDefinition.numWires;
   fetch("http://0.0.0.0:8000/json-to-qasm", {
     method: "POST",
@@ -839,51 +841,83 @@ revision.latestActiveCommit().subscribe(jsonText => {
       "numWire": currentWireNumber
     })
   })
-    .then((res) => {
-      return res.text();
-    })
-    .then((data) => {
-      quantumCode.value = data;
-      const lineNumbers = document.querySelector(".line-numbers-qasm");
-      const numberOfLines = data.split("\n").length;
-      lineNumbers.innerHTML = Array(numberOfLines)
-        .fill("<span></span>")
-        .join("");
-      //css height of text area qasm code
-      quantumCode.style.height = (quantumCode.scrollHeight > quantumCode.clientHeight) ? (quantumCode.scrollHeight) + "px" : "100%";
-      //if data is not start with //generate then show error message
-      if (data.startsWith('OPENQASM 2.0;')) {
-        if (!error.classList.contains('hide')) {
-          error.classList.add('hide')
-        }
-      }
-      else {
-        if (error.classList.contains('hide')) {
-          error.classList.remove('hide')
-        }
-      }
-      //function to generate qiskit code
-      const dataTest = qasmToQiskit(quantumCode.value)
-      const a = dataTest.split('\n')
-      textQiskit.innerHTML = ''
-      for (var i = 0; i < a.length; i++) {
-        const divElement = document.createElement('div'); divElement.setAttribute("class", "code-line")
-        const divLineCount = document.createElement("div"); divLineCount.setAttribute("class", "line-number")
-        const divLineContent = document.createElement("div"); divLineContent.setAttribute("class", "line-content")
-        if (a[i] != '') {
-          divLineContent.innerText = a[i]
+      .then((res) => {
+        return res.text();
+      })
+      .then((data) => {
+        quantumCode.value = data;
+        const lineNumbers = document.querySelector(".line-numbers-qasm");
+        const numberOfLines = data.split("\n").length;
+        lineNumbers.innerHTML = Array(numberOfLines)
+            .fill("<span></span>")
+            .join("");
+        //css height of text area qasm code
+        quantumCode.style.height = (quantumCode.scrollHeight > quantumCode.clientHeight) ? (quantumCode.scrollHeight) + "px" : "100%";
+        //if data is not start with //generate then show error message
+        if (data.startsWith('OPENQASM 2.0;')) {
+          if (!error.classList.contains('hide')) {
+            error.classList.add('hide')
+          }
         } else {
-          divLineContent.appendChild(document.createElement('br'))
+          if (error.classList.contains('hide')) {
+            error.classList.remove('hide')
+          }
         }
-        divLineCount.innerText = i + 1
-        divElement.appendChild(divLineCount)
-        divElement.appendChild(divLineContent)
-        textQiskit.appendChild(divElement)
-      }
-    })
-    .catch((error) => {
-      console.error("Log error:", error);
-    });
+        //function to generate qiskit code
+        const dataTest = qasmToQiskit(quantumCode.value)
+        const a = dataTest.split('\n')
+        textQiskit.innerHTML = ''
+        for (var i = 0; i < a.length; i++) {
+          const divElement = document.createElement('div');
+          divElement.setAttribute("class", "code-line")
+          const divLineCount = document.createElement("div");
+          divLineCount.setAttribute("class", "line-number")
+          const divLineContent = document.createElement("div");
+          divLineContent.setAttribute("class", "line-content")
+          if (a[i] != '') {
+            divLineContent.innerText = a[i]
+          } else {
+            divLineContent.appendChild(document.createElement('br'))
+          }
+          divLineCount.innerText = i + 1
+          divElement.appendChild(divLineCount)
+          divElement.appendChild(divLineContent)
+          textQiskit.appendChild(divElement)
+        }
+      })
+      .then(() => {
+        if (firstLoad) {
+          fetch("http://0.0.0.0:8000/qasm-to-json", {
+            method: "POST",
+            headers: {
+              Authorization: `Bearer ${token}`,
+              "content-type": "text/html",
+            },
+            body: textCode.value,
+          })
+              .then((res) => {
+                firstLoad = false
+                return res.text();
+              })
+              .then((data) => {
+                revision.commit(data);
+              })
+              .catch((error) => {
+                const startText = `{"detail":`;
+                const errorMessage = error.message.length >= error.message.indexOf(startText) + startText.length
+                    ? error.message.substr(error.message.indexOf(startText) + startText.length).replace('}', '')
+                    : 'Something went wrong with qasm code. Please try again!';
+                window.parent.postMessage(JSON.stringify({
+                  messageFrom: 'quantum_composer',
+                  actionType: 'error_qasm_code_message',
+                  detailData: errorMessage
+                }));
+              });
+        }
+      })
+      .catch((error) => {
+        console.error("Log error:", error);
+      });
 });
 /**
  * @param {!DisplayedInspector} curInspector
