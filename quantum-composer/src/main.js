@@ -887,32 +887,7 @@ revision.latestActiveCommit().subscribe(jsonText => {
       })
       .then(() => {
         if (firstLoad) {
-          fetch("http://0.0.0.0:8000/qasm-to-json", {
-            method: "POST",
-            headers: {
-              Authorization: `Bearer ${token}`,
-              "content-type": "text/html",
-            },
-            body: textCode.value,
-          })
-              .then((res) => {
-                firstLoad = false
-                return res.text();
-              })
-              .then((data) => {
-                revision.commit(data);
-              })
-              .catch((error) => {
-                const startText = `{"detail":`;
-                const errorMessage = error.message.length >= error.message.indexOf(startText) + startText.length
-                    ? error.message.substr(error.message.indexOf(startText) + startText.length).replace('}', '')
-                    : 'Something went wrong with qasm code. Please try again!';
-                window.parent.postMessage(JSON.stringify({
-                  messageFrom: 'quantum_composer',
-                  actionType: 'error_qasm_code_message',
-                  detailData: errorMessage
-                }));
-              });
+          qasmToJsonApi()
         }
       })
       .catch((error) => {
@@ -1267,32 +1242,7 @@ canvasDiv.addEventListener('mouseup', ev => {
           }
         })
         .then(() => {
-          fetch("http://0.0.0.0:8000/qasm-to-json", {
-            method: "POST",
-            headers: {
-              Authorization: `Bearer ${token}`,
-              "content-type": "text/html",
-            },
-            body: textCode.value,
-          })
-              .then((res) => {
-                firstLoad = false
-                return res.text();
-              })
-              .then((data) => {
-                revision.commit(data);
-              })
-              .catch((error) => {
-                const startText = `{"detail":`;
-                const errorMessage = error.message.length >= error.message.indexOf(startText) + startText.length
-                    ? error.message.substr(error.message.indexOf(startText) + startText.length).replace('}', '')
-                    : 'Something went wrong with qasm code. Please try again!';
-                window.parent.postMessage(JSON.stringify({
-                  messageFrom: 'quantum_composer',
-                  actionType: 'error_qasm_code_message',
-                  detailData: errorMessage
-                }));
-              });
+          qasmToJsonApi()
         })
         .catch((error) => {
           console.error("Log error:", error);
@@ -1418,31 +1368,7 @@ textCode.addEventListener("keydown", () => {
   clearTimeout(timmer);
   timmer = setTimeout(() => {
     if (textCode && textCode.value.length > 0) {
-      fetch("http://0.0.0.0:8000/qasm-to-json", {
-        method: "POST",
-        headers: {
-          Authorization: `Bearer ${token}`,
-          "content-type": "text/html",
-        },
-        body: textCode.value,
-      })
-        .then((res) => {
-          return res.text();
-        })
-        .then((data) => {
-          revision.commit(data);
-        })
-        .catch((error) => {
-          const startText = `{"detail":`;
-          const errorMessage = error.message.length >= error.message.indexOf(startText) + startText.length
-            ? error.message.substr(error.message.indexOf(startText) + startText.length).replace('}', '')
-            : 'Something went wrong with qasm code. Please try again!';
-          window.parent.postMessage(JSON.stringify({
-            messageFrom: 'quantum_composer',
-            actionType: 'error_qasm_code_message',
-            detailData: errorMessage
-          }));
-        });
+      qasmToJsonApi()
     }
   }, 2500);
 });
@@ -1475,10 +1401,39 @@ const qasmToQiskit = (qasm) => {
   return qiskit;
 };
 
-const qasmToJson = (qasm) => { //not used at this moment 
-  let circuit = new QuantumCircuit();
-  circuit.importQASM(qasm);
-  let json = circuit.exportQuirk(true);
-  json = JSON.stringify(json);
-  return json
+// const qasmToJson = (qasm) => { //not used at this moment
+//   let circuit = new QuantumCircuit();
+//   circuit.importQASM(qasm);
+//   let json = circuit.exportQuirk(true);
+//   json = JSON.stringify(json);
+//   return json
+// };
+
+const qasmToJsonApi = () => {
+  fetch("http://0.0.0.0:8000/qasm-to-json", {
+    method: "POST",
+    headers: {
+      Authorization: `Bearer ${token}`,
+      "content-type": "text/html",
+    },
+    body: textCode.value,
+  })
+      .then((res) => {
+        firstLoad = false
+        return res.text();
+      })
+      .then((data) => {
+        revision.commit(data);
+      })
+      .catch((error) => {
+        const startText = `{"detail":`;
+        const errorMessage = error.message.length >= error.message.indexOf(startText) + startText.length
+            ? error.message.substr(error.message.indexOf(startText) + startText.length).replace('}', '')
+            : 'Something went wrong with qasm code. Please try again!';
+        window.parent.postMessage(JSON.stringify({
+          messageFrom: 'quantum_composer',
+          actionType: 'error_qasm_code_message',
+          detailData: errorMessage
+        }));
+      });
 };
