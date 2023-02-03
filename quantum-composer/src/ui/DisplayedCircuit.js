@@ -185,6 +185,7 @@ class DisplayedCircuit {
         let i = Math.floor((y - this.top) / Config.WIRE_SPACING);
         return i;
     }
+
     indexOfDisplayedRowAt(y) {
         let i = Math.floor((y - this.top) / Config.WIRE_SPACING);
         if (i < 0 || i >= this.circuitDefinition.numWires) {
@@ -209,6 +210,7 @@ class DisplayedCircuit {
         }
         return i;
     }
+
     indexOfDisplayedColumnAt(x) {
         let col = this.toColumnSpaceCoordinate(x);
         let i;
@@ -404,11 +406,17 @@ class DisplayedCircuit {
                 let wireRect = this.wireRect(row);
                 let y = wireRect.center().y;
                 if (row === this._extraWireStartIndex || row == drawnWireCount) {
+                    //Hide last wire
+                    // viewState.getInstance().addWireBtnRect = new Rect(20, y - 10, 50, 32);
+                    // painter.ctx.drawImage(viewState.getInstance().addWireImage, 20, y - 10, 50, 32);
+                    break;
+                }
+                //Hide last wire
+                else if (row === this._extraWireStartIndex - 1 || row == drawnWireCount - 1) {
                     viewState.getInstance().addWireBtnRect = new Rect(20, y - 10, 50, 32);
                     painter.ctx.drawImage(viewState.getInstance().addWireImage, 20, y - 10, 50, 32);
                     break;
-                }
-                else {
+                } else {
                     let v = this.circuitDefinition.customInitialValues.get(row);
                     if (v === undefined) {
                         v = '0';
@@ -431,7 +439,7 @@ class DisplayedCircuit {
         // Wires (doubled-up for measured sections).
         painter.ctx.save();
         for (let row = 0; row < drawnWireCount; row++) {
-            if (row === this._extraWireStartIndex) {
+            if (row === this._extraWireStartIndex || row === drawnWireCount - 1 || row === this._extraWireStartIndex - 1) {
                 //painter.ctx.globalAlpha *= 0.5;
                 break;
             }
@@ -568,6 +576,9 @@ class DisplayedCircuit {
         for (let row = 0; row < this.circuitDefinition.numWires; row++) {
             if (gateColumn.gates[row] === undefined) {
                 continue;
+            }
+            if (row == this.circuitDefinition.numWires - 1 || row === this._extraWireStartIndex - 1) {
+                return;
             }
             let gate = gateColumn.gates[row];
             let gateRect = this.gateRect(row, col, gate.width, gate.height);
