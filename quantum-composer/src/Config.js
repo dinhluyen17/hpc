@@ -40,7 +40,7 @@ Config.TIME_DEPENDENT_HIGHLIGHT_COLOR = '#FFC';
 // Mixed-state displays are green.
 Config.DISPLAY_GATE_IN_TOOLBOX_FILL_COLOR = '#4F4';
 Config.DISPLAY_GATE_BACK_COLOR = '#626c7a'; //grey
-Config.DISPLAY_GATE_FORE_COLOR = '#F2A339';
+Config.DISPLAY_GATE_FORE_COLOR = '#F2A339'; //orange
 
 // Changes are yellow.
 Config.OPERATION_BACK_COLOR = '#FFE';
@@ -83,8 +83,8 @@ Config.MINIMUM_CANVAS_HEIGHT = 408;
 Config.SUPPRESSED_GLSL_WARNING_PATTERNS = [];
 
 // Draw constants.
-Config.DEFAULT_FILL_COLOR = '#626c7a';
-Config.DEFAULT_STROKE_COLOR = 'black';
+Config.DEFAULT_FILL_COLOR = '#626c7a'; //grey
+Config.DEFAULT_STROKE_COLOR = '#00A895';
 Config.DEFAULT_TEXT_COLOR = 'black';
 Config.DEFAULT_FONT_SIZE = 13;
 Config.DEFAULT_FONT_FAMILY = 'myFirstFont';

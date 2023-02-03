@@ -843,7 +843,7 @@ revision.latestActiveCommit().subscribe(jsonText => {
         .join("");
       //css height of text area qasm code
       quantumCode.style.height = (quantumCode.scrollHeight > quantumCode.clientHeight) ? (quantumCode.scrollHeight) + "px" : "100%";
-      //if data is not start with //generate then show error message
+      //if data is not start with //OPENQASM then show error message
       if (data.startsWith('OPENQASM 2.0;')) {
         if (!error.classList.contains('hide')) {
           error.classList.add('hide')
