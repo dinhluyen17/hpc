@@ -362,11 +362,14 @@ $('#runButton').click(function () {
 });
 let stateBarCalc = () => {
   if (simulatorType == "client") {
-    let qHeight = mostRecentStats.get().finalState.height();
+    let qHeight = mostRecentStats.get().finalState.height()/2;// height/2 because wire+1
     if (qHeight <= 2048) {
       document.getElementById("barChartDes").style.visibility = 'hidden';
       document.getElementById("stateBarChart").style.visibility = 'visible';
-      let qNumWire = mostRecentStats.get().circuitDefinition.numWires;
+      let qNumWire = mostRecentStats.get().circuitDefinition.numWires; //wire+1 so needs to be -1
+      if (qNumWire != 0) {
+        qNumWire = qNumWire - 1
+      }
       let qStates = [];
       for (let i = 0; i < qHeight; i++) {
         qStates[i] = Util.bin(i, qNumWire);
@@ -409,7 +412,8 @@ let stateBarCalc = () => {
           break;
       }
       let qProb = [];
-      for (let i = 0; i < mostRecentStats.get().finalState._buffer.length; i++) {
+      // length /2 => _buffer array cut by half
+      for (let i = 0; i < mostRecentStats.get().finalState._buffer.length/2; i++) {
         let x = mostRecentStats.get().finalState._buffer;
         let y = x[i];
         let z = x[i + 1];
@@ -482,9 +486,12 @@ document.getElementById("changeState").addEventListener("change", function (e) {
 })
 let simStatCalc = () => {
   if (simulatorType == "client") {
-    let qHeight = mostRecentStats.get().finalState.height();
+    let qHeight = mostRecentStats.get().finalState.height()/2;// qheight needs /2
     if (qHeight <= 2048) {
-      let qNumWire = mostRecentStats.get().circuitDefinition.numWires;
+      let qNumWire = mostRecentStats.get().circuitDefinition.numWires;// numwire+1 so wire numbers needs -1
+      if (qNumWire != 0) {
+        qNumWire = qNumWire - 1;
+      }
       let qStates = [];
       for (let i = 0; i < qHeight; i++) {
         qStates[i] = Util.bin(i, qNumWire);
@@ -492,7 +499,8 @@ let simStatCalc = () => {
       let qProb = [];
       let qVector = [];
       let qPhase = [];
-      for (let i = 0; i < mostRecentStats.get().finalState._buffer.length; i++) {
+      //length /2 to be consistent
+      for (let i = 0; i < mostRecentStats.get().finalState._buffer.length/2; i++) {
         let x = mostRecentStats.get().finalState._buffer;
         let y = x[i];
         let z = x[i + 1];
