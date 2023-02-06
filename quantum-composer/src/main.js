@@ -309,7 +309,7 @@ $('#runButton').click(function () {
   }
   displayLoading();
   const qiskitCode = document.querySelectorAll(".line-content");
-  const token = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJ1c2VybmFtZSIsImV4cCI6MTY4MTM1NjUyN30.32N94wVAxYNTgNjRNoS2iKnqzhQzUEYaI1O_Fx4LM1U"
+  const token = API_TOKEN;
   fetch(API_BAR_CHART, {
     method: "POST",
     headers: {
@@ -371,7 +371,7 @@ $('#runButton').click(function () {
 });
 let stateBarCalc = () => {
   if (simulatorType == "client") {
-    let qHeight = mostRecentStats.get().finalState.height()/2;// height/2 because wire+1
+    let qHeight = mostRecentStats.get().finalState.height() / 2;// height/2 because wire+1
     if (qHeight <= 2048) {
       document.getElementById("barChartDes").style.visibility = 'hidden';
       document.getElementById("stateBarChart").style.visibility = 'visible';
@@ -422,7 +422,7 @@ let stateBarCalc = () => {
       }
       let qProb = [];
       // length /2 => _buffer array cut by half
-      for (let i = 0; i < mostRecentStats.get().finalState._buffer.length/2; i++) {
+      for (let i = 0; i < mostRecentStats.get().finalState._buffer.length / 2; i++) {
         let x = mostRecentStats.get().finalState._buffer;
         let y = x[i];
         let z = x[i + 1];
@@ -495,7 +495,7 @@ document.getElementById("changeState").addEventListener("change", function (e) {
 })
 let simStatCalc = () => {
   if (simulatorType == "client") {
-    let qHeight = mostRecentStats.get().finalState.height()/2;// qheight needs /2
+    let qHeight = mostRecentStats.get().finalState.height() / 2;// qheight needs /2
     if (qHeight <= 2048) {
       let qNumWire = mostRecentStats.get().circuitDefinition.numWires;// numwire+1 so wire numbers needs -1
       if (qNumWire != 0) {
@@ -509,7 +509,7 @@ let simStatCalc = () => {
       let qVector = [];
       let qPhase = [];
       //length /2 to be consistent
-      for (let i = 0; i < mostRecentStats.get().finalState._buffer.length/2; i++) {
+      for (let i = 0; i < mostRecentStats.get().finalState._buffer.length / 2; i++) {
         let x = mostRecentStats.get().finalState._buffer;
         let y = x[i];
         let z = x[i + 1];
@@ -850,58 +850,58 @@ revision.latestActiveCommit().subscribe(jsonText => {
       "numWire": currentWireNumber
     })
   })
-      .then((res) => {
-        return res.text();
-      })
-      .then((data) => {
-        quantumCode.value = data;
-        const lineNumbers = document.querySelector(".line-numbers-qasm");
-        const numberOfLines = data.split("\n").length;
-        lineNumbers.innerHTML = Array(numberOfLines)
-            .fill("<span></span>")
-            .join("");
-        //css height of text area qasm code
-        quantumCode.style.height = (quantumCode.scrollHeight > quantumCode.clientHeight) ? (quantumCode.scrollHeight) + "px" : "100%";
-        //if data is not start with //generate then show error message
-        if (data.startsWith('OPENQASM 2.0;')) {
-          if (!error.classList.contains('hide')) {
-            error.classList.add('hide')
-          }
+    .then((res) => {
+      return res.text();
+    })
+    .then((data) => {
+      quantumCode.value = data;
+      const lineNumbers = document.querySelector(".line-numbers-qasm");
+      const numberOfLines = data.split("\n").length;
+      lineNumbers.innerHTML = Array(numberOfLines)
+        .fill("<span></span>")
+        .join("");
+      //css height of text area qasm code
+      quantumCode.style.height = (quantumCode.scrollHeight > quantumCode.clientHeight) ? (quantumCode.scrollHeight) + "px" : "100%";
+      //if data is not start with //generate then show error message
+      if (data.startsWith('OPENQASM 2.0;')) {
+        if (!error.classList.contains('hide')) {
+          error.classList.add('hide')
+        }
+      } else {
+        if (error.classList.contains('hide')) {
+          error.classList.remove('hide')
+        }
+      }
+      //function to generate qiskit code
+      const dataTest = qasmToQiskit(quantumCode.value)
+      const a = dataTest.split('\n')
+      textQiskit.innerHTML = ''
+      for (var i = 0; i < a.length; i++) {
+        const divElement = document.createElement('div');
+        divElement.setAttribute("class", "code-line")
+        const divLineCount = document.createElement("div");
+        divLineCount.setAttribute("class", "line-number")
+        const divLineContent = document.createElement("div");
+        divLineContent.setAttribute("class", "line-content")
+        if (a[i] != '') {
+          divLineContent.innerText = a[i]
         } else {
-          if (error.classList.contains('hide')) {
-            error.classList.remove('hide')
-          }
+          divLineContent.appendChild(document.createElement('br'))
         }
-        //function to generate qiskit code
-        const dataTest = qasmToQiskit(quantumCode.value)
-        const a = dataTest.split('\n')
-        textQiskit.innerHTML = ''
-        for (var i = 0; i < a.length; i++) {
-          const divElement = document.createElement('div');
-          divElement.setAttribute("class", "code-line")
-          const divLineCount = document.createElement("div");
-          divLineCount.setAttribute("class", "line-number")
-          const divLineContent = document.createElement("div");
-          divLineContent.setAttribute("class", "line-content")
-          if (a[i] != '') {
-            divLineContent.innerText = a[i]
-          } else {
-            divLineContent.appendChild(document.createElement('br'))
-          }
-          divLineCount.innerText = i + 1
-          divElement.appendChild(divLineCount)
-          divElement.appendChild(divLineContent)
-          textQiskit.appendChild(divElement)
-        }
-      })
-      .then(() => {
-        if (firstLoad) {
-          qasmToJsonApi()
-        }
-      })
-      .catch((error) => {
-        console.error("Log error:", error);
-      });
+        divLineCount.innerText = i + 1
+        divElement.appendChild(divLineCount)
+        divElement.appendChild(divLineContent)
+        textQiskit.appendChild(divElement)
+      }
+    })
+    .then(() => {
+      if (firstLoad) {
+        qasmToJsonApi()
+      }
+    })
+    .catch((error) => {
+      console.error("Log error:", error);
+    });
 });
 /**
  * @param {!DisplayedInspector} curInspector
@@ -1206,56 +1206,56 @@ canvasDiv.addEventListener('mouseup', ev => {
         "numWire": currentWireNumber + 1
       })
     })
-        .then((res) => {
-          return res.text();
-        })
-        .then((data) => {
-          quantumCode.value = data;
-          const lineNumbers = document.querySelector(".line-numbers-qasm");
-          const numberOfLines = data.split("\n").length;
-          lineNumbers.innerHTML = Array(numberOfLines)
-              .fill("<span></span>")
-              .join("");
-          //css height of text area qasm code
-          quantumCode.style.height = (quantumCode.scrollHeight > quantumCode.clientHeight) ? (quantumCode.scrollHeight) + "px" : "100%";
-          //if data is not start with //generate then show error message
-          if (data.startsWith('OPENQASM 2.0;')) {
-            if (!error.classList.contains('hide')) {
-              error.classList.add('hide')
-            }
+      .then((res) => {
+        return res.text();
+      })
+      .then((data) => {
+        quantumCode.value = data;
+        const lineNumbers = document.querySelector(".line-numbers-qasm");
+        const numberOfLines = data.split("\n").length;
+        lineNumbers.innerHTML = Array(numberOfLines)
+          .fill("<span></span>")
+          .join("");
+        //css height of text area qasm code
+        quantumCode.style.height = (quantumCode.scrollHeight > quantumCode.clientHeight) ? (quantumCode.scrollHeight) + "px" : "100%";
+        //if data is not start with //generate then show error message
+        if (data.startsWith('OPENQASM 2.0;')) {
+          if (!error.classList.contains('hide')) {
+            error.classList.add('hide')
+          }
+        } else {
+          if (error.classList.contains('hide')) {
+            error.classList.remove('hide')
+          }
+        }
+        //function to generate qiskit code
+        const dataTest = qasmToQiskit(quantumCode.value)
+        const a = dataTest.split('\n')
+        textQiskit.innerHTML = ''
+        for (var i = 0; i < a.length; i++) {
+          const divElement = document.createElement('div');
+          divElement.setAttribute("class", "code-line")
+          const divLineCount = document.createElement("div");
+          divLineCount.setAttribute("class", "line-number")
+          const divLineContent = document.createElement("div");
+          divLineContent.setAttribute("class", "line-content")
+          if (a[i] != '') {
+            divLineContent.innerText = a[i]
           } else {
-            if (error.classList.contains('hide')) {
-              error.classList.remove('hide')
-            }
+            divLineContent.appendChild(document.createElement('br'))
           }
-          //function to generate qiskit code
-          const dataTest = qasmToQiskit(quantumCode.value)
-          const a = dataTest.split('\n')
-          textQiskit.innerHTML = ''
-          for (var i = 0; i < a.length; i++) {
-            const divElement = document.createElement('div');
-            divElement.setAttribute("class", "code-line")
-            const divLineCount = document.createElement("div");
-            divLineCount.setAttribute("class", "line-number")
-            const divLineContent = document.createElement("div");
-            divLineContent.setAttribute("class", "line-content")
-            if (a[i] != '') {
-              divLineContent.innerText = a[i]
-            } else {
-              divLineContent.appendChild(document.createElement('br'))
-            }
-            divLineCount.innerText = i + 1
-            divElement.appendChild(divLineCount)
-            divElement.appendChild(divLineContent)
-            textQiskit.appendChild(divElement)
-          }
-        })
-        .then(() => {
-          qasmToJsonApi()
-        })
-        .catch((error) => {
-          console.error("Log error:", error);
-        });
+          divLineCount.innerText = i + 1
+          divElement.appendChild(divLineCount)
+          divElement.appendChild(divLineContent)
+          textQiskit.appendChild(divElement)
+        }
+      })
+      .then(() => {
+        qasmToJsonApi()
+      })
+      .catch((error) => {
+        console.error("Log error:", error);
+      });
     displayed.set(newInspector);
   }
 })
@@ -1427,22 +1427,22 @@ const qasmToJsonApi = () => {
     },
     body: textCode.value,
   })
-      .then((res) => {
-        firstLoad = false
-        return res.text();
-      })
-      .then((data) => {
-        revision.commit(data);
-      })
-      .catch((error) => {
-        const startText = `{"detail":`;
-        const errorMessage = error.message.length >= error.message.indexOf(startText) + startText.length
-            ? error.message.substr(error.message.indexOf(startText) + startText.length).replace('}', '')
-            : 'Something went wrong with qasm code. Please try again!';
-        window.parent.postMessage(JSON.stringify({
-          messageFrom: 'quantum_composer',
-          actionType: 'error_qasm_code_message',
-          detailData: errorMessage
-        }));
-      });
+    .then((res) => {
+      firstLoad = false
+      return res.text();
+    })
+    .then((data) => {
+      revision.commit(data);
+    })
+    .catch((error) => {
+      const startText = `{"detail":`;
+      const errorMessage = error.message.length >= error.message.indexOf(startText) + startText.length
+        ? error.message.substr(error.message.indexOf(startText) + startText.length).replace('}', '')
+        : 'Something went wrong with qasm code. Please try again!';
+      window.parent.postMessage(JSON.stringify({
+        messageFrom: 'quantum_composer',
+        actionType: 'error_qasm_code_message',
+        detailData: errorMessage
+      }));
+    });
 };
