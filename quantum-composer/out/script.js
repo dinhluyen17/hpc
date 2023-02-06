@@ -1,4 +1,3 @@
-//Draw energy graph
 document.D3_FUNCTION = {
     bar: (barData, barHeight) => {
         let divWrapper = document.getElementById("stateBarChart");
@@ -123,9 +122,13 @@ document.D3_FUNCTION = {
 function grabGate(gate) {
     document.GRAB_GATE = gate;
 }
-
+let API_QSPHERE;
+document.API_ADDRESS = {
+    qsphere: (api) => {
+        API_QSPHERE = api
+    },
+}
 const circuitEdit = {
-
     buttonControls: function (button, i) {
         var groupNum = button.className.match(/\d+$/);
         if (groupNum !== null) {
@@ -448,7 +451,7 @@ const circuitEdit = {
               return
           }
         const qiskitCode = document.querySelectorAll(".line-content");
-        fetch("http://0.0.0.0:8000/return-qsphere", {
+        fetch(API_QSPHERE, {
           method: "POST",
           headers: {
             "content-type": "text/plain",

@@ -51,7 +51,16 @@ import { initGateViews } from "./ui/initGateViews.js";
 import { initSizeViews, updateSizeViews } from "./ui/updateSizeViews.js";
 import { viewState } from "./ui/viewState.js";
 import { Gates } from "./gates/AllGates.js";
-import { PostSelectionGates } from "./gates/PostSelectionGates.js";
+import {
+  API_JSON_TO_QASM,
+  API_QASM_TO_JSON,
+  API_BAR_CHART,
+  API_TABLE,
+  API_SAVE_HISTORY,
+  API_TOKEN,
+  API_QSPHERE
+} from "./api.js";
+document.API_ADDRESS.qsphere(API_QSPHERE)
 
 const codeArea = document.getElementById("code-area");
 const gateArea = document.getElementById("gate-area");
@@ -301,7 +310,7 @@ $('#runButton').click(function () {
   displayLoading();
   const qiskitCode = document.querySelectorAll(".line-content");
   const token = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJ1c2VybmFtZSIsImV4cCI6MTY4MTM1NjUyN30.32N94wVAxYNTgNjRNoS2iKnqzhQzUEYaI1O_Fx4LM1U"
-  fetch("http://0.0.0.0:8000/return-histogram", {
+  fetch(API_BAR_CHART, {
     method: "POST",
     headers: {
       Authorization: `Bearer ${token}`,
@@ -323,7 +332,7 @@ $('#runButton').click(function () {
     .catch((error) => {
       console.error("Error: ", error);
     });
-  fetch("http://0.0.0.0:8000/return-sim-data", {
+  fetch(API_TABLE, {
     method: "POST",
     headers: {
       Authorization: `Bearer ${token}`,
@@ -341,7 +350,7 @@ $('#runButton').click(function () {
       aerProb = data.qProb;
       simStatCalc()
     });
-  fetch("http://0.0.0.0:8000/save-to-history", {
+  fetch(API_SAVE_HISTORY, {
     method: "POST",
     headers: {
       'Content-Type': 'application/json',
@@ -759,7 +768,7 @@ for (var property in userRoot) {
   formBody.push(encodedKey + "=" + encodedValue);
 }
 formBody = formBody.join("&");
-fetch("http://0.0.0.0:8000/token", {
+fetch(API_TOKEN, {
   method: "POST",
   headers: {
     'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8',
@@ -829,7 +838,7 @@ revision.latestActiveCommit().subscribe(jsonText => {
   const error = document.getElementById("error-notice")
   const textCode = document.getElementById("text-code")
   const currentWireNumber = displayed.get().displayedCircuit.circuitDefinition.numWires;
-  fetch("http://0.0.0.0:8000/json-to-qasm", {
+  fetch(API_JSON_TO_QASM, {
     method: "POST",
     headers: {
       Authorization: `Bearer ${token}`,
@@ -1186,7 +1195,7 @@ canvasDiv.addEventListener('mouseup', ev => {
     const error = document.getElementById("error-notice");
     let jsonText = currentCircuitJson;
     const textCode = document.getElementById("text-code")
-    fetch("http://0.0.0.0:8000/json-to-qasm", {
+    fetch(API_JSON_TO_QASM, {
       method: "POST",
       headers: {
         Authorization: `Bearer ${token}`,
@@ -1410,7 +1419,7 @@ const qasmToQiskit = (qasm) => {
 // };
 
 const qasmToJsonApi = () => {
-  fetch("http://0.0.0.0:8000/qasm-to-json", {
+  fetch(API_QASM_TO_JSON, {
     method: "POST",
     headers: {
       Authorization: `Bearer ${token}`,
