@@ -120,7 +120,7 @@ viewState.getInstance().revision = revision;
 
 const isSupportBarChart = () => {
   const currentWireNumber = displayed.get().displayedCircuit.circuitDefinition.numWires;
-  if (currentWireNumber <= 10) {
+  if (currentWireNumber <= 11) {
     document.getElementById("barChartDes").style.visibility = 'hidden';
     document.getElementById("stateBarChart").style.visibility = 'visible';
     return true;
@@ -151,7 +151,7 @@ const isSupportClientChart = () => {
 
 const isSupportStateTable = () => {
   const currentWireNumber = displayed.get().displayedCircuit.circuitDefinition.numWires;
-  if (currentWireNumber <= 10) {
+  if (currentWireNumber <= 11) {
     document.getElementById("stateTableDes").style.display = 'none';
     document.getElementById("vectorTable").style.display = 'table';
     return true;
@@ -372,7 +372,7 @@ $('#runButton').click(function () {
 let stateBarCalc = () => {
   if (simulatorType == "client") {
     let qHeight = mostRecentStats.get().finalState.height()/2;// height/2 because wire+1
-    if (qHeight <= 2048) {
+    if (qHeight <= 4096) {
       document.getElementById("barChartDes").style.visibility = 'hidden';
       document.getElementById("stateBarChart").style.visibility = 'visible';
       let qNumWire = mostRecentStats.get().circuitDefinition.numWires; //wire+1 so needs to be -1
@@ -496,7 +496,7 @@ document.getElementById("changeState").addEventListener("change", function (e) {
 let simStatCalc = () => {
   if (simulatorType == "client") {
     let qHeight = mostRecentStats.get().finalState.height()/2;// qheight needs /2
-    if (qHeight <= 2048) {
+    if (qHeight <= 4096) {
       let qNumWire = mostRecentStats.get().circuitDefinition.numWires;// numwire+1 so wire numbers needs -1
       if (qNumWire != 0) {
         qNumWire = qNumWire - 1;
