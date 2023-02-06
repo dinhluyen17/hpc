@@ -98,6 +98,15 @@ service.interceptors.request.use((config: AxiosRequestConfig<any>) => {
   return config
 }, err)
 
+service2.interceptors.request.use((config: AxiosRequestConfig<any>) => {
+  config.headers && (config.headers.sessionId = userStore.getSessionId)
+  const language = cookies.get('language')
+  config.headers = config.headers || {}
+  if (language) config.headers.language = language
+
+  return config
+}, err)
+
 // The response to intercept
 service.interceptors.response.use((res: AxiosResponse) => {
   // No code will be processed
