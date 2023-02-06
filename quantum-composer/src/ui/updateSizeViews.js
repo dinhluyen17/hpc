@@ -82,19 +82,28 @@ const initSizeViews = (parentDiv) => {
   const gridGateBtn = document.getElementById('gate-area-header-grid-btn');
   const listGateBtn = document.getElementById('gate-area-header-list-btn');
   const searchGateBox = document.getElementById('gate-area-header-search');
+  const gateArea = document.querySelectorAll('.gateList');
   closeGateAreaBtn.addEventListener('click', () => {
     viewState.getInstance().expandGateArea = !viewState.getInstance().expandGateArea;
     if (viewState.getInstance().expandGateArea) {
-      viewState.getInstance().gateAreaWidth = 320;
+      viewState.getInstance().gateAreaWidth = 240;
       gridGateBtn.style.display = 'flex';
       listGateBtn.style.display = 'flex';
       searchGateBox.style.display = 'flex';
+      gateArea.forEach(item => {
+        const gateArea2 = item.children[0]
+        gateArea2.setAttribute("style", "justify-content:left;");
+      })
     }
     else {
       viewState.getInstance().gateAreaWidth = 130;
       gridGateBtn.style.display = 'none';
       listGateBtn.style.display = 'none';
       searchGateBox.style.display = 'none';
+      gateArea.forEach(item => {
+        const gateArea2 = item.children[0]
+        gateArea2.setAttribute("style", "justify-content:center;");
+      })
     }
     updateSizeViews(parentDiv);
   });

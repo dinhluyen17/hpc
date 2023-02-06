@@ -58,7 +58,7 @@ Config.REDRAW_COOLDOWN_MILLIS = 10; // Milliseconds. Rate-limit on redraws. Long
 
 /** Half of the span of a drawn gate, width-wise and height-wise.
 * @type {!number} */
-Config.GATE_RADIUS = 20;
+Config.GATE_RADIUS = 18;
 Config.WIRE_SPACING = 50;
 
 Config.BACKGROUND_COLOR = '#00A895';
