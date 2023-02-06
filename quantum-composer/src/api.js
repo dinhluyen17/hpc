@@ -14,5 +14,6 @@ export {
     API_TABLE,
     API_SAVE_HISTORY,
     API_TOKEN,
-    API_QSPHERE
+    API_QSPHERE,
+    API_TOKEN,
 };
