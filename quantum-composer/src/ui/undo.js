@@ -39,11 +39,11 @@ function initUndoRedo(revision, obsIsAnyOverlayShowing, redrawThrottle) {
     undoButton.addEventListener('click', () => revision.undo());
     redoButton.addEventListener('click', () => revision.redo());
     clearButton.addEventListener('click', () => {
-        revision.commit('{"cols":[]}')
+        revision.commit('{"cols":[[1,1,"…"]]}')
         let barData = [
             {
                 "Probability": "100.0000",
-                "State": "0",
+                "State": "00",
                 "id": 0
             }
         ]
