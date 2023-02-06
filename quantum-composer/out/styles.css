@@ -253,7 +253,8 @@ small.smaller {
 .Modular,
 .Scalar,
 .Order,
-.Parity {
+.Parity,
+.Custom {
     background-color: #626c7a;
 }
 

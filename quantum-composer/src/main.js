@@ -798,7 +798,7 @@ revision.latestActiveCommit().subscribe(jsonText => {
     let hasNewGate = false;
     const newGateSet = new Set();
     circuitDef.customGateSet.gates.forEach((gate) => {
-      gate.colorIndex = 2;
+      gate.colorIndex = 3;
       if (!Gates.customGateSet.has(gate.serializedId)) {
         hasNewGate = true;
       }
