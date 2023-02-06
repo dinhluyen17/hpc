@@ -854,7 +854,7 @@ class DisplayedCircuit {
         // Use the grab offset instead of the gate height so that tall gates are 'sticky' when dragging downward: they
         // aren't removed until the hand actually leaves the circuit area.
         let handRowOffset = Math.floor(hand.holdOffset.y / Config.WIRE_SPACING);
-        if (modificationPoint.row + handRowOffset >= this._extraWireStartIndex) {
+        if (modificationPoint.row + handRowOffset >= this._extraWireStartIndex || modificationPoint.row >= this._extraWireStartIndex - 1) {
             return this;
         }
 
