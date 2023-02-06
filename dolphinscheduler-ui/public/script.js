@@ -394,12 +394,14 @@ const circuitEdit = {
         };
       })();
   
-      //css unsupported gate
+      //css measure gate and control gate
       const probesGates = document.querySelectorAll(".Probes")
       probesGates.forEach((gate, idx) => {
-        if(idx == 0 || idx == 5 || idx == 4 || idx == 9) {
+        if(idx == 0 || idx == 5) {
+          gate.style.backgroundColor = "#F3A339"
+        } else if (idx == 4 || idx == 9) {
           gate.style.backgroundColor = "#24b1a0"
-        } 
+        }
       })
 
       //css quantum code area toggle show and hide between qasm and qiskit

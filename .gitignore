@@ -2,8 +2,8 @@
 **/target/**
 /logs
 **/node_modules/**
-dolphinscheduler-ui/public/quirk.html
-quantum-composer/out/quirk.html
+./dolphinscheduler-ui/public/quirk.html
+./quantum-composer/out/quirk.html
 .idea
 .mvn
 logs

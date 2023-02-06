@@ -887,32 +887,7 @@ revision.latestActiveCommit().subscribe(jsonText => {
       })
       .then(() => {
         if (firstLoad) {
-          fetch("http://0.0.0.0:8000/qasm-to-json", {
-            method: "POST",
-            headers: {
-              Authorization: `Bearer ${token}`,
-              "content-type": "text/html",
-            },
-            body: textCode.value,
-          })
-              .then((res) => {
-                firstLoad = false
-                return res.text();
-              })
-              .then((data) => {
-                revision.commit(data);
-              })
-              .catch((error) => {
-                const startText = `{"detail":`;
-                const errorMessage = error.message.length >= error.message.indexOf(startText) + startText.length
-                    ? error.message.substr(error.message.indexOf(startText) + startText.length).replace('}', '')
-                    : 'Something went wrong with qasm code. Please try again!';
-                window.parent.postMessage(JSON.stringify({
-                  messageFrom: 'quantum_composer',
-                  actionType: 'error_qasm_code_message',
-                  detailData: errorMessage
-                }));
-              });
+          qasmToJsonApi()
         }
       })
       .catch((error) => {
@@ -1210,6 +1185,7 @@ canvasDiv.addEventListener('mouseup', ev => {
     const textQiskit = document.getElementById("text-code-qiskit");
     const error = document.getElementById("error-notice");
     let jsonText = currentCircuitJson;
+    const textCode = document.getElementById("text-code")
     fetch("http://0.0.0.0:8000/json-to-qasm", {
       method: "POST",
       headers: {
@@ -1238,8 +1214,7 @@ canvasDiv.addEventListener('mouseup', ev => {
             if (!error.classList.contains('hide')) {
               error.classList.add('hide')
             }
-          }
-          else {
+          } else {
             if (error.classList.contains('hide')) {
               error.classList.remove('hide')
             }
@@ -1249,9 +1224,12 @@ canvasDiv.addEventListener('mouseup', ev => {
           const a = dataTest.split('\n')
           textQiskit.innerHTML = ''
           for (var i = 0; i < a.length; i++) {
-            const divElement = document.createElement('div'); divElement.setAttribute("class", "code-line")
-            const divLineCount = document.createElement("div"); divLineCount.setAttribute("class", "line-number")
-            const divLineContent = document.createElement("div"); divLineContent.setAttribute("class", "line-content")
+            const divElement = document.createElement('div');
+            divElement.setAttribute("class", "code-line")
+            const divLineCount = document.createElement("div");
+            divLineCount.setAttribute("class", "line-number")
+            const divLineContent = document.createElement("div");
+            divLineContent.setAttribute("class", "line-content")
             if (a[i] != '') {
               divLineContent.innerText = a[i]
             } else {
@@ -1262,6 +1240,9 @@ canvasDiv.addEventListener('mouseup', ev => {
             divElement.appendChild(divLineContent)
             textQiskit.appendChild(divElement)
           }
+        })
+        .then(() => {
+          qasmToJsonApi()
         })
         .catch((error) => {
           console.error("Log error:", error);
@@ -1387,31 +1368,7 @@ textCode.addEventListener("keydown", () => {
   clearTimeout(timmer);
   timmer = setTimeout(() => {
     if (textCode && textCode.value.length > 0) {
-      fetch("http://0.0.0.0:8000/qasm-to-json", {
-        method: "POST",
-        headers: {
-          Authorization: `Bearer ${token}`,
-          "content-type": "text/html",
-        },
-        body: textCode.value,
-      })
-        .then((res) => {
-          return res.text();
-        })
-        .then((data) => {
-          revision.commit(data);
-        })
-        .catch((error) => {
-          const startText = `{"detail":`;
-          const errorMessage = error.message.length >= error.message.indexOf(startText) + startText.length
-            ? error.message.substr(error.message.indexOf(startText) + startText.length).replace('}', '')
-            : 'Something went wrong with qasm code. Please try again!';
-          window.parent.postMessage(JSON.stringify({
-            messageFrom: 'quantum_composer',
-            actionType: 'error_qasm_code_message',
-            detailData: errorMessage
-          }));
-        });
+      qasmToJsonApi()
     }
   }, 2500);
 });
@@ -1444,10 +1401,39 @@ const qasmToQiskit = (qasm) => {
   return qiskit;
 };
 
-const qasmToJson = (qasm) => { //not used at this moment 
-  let circuit = new QuantumCircuit();
-  circuit.importQASM(qasm);
-  let json = circuit.exportQuirk(true);
-  json = JSON.stringify(json);
-  return json
+// const qasmToJson = (qasm) => { //not used at this moment
+//   let circuit = new QuantumCircuit();
+//   circuit.importQASM(qasm);
+//   let json = circuit.exportQuirk(true);
+//   json = JSON.stringify(json);
+//   return json
+// };
+
+const qasmToJsonApi = () => {
+  fetch("http://0.0.0.0:8000/qasm-to-json", {
+    method: "POST",
+    headers: {
+      Authorization: `Bearer ${token}`,
+      "content-type": "text/html",
+    },
+    body: textCode.value,
+  })
+      .then((res) => {
+        firstLoad = false
+        return res.text();
+      })
+      .then((data) => {
+        revision.commit(data);
+      })
+      .catch((error) => {
+        const startText = `{"detail":`;
+        const errorMessage = error.message.length >= error.message.indexOf(startText) + startText.length
+            ? error.message.substr(error.message.indexOf(startText) + startText.length).replace('}', '')
+            : 'Something went wrong with qasm code. Please try again!';
+        window.parent.postMessage(JSON.stringify({
+          messageFrom: 'quantum_composer',
+          actionType: 'error_qasm_code_message',
+          detailData: errorMessage
+        }));
+      });
 };
