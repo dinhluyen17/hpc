@@ -391,9 +391,9 @@ const circuitEdit = {
       //css measure gate and control gate
       const probesGates = document.querySelectorAll(".Probes")
       probesGates.forEach((gate, idx) => {
-        if(idx == 0 || idx == 5) {
+        if(idx == 0 || idx == 2) {
           gate.style.backgroundColor = "#F3A339"
-        } else if (idx == 4 || idx == 9) {
+        } else if (idx == 1 || idx == 3) {
           gate.style.backgroundColor = "#24b1a0"
         }
       })

@@ -193,16 +193,8 @@ Gates.TopToolboxGroups = [
         hint: "Probes",
         gates: [
             MeasurementGate, undefined,
-            PostSelectionGates.PostSelectOff, PostSelectionGates.PostSelectOn,
-            Controls.AntiControl, Controls.Control
-        ]
-    },
-    {
-        hint: "Displays",
-        gates: [
             undefined, undefined,
-            DensityMatrixDisplayFamily.ofSize(1), BlochSphereDisplay,
-            ProbabilityDisplayFamily.ofSize(1), AmplitudeDisplayFamily.ofSize(2)
+            undefined, Controls.Control
         ]
     },
     {
@@ -230,19 +222,31 @@ Gates.TopToolboxGroups = [
         ]
     },
     {
-        hint: "Spinning",
-        gates: [
-            PoweringGates.ZForward, PoweringGates.ZBackward,
-            PoweringGates.YForward, PoweringGates.YBackward,
-            PoweringGates.XForward, PoweringGates.XBackward,
-        ]
-    },
-    {
         hint: "Formulaic",
         gates: [
             ParametrizedRotationGates.FormulaicRotationZ, ParametrizedRotationGates.FormulaicRotationRz,
             ParametrizedRotationGates.FormulaicRotationY, ParametrizedRotationGates.FormulaicRotationRy,
             ParametrizedRotationGates.FormulaicRotationX, ParametrizedRotationGates.FormulaicRotationRx,
+        ]
+    },
+];
+
+/** @type {!Array<!{hint: !string, gates: !Array<undefined|!Gate>}>} */
+Gates.BottomToolboxGroups = [
+    {
+        hint: "Displays",
+        gates: [
+            undefined, undefined,
+            DensityMatrixDisplayFamily.ofSize(1), BlochSphereDisplay,
+            ProbabilityDisplayFamily.ofSize(1), AmplitudeDisplayFamily.ofSize(2)
+        ]
+    },
+    {
+        hint: "Spinning",
+        gates: [
+            PoweringGates.ZForward, PoweringGates.ZBackward,
+            PoweringGates.YForward, PoweringGates.YBackward,
+            PoweringGates.XForward, PoweringGates.XBackward,
         ]
     },
     {
@@ -269,10 +273,6 @@ Gates.TopToolboxGroups = [
             Controls.XParityControl, undefined,
         ]
     },
-];
-
-/** @type {!Array<!{hint: !string, gates: !Array<undefined|!Gate>}>} */
-Gates.BottomToolboxGroups = [
     {
         hint: "X/Y Probes",
         gates: [
@@ -365,30 +365,31 @@ Gates.TopToolboxGroups.forEach((group, idx) => {
         group.gates.forEach((gate, subIdx) => {
             if(subIdx == 0 && gate != undefined) {
                 gate.colorIndex = 2
-            } else if((subIdx == 5) && gate != undefined) {
+            } else if((subIdx == 1) && gate != undefined) {
                 gate.colorIndex = 1
             } else if(gate != undefined){
                 gate.colorIndex = 3
             }
         })
     }
-    else if (idx == 2 || idx == 3 || idx == 4) {
+    // else if (idx == 2 || idx == 3 || idx == 4) {
+    //     group.gates.forEach(gate => {
+    //         if (gate != undefined) {
+    //             gate.colorIndex = 1
+    //         }
+    //     })
+    // }
+    // else if (idx == 6) {
+    //     group.gates.forEach(gate => {
+    //         if (gate != undefined) {
+    //             gate.colorIndex = 1
+    //         }
+    //     })
+    // } 
+    else {
         group.gates.forEach(gate => {
             if (gate != undefined) {
                 gate.colorIndex = 1
-            }
-        })
-    }
-    else if (idx == 6) {
-        group.gates.forEach(gate => {
-            if (gate != undefined) {
-                gate.colorIndex = 1
-            }
-        })
-    } else {
-        group.gates.forEach(gate => {
-            if (gate != undefined) {
-                gate.colorIndex = 3
             }
         })
     }
