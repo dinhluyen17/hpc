@@ -1,20 +1,3 @@
-/**
- * Copyright 2017 Google Inc.
- *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- *
- *     http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
- */
-
-// It's important that the polyfills and error fallback get loaded first!
 import { } from "./browser/Polyfills.js"
 import { hookErrorHandler } from "./fallback.js"
 hookErrorHandler();
@@ -28,7 +11,7 @@ import { DisplayedInspector } from "./ui/DisplayedInspector.js"
 import { Painter } from "./draw/Painter.js"
 import { Rect } from "./math/Rect.js"
 import { RestartableRng } from "./base/RestartableRng.js"
-import {checkSupport, Revision} from "./base/Revision.js"
+import { checkSupport, Revision } from "./base/Revision.js"
 import { initSerializer, fromJsonText_CircuitDefinition } from "./circuit/Serializer.js"
 import { TouchScrollBlocker } from "./browser/TouchScrollBlocker.js"
 import { Util } from "./base/Util.js"
@@ -51,15 +34,7 @@ import { initGateViews } from "./ui/initGateViews.js";
 import { initSizeViews, updateSizeViews } from "./ui/updateSizeViews.js";
 import { viewState } from "./ui/viewState.js";
 import { Gates } from "./gates/AllGates.js";
-import {
-  API_JSON_TO_QASM,
-  API_QASM_TO_JSON,
-  API_BAR_CHART,
-  API_TABLE,
-  API_SAVE_HISTORY,
-  API_TOKEN,
-  API_QSPHERE
-} from "./api.js";
+import apiConfig from "./configs/apiConfigs.js";
 document.API_ADDRESS.qsphere(API_QSPHERE)
 
 const codeArea = document.getElementById("code-area");
@@ -232,10 +207,10 @@ window.addEventListener('message', (e) => {
             "qiskit": qiskit
           }
           window.parent.postMessage(JSON.stringify({
-                messageFrom: 'quantum_composer',
-                actionType: 'current_circuit_json',
-                detailData: postDetailData,
-              })
+            messageFrom: 'quantum_composer',
+            actionType: 'current_circuit_json',
+            detailData: postDetailData,
+          })
           );
         }
         else if (actionType == 'set_circuit_qasm') {
@@ -319,7 +294,7 @@ $('#runButton').click(function () {
   displayLoading();
   const qiskitCode = document.querySelectorAll(".line-content");
   const token = API_TOKEN;
-  fetch(API_BAR_CHART, {
+  fetch(apiConfig.API_BAR_CHART, {
     method: "POST",
     headers: {
       Authorization: `Bearer ${token}`,
@@ -341,7 +316,7 @@ $('#runButton').click(function () {
     .catch((error) => {
       console.error("Error: ", error);
     });
-  fetch(API_TABLE, {
+  fetch(apiConfig.API_TABLE, {
     method: "POST",
     headers: {
       Authorization: `Bearer ${token}`,
@@ -359,7 +334,7 @@ $('#runButton').click(function () {
       aerProb = data.qProb;
       simStatCalc()
     });
-  fetch(API_SAVE_HISTORY, {
+  fetch(apiConfig.API_SAVE_HISTORY, {
     method: "POST",
     headers: {
       'Content-Type': 'application/json',
@@ -380,7 +355,7 @@ $('#runButton').click(function () {
 });
 let stateBarCalc = () => {
   if (simulatorType == "client") {
-    let qHeight = mostRecentStats.get().finalState.height()/2;// height/2 because wire+1
+    let qHeight = mostRecentStats.get().finalState.height() / 2;// height/2 because wire+1
     if (qHeight <= 4096) {
       document.getElementById("barChartDes").style.visibility = 'hidden';
       document.getElementById("stateBarChart").style.visibility = 'visible';
@@ -504,7 +479,7 @@ document.getElementById("changeState").addEventListener("change", function (e) {
 })
 let simStatCalc = () => {
   if (simulatorType == "client") {
-    let qHeight = mostRecentStats.get().finalState.height()/2;// qheight needs /2
+    let qHeight = mostRecentStats.get().finalState.height() / 2;// qheight needs /2
     if (qHeight <= 4096) {
       let qNumWire = mostRecentStats.get().circuitDefinition.numWires;// numwire+1 so wire numbers needs -1
       if (qNumWire != 0) {
@@ -777,7 +752,7 @@ for (var property in userRoot) {
   formBody.push(encodedKey + "=" + encodedValue);
 }
 formBody = formBody.join("&");
-fetch(API_TOKEN, {
+fetch(apiConfig.API_TOKEN, {
   method: "POST",
   headers: {
     'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8',
@@ -849,7 +824,7 @@ revision.latestActiveCommit().subscribe(jsonText => {
   const textCode = document.getElementById("text-code")
   const currentWireNumber = displayed.get().displayedCircuit.circuitDefinition.numWires;
   const supported = checkSupport(jsonText)
-  fetch(API_JSON_TO_QASM, {
+  fetch(apiConfig.API_JSON_TO_QASM, {
     method: "POST",
     headers: {
       Authorization: `Bearer ${token}`,
@@ -1373,7 +1348,7 @@ const jsonToQasmApi = () => {
   const error = document.getElementById("error-notice");
   let jsonText = currentCircuitJson;
   const supported = checkSupport(jsonText);
-  return fetch(API_JSON_TO_QASM, {
+  return fetch(apiConfig.API_JSON_TO_QASM, {
     method: "POST",
     headers: {
       Authorization: `Bearer ${token}`,
@@ -1385,57 +1360,57 @@ const jsonToQasmApi = () => {
       "supported": supported
     })
   })
-      .then((res) => {
-        return res.text();
-      })
-      .then((data) => {
-        quantumCode.value = data;
-        const lineNumbers = document.querySelector(".line-numbers-qasm");
-        const numberOfLines = data.split("\n").length;
-        lineNumbers.innerHTML = Array(numberOfLines)
-            .fill("<span></span>")
-            .join("");
-        //css height of text area qasm code
-        quantumCode.style.height = (quantumCode.scrollHeight > quantumCode.clientHeight) ? (quantumCode.scrollHeight) + "px" : "100%";
-        //if data is not start with //generate then show error message
-        if (data.startsWith('OPENQASM 2.0;')) {
-          if (!error.classList.contains('hide')) {
-            error.classList.add('hide')
-          }
+    .then((res) => {
+      return res.text();
+    })
+    .then((data) => {
+      quantumCode.value = data;
+      const lineNumbers = document.querySelector(".line-numbers-qasm");
+      const numberOfLines = data.split("\n").length;
+      lineNumbers.innerHTML = Array(numberOfLines)
+        .fill("<span></span>")
+        .join("");
+      //css height of text area qasm code
+      quantumCode.style.height = (quantumCode.scrollHeight > quantumCode.clientHeight) ? (quantumCode.scrollHeight) + "px" : "100%";
+      //if data is not start with //generate then show error message
+      if (data.startsWith('OPENQASM 2.0;')) {
+        if (!error.classList.contains('hide')) {
+          error.classList.add('hide')
+        }
+      } else {
+        if (error.classList.contains('hide')) {
+          error.classList.remove('hide')
+        }
+      }
+      //function to generate qiskit code
+      const dataTest = qasmToQiskit(quantumCode.value)
+      const a = dataTest.split('\n')
+      textQiskit.innerHTML = ''
+      for (var i = 0; i < a.length; i++) {
+        const divElement = document.createElement('div');
+        divElement.setAttribute("class", "code-line")
+        const divLineCount = document.createElement("div");
+        divLineCount.setAttribute("class", "line-number")
+        const divLineContent = document.createElement("div");
+        divLineContent.setAttribute("class", "line-content")
+        if (a[i] != '') {
+          divLineContent.innerText = a[i]
         } else {
-          if (error.classList.contains('hide')) {
-            error.classList.remove('hide')
-          }
+          divLineContent.appendChild(document.createElement('br'))
         }
-        //function to generate qiskit code
-        const dataTest = qasmToQiskit(quantumCode.value)
-        const a = dataTest.split('\n')
-        textQiskit.innerHTML = ''
-        for (var i = 0; i < a.length; i++) {
-          const divElement = document.createElement('div');
-          divElement.setAttribute("class", "code-line")
-          const divLineCount = document.createElement("div");
-          divLineCount.setAttribute("class", "line-number")
-          const divLineContent = document.createElement("div");
-          divLineContent.setAttribute("class", "line-content")
-          if (a[i] != '') {
-            divLineContent.innerText = a[i]
-          } else {
-            divLineContent.appendChild(document.createElement('br'))
-          }
-          divLineCount.innerText = i + 1
-          divElement.appendChild(divLineCount)
-          divElement.appendChild(divLineContent)
-          textQiskit.appendChild(divElement)
-        }
-      })
-      .catch((error) => {
-        console.error("Log error:", error);
-      });
+        divLineCount.innerText = i + 1
+        divElement.appendChild(divLineCount)
+        divElement.appendChild(divLineContent)
+        textQiskit.appendChild(divElement)
+      }
+    })
+    .catch((error) => {
+      console.error("Log error:", error);
+    });
 }
 
 const qasmToJsonApi = () => {
-  fetch(API_QASM_TO_JSON, {
+  fetch(apiConfig.API_QASM_TO_JSON, {
     method: "POST",
     headers: {
       Authorization: `Bearer ${token}`,

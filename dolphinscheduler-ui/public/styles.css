@@ -117,7 +117,7 @@ button {
 }
 
 .gate-area-header {
-    height: 50px;
+    min-height: 50px;
     display: flex;
     flex-direction: row;
     align-items: center;
@@ -204,7 +204,7 @@ button {
 }
 
 small.smaller {
-    font-size: xx-small;
+    font-size: 8px;
 }
 
 .Probes,
@@ -253,7 +253,8 @@ small.smaller {
 .Modular,
 .Scalar,
 .Order,
-.Parity {
+.Parity,
+.Custom {
     background-color: #626c7a;
 }
 
