@@ -1,7 +1,6 @@
-import { } from "./browser/Polyfills.js"
-import { hookErrorHandler } from "./fallback.js"
+import { hookErrorHandler } from "./fallback.js";
+import { doDetectIssues } from "./issues.js";
 hookErrorHandler();
-import { doDetectIssues } from "./issues.js"
 doDetectIssues();
 
 import { CircuitStats } from "./circuit/CircuitStats.js"
@@ -18,11 +17,10 @@ import { Util } from "./base/Util.js"
 import { initializedWglContext } from "./webgl/WglContext.js"
 import { watchDrags, isMiddleClicking, eventPosRelativeTo } from "./browser/MouseWatcher.js"
 import { ObservableValue, ObservableSource } from "./base/Obs.js"
-import { initExports, obsExportsIsShowing } from "./ui/exports.js"
-import { initForge, obsForgeIsShowing } from "./ui/forge.js"
-import { initMenu, obsMenuIsShowing, closeMenu } from "./ui/menu.js"
+import { obsExportsIsShowing } from "./ui/exports.js"
+import { obsForgeIsShowing } from "./ui/forge.js"
+import { obsMenuIsShowing, closeMenu } from "./ui/menu.js"
 import { initUndoRedo } from "./ui/undo.js"
-import { initClear } from "./ui/clear.js"
 import { initUrlCircuitSync } from "./ui/url.js"
 import { initTitleSync } from "./ui/title.js"
 import { simulate } from "./ui/sim.js"
@@ -293,11 +291,9 @@ $('#runButton').click(function () {
   }
   displayLoading();
   const qiskitCode = document.querySelectorAll(".line-content");
-  const token = API_TOKEN;
   fetch(apiConfig.API_BAR_CHART, {
     method: "POST",
     headers: {
-      Authorization: `Bearer ${token}`,
       "content-type": "text/plain",
     },
     body: getContentQiskit(qiskitCode) + importPythonLibraryCount,
@@ -319,7 +315,6 @@ $('#runButton').click(function () {
   fetch(apiConfig.API_TABLE, {
     method: "POST",
     headers: {
-      Authorization: `Bearer ${token}`,
       "content-type": "text/plain"
     },
     body: getContentQiskit(qiskitCode) + importPythonLibrary,
@@ -739,32 +734,6 @@ document.addEventListener("DOMContentLoaded", function () {
   document.D3_FUNCTION.bar(barDataFilter, viewState.getInstance().chartAreaHeight);
 })
 
-//declare global variable token for all api
-let token
-const userRoot = {
-  'username': 'username',
-  'password': 'secret'
-}
-let formBody = []
-for (var property in userRoot) {
-  var encodedKey = encodeURIComponent(property);
-  var encodedValue = encodeURIComponent(userRoot[property]);
-  formBody.push(encodedKey + "=" + encodedValue);
-}
-formBody = formBody.join("&");
-fetch(apiConfig.API_TOKEN, {
-  method: "POST",
-  headers: {
-    'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8',
-  },
-  body: formBody
-})
-  .then(res => {
-    return res.json()
-  })
-  .then(res => {
-    token = res.access_token
-  })
 let currentCircuitJson = "";
 let firstLoad = true;
 revision.latestActiveCommit().subscribe(jsonText => {
@@ -827,7 +796,6 @@ revision.latestActiveCommit().subscribe(jsonText => {
   fetch(apiConfig.API_JSON_TO_QASM, {
     method: "POST",
     headers: {
-      Authorization: `Bearer ${token}`,
       "content-type": "text/html",
     },
     // body: jsonText,
@@ -1351,7 +1319,6 @@ const jsonToQasmApi = () => {
   return fetch(apiConfig.API_JSON_TO_QASM, {
     method: "POST",
     headers: {
-      Authorization: `Bearer ${token}`,
       "content-type": "text/html",
     },
     body: JSON.stringify({
@@ -1413,7 +1380,6 @@ const qasmToJsonApi = () => {
   fetch(apiConfig.API_QASM_TO_JSON, {
     method: "POST",
     headers: {
-      Authorization: `Bearer ${token}`,
       "content-type": "text/html",
     },
     body: textCode.value,

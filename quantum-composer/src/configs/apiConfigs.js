@@ -6,7 +6,6 @@ const apiConfig = {
     API_BAR_CHART: `${API_BASE_URL}/return-histogram`,
     API_TABLE: `${API_BASE_URL}/return-sim-data`,
     API_SAVE_HISTORY: `${API_BASE_URL}/save-to-history`,
-    API_TOKEN: `${API_BASE_URL}/token`,
     API_QSPHERE: `${API_BASE_URL}/return-qsphere`
 }
 
