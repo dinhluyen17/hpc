@@ -894,7 +894,9 @@ class DisplayedCircuit {
      * @private
      */
     _previewResizedGate(hand) {
-        if (hand.resizingGateSlot === undefined || hand.pos === undefined) {
+        if (hand.resizingGateSlot === undefined || hand.pos === undefined
+            || this.wireIndexAt(hand.pos.y - hand.holdOffset.y) >= this.circuitDefinition.numWires - 1
+            || this.wireIndexAt(hand.pos.y - hand.holdOffset.y) >= this._extraWireStartIndex - 1) {
             return this;
         }
         let gate = this.circuitDefinition.gateInSlot(hand.resizingGateSlot.x, hand.resizingGateSlot.y);
