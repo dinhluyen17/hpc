@@ -28,7 +28,7 @@ import { DisplayedInspector } from "./ui/DisplayedInspector.js"
 import { Painter } from "./draw/Painter.js"
 import { Rect } from "./math/Rect.js"
 import { RestartableRng } from "./base/RestartableRng.js"
-import { Revision } from "./base/Revision.js"
+import {checkSupport, Revision} from "./base/Revision.js"
 import { initSerializer, fromJsonText_CircuitDefinition } from "./circuit/Serializer.js"
 import { TouchScrollBlocker } from "./browser/TouchScrollBlocker.js"
 import { Util } from "./base/Util.js"
@@ -848,6 +848,7 @@ revision.latestActiveCommit().subscribe(jsonText => {
   const error = document.getElementById("error-notice")
   const textCode = document.getElementById("text-code")
   const currentWireNumber = displayed.get().displayedCircuit.circuitDefinition.numWires;
+  const supported = checkSupport(jsonText)
   fetch(API_JSON_TO_QASM, {
     method: "POST",
     headers: {
@@ -857,7 +858,8 @@ revision.latestActiveCommit().subscribe(jsonText => {
     // body: jsonText,
     body: JSON.stringify({
       "circuit": jsonText,
-      "numWire": currentWireNumber
+      "numWire": currentWireNumber,
+      "supported": supported
     })
   })
     .then((res) => {
@@ -1370,6 +1372,7 @@ const jsonToQasmApi = () => {
   const textQiskit = document.getElementById("text-code-qiskit");
   const error = document.getElementById("error-notice");
   let jsonText = currentCircuitJson;
+  const supported = checkSupport(jsonText);
   return fetch(API_JSON_TO_QASM, {
     method: "POST",
     headers: {
@@ -1378,7 +1381,8 @@ const jsonToQasmApi = () => {
     },
     body: JSON.stringify({
       "circuit": jsonText,
-      "numWire": currentWireNumber + 1
+      "numWire": currentWireNumber + 1,
+      "supported": supported
     })
   })
       .then((res) => {

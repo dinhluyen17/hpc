@@ -305,4 +305,29 @@ class Revision {
     }
 }
 
-export {Revision}
+const UNSUPPORTED_GATE = ["|0⟩⟨0|", "|1⟩⟨1|", "◦", "Density", "Bloch", "Chance", "Amps2", "Z^(A/2^n)", "Z^(-A/2^n)",
+    "Y^(A/2^n)", "Y^(-A/2^n)", "X^(A/2^n)", "X^(-A/2^n)", "ZDetector", "ZDetectControlReset",
+    "YDetector", "YDetectControlReset", "XDetector", "XDetectControlReset", "zpar", "ypar", "xpar",
+    "⊕", "⊖", "⊗", "(/)", "|+⟩⟨+|", "|-⟩⟨-|", "|X⟩⟨X|", "|/⟩⟨/|", "NeGate", "i", "-i", "√i", "√-i"]
+const unsupportedGates = new Set(UNSUPPORTED_GATE)
+const VAR_UNSUPPORTED_GATE = ["Counting", "Uncounting", "rev", "<<", ">>", "weave", "split", "QFT", "QFT†",
+    "PhaseGradient", "PhaseUngradient","grad^t", "grad^-t", "inputA", "setA", "inputB", "setB",
+    "inputR", "setR", "inc", "dec", "+=A", "-=A", "+=AB", "-=AB", "*A", "/A", "^A<B", "^A>B",
+    "^A<=B", "^A>=B", "^A=B", "^A!=B", "incmodR", "decmodR","+AmodR", "-AmodR", "+AmodR",
+    "/AmodR", "*BToAmodR", "/BToAmodR",]
+for (let i = 0; i < VAR_UNSUPPORTED_GATE.length; i++) {
+    for (let j = 1; j <= 16; j++) {
+        unsupportedGates.add(VAR_UNSUPPORTED_GATE[i] + j);
+    }
+}
+const checkSupport = (str) => {
+    let words = str.split('"');
+    for (let i = 0; i < words.length; i++) {
+        if (unsupportedGates.has(words[i])) {
+            return false;
+        }
+    }
+    return true;
+};
+
+export {Revision, checkSupport}
