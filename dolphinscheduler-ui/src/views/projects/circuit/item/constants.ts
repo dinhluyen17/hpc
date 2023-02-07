@@ -10,6 +10,7 @@ const RECEIVE_QASM_ERROR_MESSAGE = 'error_qasm_code_message';
 const SEND_LOADED_CIRCUIT_JSON = 'loaded_circuit_json';
 const SEND_GET_CIRCUIT_JSON = 'get_circuit_json';
 const SEND_SET_CIRCUIT_JSON = 'set_circuit_json';
+const SEND_SET_CIRCUIT_QASM = 'set_circuit_qasm';
 const SEND_CHANGE_TAB = 'change_tab';
 const SEND_CIRCUIT_DATA = 'send_circuit_data';
 const SEND_CIRCUIT_NAME = 'send_circuit_name';
@@ -19,6 +20,7 @@ const MESSAGE = {
     loadedCircuitJson: SEND_LOADED_CIRCUIT_JSON, /** Vuejs --> Composer: send circuit json after call api get circuit info successful  */
     getCircuitJson: SEND_GET_CIRCUIT_JSON, /** Vuejs --> Composer: send request to get current circuit json  */
     setCircuitJson: SEND_SET_CIRCUIT_JSON, /** Vuejs --> Composer: send message to set circuit json */
+    setCircuitQasm: SEND_SET_CIRCUIT_QASM,
     changeTab: SEND_CHANGE_TAB, /** Vuejs --> Composer: change tab */
     sendData: SEND_CIRCUIT_DATA,
     sendName: SEND_CIRCUIT_NAME,

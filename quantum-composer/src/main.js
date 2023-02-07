@@ -232,17 +232,26 @@ window.addEventListener('message', (e) => {
             "qiskit": qiskit
           }
           window.parent.postMessage(JSON.stringify({
-            messageFrom: 'quantum_composer',
-            actionType: 'current_circuit_json',
-            detailData: postDetailData,
-          })
+                messageFrom: 'quantum_composer',
+                actionType: 'current_circuit_json',
+                detailData: postDetailData,
+              })
           );
         }
-        else if (actionType == 'set_circuit_json') {
+        else if (actionType == 'set_circuit_qasm') {
           viewState.getInstance().wireNumber = undefined;
-          revision.commit(obj.detailData);
-        }
-        else if (actionType == 'change_tab') {
+          revision.commit(obj.detailData)
+        } else if (actionType == 'set_circuit_json') {
+          viewState.getInstance().wireNumber = undefined;
+          let data = obj.detailData;
+          let parse = JSON.parse(data);
+          let longestEle = parse.cols.reduce((longest, current) => {
+            return current.length > longest.length ? current : longest;
+          }, []);
+          longestEle.push("…");
+          data = JSON.stringify(parse);
+          revision.commit(data);
+        } else if (actionType == 'change_tab') {
           changeTab(obj.detailData);
         } else if (actionType == 'send_circuit_name') {
           circuitName = obj.detailData;
