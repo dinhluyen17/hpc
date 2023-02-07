@@ -79,7 +79,7 @@ const circuitItem = defineComponent({
             if (jsonString && jsonString.includes("OPENQASM")) {
               importQasmTxtFile(jsonString)
                 .then(response => {
-                  sendMessageToIFrame(MESSAGE.setCircuitJson, JSON.stringify(response.data));
+                  sendMessageToIFrame(MESSAGE.setCircuitQasm, JSON.stringify(response.data));
                 })
                 .catch((error) =>
                   window.$message.error('Please import a valid qasm text file!')
