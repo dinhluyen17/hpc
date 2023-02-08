@@ -32,6 +32,7 @@ import { initGateViews } from "./ui/initGateViews.js";
 import { initSizeViews, updateSizeViews } from "./ui/updateSizeViews.js";
 import { viewState } from "./ui/viewState.js";
 import { Gates } from "./gates/AllGates.js";
+import backendApiConfig from "./configs/apiConfig.js";
 
 const codeArea = document.getElementById("code-area");
 const gateArea = document.getElementById("gate-area");
@@ -280,7 +281,7 @@ $('#runButton').click(function () {
   }
   displayLoading();
   const qiskitCode = document.querySelectorAll(".line-content");
-  fetch("http://0.0.0.0:8000/return-histogram", {
+  fetch(backendApiConfig.API_RETURN_HISTORY, {
     method: "POST",
     headers: {
       "content-type": "text/plain",
@@ -301,7 +302,7 @@ $('#runButton').click(function () {
     .catch((error) => {
       console.error("Error: ", error);
     });
-  fetch("http://0.0.0.0:8000/return-sim-data", {
+  fetch(backendApiConfig.API_SIM_DATA, {
     method: "POST",
     headers: {
       "content-type": "text/plain"
@@ -318,7 +319,7 @@ $('#runButton').click(function () {
       aerProb = data.qProb;
       simStatCalc()
     });
-  fetch("http://0.0.0.0:8000/save-to-history", {
+  fetch(backendApiConfig.API_SAVE_HISTORY, {
     method: "POST",
     headers: {
       'Content-Type': 'application/json',
@@ -768,7 +769,7 @@ revision.latestActiveCommit().subscribe(jsonText => {
   const quantumCode = document.getElementById("text-code");
   const textQiskit = document.getElementById("text-code-qiskit");
   const error = document.getElementById("error-notice")
-  fetch("http://0.0.0.0:8000/json-to-qasm", {
+  fetch(backendApiConfig.API_JSON_TO_QASM, {
     method: "POST",
     headers: {
       "content-type": "text/html",
@@ -1229,7 +1230,7 @@ textCode.addEventListener("keydown", () => {
   clearTimeout(timmer);
   timmer = setTimeout(() => {
     if (textCode && textCode.value.length > 0) {
-      fetch("http://0.0.0.0:8000/qasm-to-json", {
+      fetch(backendApiConfig.API_QASM_TO_JSON, {
         method: "POST",
         headers: {
           "content-type": "text/html",
