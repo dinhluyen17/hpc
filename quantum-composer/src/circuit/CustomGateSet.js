@@ -24,7 +24,7 @@ class CustomGateSet {
         /** @type {!Array.<!Gate>} */
         this.gates = gates;
         this.gates.forEach(gate => {
-            gate.colorIndex = 2;
+            gate.colorIndex = 3;
         })
     }
 

@@ -204,7 +204,7 @@ body {
 }
 
 small.smaller {
-    font-size: xx-small;
+    font-size: 8px;
 }
 
 .Probes,
@@ -230,10 +230,6 @@ small.smaller {
     color: #ffffff;
 }
 
-.Custom {
-    background-color: #F3A339;
-}
-
 .Half,
 .Quarter,
 .Eighth,
@@ -253,7 +249,8 @@ small.smaller {
 .Modular,
 .Scalar,
 .Order,
-.Parity {
+.Parity,
+.Custom {
     background-color: #626c7a;
 }
 
@@ -323,7 +320,7 @@ small.smaller {
 }
 
 .circuit-area-header {
-    height: 50px;
+    min-height: 50px;
     display: flex;
     flex-direction: row;
     align-items: center;
