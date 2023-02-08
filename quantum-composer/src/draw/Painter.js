@@ -127,7 +127,7 @@ class Painter {
      * @param {=string} color The color of the drawn line.
      * @param {=number} thickness The thickness of the drawn line.
      */
-    strokeLine(p1, p2, color = Config.DEFAULT_STROKE_COLOR, thickness = 1) {
+    strokeLine(p1, p2, color = Config.DEFAULT_STROKE_COLOR, thickness = 2) {
         this.ctx.beginPath();
         this.ctx.moveTo(p1.x, p1.y);
         this.ctx.lineTo(p2.x, p2.y);

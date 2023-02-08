@@ -397,12 +397,12 @@ const circuitEdit = {
       //css unsupported gate
       const probesGates = document.querySelectorAll(".Probes")
       probesGates.forEach((gate, idx) => {
-        if(idx == 0 || idx == 5) {
-          gate.style.backgroundColor = "#24b1a0"
-        } 
-        else if (idx == 4 || idx == 9) {
-          gate.style.backgroundColor = "#f1ac2e"
-        } 
+        // if(idx == 0 || idx == 2) {
+        //   gate.style.backgroundColor = "#24b1a0"
+        // }
+        // else if (idx == 1 || idx == 3) {
+        //   gate.style.backgroundColor = "#f1ac2e"
+        // }
       })
 
       //css quantum code area toggle show and hide between qasm and qiskit

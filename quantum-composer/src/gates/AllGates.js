@@ -193,8 +193,8 @@ Gates.TopToolboxGroups = [
         hint: "Probes",
         gates: [
             MeasurementGate, undefined,
-            PostSelectionGates.PostSelectOff, PostSelectionGates.PostSelectOn,
-            Controls.AntiControl, Controls.Control
+            undefined, undefined,
+            undefined, Controls.Control
         ]
     },
     {
@@ -361,136 +361,31 @@ Gates.CustomGateGroups = [
 ];
 Gates.customGateSet = new Set();
 Gates.TopToolboxGroups.forEach((group, idx) => {
-    /* if (idx == 0 || idx == 1) {
-        group.gates.forEach(gate => {
-            if (gate != undefined) {
-                gate.colorIndex = 2;
-            }
-        });
-    }
-    else if (idx == 5 || idx == 6 || idx == 8) {
-        group.gates.forEach(gate => {
-            if (gate != undefined) {
-                gate.colorIndex = 3;
-            }
-        });
-    } */
     if (idx == 0) {
         group.gates.forEach((gate, subIdx) => {
             if (subIdx == 0 && gate != undefined) {
-                gate.colorIndex = 1
-            } else if (subIdx == 5 && gate != undefined) {
                 gate.colorIndex = 2
-            } else if (gate != undefined) {
-                gate.colorIndex = 3
-            }
-        })
-    }
-    else if (idx == 2 || idx == 3 || idx == 4) {
-        group.gates.forEach(gate => {
-            if (gate != undefined) {
+            } else if (subIdx == 1 && gate != undefined) {
                 gate.colorIndex = 1
             }
         })
     }
-    else if (idx == 6) {
+    else {
         group.gates.forEach(gate => {
             if (gate != undefined) {
-                gate.colorIndex = 2
-            }
-        })
-    } else {
-        group.gates.forEach(gate => {
-            if (gate != undefined) {
-                gate.colorIndex = 3
+                gate.colorIndex = 1
             }
         })
     }
 })
 Gates.BottomToolboxGroups.forEach((group, idx) => {
-    /*     if (idx == 0) {
-            group.gates.forEach(gate => {
-                if (gate != undefined) {
-                    gate.colorIndex = 2;
-                }
-            });
-        }
-        else if (idx == 1) {
-            group.gates.forEach((gate, subIndex) => {
-                if (gate != undefined) {
-                    gate.colorIndex = subIndex <= 1 ? 3 : 1;
-                }
-            });
-        }
-        else if (idx == 2) {
-            group.gates.forEach((gate, subIndex) => {
-                if (gate != undefined) {
-                    gate.colorIndex = subIndex >= 6 ? 3 : 1;
-                }
-            });
-        }
-        else {
-            group.gates.forEach(gate => {
-                if (gate != undefined) {
-                    gate.colorIndex = 1;
-                }
-            });
-        } */
     group.gates.forEach(gate => {
         if (gate != undefined) {
             gate.colorIndex = 3
         }
     })
 })
-/* const gateFamilyGroups =
-[
-    CountingGates.CountingFamily,
-    CountingGates.UncountingFamily,
-    ReverseBitsGateFamily,
-    CycleBitsGates.CycleBitsFamily,
-    CycleBitsGates.ReverseCycleBitsFamily,
-    InterleaveBitsGates.InterleaveBitsGateFamily,
-    InterleaveBitsGates.DeinterleaveBitsGateFamily,
-    //    
-    FourierTransformGates.FourierTransformFamily,
-    FourierTransformGates.InverseFourierTransformFamily,
-    PhaseGradientGates.PhaseGradientFamily,
-    PhaseGradientGates.PhaseDegradientFamily,
-    PhaseGradientGates.DynamicPhaseGradientFamily,
-    PhaseGradientGates.DynamicPhaseDegradientFamily,
-    //
-    InputGates.InputAFamily,
-    InputGates.InputBFamily,
-    InputGates.InputRFamily,
-    //
-    IncrementGates.IncrementFamily, IncrementGates.DecrementFamily,
-    ArithmeticGates.PlusAFamily, ArithmeticGates.MinusAFamily,
-    MultiplyAccumulateGates.MultiplyAddInputsFamily,
-    MultiplyAccumulateGates.MultiplySubtractInputsFamily,
-    MultiplicationGates.TimesAFamily, MultiplicationGates.TimesAInverseFamily,
-    ModularIncrementGates.IncrementModRFamily,
-    ModularIncrementGates.DecrementModRFamily,
-    ModularAdditionGates.PlusAModRFamily,
-    ModularAdditionGates.MinusAModRFamily,
-    ModularMultiplicationGates.TimesAModRFamily,
-    ModularMultiplicationGates.TimesAModRInverseFamily,
-    ModularMultiplicationGates.TimesBToTheAModRFamily,
-    ModularMultiplicationGates.TimesInverseBToTheAModRFamily
-];
-gateFamilyGroups.forEach((gateFamily, idx) => {
-    if (gateFamily && gateFamily.all) {
-        gateFamily.all.forEach((gate) => {
-            if (gate != undefined) {
-                if (idx <= 1 || idx == 11 || idx == 12) {
-                    gate.colorIndex = 3;
-                }                
-                else {
-                    gate.colorIndex = 1;
-                }
-            }
-        });        
-    }
-}); */
+
 /** @type {!Map.<undefined|!string, !Array.<!Gate>>} */
 const INITIAL_STATES_TO_GATES = new Map([
     [undefined, []],

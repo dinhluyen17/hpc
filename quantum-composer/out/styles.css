@@ -230,14 +230,14 @@ small.smaller {
     color: #ffffff;
 }
 
-.Custom,
-.Formulaic {
+.Custom {
     background-color: #F3A339;
 }
 
 .Half,
 .Quarter,
-.Eighth {
+.Eighth,
+.Formulaic {
     background-color: #00A895;
 }
 
