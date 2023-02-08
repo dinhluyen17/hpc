@@ -29,9 +29,7 @@ import './styles/CircuitStyle.scss'
 import HelpModal from './help-modal'
 import {stateBarCalc} from "@/service/modules/circuits";
 import {CircuitBarData} from "@/service/modules/circuits/types";
-import { exportQasm } from '@/service/modules/circuits'
-import axios from 'axios';
-import {importQasmTxtFile} from '@/service/modules/circuits'
+import { exportQasm, importQasmTxtFile } from '@/service/modules/circuits'
 
 const circuitItem = defineComponent({
   name: 'circuitItem',
