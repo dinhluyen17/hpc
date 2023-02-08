@@ -135,8 +135,6 @@ let fromJson_Matrix = json => {
  */
 let toJson_Gate = (gate, context=new CustomGateSet()) => {
     let found = Gates.findKnownGateById(gate.serializedId, context);
-    console.log("compoare ", found === gate);
-    console.log("found gate ", found);
     if (found === gate) {
         if(found.symbol == 'X^ft' || found.symbol == 'Rxft' || found.symbol == 'Z^ft' || found.symbol == 'Rzft' || found.symbol == 'Y^ft' || found.symbol == 'Ryft') {
             return {id: gate.serializedId, arg: gate.param};
