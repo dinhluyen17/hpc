@@ -198,14 +198,6 @@ Gates.TopToolboxGroups = [
         ]
     },
     {
-        hint: "Displays",
-        gates: [
-            undefined, undefined,
-            DensityMatrixDisplayFamily.ofSize(1), BlochSphereDisplay,
-            ProbabilityDisplayFamily.ofSize(1), AmplitudeDisplayFamily.ofSize(2)
-        ]
-    },
-    {
         hint: "Half Turns",
         gates: [
             HalfTurnGates.Z, SwapGateHalf,
@@ -230,19 +222,31 @@ Gates.TopToolboxGroups = [
         ]
     },
     {
-        hint: "Spinning",
-        gates: [
-            PoweringGates.ZForward, PoweringGates.ZBackward,
-            PoweringGates.YForward, PoweringGates.YBackward,
-            PoweringGates.XForward, PoweringGates.XBackward,
-        ]
-    },
-    {
         hint: "Formulaic",
         gates: [
             ParametrizedRotationGates.FormulaicRotationZ, ParametrizedRotationGates.FormulaicRotationRz,
             ParametrizedRotationGates.FormulaicRotationY, ParametrizedRotationGates.FormulaicRotationRy,
             ParametrizedRotationGates.FormulaicRotationX, ParametrizedRotationGates.FormulaicRotationRx,
+        ]
+    },
+];
+
+/** @type {!Array<!{hint: !string, gates: !Array<undefined|!Gate>}>} */
+Gates.BottomToolboxGroups = [
+    {
+        hint: "Displays",
+        gates: [
+            undefined, undefined,
+            DensityMatrixDisplayFamily.ofSize(1), BlochSphereDisplay,
+            ProbabilityDisplayFamily.ofSize(1), AmplitudeDisplayFamily.ofSize(2)
+        ]
+    },
+    {
+        hint: "Spinning",
+        gates: [
+            PoweringGates.ZForward, PoweringGates.ZBackward,
+            PoweringGates.YForward, PoweringGates.YBackward,
+            PoweringGates.XForward, PoweringGates.XBackward,
         ]
     },
     {
@@ -269,10 +273,6 @@ Gates.TopToolboxGroups = [
             Controls.XParityControl, undefined,
         ]
     },
-];
-
-/** @type {!Array<!{hint: !string, gates: !Array<undefined|!Gate>}>} */
-Gates.BottomToolboxGroups = [
     {
         hint: "X/Y Probes",
         gates: [
