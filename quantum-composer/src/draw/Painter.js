@@ -21,6 +21,21 @@ import {RestartableRng} from "../base/RestartableRng.js"
 import {seq, Seq} from "../base/Seq.js"
 import {Util} from "../base/Util.js"
 
+CanvasRenderingContext2D.prototype.roundRectF = function (x, y, width, height, radius) {
+    this.beginPath();
+    this.moveTo(x + radius, y);
+    this.lineTo(x + width - radius, y);
+    this.arcTo(x + width, y, x + width, y + radius, radius);
+    this.lineTo(x + width, y + height - radius);
+    this.arcTo(x + width, y + height, x + width - radius, y + height, radius);
+    this.lineTo(x + radius, y + height);
+    this.arcTo(x, y + height, x, y + height - radius, radius);
+    this.lineTo(x, y + radius);
+    this.arcTo(x, y, x + radius, y, radius);
+    this.closePath();
+    this.fill();
+};
+
 class Painter {
     /**
      * @param {!HTMLCanvasElement} canvas
@@ -155,14 +170,22 @@ class Painter {
      */
     fillRect(rect, color = Config.DEFAULT_FILL_COLOR) {
         this.ctx.beginPath();
-        this.ctx.roundRect(rect.x, rect.y, rect.w, rect.h,[5]);
+        if (navigator.userAgent.indexOf("Firefox") != -1) {
+            this.ctx.roundRectF(rect.x, rect.y, rect.w, rect.h, [5]);
+        } else {
+            this.ctx.roundRect(rect.x, rect.y, rect.w, rect.h,[5]);
+        }
         this.ctx.fillStyle = color;
         this.ctx.fill();
     }
 
     fillRectWithoutRadius(rect, color = Config.DEFAULT_FILL_COLOR) {
         this.ctx.beginPath();
-        this.ctx.roundRect(rect.x, rect.y, rect.w, rect.h,[0]);
+        if (navigator.userAgent.indexOf("Firefox") != -1) {
+            this.ctx.roundRectF(rect.x, rect.y, rect.w, rect.h, [5]);
+        } else {
+            this.ctx.roundRect(rect.x, rect.y, rect.w, rect.h,[0]);
+        }
         this.ctx.fillStyle = color;
         this.ctx.fill();
     }
