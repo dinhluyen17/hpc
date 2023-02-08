@@ -37,58 +37,56 @@ import backendApiConfig from "./configs/apiConfig.js";
 const codeArea = document.getElementById("code-area");
 const gateArea = document.getElementById("gate-area");
 const chartArea = document.getElementById("circuit-chart");
+const canvasDiv = document.getElementById("app");
+const canvas = document.getElementById("drawCanvas");
+const dragCanvas = document.getElementById("dragCanvas");
+const gateInfoCanvas = document.getElementById("gateInfo");
+const canvasSim = document.getElementById("drawCanvasSim");
+const loader = document.getElementById("loading");
+const simulator = document.getElementById("simSelectId");
+const stateBarChartFilter = document.getElementById("stateBarChartFilterZero");
+const textCode = document.getElementById("text-code");
 let startResizeCodeArea = false;
 let startResizeGateArea = false;
 let startResizeChartArea = false;
 let posResize;
+let haveLoaded = false;
+let circuitName;
+let barData = [];
+let simulatorType = "client";
+let aerVector;
+let aerStates;
+let aerPhase;
+let aerProb;
+let aerKeys;
+let sortSwitch = false;
+let tableSortSwitch = false;
+let barDataFilterSwitch = true;
+let vectFilterSwitch = false;
+let clickDownGateButtonKey = undefined;
+let timmer;
 
 initSerializer(
   GatePainting.LABEL_DRAWER,
   GatePainting.MATRIX_DRAWER,
   GATE_CIRCUIT_DRAWER,
-  GatePainting.LOCATION_INDEPENDENT_GATE_DRAWER);
+  GatePainting.LOCATION_INDEPENDENT_GATE_DRAWER
+);
+const displayed = new ObservableValue(DisplayedInspector.empty(new Rect(0, 0, canvas.clientWidth, canvas.clientHeight)));
+const mostRecentStats = new ObservableValue(CircuitStats.EMPTY);
+let revision = Revision.startingAt(displayed.get().snapshot());
+viewState.getInstance().revision = revision;
 
-const canvasDiv = document.getElementById("app");
-//noinspection JSValidateTypes
-/** @type {!HTMLCanvasElement} */
-const canvas = document.getElementById("drawCanvas");
-const dragCanvas = document.getElementById("dragCanvas");
-const gateInfoCanvas = document.getElementById("gateInfo");
-const canvasSim = document.getElementById("drawCanvasSim");
-//noinspection JSValidateTypes
-
-if (!canvas) {
-  throw new Error("Couldn't find 'drawCanvas'");
-}
-if (!canvasSim) {
-  throw new Error("Couldn't find 'canvasSim");
-}
-//canvas.width = canvasDiv.clientWidth;
-//canvas.height = window.innerHeight*0.9;
-let haveLoaded = false;
 const semiStableRng = (() => {
   const target = { cur: new RestartableRng() };
   let cycleRng;
   cycleRng = () => {
     target.cur = new RestartableRng();
-    //noinspection DynamicallyGeneratedCodeJS
     setTimeout(cycleRng, Config.SEMI_STABLE_RANDOM_VALUE_LIFETIME_MILLIS * 0.99);
   };
   cycleRng();
   return target;
 })();
-
-//noinspection JSValidateTypes
-/** @type {!HTMLDivElement} */
-
-/** @type {ObservableValue.<!DisplayedInspector>} */
-const displayed = new ObservableValue(
-  DisplayedInspector.empty(new Rect(0, 0, canvas.clientWidth, canvas.clientHeight)));
-const mostRecentStats = new ObservableValue(CircuitStats.EMPTY);
-
-/** @type {!Revision} */
-let revision = Revision.startingAt(displayed.get().snapshot());
-viewState.getInstance().revision = revision;
 
 const isSupportBarChart = () => {
   const currentWireNumber = displayed.get().displayedCircuit.circuitDefinition.numWires;
@@ -133,7 +131,7 @@ const isSupportStateTable = () => {
     document.getElementById("vectorTable").style.display = 'none';
     return false;
   }
-}
+};
 
 const changeTab = (tab) => {
   if (tab == 'circuit') {
@@ -156,8 +154,7 @@ const changeTab = (tab) => {
       width: canvasBox.width,
       height: canvasBox.height
     }
-  }
-  else {
+  } else {
     let e = document.getElementById("circuit");
     e.classList.add("hidden");
     let eT = document.getElementById("circuitTab");
@@ -181,8 +178,8 @@ const changeTab = (tab) => {
       simStatCalc();
     }
   }
-}
-let circuitName;
+};
+
 window.addEventListener('message', (e) => {
   // Handle message from vuejs
   if (e.data) {
@@ -194,8 +191,7 @@ window.addEventListener('message', (e) => {
           if (obj.detailData && obj.detailData.length > 0) {
             revision.commit(obj.detailData);
           }
-        }
-        else if (actionType == 'get_circuit_json') {
+        } else if (actionType == 'get_circuit_json') {
           const qasm = document.getElementById("text-code")
           const qiskit = convert(document.getElementById("text-code-qiskit"));
           const postDetailData = {
@@ -209,12 +205,10 @@ window.addEventListener('message', (e) => {
             detailData: postDetailData,
           })
           );
-        }
-        else if (actionType == 'set_circuit_json') {
+        } else if (actionType == 'set_circuit_json') {
           viewState.getInstance().wireNumber = undefined;
           revision.commit(obj.detailData);
-        }
-        else if (actionType == 'change_tab') {
+        } else if (actionType == 'change_tab') {
           changeTab(obj.detailData);
         } else if (actionType == 'send_circuit_name') {
           circuitName = obj.detailData;
@@ -224,17 +218,8 @@ window.addEventListener('message', (e) => {
     }
   }
 });
-const loader = document.getElementById("loading");
-const displayLoading = () => {
-  loader.classList.add("display");
-}
-const hideLoading = () => {
-  loader.classList.remove("display");
-}
+
 //data for bar chart and simulation
-let barData = [];
-const simulator = document.getElementById("simSelectId");
-let simulatorType = "client";
 simulator.addEventListener("change", function () {
   simulatorType = simulator.value;
   if (simulatorType == "client") {
@@ -270,16 +255,12 @@ simulator.addEventListener("change", function () {
   }
   isSupportClientChart();
 });
-let aerVector;
-let aerStates;
-let aerPhase;
-let aerProb;
-let aerKeys;
+
 $('#runButton').click(function () {
   if (simulatorType != "qAer") {
     return
   }
-  displayLoading();
+  loader.classList.add("display");
   const qiskitCode = document.querySelectorAll(".line-content");
   fetch(backendApiConfig.API_RETURN_HISTORY, {
     method: "POST",
@@ -292,7 +273,7 @@ $('#runButton').click(function () {
       return res.text()
     })
     .then((data) => {
-      hideLoading();
+      loader.classList.remove("display");
       barData = jQuery.parseJSON(data)
       document.getElementById("barChartDes").style.visibility = 'hidden';
       document.getElementById("stateBarChart").style.visibility = 'visible';
@@ -339,6 +320,7 @@ $('#runButton').click(function () {
       console.error("Error: ", error)
     });
 });
+
 let stateBarCalc = () => {
   if (simulatorType == "client") {
     let qHeight = mostRecentStats.get().finalState.height();
@@ -418,17 +400,19 @@ let stateBarCalc = () => {
   } else {
     return barData
   }
-}
+};
+
 function compareData(a, b) {
   const dataA = a.Probability;
   const dataB = b.Probability;
   return dataB - dataA;
-}
-let sortSwitch = false;
+};
+
 let handleSortedData = (barData) => {
   let sortedData = barData.sort(compareData);
   document.D3_FUNCTION.bar(sortedData);
-}
+};
+
 document.getElementById("sortBar").addEventListener("click", function (e) {
   if (!isSupportBarChart()) {
     return;
@@ -448,7 +432,8 @@ document.getElementById("sortBar").addEventListener("click", function (e) {
       handleSortedData(barDataFilter)
     }
   }
-})
+});
+
 document.getElementById("changeState").addEventListener("change", function (e) {
   if (!isSupportBarChart()) {
     return;
@@ -458,7 +443,8 @@ document.getElementById("changeState").addEventListener("change", function (e) {
   } else {
     document.D3_FUNCTION.bar(stateBarCalc())
   }
-})
+});
+
 let simStatCalc = () => {
   if (simulatorType == "client") {
     let qHeight = mostRecentStats.get().finalState.height();
@@ -524,8 +510,8 @@ let simStatCalc = () => {
     }
     document.getElementById("vectorTable").appendChild(printVect)
   }
-}
-let tableSortSwitch = false;
+};
+
 let sortTable = () => {
   let table, rows, switching, i, x, y, shouldSwitch;
   table = document.getElementById("dataOutput");
@@ -567,7 +553,8 @@ let sortTable = () => {
       }
     }
   }
-}
+};
+
 document.getElementById("sortTable").addEventListener("click", function (e) {
   tableSortSwitch = !tableSortSwitch;
   if (tableSortSwitch) {
@@ -578,7 +565,8 @@ document.getElementById("sortTable").addEventListener("click", function (e) {
     document.getElementById("sortTableUp").classList.add("hidden")
   }
   sortTable();
-})
+});
+
 document.getElementById("cancelSortTable").addEventListener("click", function (e) {
   if (!isSupportStateTable()) {
     return;
@@ -587,9 +575,8 @@ document.getElementById("cancelSortTable").addEventListener("click", function (e
   document.getElementById("sortTableDown").classList.remove("hidden")
   document.getElementById("sortTableUp").classList.add("hidden")
   simStatCalc();
-})
-let barDataFilterSwitch = true;
-const stateBarChartFilter = document.getElementById("stateBarChartFilterZero");
+});
+
 stateBarChartFilter.addEventListener('click', () => {
   if (!isSupportBarChart()) {
     return;
@@ -611,8 +598,8 @@ stateBarChartFilter.addEventListener('click', () => {
       handleSortedData(barDataFilter);
     }
   }
-})
-let vectFilterSwitch = false;
+});
+
 document.getElementById("vectFilter").addEventListener('click', function (e) {
   if (!isSupportStateTable()) {
     return;
@@ -621,7 +608,6 @@ document.getElementById("vectFilter").addEventListener('click', function (e) {
   let table = document.getElementById("vectorTable");
   let tr = table.getElementsByTagName("tr")
   if (vectFilterSwitch == true) {
-    // document.getElementById("vectFilter").innerHTML = "Show all states"
     document.getElementById("probHeader").innerHTML = "Probability (Filtered)"
     document.getElementById("vectSearch").innerHTML = ""
     for (let i = 0; i < tr.length; i++) {
@@ -642,19 +628,22 @@ document.getElementById("vectFilter").addEventListener('click', function (e) {
     document.getElementById("vectSearch").innerHTML = ""
     simStatCalc();
   }
-})
+});
+
 document.getElementById("stateSearchButton").addEventListener("click", function (e) {
   document.getElementById("stateHeaderText").classList.add("hidden");
   document.getElementById("stateSearchButton").classList.add("hidden");
   document.getElementById("vectSearch").classList.remove("hidden");
   document.getElementById("vectSearchCancel").classList.remove("hidden");
-})
+});
+
 document.getElementById("vectSearchCancel").addEventListener("click", function (e) {
   document.getElementById("stateHeaderText").classList.remove("hidden");
   document.getElementById("stateSearchButton").classList.remove("hidden");
   document.getElementById("vectSearch").classList.add("hidden");
   document.getElementById("vectSearchCancel").classList.add("hidden");
-})
+});
+
 document.getElementById("vectSearch").addEventListener("input", function (e) {
   if (!isSupportStateTable()) {
     return;
@@ -686,8 +675,7 @@ document.getElementById("vectSearch").addEventListener("input", function (e) {
     $('#no-data3').remove()
     simStatCalc()
   }
-})
-
+});
 
 document.addEventListener('contextmenu', function (e) {
   if (viewState.getInstance().currentTab == 'circuit') {
@@ -709,13 +697,14 @@ document.addEventListener('contextmenu', function (e) {
     }
   }
 }, false);
+
 document.addEventListener("DOMContentLoaded", function () {
   if (!isSupportBarChart()) {
     return;
   }
   let barDataFilter = stateBarCalc().filter(val => !val.Probability.match(/^0\.0+$/));
   document.D3_FUNCTION.bar(barDataFilter, viewState.getInstance().chartAreaHeight);
-})
+});
 
 revision.latestActiveCommit().subscribe(jsonText => {
   let circuitDef = fromJsonText_CircuitDefinition(
@@ -822,21 +811,13 @@ revision.latestActiveCommit().subscribe(jsonText => {
       console.error("Log error:", error);
     });
 });
-/**
- * @param {!DisplayedInspector} curInspector
- * @returns {{w: number, h: !number}}
- */
+
 let desiredCanvasSizeFor = curInspector => {
   return {
     w: curInspector.desiredWidth(),
     h: curInspector.desiredHeight()
   };
 };
-
-/**
- * @param {!DisplayedInspector} ins
- * @returns {!DisplayedInspector}
- */
 const syncArea = ins => {
   let size = desiredCanvasSizeFor(ins);
   ins.updateArea(new Rect(0, 0, size.w, size.h));
@@ -844,18 +825,14 @@ const syncArea = ins => {
 };
 
 // Gradually fade out old errors as user manipulates circuit.
-displayed.observable().
-  map(e => e.displayedCircuit.circuitDefinition).
-  whenDifferent(Util.CUSTOM_IS_EQUAL_TO_EQUALITY).
-  subscribe(() => {
-    let errDivStyle = document.getElementById('error-div').style;
-    errDivStyle.opacity *= 0.9;
-    if (errDivStyle.opacity < 0.06) {
-      errDivStyle.display = 'None'
-    }
-  });
+displayed.observable().map(e => e.displayedCircuit.circuitDefinition).whenDifferent(Util.CUSTOM_IS_EQUAL_TO_EQUALITY).subscribe(() => {
+  let errDivStyle = document.getElementById('error-div').style;
+  errDivStyle.opacity *= 0.9;
+  if (errDivStyle.opacity < 0.06) {
+    errDivStyle.display = 'None'
+  }
+});
 
-/** @type {!CooldownThrottle} */
 let redrawThrottle;
 const scrollBlocker = new TouchScrollBlocker(canvasDiv);
 const redrawNow = () => {
@@ -899,7 +876,6 @@ const redrawNow = () => {
     window.requestAnimationFrame(() => redrawThrottle.trigger());
   }
 };
-
 redrawThrottle = new CooldownThrottle(redrawNow, Config.REDRAW_COOLDOWN_MILLIS, 0.1, true);
 window.addEventListener('resize', () => {
   updateSizeViews(canvasDiv);
@@ -907,8 +883,6 @@ window.addEventListener('resize', () => {
 }, false);
 displayed.observable().subscribe(() => redrawThrottle.trigger());
 
-/** @type {undefined|!string} */
-let clickDownGateButtonKey = undefined;
 const hideAllMenu = () => {
   const pasteMenu = document.getElementById('paste-menu-popup');
   const gateMenu = document.getElementById('gate-menu-popup');
@@ -916,7 +890,7 @@ const hideAllMenu = () => {
   gateMenu.style.display = 'none';
   pasteMenu.style.display = 'none';
   gateInfo.style.display = 'none';
-}
+};
 
 canvasDiv.addEventListener('click', ev => {
   let pt = eventPosRelativeTo(ev, canvasDiv);
@@ -965,6 +939,7 @@ canvasDiv.addEventListener('click', ev => {
   }
   viewState.getInstance().skipDeleteWire = false;
 });
+
 watchDrags(canvasDiv,
   /**
    * Grab
@@ -1097,6 +1072,7 @@ canvasDiv.addEventListener('mousemove', ev => {
     displayed.set(newInspector);
   }
 });
+
 canvasDiv.addEventListener('mouseup', ev => {
   startResizeCodeArea = false;
   startResizeGateArea = false;
@@ -1111,7 +1087,8 @@ canvasDiv.addEventListener('mouseup', ev => {
     let newInspector = displayed.get().withCircuitDefinition(circuitDef);
     displayed.set(newInspector);
   }
-})
+});
+
 canvasDiv.addEventListener('mouseleave', () => {
   startResizeCodeArea = false;
   startResizeGateArea = false;
@@ -1130,20 +1107,12 @@ let obsIsAnyOverlayShowing = new ObservableSource();
 initGateViews();
 initSizeViews(canvasDiv);
 initUrlCircuitSync(revision);
-//initExports(revision, mostRecentStats, obsIsAnyOverlayShowing.observable());
-//initForge(revision, obsIsAnyOverlayShowing.observable());
 initUndoRedo(revision, obsIsAnyOverlayShowing.observable(), redrawThrottle);
-//initClear(revision, obsIsAnyOverlayShowing.observable());
-//initMenu(revision, obsIsAnyOverlayShowing.observable());
 initTitleSync(revision);
-obsForgeIsShowing.
-  zipLatest(obsExportsIsShowing, (e1, e2) => e1 || e2).
-  zipLatest(obsMenuIsShowing, (e1, e2) => e1 || e2).
-  whenDifferent().
-  subscribe(e => {
-    obsIsAnyOverlayShowing.send(e);
-    canvasDiv.tabIndex = e ? -1 : 0;
-  });
+obsForgeIsShowing.zipLatest(obsExportsIsShowing, (e1, e2) => e1 || e2).zipLatest(obsMenuIsShowing, (e1, e2) => e1 || e2).whenDifferent().subscribe(e => {
+  obsIsAnyOverlayShowing.send(e);
+  canvasDiv.tabIndex = e ? -1 : 0;
+});
 
 // If the webgl initialization is going to fail, don't fail during the module loading phase.
 haveLoaded = true;
@@ -1179,7 +1148,8 @@ function resizeCodeArea(e) {
     }
     updateSizeViews(canvasDiv);
   }
-}
+};
+
 function resizeGateArea(e) {
   if (startResizeGateArea) {
     const dx = posResize - e.clientX;
@@ -1190,7 +1160,8 @@ function resizeGateArea(e) {
     }
     updateSizeViews(canvasDiv);
   }
-}
+};
+
 function resizeChartArea(e) {
   if (startResizeChartArea) {
     const dy = posResize - e.clientY;
@@ -1217,15 +1188,13 @@ function resizeChartArea(e) {
     }
     updateSizeViews(canvasDiv);
   }
-}
+};
+
 setTimeout(() => {
   redrawThrottle.trigger();
 }, 500);
 
-
 // draw circuit whenever there is a change on qasm code
-let timmer;
-const textCode = document.getElementById("text-code")
 textCode.addEventListener("keydown", () => {
   clearTimeout(timmer);
   timmer = setTimeout(() => {

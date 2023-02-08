@@ -384,25 +384,16 @@ const circuitEdit = {
           $(this).find(".tooltip-content").addClass("tooltipRight");
         }
       });
-
-      //call api to generate circuit from qasm code
-      var delay = (function () {
-        var timer = 0;
-        return function (callback, ms) {
-          clearTimeout(timer);
-          timer = setTimeout(callback, ms);
-        };
-      })();
   
       //css unsupported gate
       const probesGates = document.querySelectorAll(".Probes")
       probesGates.forEach((gate, idx) => {
-        if(idx == 0 || idx == 5) {
+        if(idx == 0 || idx == 2) {
           gate.style.backgroundColor = "#24b1a0"
-        } 
-        else if (idx == 4 || idx == 9) {
+        }
+        else if (idx == 1 || idx == 3) {
           gate.style.backgroundColor = "#f1ac2e"
-        } 
+        }
       })
 
       //css quantum code area toggle show and hide between qasm and qiskit
@@ -429,7 +420,6 @@ const circuitEdit = {
 
       //css closed right section (quantum code)
       $("#code-area-close-btn").click(function () {
-        console.log("object", $(this));
         const quantumCodeText = document.getElementById("text-code-wrapper");
         const quantumSelectOption = document.getElementById(
           "quantum-code-option"
@@ -517,24 +507,6 @@ function stripAndExecuteScript(text) {
 $(document).ready(function () {
     circuitEdit.start();
 });
-
-//replace <br> tag from a node element to \n
-// const convert = (function() {
-//     let convertElement = function(element) {
-//         switch(element.tagName) {
-//             case "BR": 
-//                 return "\n";
-//             case "P": // fall through to DIV
-//             case "DIV": 
-//                 return (element.previousSibling ? "\n" : "") + [].map.call(element.childNodes, convertElement).join("");
-//             default: 
-//                 return element.textContent;
-//         }
-//     };
-//     return function(element) {
-//         return [].map.call(element.childNodes, convertElement).join("");
-//     };
-// })();
 
 //get the content of qiskit code
 const getContentQiskit = (qiskit) => {
