@@ -26,6 +26,9 @@ let SpacerGate = new GateBuilder().
     markAsNotInterestedInControls().
     promiseHasNoNetEffectOnStateVector().
     setDrawer(args => {
+    if (args.isHighlighted) {
+        return
+    }
         // Drawn as an ellipsis.
         if (args.isInToolbox || args.isHighlighted) {
             let backColor = Config.GATE_FILL_COLOR;
@@ -40,10 +43,13 @@ let SpacerGate = new GateBuilder().
             let r = new Rect(x - 14, y - 2, 28, 4);
             //args.painter.fillRect(r, Config.BACKGROUND_COLOR_CIRCUIT);
         }
-        args.painter.fillCircle(args.rect.center().offsetBy(7, 0), 2, args.gate.getBgColor());
-        args.painter.fillCircle(args.rect.center(), 2, args.gate.getBgColor());
-        args.painter.fillCircle(args.rect.center().offsetBy(-7, 0), 2, args.gate.getBgColor());
-    }).
+        // args.painter.fillCircle(args.rect.center().offsetBy(7, 0), 2, args.gate.getBgColor());
+        // args.painter.fillCircle(args.rect.center(), 2, args.gate.getBgColor());
+        // args.painter.fillCircle(args.rect.center().offsetBy(-7, 0), 2, args.gate.getBgColor());
+    args.painter.fillCircle(0,0,args.gate.getBgColor())
+    args.painter.fillCircle(0,0,args.gate.getBgColor())
+    args.painter.fillCircle(0,0,args.gate.getBgColor())
+}).
     gate;
 
 export {SpacerGate}
