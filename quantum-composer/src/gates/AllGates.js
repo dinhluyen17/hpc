@@ -365,7 +365,7 @@ Gates.TopToolboxGroups.forEach((group, idx) => {
         group.gates.forEach((gate, subIdx) => {
             if (subIdx == 0 && gate != undefined) {
                 gate.colorIndex = 2
-            } else if (subIdx == 1 && gate != undefined) {
+            } else if (subIdx == 5 && gate != undefined) {
                 gate.colorIndex = 1
             }
         })
