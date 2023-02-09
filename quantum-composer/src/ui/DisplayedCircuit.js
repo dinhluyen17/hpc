@@ -407,16 +407,17 @@ class DisplayedCircuit {
                 let y = wireRect.center().y;
                 if (row === this._extraWireStartIndex || row == drawnWireCount) {
                     //Hide last wire
-                    // viewState.getInstance().addWireBtnRect = new Rect(20, y - 10, 50, 32);
-                    // painter.ctx.drawImage(viewState.getInstance().addWireImage, 20, y - 10, 50, 32);
-                    break;
-                }
-                //Hide last wire
-                else if (row === this._extraWireStartIndex - 1 || row == drawnWireCount - 1) {
                     viewState.getInstance().addWireBtnRect = new Rect(20, y - 10, 50, 32);
                     painter.ctx.drawImage(viewState.getInstance().addWireImage, 20, y - 10, 50, 32);
                     break;
-                } else {
+                }
+                //Hide last wire
+                // else if (row === this._extraWireStartIndex - 1 || row == drawnWireCount - 1) {
+                //     viewState.getInstance().addWireBtnRect = new Rect(20, y - 10, 50, 32);
+                //     painter.ctx.drawImage(viewState.getInstance().addWireImage, 20, y - 10, 50, 32);
+                //     break;
+                // }
+                else {
                     let v = this.circuitDefinition.customInitialValues.get(row);
                     if (v === undefined) {
                         v = '0';
@@ -439,8 +440,11 @@ class DisplayedCircuit {
         // Wires (doubled-up for measured sections).
         painter.ctx.save();
         for (let row = 0; row < drawnWireCount; row++) {
-            if (row === this._extraWireStartIndex || row === drawnWireCount - 1 || row === this._extraWireStartIndex - 1) {
-                //painter.ctx.globalAlpha *= 0.5;
+            // if (row === this._extraWireStartIndex || row === drawnWireCount - 1 || row === this._extraWireStartIndex - 1) {
+            //     //painter.ctx.globalAlpha *= 0.5;
+            //     break;
+            // }
+            if (row === this._extraWireStartIndex) {
                 break;
             }
             painter.trace(trace => {
@@ -577,9 +581,9 @@ class DisplayedCircuit {
             if (gateColumn.gates[row] === undefined) {
                 continue;
             }
-            if (row == this.circuitDefinition.numWires - 1 || row === this._extraWireStartIndex - 1) {
-                return;
-            }
+            // if (row == this.circuitDefinition.numWires - 1 || row === this._extraWireStartIndex - 1) {
+            //     return;
+            // }
             let gate = gateColumn.gates[row];
             let gateRect = this.gateRect(row, col, gate.width, gate.height);
 
@@ -854,7 +858,10 @@ class DisplayedCircuit {
         // Use the grab offset instead of the gate height so that tall gates are 'sticky' when dragging downward: they
         // aren't removed until the hand actually leaves the circuit area.
         let handRowOffset = Math.floor(hand.holdOffset.y / Config.WIRE_SPACING);
-        if (modificationPoint.row + handRowOffset >= this._extraWireStartIndex || modificationPoint.row >= this._extraWireStartIndex - 1) {
+        // if (modificationPoint.row + handRowOffset >= this._extraWireStartIndex || modificationPoint.row >= this._extraWireStartIndex - 1) {
+        //     return this;
+        // }
+        if (modificationPoint.row + handRowOffset >= this._extraWireStartIndex) {
             return this;
         }
 

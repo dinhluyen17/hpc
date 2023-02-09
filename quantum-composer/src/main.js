@@ -963,20 +963,21 @@ canvasDiv.addEventListener('click', ev => {
   const pasteMenu = document.getElementById('paste-menu-popup');
   const element = document.getElementById('gate-menu-popup');
   element.style.display = 'none';
-
   if (pasteMenu.style.display == 'block') {
     pasteMenu.style.display = 'none';
-  }
-  else {
+  } else {
     if (viewState.getInstance().waitingInfoGate) {
+      if (viewState.getInstance().showInfoGate instanceof Object) {
+        viewState.getInstance().showInfoGate = viewState.getInstance().showInfoGate.id
+        viewState.getInstance().waitingInfoGate = viewState.getInstance().waitingInfoGate.id
+      }
       viewState.getInstance().waitingInfoGate = null;
       const gateRect = viewState.getInstance().gateMenuPos.gateRect;
       const element = document.getElementById('gateInfo');
       element.style.display = 'block';
       element.style.left = (gateRect.x - viewState.getInstance().canvasScrollX + viewState.getInstance().canvasBoundingRect.clientX + 50) + "px";
       element.style.top = (gateRect.y - viewState.getInstance().canvasScrollY + viewState.getInstance().canvasBoundingRect.clientY) + "px";
-    }
-    else {
+    } else {
       const gateInfo = document.getElementById('gateInfo');
       gateInfo.style.display = 'none';
       viewState.getInstance().showInfoGate = null;

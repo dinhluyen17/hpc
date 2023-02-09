@@ -174,6 +174,9 @@ class DisplayedToolbox {
                 let gate = group.gates[gateIndex];
                 let rect = this.gateDrawRect(groupIndex, gateIndex);
                 if (gate !== undefined && viewState.getInstance().showInfoGate) {
+                    if (viewState.getInstance().showInfoGate instanceof Object) {
+                        viewState.getInstance().showInfoGate = viewState.getInstance().showInfoGate.id
+                    }
                     const lastChar = viewState.getInstance().showInfoGate.slice(-1);
                     if (lastChar >= '0' && lastChar <= '9') {                       
                         const strTrim1 = viewState.getInstance().showInfoGate.substring(0, viewState.getInstance().showInfoGate.length - 1);
