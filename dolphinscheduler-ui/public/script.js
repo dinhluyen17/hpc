@@ -385,14 +385,14 @@ const circuitEdit = {
         }
       });
   
-      //css unsupported gate
+      //css measureament gate and control gate
       const probesGates = document.querySelectorAll(".Probes")
       probesGates.forEach((gate, idx) => {
         if(idx == 0 || idx == 2) {
-          gate.style.backgroundColor = "#24b1a0"
+          gate.style.backgroundColor = "#f1ac2e"
         }
         else if (idx == 1 || idx == 3) {
-          gate.style.backgroundColor = "#f1ac2e"
+          gate.style.backgroundColor = "#24b1a0"
         }
       })
 

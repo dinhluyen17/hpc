@@ -27,8 +27,8 @@ import MESSAGE, { QUANTUM_MESSAGE_FROM, VUEJS_MESSAGE_FROM } from './constants'
 import exportFile from '@/utils/exportFile'
 import './styles/CircuitStyle.scss'
 import HelpModal from './help-modal'
-import {stateBarCalc} from "@/service/modules/circuits";
-import {CircuitBarData} from "@/service/modules/circuits/types";
+import { stateBarCalc } from "@/service/modules/circuits";
+import { CircuitBarData } from "@/service/modules/circuits/types";
 import { exportQasm, importQasmTxtFile } from '@/service/modules/circuits'
 
 const circuitItem = defineComponent({
@@ -65,21 +65,21 @@ const circuitItem = defineComponent({
 
     const handleSelectFile = () => {
       if (importFileRef.value) {
-        importFileRef.value.click();                
+        importFileRef.value.click();
       }
     }
 
-    const handleImportFileJson = (event: Event) => {      
+    const handleImportFileJson = (event: Event) => {
       const files = event?.target?.files;
       if (files && files.length > 0) {
         const fileReader = new FileReader();
         fileReader.onload = () => {
           try {
             const jsonString = fileReader.result;
-            if(jsonString && jsonString.includes("OPENQASM")) {
+            if (jsonString && jsonString.includes("OPENQASM")) {
               importQasmTxtFile(jsonString)
                 .then(response => {
-                  sendMessageToIFrame(MESSAGE.setCircuitJson, JSON.stringify(response.data));
+                  sendMessageToIFrame(MESSAGE.setCircuitQasm, JSON.stringify(response.data));
                 })
                 .catch((error) =>
                   window.$message.error('Please import a valid qasm text file!')
@@ -109,18 +109,18 @@ const circuitItem = defineComponent({
     const handleExportCircuit = (e: Event) => {
       const value = (e.target as HTMLSelectElement).value;
       //export qasm code
-      if(value == 'json') {
+      if (value == 'json') {
         variables.isSaveCircuit = false;
         sendMessageToIFrame(MESSAGE.getCircuitJson, null);
       }
-      else if(value == 'qasm') {
+      else if (value == 'qasm') {
         //call api to export qasm code
         exportQasm(variables.data.id)
       }
-      if(document.getElementById("download-option") !== null) {
+      if (document.getElementById("download-option") !== null) {
         document.getElementById("download-option").selectedIndex = 0; //first option
       }
-      return 
+      return
     }
 
     const handleSaveCircuit = () => {
@@ -205,10 +205,16 @@ const circuitItem = defineComponent({
               case MESSAGE.getCurrentCircuitData:
                 if (JSON.parse(obj.detailData).qProb[0] !== 'NaN') {
                   stateBarCalc(JSON.parse(obj.detailData).qStates, JSON.parse(obj.detailData).qProb)
-                      .then((res) => {
-                        sendMessageToIFrame(MESSAGE.sendData,res)
-                      })
+                    .then((res) => {
+                      sendMessageToIFrame(MESSAGE.sendData, res)
+                    })
                 }
+                break;
+              case MESSAGE.getQasmErrorMessage:
+                window.$message.error(obj.detailData, {
+                  closable: true,
+                  duration: 10e3
+                });
                 break;
             }
           }
@@ -297,19 +303,19 @@ const circuitItem = defineComponent({
           </NSpace>
           {/* Tab change area */}
           <div>
-            <button style={{borderRadius: '5px 0 0 5px' }} onClick={(e) => this.handleChangeTabCircuit(e)} class={`tab-button ${this.isCircuitTab ? 'active' : ''}`}>
+            <button style={{ borderRadius: '5px 0 0 5px' }} onClick={(e) => this.handleChangeTabCircuit(e)} class={`tab-button ${this.isCircuitTab ? 'active' : ''}`}>
               {t('circuit.detail.circuit')}
-            </button>            
-            <button style={{ borderRadius: '0 5px 5px 0'}} onClick={(e) => this.handleChangeTabSimulate(e)} class={`tab-button ${this.isCircuitTab ? '' : 'active'}`}>
+            </button>
+            <button style={{ borderRadius: '0 5px 5px 0' }} onClick={(e) => this.handleChangeTabSimulate(e)} class={`tab-button ${this.isCircuitTab ? '' : 'active'}`}>
               {t('circuit.detail.simulate')}
             </button>
           </div>
           {/* Button area */}
           <NSpace>
-            <input ref="importFileRef" type='file' onChange={handleImportFileJson} hidden/>
+            <input ref="importFileRef" type='file' onChange={handleImportFileJson} hidden />
             <NButton size='small' type='primary' onClick={this.handleSaveCircuit}>
               {t('circuit.detail.save_circuit')}
-            </NButton>            
+            </NButton>
             <NButton size='small' type='warning' onClick={this.handleSelectFile}>
               {t('circuit.detail.import_circuit')}
             </NButton>
@@ -323,7 +329,7 @@ const circuitItem = defineComponent({
                 <option class="n-button__content" value={'qasm'}>QASM 2.0</option>
               </select>
             </div>
-            
+
             <NButton size='small' type='success'>
               {t('circuit.detail.share_circuit')}
             </NButton>
@@ -334,7 +340,7 @@ const circuitItem = defineComponent({
         </NSpace>
         <iframe
           ref="quantumRef"
-          src={ process.env.NODE_ENV === 'production' ? "/dolphinscheduler/ui/quirk.html" : "/quirk.html" }
+          src={process.env.NODE_ENV === 'production' ? "/dolphinscheduler/ui/quirk.html" : "/quirk.html"}
           style={{ width: '100%', height: 'calc(100% - 60px)', marginTop: '10px' }}
           frameborder="0">
         </iframe>
@@ -346,7 +352,7 @@ const circuitItem = defineComponent({
     )
   }
 
-  
+
 })
 
 

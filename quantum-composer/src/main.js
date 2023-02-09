@@ -1213,7 +1213,15 @@ textCode.addEventListener("keydown", () => {
           revision.commit(data)
         })
         .catch((error) => {
-          console.error("Error:", error);
+          const startText = `{"detail":`;
+          const errorMessage = error.message.length >= error.message.indexOf(startText) + startText.length
+            ? error.message.substr(error.message.indexOf(startText) + startText.length).replace('}', '')
+            : 'Something went wrong with qasm code. Please try again!';
+          window.parent.postMessage(JSON.stringify({
+            messageFrom: 'quantum_composer',
+            actionType: 'error_qasm_code_message',
+            detailData: errorMessage
+          }));
         });
     }
   }, 2500);
