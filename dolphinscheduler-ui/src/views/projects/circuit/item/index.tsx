@@ -110,12 +110,13 @@ const circuitItem = defineComponent({
       const value = (e.target as HTMLSelectElement).value;
       //export qasm code
       if (value == 'json') {
-        variables.isSaveCircuit = false;
-        sendMessageToIFrame(MESSAGE.getCircuitJson, null);
-      }
-      else if (value == 'qasm') {
+        variables.isSaveCircuit = false
+        sendMessageToIFrame(MESSAGE.getCircuitJson, null)
+      } else if (value == 'qasm') {
         //call api to export qasm code
-        exportQasm(variables.data.id)
+        exportQasm(variables.data.id).then((res: any) => {
+          exportFile(res, variables.data.name, 'qasm')
+        })
       }
       if (document.getElementById("download-option") !== null) {
         document.getElementById("download-option").selectedIndex = 0; //first option
