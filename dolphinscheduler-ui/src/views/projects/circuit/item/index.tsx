@@ -200,7 +200,7 @@ const circuitItem = defineComponent({
                     })
                   }
                 } else {
-                  exportFile(obj.detailData, variables.data.name, 'json')
+                  exportFile(obj.detailData.json, variables.data.name, 'json')
                 }
                 break;
               case MESSAGE.getCurrentCircuitData:
