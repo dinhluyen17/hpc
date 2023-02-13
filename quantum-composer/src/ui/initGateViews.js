@@ -26,7 +26,7 @@ const initGateViews = () => {
   const advancedGatesGrid = document.getElementById('advanced-gates-grid');
 
   //clear content of gate area if has any
-  if(commonGates.firstChild || commonGates.firstChild || advancedGates.firstChild || advancedGatesGrid.firstChild) {
+  if (commonGates.firstChild || commonGates.firstChild || advancedGates.firstChild || advancedGatesGrid.firstChild) {
     commonGates.innerHTML = ''
     commonGatesGrid.innerHTML = ''
     advancedGates.innerHTML = ''
@@ -69,9 +69,9 @@ const initGateViews = () => {
     ['Measure', `<small class="smaller"><img style="display: block; width: 100%; border: none" src="./svg/measure_gate.svg"/></small>`],
     ['◦', '<big class="bigger" style="padding-left: 3px;">○</big>'],
     ['•', '<big class="bigger">●</big>'],
-    ['Density', '<small class="smaller">Density</small>'],
-    ['Bloch', '<small>Bloch</small>'],
-    ['Chance', '<small class="smaller">Chance</small>'],
+    ['Density', '<small>Den</small>'],
+    ['Bloch', '<small>Blo</small>'],
+    ['Chance', '<small>Cha</small>'],
     ['Amps', '<small>Amps</small>'],
     ['Swap', '<small>Swap</small>'],
     ['S^-1', 'S<sup>-1</sup>'],
@@ -108,9 +108,9 @@ const initGateViews = () => {
     ['YDetectControlReset', 'Y<small>DR</small>'],
     ['XDetector', 'X<small>D</small>'],
     ['XDetectControlReset', 'X<small>DR</small>'],
-    ['zpar', 'z<br><small>[par]</small>'],
-    ['ypar', 'y<br><small>[par]</small>'],
-    ['xpar', 'x<br><small>[par]</small>'],
+    ['zpar', 'z<div class="smaller">[par]</div>'],
+    ['ypar', 'y<div class="smaller">[par]</div>'],
+    ['xpar', 'x<div class="smaller">[par]</div>'],
     ['|+⟩⟨+|', '<small>|+⟩⟨+|</small>'],
     ['|-⟩⟨-|', '<small>|-⟩⟨-|</small>'],
     ['|i⟩⟨i|', '<small>|i⟩⟨i|</small>'],
@@ -126,11 +126,11 @@ const initGateViews = () => {
     ['Grad^t', '<small class="smaller">Grad</small><sup>t</sup>'],
     ['Grad^-t', '<small class="smaller">Grad</small><sup>-t</sup>'],
     ['input A', '<small>input</small><br>A'],
-    ['setA', 'A=#<br><small class="smaller">default</small>'],
+    ['setA', 'A=#<div class="smaller">default</div>'],
     ['input B', '<small>input</small><br>B'],
-    ['setB', 'B=#<br><small class="smaller">default</small>'],
+    ['setB', 'B=#<div class="smaller">default</div>'],
     ['input R', '<small>input</small><br>R'],
-    ['setR', 'R=#<br><small class="smaller">default</small>'],
+    ['setR', 'R=#<div class="smaller">default</div>'],
     ['×A^-1', '×A<sup>-1</sup>'],
     ['⊕A<B', '<small class="smaller">⊕</small><small>A&#60B</small>'],
     ['⊕A>B', '<small class="smaller">⊕</small><small>A&#62B</small>'],
@@ -139,14 +139,14 @@ const initGateViews = () => {
     ['⊕A=B', '<small class="smaller">⊕</small><small>A=B</small>'],
     ['⊕A≥B', '<small class="smaller">⊕</small><small>A≥B</small>'],
     ['⊕A≠B', '<small class="smaller">⊕</small><small>A≠B</small>'],
-    ['+1\nmod R', '+1<br><small class="smaller">mod R</small>'],
-    ['−1\nmod R', '-1<br><small class="smaller">mod R</small>'],
-    ['+A\nmod R', '+A<br><small class="smaller">mod R</small>'],
-    ['−A\nmod R', '-A<br><small class="smaller">mod R</small>'],
-    ['×A\nmod R', '×A<br><small class="smaller">mod R</small>'],
-    ['×A^-1\nmod R', '×A<sup>-1</sup><br><small class="smaller">mod R</small>'],
-    ['×B^A\nmod R', '×B<sup>A</sup><br><small class="smaller">mod R</small>'],
-    ['×B^-A\nmod R', '×B<sup>-A</sup><br><small class="smaller">mod R</small>'],
+    ['+1\nmod R', '+1<div class="smaller">mod R</div>'],
+    ['−1\nmod R', '-1<div class="smaller">mod R</div>'],
+    ['+A\nmod R', '+A<div class="smaller">mod R</div>'],
+    ['−A\nmod R', '-A<div class="smaller">mod R</div>'],
+    ['×A\nmod R', '×A<div class="smaller">mod R</div>'],
+    ['×A^-1\nmod R', '×A<sup>-1</sup><div class="smaller">mod R</div>'],
+    ['×B^A\nmod R', '×B<sup>A</sup><div class="smaller">mod R</div>'],
+    ['×B^-A\nmod R', '×B<sup>-A</sup><div class="smaller">mod R</div>'],
     ['', '-']
   ]);
 
@@ -215,7 +215,7 @@ const initGateViews = () => {
         gateView.innerHTML = `
                   <div onmousedown="grabGate('${gate.serializedId}')" style='cursor: grab; display: flex; align-items:center; justify-content:center; width:35px; height:35px; margin:0.3rem 0.25rem; border: 1px solid black' class="${group.hint}">
                     <div style='text-align:center;'>
-                      ${newIcon.get(gate.symbol) != null? newIcon.get(gate.symbol) : gate.symbol}
+                      ${newIcon.get(gate.symbol) != null ? newIcon.get(gate.symbol) : gate.symbol}
                     </div>
                   </div>
                   <span class="tooltip-content">${gate.name}</span>

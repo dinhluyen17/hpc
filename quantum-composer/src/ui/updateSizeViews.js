@@ -58,7 +58,7 @@ const updateSizeViews = (parentDiv) => {
     SIZE_INFO.HEADER_HEIGHT -
     SIZE_INFO.GATE_AREA_HEADER_HEIGHT -
     SIZE_INFO.GATE_AREA_SECTION_LABEL_HEIGHT * 2 -
-    sampleHeight / 2.0) + 'px';
+    sampleHeight / 2.0 - 25) + 'px';
   commonGatesGrid.style.maxHeight = commonGates.style.maxHeight;
   advancedGatesGrid.style.maxHeight = commonGates.style.maxHeight;
 
@@ -83,52 +83,10 @@ const updateSizeViews = (parentDiv) => {
 }
 
 const initSizeViews = (parentDiv) => {
-  const closeGateAreaBtn = document.getElementById('gate-area-header-close-btn');
   const gridGateBtn = document.getElementById('gate-area-header-grid-btn');
   const listGateBtn = document.getElementById('gate-area-header-list-btn');
   const searchGateBox = document.getElementById('gate-area-header-search');
   const gateArea = document.querySelectorAll('.gateList');
-  closeGateAreaBtn.addEventListener('click', () => {
-    viewState.getInstance().expandGateArea = !viewState.getInstance().expandGateArea;
-    if (viewState.getInstance().expandGateArea) {
-      viewState.getInstance().gateAreaWidth = 240;
-      gridGateBtn.style.display = 'flex';
-      listGateBtn.style.display = 'flex';
-      searchGateBox.style.display = 'flex';
-      gateArea.forEach(item => {
-        const gateArea2 = item.children[0]
-        gateArea2.setAttribute("style", "justify-content:left;");
-      })
-    }
-    else {
-      viewState.getInstance().gateAreaWidth = 130;
-      gridGateBtn.style.display = 'none';
-      listGateBtn.style.display = 'none';
-      searchGateBox.style.display = 'none';
-      gateArea.forEach(item => {
-        const gateArea2 = item.children[0]
-        gateArea2.setAttribute("style", "justify-content:center;");
-      })
-    }
-    updateSizeViews(parentDiv);
-  });
-
-  const closeCodeAreaBtn = document.getElementById('code-area-close-btn');
-  closeCodeAreaBtn.addEventListener('click', () => {
-    if (closeCodeAreaBtn.getAttribute("data-gate") == "show") {
-      closeCodeAreaBtn.setAttribute("data-gate", "hide")
-    } else {
-      closeCodeAreaBtn.setAttribute("data-gate", "show")
-    }
-    viewState.getInstance().expandCodeArea = !viewState.getInstance().expandCodeArea;
-    if (viewState.getInstance().expandCodeArea) {
-      viewState.getInstance().codeAreaWidth = 300;
-    }
-    else {
-      viewState.getInstance().codeAreaWidth = 50;
-    }
-    updateSizeViews(parentDiv);
-  });
 
   $(".arrow-container").click(function () {
     if ($(this).data("side") === "left") {
@@ -163,25 +121,18 @@ const initSizeViews = (parentDiv) => {
         })
       }
       updateSizeViews(parentDiv);
+    } else {
+      viewState.getInstance().expandChartArea = !viewState.getInstance().expandChartArea;
+      if (viewState.getInstance().expandChartArea) {
+        viewState.getInstance().chartAreaHeight = 220;
+      }
+      else {
+        viewState.getInstance().chartAreaHeight = 25;
+      }
+      updateSizeViews(parentDiv);
     }
   });
 
-  const closeChartAreaBtn = document.getElementById('circuit-area-chart-close-btn');
-  closeChartAreaBtn.addEventListener('click', () => {
-    if (closeChartAreaBtn.getAttribute("data-gate") == "show") {
-      closeChartAreaBtn.setAttribute("data-gate", "hide")
-    } else {
-      closeChartAreaBtn.setAttribute("data-gate", "show")
-    }
-    viewState.getInstance().expandChartArea = !viewState.getInstance().expandChartArea;
-    if (viewState.getInstance().expandChartArea) {
-      viewState.getInstance().chartAreaHeight = 220;
-    }
-    else {
-      viewState.getInstance().chartAreaHeight = 70;
-    }
-    updateSizeViews(parentDiv);
-  });
   updateSizeViews(parentDiv);
 }
 

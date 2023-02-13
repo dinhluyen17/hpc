@@ -159,46 +159,6 @@ const circuitEdit = {
       } else if (type === "list") {
         $(".gateList").hide();
         $(".gateGrid").show();
-      } else {
-        let state = document.getElementById("gate-area-header-close-btn");
-        let no_data_top = document.getElementById("no-data");
-        let no_data_bottom = document.getElementById("no-data2");
-        if (state.getAttribute("data-gate") == "show") {
-          state.setAttribute("data-gate", "hide");
-          const gateList = document.querySelectorAll(".gateList");
-          const gateGrid = document.querySelectorAll(".gateGrid");
-          gateList.forEach((item) => {
-            item.style.display = "block";
-          });
-          gateGrid.forEach((item) => {
-            item.style.display = "none";
-          });
-          if (
-            no_data_top != null &&
-            (!no_data_top.hasAttribute("class") ||
-              !no_data_top.classList.contains("no-data"))
-          ) {
-            no_data_top.setAttribute("class", "no-data");
-          }
-          if (
-            no_data_bottom != null &&
-            (!no_data_bottom.hasAttribute("class") ||
-              !no_data_bottom.classList.contains("no-data"))
-          ) {
-            no_data_bottom.setAttribute("class", "no-data");
-          }
-        } else {
-          state.setAttribute("data-gate", "show");
-          if (no_data_top != null && no_data_top.hasAttribute("class")) {
-            no_data_top.classList.remove("no-data");
-          }
-          if (
-            no_data_bottom != null &&
-            no_data_bottom.hasAttribute("class")
-          ) {
-            no_data_bottom.classList.remove("no-data");
-          }
-        }
       }
       if (!$(this).hasClass("active")) {
         $(".gate-area-header-btn").removeClass("active");
@@ -428,37 +388,16 @@ const circuitEdit = {
       }
     });
 
-    //css closed right section (quantum code)
-    $("#code-area-close-btn").click(function () {
-      const quantumCodeText = document.getElementById("text-code-wrapper");
-      const quantumSelectOption = document.getElementById(
-        "quantum-code-option"
-      );
-      if ($(this).attr("data-gate") == "show") {
-        quantumCodeText.style.display = "block";
-        quantumSelectOption.style.display = "block";
-      } else {
-        quantumCodeText.style.display = "none";
-        quantumSelectOption.style.display = "none";
-      }
-    });
-
     $(".arrow-container").click(function () {
       if ($(this).data("side") === "left") {
         if (!$(this).hasClass("open")) {
-          $("#error-notice").show();
-          $("#text-code-qiskit").show();
-          $("#text-code").show();
-          $(".line-numbers-qasm").show();
-          $("#code-area-header").addClass("hidden");
+          $("#code-area-header").show();
+          $("#code-area-body").show();
           $(this).removeClass("close");
           $(this).addClass("open");
         } else {
-          $("#error-notice").hide();
-          $("#text-code-qiskit").hide();
-          $("#text-code").hide();
-          $(".line-numbers-qasm").hide();
-          $("#code-area-header").removeClass("hidden");
+          $("#code-area-header").hide();
+          $("#code-area-body").hide();
           $(this).addClass("close");
           $(this).removeClass("open");
         }
@@ -471,6 +410,24 @@ const circuitEdit = {
         } else {
           $(".gate-area-header").hide();
           $(".gate-area-body").hide();
+          $(this).addClass("close");
+          $(this).removeClass("open");
+        }
+      } else {
+        if (!$(this).hasClass("open")) {
+          $(".circuit-area-chart button").show();
+          $(".circuit-area-chart select").show();
+          $(".circuit-area-chart #loading").show();
+          $("#stateBarChart").show();
+          $("#barChartDes").show();
+          $(this).removeClass("close");
+          $(this).addClass("open");
+        } else {
+          $(".circuit-area-chart button").hide();
+          $(".circuit-area-chart select").hide();
+          $(".circuit-area-chart #loading").hide();
+          $("#stateBarChart").hide();
+          $("#barChartDes").hide();
           $(this).addClass("close");
           $(this).removeClass("open");
         }
