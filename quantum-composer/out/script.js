@@ -127,12 +127,12 @@ function grabGate(gate) {
 let API_QSPHERE;
 let API_HISTORY_QSPHERE;
 document.API_ADDRESS = {
-    qpshere: (api) => {
-        API_QSPHERE = api
-    },
-    historyQSphere: (api) => {
-        API_HISTORY_QSPHERE  =api
-    }
+  qpshere: (api) => {
+    API_QSPHERE = api
+  },
+  historyQSphere: (api) => {
+    API_HISTORY_QSPHERE = api
+  }
 }
 const circuitEdit = {
 
@@ -434,20 +434,20 @@ const circuitEdit = {
       }
     });
 
-      //block shere api call
-      $("#runButton").click(function () {
-          if (document.getElementById("simSelectId").value != "qAer") {
-              return
-          }
-        const qiskitCode = document.querySelectorAll(".line-content");
-        fetch(API_QSPHERE, {
-          method: "POST",
-          headers: {
-            "content-type": "text/plain",
-          },
-          body: getContentQiskit(qiskitCode) + importPythonLibrary,
-        })
-        .then((res)=>{
+    //block shere api call
+    $("#runButton").click(function () {
+      if (document.getElementById("simSelectId").value != "qAer") {
+        return
+      }
+      const qiskitCode = document.querySelectorAll(".line-content");
+      fetch(API_QSPHERE, {
+        method: "POST",
+        headers: {
+          "content-type": "text/plain",
+        },
+        body: getContentQiskit(qiskitCode) + importPythonLibrary,
+      })
+        .then((res) => {
           return res.text()
         })
         .then((data) => {
@@ -477,6 +477,8 @@ const circuitEdit = {
       this.style.height = 0;
       this.style.height = (this.scrollHeight) + "px";
     });
+
+    //Handle change coding idle timeout
   },
 
   start: function () {
@@ -485,22 +487,22 @@ const circuitEdit = {
 }
 
 document.qSphere = {
-    history: (id) => {
-        fetch(API_HISTORY_QSPHERE + id, {
-            method: "GET",
-        })
-            .then((res) => {
-                return res.text();
-            })
-            .then((data)=> {
-                const drawBlochSphere = document.getElementById("bloch-sphere");
-                drawBlochSphere.innerHTML = data;
-                stripAndExecuteScript(data);
-            })
-            .catch((error) => {
-                console.error("Error:", error);
-            });
-    }
+  history: (id) => {
+    fetch(API_HISTORY_QSPHERE + id, {
+      method: "GET",
+    })
+      .then((res) => {
+        return res.text();
+      })
+      .then((data) => {
+        const drawBlochSphere = document.getElementById("bloch-sphere");
+        drawBlochSphere.innerHTML = data;
+        stripAndExecuteScript(data);
+      })
+      .catch((error) => {
+        console.error("Error:", error);
+      });
+  }
 }
 
 //execute javascript to draw bloch sphere
