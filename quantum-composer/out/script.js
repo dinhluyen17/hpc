@@ -487,7 +487,6 @@ const circuitEdit = {
 
     //Handle change coding idle timeout
     $("#coding-time-option-select").change(function (e) {
-      console.log($(this).val());
       localStorage.setItem("coding-idle-timeout", $(this).val());
     });
   },

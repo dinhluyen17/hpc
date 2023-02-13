@@ -1159,7 +1159,6 @@ setTimeout(() => {
 
 const countDownForCodeIdleTime = (time) => {
   let idleTimeSecond = Number(time) / 1000;
-  console.log(idleTimeSecond);
   $(".coding-time-option").hide();
   $(".countdown-idle-time").addClass("show");
   $(".countdown-idle-time .time").text(idleTimeSecond);
@@ -1259,20 +1258,20 @@ const qAerRun = () => {
     },
     body: getContentQiskit(qiskitCode) + importPythonLibraryCount,
   })
-      .then((res) => {
-        return res.text()
-      })
-      .then((data) => {
-        loader.classList.remove("display");
-        barData = jQuery.parseJSON(data)
-        document.getElementById("barChartDes").style.visibility = 'hidden';
-        document.getElementById("stateBarChart").style.visibility = 'visible';
-        document.getElementById("sortBar").style.visibility = "visible";
-        document.D3_FUNCTION.bar(barData)
-      })
-      .catch((error) => {
-        console.error("Error: ", error);
-      });
+    .then((res) => {
+      return res.text()
+    })
+    .then((data) => {
+      loader.classList.remove("display");
+      barData = jQuery.parseJSON(data)
+      document.getElementById("barChartDes").style.visibility = 'hidden';
+      document.getElementById("stateBarChart").style.visibility = 'visible';
+      document.getElementById("sortBar").style.visibility = "visible";
+      document.D3_FUNCTION.bar(barData)
+    })
+    .catch((error) => {
+      console.error("Error: ", error);
+    });
   fetch(backendApiConfig.API_SIM_DATA, {
     method: "POST",
     headers: {
@@ -1280,16 +1279,16 @@ const qAerRun = () => {
     },
     body: getContentQiskit(qiskitCode) + importPythonLibrary,
   })
-      .then((res) => {
-        return res.json();
-      })
-      .then((data) => {
-        aerVector = data.qVector;
-        aerStates = data.qStates;
-        aerPhase = data.qPhase;
-        aerProb = data.qProb;
-        simStatCalc()
-      });
+    .then((res) => {
+      return res.json();
+    })
+    .then((data) => {
+      aerVector = data.qVector;
+      aerStates = data.qStates;
+      aerPhase = data.qPhase;
+      aerProb = data.qProb;
+      simStatCalc()
+    });
   fetch(backendApiConfig.API_SAVE_HISTORY, {
     method: "POST",
     headers: {
@@ -1298,16 +1297,11 @@ const qAerRun = () => {
     body: JSON.stringify({
       "circuitName": circuitName
     })
-  })
-      .then((res) => {
-        return res.json()
-      })
-      .then((data) => {
-        console.log(data)
-      })
-      .catch((error) => {
-        console.error("Error: ", error)
-      });
+  }).then((res) => {
+    return res.json()
+  }).catch((error) => {
+    console.error("Error: ", error)
+  });
 };
 
 const cirqRun = () => {
@@ -1320,16 +1314,16 @@ const cirqRun = () => {
     },
     body: jsonText
   })
-      .then((res) => {
-        return res.json();
-      })
-      .then((data) => {
-        aerVector = data.qVector;
-        aerStates = data.qStates;
-        aerPhase = data.qPhase;
-        aerProb = data.qProb;
-        simStatCalc()
-      });
+    .then((res) => {
+      return res.json();
+    })
+    .then((data) => {
+      aerVector = data.qVector;
+      aerStates = data.qStates;
+      aerPhase = data.qPhase;
+      aerProb = data.qProb;
+      simStatCalc()
+    });
   fetch(backendApiConfig.API_CIRQ_RETURN_HISTOGRAM, {
     method: "POST",
     headers: {
@@ -1337,18 +1331,18 @@ const cirqRun = () => {
     },
     body: jsonText
   })
-      .then((res) => {
-        return res.text()
-      })
-      .then((data) => {
-        loader.classList.remove("display");
-        barData = jQuery.parseJSON(data)
-        document.getElementById("barChartDes").style.visibility = 'hidden';
-        document.getElementById("stateBarChart").style.visibility = 'visible';
-        document.getElementById("sortBar").style.visibility = "visible";
-        document.D3_FUNCTION.bar(barData)
-      })
-      .catch((error) => {
-        console.error("Error: ", error);
-      });
+    .then((res) => {
+      return res.text()
+    })
+    .then((data) => {
+      loader.classList.remove("display");
+      barData = jQuery.parseJSON(data)
+      document.getElementById("barChartDes").style.visibility = 'hidden';
+      document.getElementById("stateBarChart").style.visibility = 'visible';
+      document.getElementById("sortBar").style.visibility = "visible";
+      document.D3_FUNCTION.bar(barData)
+    })
+    .catch((error) => {
+      console.error("Error: ", error);
+    });
 };
