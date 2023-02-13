@@ -42,18 +42,23 @@ const updateSizeViews = (parentDiv) => {
   circuitChart.style.width = circuitBody.style.width;
   circuitChart.style.height = getChartAreaHeight() + 'px';
   circuitChart.style.maxHeight = getChartAreaHeight() + 'px';
-  
+
   const commonGates = document.getElementById('common-gates');
   const advancedGates = document.getElementById('advanced-gates');
   const commonGatesGrid = document.getElementById('common-gates-grid');
   const advancedGatesGrid = document.getElementById('advanced-gates-grid');
-  commonGates.style.maxHeight = (
+  const sampleHeight = (
     parentDiv.clientHeight -
     SIZE_INFO.HEADER_HEIGHT -
     SIZE_INFO.GATE_AREA_HEADER_HEIGHT -
     SIZE_INFO.GATE_AREA_SECTION_LABEL_HEIGHT * 2 -
-    4 * SIZE_INFO.VERTICAL_SPACING) / 2.0 + 'px';
-  advancedGates.style.maxHeight = commonGates.style.maxHeight;
+    4 * SIZE_INFO.VERTICAL_SPACING) / 2.0;
+  commonGates.style.maxHeight = sampleHeight + 'px';
+  advancedGates.style.maxHeight = (parentDiv.clientHeight -
+    SIZE_INFO.HEADER_HEIGHT -
+    SIZE_INFO.GATE_AREA_HEADER_HEIGHT -
+    SIZE_INFO.GATE_AREA_SECTION_LABEL_HEIGHT * 2 -
+    sampleHeight / 2.0) + 'px';
   commonGatesGrid.style.maxHeight = commonGates.style.maxHeight;
   advancedGatesGrid.style.maxHeight = commonGates.style.maxHeight;
 
@@ -126,14 +131,39 @@ const initSizeViews = (parentDiv) => {
   });
 
   $(".arrow-container").click(function () {
-    viewState.getInstance().expandCodeArea = !viewState.getInstance().expandCodeArea;
-    if (viewState.getInstance().expandCodeArea) {
-      viewState.getInstance().codeAreaWidth = 300;
+    if ($(this).data("side") === "left") {
+      viewState.getInstance().expandCodeArea = !viewState.getInstance().expandCodeArea;
+      if (viewState.getInstance().expandCodeArea) {
+        viewState.getInstance().codeAreaWidth = 300;
+      }
+      else {
+        viewState.getInstance().codeAreaWidth = 25;
+      }
+      updateSizeViews(parentDiv);
+    } else if ($(this).data("side") === "right") {
+      viewState.getInstance().expandGateArea = !viewState.getInstance().expandGateArea;
+      if (viewState.getInstance().expandGateArea) {
+        viewState.getInstance().gateAreaWidth = 250;
+        gridGateBtn.style.display = 'flex';
+        listGateBtn.style.display = 'flex';
+        searchGateBox.style.display = 'flex';
+        gateArea.forEach(item => {
+          const gateArea2 = item.children[0]
+          gateArea2.setAttribute("style", "justify-content:left;");
+        })
+      }
+      else {
+        viewState.getInstance().gateAreaWidth = 25;
+        gridGateBtn.style.display = 'none';
+        listGateBtn.style.display = 'none';
+        searchGateBox.style.display = 'none';
+        gateArea.forEach(item => {
+          const gateArea2 = item.children[0]
+          gateArea2.setAttribute("style", "justify-content:center;");
+        })
+      }
+      updateSizeViews(parentDiv);
     }
-    else {
-      viewState.getInstance().codeAreaWidth = 25;
-    }
-    updateSizeViews(parentDiv);
   });
 
   const closeChartAreaBtn = document.getElementById('circuit-area-chart-close-btn');
@@ -155,4 +185,4 @@ const initSizeViews = (parentDiv) => {
   updateSizeViews(parentDiv);
 }
 
-export {initSizeViews, updateSizeViews}
+export { initSizeViews, updateSizeViews }
