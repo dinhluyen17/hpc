@@ -18,7 +18,7 @@ class ViewState {
   constructor() {
     this.currentTab = 'circuit';
     
-    this.gateAreaWidth = 240;
+    this.gateAreaWidth = 250;
     this.codeAreaWidth = 300;
     this.chartAreaHeight = 220;
 

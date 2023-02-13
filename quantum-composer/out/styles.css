@@ -105,6 +105,7 @@ body {
   width: 320px;
   border: 2px solid #EDECF3;
   position: relative;
+  padding-right: 10px;
 }
 
 .gate-area::after {
@@ -164,7 +165,7 @@ body {
 }
 
 #gate-area-header-close-btn {
-  display: flex;
+  display: none;
   flex-direction: row;
 }
 
@@ -1159,7 +1160,7 @@ ul[data-v-078d4a79] {
 /* Arrow style */
 
 .arrow-container {
-  width: 16px;
+  width: 10px;
   height: 100%;
   display: flex;
   justify-content: center;
@@ -1168,6 +1169,11 @@ ul[data-v-078d4a79] {
   cursor: pointer;
   top: 0;
   left: 0;
+}
+
+.arrow-container[data-side="right"] {
+  right: 4px;
+  left: unset;
 }
 
 .arrow-container .arrow-top,
@@ -1187,23 +1193,27 @@ ul[data-v-078d4a79] {
   transform: translateY(calc(-50% - 17px));
 }
 
-.arrow-container:hover .arrow-top {
-  transform: translateY(calc(-50% - 17px)) rotateZ(10deg);
-}
-
 .arrow-container .arrow-bottom {
   transform: translateY(calc(-50% + 17px));
 }
 
-.arrow-container:hover .arrow-bottom {
+.arrow-container:hover .arrow-top,
+.arrow-container[data-side="right"].open:hover .arrow-top {
+  transform: translateY(calc(-50% - 17px)) rotateZ(10deg);
+}
+
+.arrow-container:hover .arrow-bottom,
+.arrow-container[data-side="right"].open:hover .arrow-bottom {
   transform: translateY(calc(-50% + 17px)) rotateZ(-10deg);
 }
 
-.arrow-container.open:hover .arrow-top {
+.arrow-container.open:hover .arrow-top,
+.arrow-container[data-side="right"]:hover .arrow-top {
   transform: translateY(calc(-50% - 17px)) rotateZ(-10deg);
 }
 
-.arrow-container.open:hover .arrow-bottom {
+.arrow-container.open:hover .arrow-bottom,
+.arrow-container[data-side="right"]:hover .arrow-bottom {
   transform: translateY(calc(-50% + 17px)) rotateZ(10deg);
 }
 

@@ -434,22 +434,36 @@ const circuitEdit = {
     });
 
     $(".arrow-container").click(function () {
-      if (!$(this).hasClass("open")) {
-        $("#error-notice").show();
-        $("#text-code-qiskit").show();
-        $("#text-code").show();
-        $(".line-numbers-qasm").show();
-        $("#code-area-header").addClass("hidden");
-        $(this).removeClass("close");
-        $(this).addClass("open");
-      } else {
-        $("#error-notice").hide();
-        $("#text-code-qiskit").hide();
-        $("#text-code").hide();
-        $(".line-numbers-qasm").hide();
-        $("#code-area-header").removeClass("hidden");
-        $(this).addClass("close");
-        $(this).removeClass("open");
+      if ($(this).data("side") === "left") {
+        if (!$(this).hasClass("open")) {
+          $("#error-notice").show();
+          $("#text-code-qiskit").show();
+          $("#text-code").show();
+          $(".line-numbers-qasm").show();
+          $("#code-area-header").addClass("hidden");
+          $(this).removeClass("close");
+          $(this).addClass("open");
+        } else {
+          $("#error-notice").hide();
+          $("#text-code-qiskit").hide();
+          $("#text-code").hide();
+          $(".line-numbers-qasm").hide();
+          $("#code-area-header").removeClass("hidden");
+          $(this).addClass("close");
+          $(this).removeClass("open");
+        }
+      } else if ($(this).data("side") === "right") {
+        if (!$(this).hasClass("open")) {
+          $(".gate-area-header").show();
+          $(".gate-area-body").show();
+          $(this).removeClass("close");
+          $(this).addClass("open");
+        } else {
+          $(".gate-area-header").hide();
+          $(".gate-area-body").hide();
+          $(this).addClass("close");
+          $(this).removeClass("open");
+        }
       }
     });
 

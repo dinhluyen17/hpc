@@ -131,14 +131,39 @@ const initSizeViews = (parentDiv) => {
   });
 
   $(".arrow-container").click(function () {
-    viewState.getInstance().expandCodeArea = !viewState.getInstance().expandCodeArea;
-    if (viewState.getInstance().expandCodeArea) {
-      viewState.getInstance().codeAreaWidth = 300;
+    if ($(this).data("side") === "left") {
+      viewState.getInstance().expandCodeArea = !viewState.getInstance().expandCodeArea;
+      if (viewState.getInstance().expandCodeArea) {
+        viewState.getInstance().codeAreaWidth = 300;
+      }
+      else {
+        viewState.getInstance().codeAreaWidth = 25;
+      }
+      updateSizeViews(parentDiv);
+    } else if ($(this).data("side") === "right") {
+      viewState.getInstance().expandGateArea = !viewState.getInstance().expandGateArea;
+      if (viewState.getInstance().expandGateArea) {
+        viewState.getInstance().gateAreaWidth = 250;
+        gridGateBtn.style.display = 'flex';
+        listGateBtn.style.display = 'flex';
+        searchGateBox.style.display = 'flex';
+        gateArea.forEach(item => {
+          const gateArea2 = item.children[0]
+          gateArea2.setAttribute("style", "justify-content:left;");
+        })
+      }
+      else {
+        viewState.getInstance().gateAreaWidth = 25;
+        gridGateBtn.style.display = 'none';
+        listGateBtn.style.display = 'none';
+        searchGateBox.style.display = 'none';
+        gateArea.forEach(item => {
+          const gateArea2 = item.children[0]
+          gateArea2.setAttribute("style", "justify-content:center;");
+        })
+      }
+      updateSizeViews(parentDiv);
     }
-    else {
-      viewState.getInstance().codeAreaWidth = 25;
-    }
-    updateSizeViews(parentDiv);
   });
 
   const closeChartAreaBtn = document.getElementById('circuit-area-chart-close-btn');
