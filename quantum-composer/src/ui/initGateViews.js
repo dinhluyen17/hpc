@@ -66,7 +66,7 @@ const initGateViews = () => {
 
   //new custom gate symbol
   const newIcon = new Map([
-    ['Measure', `<small class="smaller"><img style="display: block; width: 100%; border: none" src="./svg/measure_gate.svg"/></small>`],
+    ['Measure', `<small class="smaller"><img style="display: block; width: 100%; border: none; max-width: 35px;" src="./svg/measure_gate.svg"/></small>`],
     ['◦', '<big class="bigger" style="padding-left: 3px;">○</big>'],
     ['•', '<big class="bigger">●</big>'],
     ['Density', '<small>Den</small>'],
