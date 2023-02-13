@@ -501,11 +501,11 @@ let simStatCalc = () => {
       let state = document.createElement("td");
       state.innerText = aerStates[i];
       let vect = document.createElement("td");
-      vect.innerText = "+" + aerVector[key].real + "+" + aerVector[key].imag + "i";
+      vect.innerText = "+" + aerVector[key].real.toFixed(3) + "+" + aerVector[key].imag.toFixed(3) + "i";
       let rad = document.createElement("td");
-      rad.innerText = aerPhase[i] + " radian";
+      rad.innerText = aerPhase[i].toFixed(3) + " radian";
       let prob = document.createElement("td");
-      prob.innerText = aerProb[i] + "%";
+      prob.innerText = aerProb[i].toFixed(3) + "%";
       output.append(state, vect, rad, prob)
       printVect.appendChild(output)
     }
