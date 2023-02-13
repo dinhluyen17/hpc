@@ -27,7 +27,7 @@ import MESSAGE, { QUANTUM_MESSAGE_FROM, VUEJS_MESSAGE_FROM } from './constants'
 import exportFile from '@/utils/exportFile'
 import './styles/CircuitStyle.scss'
 import HelpModal from './help-modal'
-import { stateBarCalc } from "@/service/modules/circuits";
+import {deleteHistory, stateBarCalc} from "@/service/modules/circuits";
 import { CircuitBarData } from "@/service/modules/circuits/types";
 import { exportQasm, importQasmTxtFile } from '@/service/modules/circuits'
 
@@ -187,12 +187,13 @@ const circuitItem = defineComponent({
                 if (typeof route.params.circuitId === 'string') {
                   updateCircuitData(parseInt(route.params.circuitId), {
                     json: obj.detailData
-                  })
+                  });
                 }
                 break;
               case MESSAGE.getCurrentCircuitJson:
                 if (variables.isSaveCircuit) {
                   if (typeof route.params.circuitId === 'string') {
+                    deleteHistory(parseInt(route.params.circuitId));
                     updateCircuitData(parseInt(route.params.circuitId), {
                       json: obj.detailData.json,
                       qasm: obj.detailData.qasm,

@@ -33,6 +33,8 @@ import { initSizeViews, updateSizeViews } from "./ui/updateSizeViews.js";
 import { viewState } from "./ui/viewState.js";
 import { Gates } from "./gates/AllGates.js";
 import backendApiConfig from "./configs/apiConfig.js";
+document.API_ADDRESS.qpshere(backendApiConfig.API_Q_SPHERE);
+document.API_ADDRESS.historyQSphere(backendApiConfig.API_HISTORY_Q_SPHERE);
 
 const codeArea = document.getElementById("code-area");
 const gateArea = document.getElementById("gate-area");
@@ -188,6 +190,7 @@ window.addEventListener('message', (e) => {
       const obj = JSON.parse(e.data);
       if (obj && obj.messageFrom == 'vuejs') {
         const actionType = obj.actionType;
+        console.log(actionType)
         if (actionType == 'loaded_circuit_json') {
           if (obj.detailData && obj.detailData.length > 0) {
             revision.commit(obj.detailData);
@@ -213,6 +216,7 @@ window.addEventListener('message', (e) => {
           changeTab(obj.detailData);
         } else if (actionType == 'send_circuit_name') {
           circuitName = obj.detailData;
+          document.qSphere.history(circuitName);
         }
       }
     } catch (e) {
@@ -307,7 +311,6 @@ $('#runButton').click(function () {
       'Content-Type': 'application/json',
     },
     body: JSON.stringify({
-      "qiskitCode": getContentQiskit(qiskitCode) + importPythonLibraryCount,
       "circuitName": circuitName
     })
   })

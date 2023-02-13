@@ -104,3 +104,10 @@ export function importQasmTxtFile(text: string): any {
     data: text
   })
 }
+
+export function deleteHistory(id: number): any {
+  return axios3({
+    url: `/delete-history/${id}`,
+    method: 'delete'
+  })
+}

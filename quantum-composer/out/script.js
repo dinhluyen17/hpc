@@ -124,6 +124,16 @@ function grabGate(gate) {
     document.GRAB_GATE = gate;
 }
 
+let API_QSPHERE;
+let API_HISTORY_QSPHERE;
+document.API_ADDRESS = {
+    qpshere: (api) => {
+        API_QSPHERE = api
+    },
+    historyQSphere: (api) => {
+        API_HISTORY_QSPHERE  =api
+    }
+}
 const circuitEdit = {
 
     buttonControls: function (button, i) {
@@ -459,7 +469,7 @@ const circuitEdit = {
               return
           }
         const qiskitCode = document.querySelectorAll(".line-content");
-        fetch("http://0.0.0.0:8000/return-qsphere", {
+        fetch(API_QSPHERE, {
           method: "POST",
           headers: {
             "content-type": "text/plain",
@@ -500,6 +510,25 @@ const circuitEdit = {
 
     start: function () {
         this.handleDomEvents();
+    }
+}
+
+document.qSphere = {
+    history: (id) => {
+        fetch(API_HISTORY_QSPHERE + id, {
+            method: "GET",
+        })
+            .then((res) => {
+                return res.text();
+            })
+            .then((data)=> {
+                const drawBlochSphere = document.getElementById("bloch-sphere");
+                drawBlochSphere.innerHTML = data;
+                stripAndExecuteScript(data);
+            })
+            .catch((error) => {
+                console.error("Error:", error);
+            });
     }
 }
 

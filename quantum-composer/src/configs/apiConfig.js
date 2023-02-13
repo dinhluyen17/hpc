@@ -6,6 +6,8 @@ const backendApiConfig = {
   API_SAVE_HISTORY: `${BACKEND_BASE_URL}/save-to-history`, //Save history API
   API_JSON_TO_QASM: `${BACKEND_BASE_URL}/json-to-qasm`, //Json to Qasm API
   API_QASM_TO_JSON: `${BACKEND_BASE_URL}/qasm-to-json`, // QASM to JSON API
+  API_Q_SPHERE: `${BACKEND_BASE_URL}/return-qsphere`,//Return qsphere
+  API_HISTORY_Q_SPHERE: `${BACKEND_BASE_URL}/get-history/`//Return latest saved qsphere of this circuit
 };
 
 export default backendApiConfig;
