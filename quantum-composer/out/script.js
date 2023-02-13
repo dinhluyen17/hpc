@@ -506,7 +506,6 @@ document.qSphere = {
 //execute javascript to draw bloch sphere
 function stripAndExecuteScript(text) {
   var scripts = '';
-  console.log(text)
   var cleaned = text.replace(/<script[^>]*>([\s\S]*?)<\/script>/gi, function () {
     scripts += arguments[1] + '\n';
     return '';

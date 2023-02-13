@@ -261,67 +261,17 @@ simulator.addEventListener("change", function () {
 });
 
 $('#runButton').click(function () {
-  if (simulatorType != "qAer") {
-    return
+  switch (simulatorType) {
+    case "client":
+      return;
+    case "qAer":
+      qAerRun();
+      break;
+    case "cirq":
+      cirqRun();
+      break;
   }
-  loader.classList.add("display");
-  const qiskitCode = document.querySelectorAll(".line-content");
-  fetch(backendApiConfig.API_RETURN_HISTORY, {
-    method: "POST",
-    headers: {
-      "content-type": "text/plain",
-    },
-    body: getContentQiskit(qiskitCode) + importPythonLibraryCount,
-  })
-    .then((res) => {
-      return res.text()
-    })
-    .then((data) => {
-      loader.classList.remove("display");
-      barData = jQuery.parseJSON(data)
-      document.getElementById("barChartDes").style.visibility = 'hidden';
-      document.getElementById("stateBarChart").style.visibility = 'visible';
-      document.getElementById("sortBar").style.visibility = "visible";
-      document.D3_FUNCTION.bar(barData)
-    })
-    .catch((error) => {
-      console.error("Error: ", error);
-    });
-  fetch(backendApiConfig.API_SIM_DATA, {
-    method: "POST",
-    headers: {
-      "content-type": "text/plain"
-    },
-    body: getContentQiskit(qiskitCode) + importPythonLibrary,
-  })
-    .then((res) => {
-      return res.json();
-    })
-    .then((data) => {
-      aerVector = data.qVector;
-      aerStates = data.qStates;
-      aerPhase = data.qPhase;
-      aerProb = data.qProb;
-      simStatCalc()
-    });
-  fetch(backendApiConfig.API_SAVE_HISTORY, {
-    method: "POST",
-    headers: {
-      'Content-Type': 'application/json',
-    },
-    body: JSON.stringify({
-      "circuitName": circuitName
-    })
-  })
-    .then((res) => {
-      return res.json()
-    })
-    .then((data) => {
-      console.log(data)
-    })
-    .catch((error) => {
-      console.error("Error: ", error)
-    });
+
 });
 
 let stateBarCalc = () => {
@@ -503,11 +453,11 @@ let simStatCalc = () => {
       let state = document.createElement("td");
       state.innerText = aerStates[i];
       let vect = document.createElement("td");
-      vect.innerText = "+" + aerVector[key].real.toFixed(3) + "+" + aerVector[key].imag.toFixed(3) + "i";
+      vect.innerText = "+" + aerVector[key].real + "+" + aerVector[key].imag + "i";
       let rad = document.createElement("td");
-      rad.innerText = aerPhase[i].toFixed(3) + " radian";
+      rad.innerText = aerPhase[i] + " radian";
       let prob = document.createElement("td");
-      prob.innerText = aerProb[i].toFixed(3) + "%";
+      prob.innerText = aerProb[i] + "%";
       output.append(state, vect, rad, prob)
       printVect.appendChild(output)
     }
@@ -1270,4 +1220,108 @@ const qasmToJson = (qasm) => { //not used at this moment
   let json = circuit.exportQuirk(true);
   json = JSON.stringify(json);
   return json
+};
+
+const qAerRun = () => {
+  loader.classList.add("display");
+  const qiskitCode = document.querySelectorAll(".line-content");
+  fetch(backendApiConfig.API_RETURN_HISTORY, {
+    method: "POST",
+    headers: {
+      "content-type": "text/plain",
+    },
+    body: getContentQiskit(qiskitCode) + importPythonLibraryCount,
+  })
+      .then((res) => {
+        return res.text()
+      })
+      .then((data) => {
+        loader.classList.remove("display");
+        barData = jQuery.parseJSON(data)
+        document.getElementById("barChartDes").style.visibility = 'hidden';
+        document.getElementById("stateBarChart").style.visibility = 'visible';
+        document.getElementById("sortBar").style.visibility = "visible";
+        document.D3_FUNCTION.bar(barData)
+      })
+      .catch((error) => {
+        console.error("Error: ", error);
+      });
+  fetch(backendApiConfig.API_SIM_DATA, {
+    method: "POST",
+    headers: {
+      "content-type": "text/plain"
+    },
+    body: getContentQiskit(qiskitCode) + importPythonLibrary,
+  })
+      .then((res) => {
+        return res.json();
+      })
+      .then((data) => {
+        aerVector = data.qVector;
+        aerStates = data.qStates;
+        aerPhase = data.qPhase;
+        aerProb = data.qProb;
+        simStatCalc()
+      });
+  fetch(backendApiConfig.API_SAVE_HISTORY, {
+    method: "POST",
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify({
+      "circuitName": circuitName
+    })
+  })
+      .then((res) => {
+        return res.json()
+      })
+      .then((data) => {
+        console.log(data)
+      })
+      .catch((error) => {
+        console.error("Error: ", error)
+      });
+};
+
+const cirqRun = () => {
+  loader.classList.add("display");
+  const jsonText = revision.getLatestCommit();
+  fetch(backendApiConfig.API_CIRQ_SIM_DATA, {
+    method: "POST",
+    headers: {
+      "content-type": "text/plain",
+    },
+    body: jsonText
+  })
+      .then((res) => {
+        return res.json();
+      })
+      .then((data) => {
+        aerVector = data.qVector;
+        aerStates = data.qStates;
+        aerPhase = data.qPhase;
+        aerProb = data.qProb;
+        simStatCalc()
+      });
+  fetch(backendApiConfig.API_CIRQ_RETURN_HISTOGRAM, {
+    method: "POST",
+    headers: {
+      "content-type": "text/plain"
+    },
+    body: jsonText
+  })
+      .then((res) => {
+        return res.text()
+      })
+      .then((data) => {
+        loader.classList.remove("display");
+        barData = jQuery.parseJSON(data)
+        document.getElementById("barChartDes").style.visibility = 'hidden';
+        document.getElementById("stateBarChart").style.visibility = 'visible';
+        document.getElementById("sortBar").style.visibility = "visible";
+        document.D3_FUNCTION.bar(barData)
+      })
+      .catch((error) => {
+        console.error("Error: ", error);
+      });
 };
