@@ -148,6 +148,12 @@ const circuitEdit = {
     }
   },
 
+  //Get Idle Time from localStorage
+  getCodingIdleTime: function () {
+    const codingTime = localStorage.getItem("coding-idle-timeout") || 2000;
+    $("#coding-time-option-select").val(codingTime).change();
+  },
+
   //Hanlde all DOM events in Circuit Edit Page
   handleDomEvents: function () {
     //Handle sidebar header button click
@@ -479,9 +485,14 @@ const circuitEdit = {
     });
 
     //Handle change coding idle timeout
+    $("#coding-time-option-select").change(function (e) {
+      console.log($(this).val());
+      localStorage.setItem("coding-idle-timeout", $(this).val());
+    });
   },
 
   start: function () {
+    this.getCodingIdleTime();
     this.handleDomEvents();
   }
 }

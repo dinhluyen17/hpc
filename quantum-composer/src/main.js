@@ -1205,7 +1205,7 @@ setTimeout(() => {
 
 // draw circuit whenever there is a change on qasm code
 textCode.addEventListener("keydown", () => {
-  const codingTime = localStorage.getItem("coding-idle-time") || 2500;
+  const codingTime = localStorage.getItem("coding-idle-timeout") || 2000;
   clearTimeout(timmer);
   timmer = setTimeout(() => {
     $("#circuit-area-body .loader").addClass("active");
