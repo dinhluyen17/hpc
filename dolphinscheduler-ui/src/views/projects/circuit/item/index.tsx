@@ -332,9 +332,9 @@ const circuitItem = defineComponent({
               </select>
             </div>
 
-            <NButton size='small' type='success'>
+            {/* <NButton size='small' type='success'>
               {t('circuit.detail.share_circuit')}
-            </NButton>
+            </NButton> */}
             <NButton size='small' type='success' onClick={this.handleShowHelpModal}>
               {t('circuit.detail.help_circuit')}
             </NButton>

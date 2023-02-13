@@ -4,6 +4,8 @@
 **/node_modules/**
 quantum-composer/out/quirk.html
 dolphinscheduler-ui/public/quirk.html
+dolphinscheduler-ui/public/script.js
+dolphinscheduler-ui/public/styles.css
 .idea
 .mvn
 logs
