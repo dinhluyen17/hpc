@@ -58,7 +58,7 @@ const updateSizeViews = (parentDiv) => {
     SIZE_INFO.HEADER_HEIGHT -
     SIZE_INFO.GATE_AREA_HEADER_HEIGHT -
     SIZE_INFO.GATE_AREA_SECTION_LABEL_HEIGHT * 2 -
-    sampleHeight / 2.0) + 'px';
+    sampleHeight / 2.0 - 25) + 'px';
   commonGatesGrid.style.maxHeight = commonGates.style.maxHeight;
   advancedGatesGrid.style.maxHeight = commonGates.style.maxHeight;
 

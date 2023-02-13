@@ -193,8 +193,9 @@ body {
   border: none !important;
 }
 
-small.smaller {
+.smaller {
   font-size: 8px;
+  margin-top: -4px;
 }
 
 .Probes,
@@ -394,8 +395,8 @@ button.circuit-area-header-right-lv2:hover {
 }
 
 ::-webkit-scrollbar {
-  width: 8px;
-  height: 8px;
+  width: 3px;
+  height: 3px;
 }
 
 ::-webkit-scrollbar-track {
@@ -404,7 +405,7 @@ button.circuit-area-header-right-lv2:hover {
 
 ::-webkit-scrollbar-thumb {
   background: #E1E1E1;
-  border-radius: 8px;
+  border-radius: 3px;
 }
 
 .circuit-area-chart {
