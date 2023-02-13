@@ -869,18 +869,19 @@ input[type=number] {
   height: 48px;
   display: flex;
   align-items: center;
-  justify-content: right;
+  justify-content: space-around;
   border-bottom: 2px solid #EDECF3;
 }
 
-#code-area-header div {
+#code-area-header .coding-time-option,
+#code-area-header .quantum-code-option {
   display: flex;
   align-self: center;
   height: 2rem;
   margin-right: 0.5rem;
 }
 
-#code-area-header div select {
+#code-area-header select {
   border-radius: 5px;
   outline: none;
 }
@@ -890,6 +891,29 @@ input[type=number] {
   align-items: center;
   justify-content: center;
   margin-right: 2px;
+}
+
+.countdown-idle-time {
+  display: none;
+}
+
+.countdown-idle-time.show {
+  display: flex;
+}
+
+.countdown-idle-time .text {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-right: 10px;
+}
+
+.countdown-idle-time .time {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 30px;
+  color: blue;
 }
 
 #code-area-body {

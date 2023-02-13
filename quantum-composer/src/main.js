@@ -1203,9 +1203,30 @@ setTimeout(() => {
   redrawThrottle.trigger();
 }, 500);
 
+const countDownForCodeIdleTime = (time) => {
+  let idleTimeSecond = Number(time) / 1000;
+  console.log(idleTimeSecond);
+  $(".coding-time-option").hide();
+  $(".countdown-idle-time").addClass("show");
+  $(".countdown-idle-time .time").text(idleTimeSecond);
+
+  var codingTimeTimer = setInterval(function () {
+    if (idleTimeSecond > 0) {
+      idleTimeSecond = idleTimeSecond - 1;
+      $(".countdown-idle-time .time").text(idleTimeSecond);
+    }
+    else {
+      clearInterval(codingTimeTimer);
+      $(".coding-time-option").show();
+      $(".countdown-idle-time").removeClass("show");
+    }
+  }, 1000);
+}
+
 // draw circuit whenever there is a change on qasm code
 textCode.addEventListener("keydown", () => {
   const codingTime = localStorage.getItem("coding-idle-timeout") || 2000;
+  countDownForCodeIdleTime(codingTime);
   clearTimeout(timmer);
   timmer = setTimeout(() => {
     $("#circuit-area-body .loader").addClass("active");
