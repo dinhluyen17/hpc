@@ -65,6 +65,7 @@ let barDataFilterSwitch = true;
 let vectFilterSwitch = false;
 let clickDownGateButtonKey = undefined;
 let timmer;
+let qasmHistory = "";
 
 initSerializer(
   GatePainting.LABEL_DRAWER,
@@ -769,6 +770,9 @@ revision.latestActiveCommit().subscribe(jsonText => {
       return res.text();
     })
     .then((data) => {
+      if (quantumCode.readOnly == true) {
+        quantumCode.readOnly = false
+      }
       quantumCode.value = data;
       const lineNumbers = document.querySelector(".line-numbers-qasm");
       const numberOfLines = data.split("\n").length;
@@ -779,6 +783,7 @@ revision.latestActiveCommit().subscribe(jsonText => {
       quantumCode.style.height = (quantumCode.scrollHeight > quantumCode.clientHeight) ? (quantumCode.scrollHeight) + "px" : "100%";
       //if data is not start with //generate then show error message
       if (data.startsWith('OPENQASM 2.0;')) {
+        qasmHistory = data;
         if (!error.classList.contains('hide')) {
           error.classList.add('hide')
         }
@@ -786,6 +791,8 @@ revision.latestActiveCommit().subscribe(jsonText => {
       else {
         if (error.classList.contains('hide')) {
           error.classList.remove('hide')
+          quantumCode.readOnly = true;
+          quantumCode.value = qasmHistory;
         }
       }
       //function to generate qiskit code
