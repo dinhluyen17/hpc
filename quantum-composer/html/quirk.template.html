@@ -132,7 +132,23 @@
           </div>
         </div>
         <div class="circuit-area-body" id="circuit-area-body">
-          <canvas id="drawCanvas">
+          <div class="loader">
+            <div class="lds-spinner">
+                <div></div>
+                <div></div>
+                <div></div>
+                <div></div>
+                <div></div>
+                <div></div>
+                <div></div>
+                <div></div>
+                <div></div>
+                <div></div>
+                <div></div>
+                <div></div>
+            </div>
+        </div>
+          <canvas id="drawCanvas" class="draw-canvas">
           </canvas>
         </div>
         <div class="circuit-area-chart" id="circuit-chart">
@@ -160,7 +176,21 @@
           <div class="arrow-bottom"></div>
         </div>
         <div id="code-area-header">
-          <div>
+          <div class="countdown-idle-time">
+            <div class="text">Time left: </div>
+            <div class="time">0</div>
+          </div>
+          <div class="coding-time-option">
+            <label for="lang">Auto Run Time: </label>
+            <select id="coding-time-option-select">
+              <option value="2000">2s</option>
+              <option value="3000">3s</option>
+              <option value="5000">5s</option>
+              <option value="8000">8s</option>
+              <option value="10000">10s</option>
+            </select>
+          </div>
+          <div class="quantum-code-option">
             <select id="quantum-code-option">
               <option value="1" selected>Open QASM 2.0</option>
               <option value="2">Qiskit</option>

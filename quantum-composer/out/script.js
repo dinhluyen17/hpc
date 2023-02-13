@@ -25,6 +25,7 @@ document.D3_FUNCTION = {
       .append("svg")
       .attr("width", width + margin.left + margin.right)
       .attr("height", height + margin.top + margin.bottom)
+      .attr("class", "state-bar-char")
       .append("g")
       .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
     let x = d3.scaleBand()
@@ -127,12 +128,12 @@ function grabGate(gate) {
 let API_QSPHERE;
 let API_HISTORY_QSPHERE;
 document.API_ADDRESS = {
-    qpshere: (api) => {
-        API_QSPHERE = api
-    },
-    historyQSphere: (api) => {
-        API_HISTORY_QSPHERE  =api
-    }
+  qpshere: (api) => {
+    API_QSPHERE = api
+  },
+  historyQSphere: (api) => {
+    API_HISTORY_QSPHERE = api
+  }
 }
 const circuitEdit = {
 
@@ -146,6 +147,12 @@ const circuitEdit = {
         toggleElement.classList.remove("show-and-hide-gate-list")
       }
     }
+  },
+
+  //Get Idle Time from localStorage
+  getCodingIdleTime: function () {
+    const codingTime = localStorage.getItem("coding-idle-timeout") || 2000;
+    $("#coding-time-option-select").val(codingTime).change();
   },
 
   //Hanlde all DOM events in Circuit Edit Page
@@ -434,20 +441,20 @@ const circuitEdit = {
       }
     });
 
-      //block shere api call
-      $("#runButton").click(function () {
-          if (document.getElementById("simSelectId").value != "qAer") {
-              return
-          }
-        const qiskitCode = document.querySelectorAll(".line-content");
-        fetch(API_QSPHERE, {
-          method: "POST",
-          headers: {
-            "content-type": "text/plain",
-          },
-          body: getContentQiskit(qiskitCode) + importPythonLibrary,
-        })
-        .then((res)=>{
+    //block shere api call
+    $("#runButton").click(function () {
+      if (document.getElementById("simSelectId").value != "qAer") {
+        return
+      }
+      const qiskitCode = document.querySelectorAll(".line-content");
+      fetch(API_QSPHERE, {
+        method: "POST",
+        headers: {
+          "content-type": "text/plain",
+        },
+        body: getContentQiskit(qiskitCode) + importPythonLibrary,
+      })
+        .then((res) => {
           return res.text()
         })
         .then((data) => {
@@ -477,30 +484,37 @@ const circuitEdit = {
       this.style.height = 0;
       this.style.height = (this.scrollHeight) + "px";
     });
+
+    //Handle change coding idle timeout
+    $("#coding-time-option-select").change(function (e) {
+      console.log($(this).val());
+      localStorage.setItem("coding-idle-timeout", $(this).val());
+    });
   },
 
   start: function () {
+    this.getCodingIdleTime();
     this.handleDomEvents();
   }
 }
 
 document.qSphere = {
-    history: (id) => {
-        fetch(API_HISTORY_QSPHERE + id, {
-            method: "GET",
-        })
-            .then((res) => {
-                return res.text();
-            })
-            .then((data)=> {
-                const drawBlochSphere = document.getElementById("bloch-sphere");
-                drawBlochSphere.innerHTML = data;
-                stripAndExecuteScript(data);
-            })
-            .catch((error) => {
-                console.error("Error:", error);
-            });
-    }
+  history: (id) => {
+    fetch(API_HISTORY_QSPHERE + id, {
+      method: "GET",
+    })
+      .then((res) => {
+        return res.text();
+      })
+      .then((data) => {
+        const drawBlochSphere = document.getElementById("bloch-sphere");
+        drawBlochSphere.innerHTML = data;
+        stripAndExecuteScript(data);
+      })
+      .catch((error) => {
+        console.error("Error:", error);
+      });
+  }
 }
 
 //execute javascript to draw bloch sphere

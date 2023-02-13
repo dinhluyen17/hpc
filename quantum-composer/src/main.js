@@ -1020,7 +1020,11 @@ canvasDiv.addEventListener('mousedown', ev => {
 canvasDiv.addEventListener('mousemove', ev => {
   resizeCodeArea(ev);
   resizeGateArea(ev);
-  const isChartResizableArea = ev.target.classList.contains('circuit-area-chart') || ev.target.nodeName === "svg" || ev.target.nodeName === "CANVAS";
+  const isChartResizableArea = ev.target.classList.contains('circuit-area-chart')
+    || ev.target.classList.contains('bar2')
+    || ev.target.classList.contains('circuit-area-body')
+    || ev.target.classList.contains('state-bar-char')
+    || ev.target.classList.contains('draw-canvas');
   if (isChartResizableArea)
     resizeChartArea(ev);
   viewState.getInstance().canShowGateMenu = false;
@@ -1153,10 +1157,33 @@ setTimeout(() => {
   redrawThrottle.trigger();
 }, 500);
 
+const countDownForCodeIdleTime = (time) => {
+  let idleTimeSecond = Number(time) / 1000;
+  console.log(idleTimeSecond);
+  $(".coding-time-option").hide();
+  $(".countdown-idle-time").addClass("show");
+  $(".countdown-idle-time .time").text(idleTimeSecond);
+
+  var codingTimeTimer = setInterval(function () {
+    if (idleTimeSecond > 0) {
+      idleTimeSecond = idleTimeSecond - 1;
+      $(".countdown-idle-time .time").text(idleTimeSecond);
+    }
+    else {
+      clearInterval(codingTimeTimer);
+      $(".coding-time-option").show();
+      $(".countdown-idle-time").removeClass("show");
+    }
+  }, 1000);
+}
+
 // draw circuit whenever there is a change on qasm code
 textCode.addEventListener("keydown", () => {
+  const codingTime = localStorage.getItem("coding-idle-timeout") || 2000;
+  countDownForCodeIdleTime(codingTime);
   clearTimeout(timmer);
   timmer = setTimeout(() => {
+    $("#circuit-area-body .loader").addClass("active");
     if (textCode && textCode.value.length > 0) {
       fetch(backendApiConfig.API_QASM_TO_JSON, {
         method: "POST",
@@ -1164,26 +1191,26 @@ textCode.addEventListener("keydown", () => {
           "content-type": "text/html",
         },
         body: textCode.value,
-      })
-        .then((res) => {
-          return res.text();
-        })
-        .then((data) => {
-          revision.commit(data)
-        })
-        .catch((error) => {
-          const startText = `{"detail":`;
-          const errorMessage = error.message.length >= error.message.indexOf(startText) + startText.length
-            ? error.message.substr(error.message.indexOf(startText) + startText.length).replace('}', '')
-            : 'Something went wrong with qasm code. Please try again!';
-          window.parent.postMessage(JSON.stringify({
-            messageFrom: 'quantum_composer',
-            actionType: 'error_qasm_code_message',
-            detailData: errorMessage
-          }));
-        });
+      }).then((res) => {
+        return res.text();
+      }).then((data) => {
+        revision.commit(data)
+      }).catch((error) => {
+        const startText = `{"detail":`;
+        const errorMessage = error.message.length >= error.message.indexOf(startText) + startText.length
+          ? error.message.substr(error.message.indexOf(startText) + startText.length).replace('}', '')
+          : 'Something went wrong with qasm code. Please try again!';
+        window.parent.postMessage(JSON.stringify({
+          messageFrom: 'quantum_composer',
+          actionType: 'error_qasm_code_message',
+          detailData: errorMessage
+        }));
+      });
+      setTimeout(() => {
+        $("#circuit-area-body .loader").removeClass("active");
+      }, 500)
     }
-  }, 2500);
+  }, codingTime);
 });
 
 //replace <br> tag from a node element to \n
