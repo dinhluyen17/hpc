@@ -490,6 +490,9 @@ const circuitEdit = {
           },
           body: getContentQiskit(qiskitCode) + importPythonLibrary,
         })
+        .then((res)=>{
+          return res.text()
+        })
         .then((data) => {
           const drawBlochSphere = document.getElementById("bloch-sphere");
           drawBlochSphere.innerHTML = data;
@@ -546,6 +549,7 @@ document.qSphere = {
 //execute javascript to draw bloch sphere
 function stripAndExecuteScript(text) {
   var scripts = '';
+  console.log(text)
   var cleaned = text.replace(/<script[^>]*>([\s\S]*?)<\/script>/gi, function () {
     scripts += arguments[1] + '\n';
     return '';

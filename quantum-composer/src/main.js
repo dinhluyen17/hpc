@@ -190,7 +190,6 @@ window.addEventListener('message', (e) => {
       const obj = JSON.parse(e.data);
       if (obj && obj.messageFrom == 'vuejs') {
         const actionType = obj.actionType;
-        console.log(actionType)
         if (actionType == 'loaded_circuit_json') {
           if (obj.detailData && obj.detailData.length > 0) {
             revision.commit(obj.detailData);
