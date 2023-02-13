@@ -58,14 +58,6 @@
               </path>
             </svg>
           </button>
-          <button class="gate-area-header-btn" id="gate-area-header-close-btn" data-gate="show" data-type="colapse">
-            <svg focusable="false" preserveAspectRatio="xMidYMid meet" xmlns="http://www.w3.org/2000/svg" fill="currentColor" width="20" height="20"
-              viewBox="0 0 32 32" aria-hidden="true" style="transform: rotate(90deg);">
-              <path
-                d="M4 18L15 18 15 24.172 12.414 21.586 11 23 16 28 21 23 19.586 21.586 17 24.172 17 18 28 18 28 16 4 16 4 18zM26 4H6A2 2 0 004 6v4a2 2 0 002 2H26a2 2 0 002-2V6A2 2 0 0026 4zm0 6H6V6H26z">
-              </path>
-            </svg>
-          </button>
         </div>
         <div class="gate-area-body">
           <label class="gate-area-body-section-label">Common gates</label>
@@ -143,14 +135,10 @@
           </canvas>
         </div>
         <div class="circuit-area-chart" id="circuit-chart">
-          <button id="circuit-area-chart-close-btn" data-gate="show">
-            <svg focusable="false" preserveAspectRatio="xMidYMid meet" xmlns="http://www.w3.org/2000/svg" fill="currentColor" width="20" height="20"
-              viewBox="0 0 32 32" aria-hidden="true" style="transform: rotate(90deg);">
-              <path
-                d="M4 18L15 18 15 24.172 12.414 21.586 11 23 16 28 21 23 19.586 21.586 17 24.172 17 18 28 18 28 16 4 16 4 18zM26 4H6A2 2 0 004 6v4a2 2 0 002 2H26a2 2 0 002-2V6A2 2 0 0026 4zm0 6H6V6H26z">
-              </path>
-            </svg>
-          </button>
+          <div class="arrow-container open" data-side="top">
+            <div class="arrow-top"></div>
+            <div class="arrow-bottom"></div>
+          </div>
           <button id="sortBar">Sort</button>
           <button id="stateBarChartFilterZero">Show all states</button>
           <select id="changeState">
@@ -158,7 +146,6 @@
             <option id="decState">Decimal</option>
             <option id="hexState">Hexadecimal</option>
           </select>
-          <!--          <input type="checkbox" id="stateBarBool">-->
           <div id="stateBarChart"></div>
           <div id="loading"></div>
           <div id="barChartDes">
@@ -172,16 +159,6 @@
           <div class="arrow-bottom"></div>
         </div>
         <div id="code-area-header">
-          <div>
-            <button id="code-area-close-btn" data-gate="show">
-              <svg focusable="false" preserveAspectRatio="xMidYMid meet" xmlns="http://www.w3.org/2000/svg" fill="currentColor" width="20" height="20"
-                viewBox="0 0 32 32" aria-hidden="true" style="transform: rotate(90deg);">
-                <path
-                  d="M4 18L15 18 15 24.172 12.414 21.586 11 23 16 28 21 23 19.586 21.586 17 24.172 17 18 28 18 28 16 4 16 4 18zM26 4H6A2 2 0 004 6v4a2 2 0 002 2H26a2 2 0 002-2V6A2 2 0 0026 4zm0 6H6V6H26z">
-                </path>
-              </svg>
-            </button>
-          </div>
           <div>
             <select id="quantum-code-option">
               <option value="1" selected>Open QASM 2.0</option>

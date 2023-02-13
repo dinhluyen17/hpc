@@ -97,7 +97,6 @@ body {
 .circuit-area,
 .code-area {
   height: 100vh;
-  transition: 0.2s;
 }
 
 .content .gate-area {
@@ -106,6 +105,7 @@ body {
   width: 320px;
   border: 2px solid #EDECF3;
   position: relative;
+  padding-right: 10px;
 }
 
 .gate-area::after {
@@ -162,11 +162,6 @@ body {
 .gate-area-header-btn:hover svg,
 .gate-area-header-btn.active svg {
   fill: #FFFFFF;
-}
-
-#gate-area-header-close-btn {
-  display: flex;
-  flex-direction: row;
 }
 
 [data-gate=show]>svg {
@@ -442,37 +437,12 @@ button.circuit-area-header-right-lv2:hover {
   cursor: ns-resize;
 }
 
-#circuit-area-chart-close-btn {
-  cursor: pointer;
-  position: absolute;
-  top: 0px;
-  right: 16px;
-  width: 2rem;
-  height: 2rem;
-  transform: rotate(270deg);
-  background-color: #f5f6f8;
-  border: none;
-  margin-top: 8px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  border-radius: 5px;
-}
-
-#circuit-area-chart-close-btn svg {
-  fill: #000000;
-}
-
-#circuit-area-chart-close-btn:hover svg {
-  fill: #FFFFFF;
-}
-
 #stateBarChartFilterZero {
   cursor: pointer;
   border-radius: 5px;
   position: absolute;
   top: 0px;
-  right: 116px;
+  right: 80px;
   height: 2rem;
   width: 7rem;
   background-color: #f5f6f8;
@@ -486,7 +456,7 @@ button.circuit-area-header-right-lv2:hover {
   cursor: pointer;
   position: absolute;
   top: 0px;
-  right: 60px;
+  right: 15px;
   height: 2rem;
   width: 3rem;
   background-color: #f5f6f8;
@@ -501,7 +471,7 @@ button.circuit-area-header-right-lv2:hover {
   position: absolute;
   text-align: center;
   top: 0px;
-  right: 240px;
+  right: 210px;
   height: 2rem;
   width: 6.5rem;
   background-color: #f5f6f8;
@@ -511,8 +481,7 @@ button.circuit-area-header-right-lv2:hover {
 }
 
 #stateBarChartFilterZero:hover,
-#sortBar:hover,
-#circuit-area-chart-close-btn:hover {
+#sortBar:hover {
   background-color: #56698e;
   color: #FFFFFF;
 }
@@ -531,36 +500,6 @@ button.circuit-area-header-right-lv2:hover {
   width: 4px;
   height: 100%;
   cursor: ew-resize;
-}
-
-#code-area-close-btn {
-  margin-left: 4px;
-  cursor: pointer;
-  top: 0px;
-  left: 4px;
-  width: 2rem;
-  height: 2rem;
-  transform: rotate(180deg);
-  background-color: #f5f6f8;
-  border: none;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  border-radius: 5px;
-  opacity: 0;
-  visibility: hidden;
-}
-
-#code-area-close-btn:hover {
-  background-color: #56698e;
-}
-
-#code-area-close-btn svg {
-  fill: #000000;
-}
-
-#code-area-close-btn:hover svg {
-  fill: #FFFFFF;
 }
 
 #common-gates {
@@ -954,7 +893,7 @@ input[type=number] {
   height: 48px;
   display: flex;
   align-items: center;
-  justify-content: space-between;
+  justify-content: right;
   border-bottom: 2px solid #EDECF3;
 }
 
@@ -1160,7 +1099,7 @@ ul[data-v-078d4a79] {
 /* Arrow style */
 
 .arrow-container {
-  width: 16px;
+  width: 10px;
   height: 100%;
   display: flex;
   justify-content: center;
@@ -1169,6 +1108,19 @@ ul[data-v-078d4a79] {
   cursor: pointer;
   top: 0;
   left: 0;
+}
+
+.arrow-container[data-side="right"] {
+  right: 4px;
+  left: unset;
+}
+
+.arrow-container[data-side="top"] {
+  top: 0;
+  right: unset;
+  left: unset;
+  width: 100%;
+  height: 10px;
 }
 
 .arrow-container .arrow-top,
@@ -1184,28 +1136,66 @@ ul[data-v-078d4a79] {
   transform: translate(-50%, -50%);
 }
 
-.arrow-container .arrow-top {
-  transform: translateY(calc(-50% - 17px));
+.arrow-container[data-side="top"] .arrow-top,
+.arrow-container[data-side="top"] .arrow-bottom {
+  height: 4px;
+  width: 38px;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
 }
 
-.arrow-container:hover .arrow-top {
-  transform: translateY(calc(-50% - 17px)) rotateZ(10deg);
+.arrow-container .arrow-top {
+  transform: translateY(calc(-50% - 17px));
 }
 
 .arrow-container .arrow-bottom {
   transform: translateY(calc(-50% + 17px));
 }
 
-.arrow-container:hover .arrow-bottom {
+.arrow-container:hover .arrow-top,
+.arrow-container[data-side="right"].open:hover .arrow-top {
+  transform: translateY(calc(-50% - 17px)) rotateZ(10deg);
+}
+
+.arrow-container:hover .arrow-bottom,
+.arrow-container[data-side="right"].open:hover .arrow-bottom {
   transform: translateY(calc(-50% + 17px)) rotateZ(-10deg);
 }
 
-.arrow-container.open:hover .arrow-top {
+.arrow-container.open:hover .arrow-top,
+.arrow-container[data-side="right"]:hover .arrow-top {
   transform: translateY(calc(-50% - 17px)) rotateZ(-10deg);
 }
 
-.arrow-container.open:hover .arrow-bottom {
+.arrow-container.open:hover .arrow-bottom,
+.arrow-container[data-side="right"]:hover .arrow-bottom {
   transform: translateY(calc(-50% + 17px)) rotateZ(10deg);
 }
+
+.arrow-container[data-side="top"] .arrow-top {
+  transform: translateX(calc(-50% - 17px));
+}
+
+.arrow-container[data-side="top"] .arrow-bottom {
+  transform: translateX(calc(-50% + 17px));
+}
+
+.arrow-container[data-side="top"]:hover .arrow-top {
+  transform: translateX(calc(-50% - 17px)) rotateZ(-10deg);
+}
+
+.arrow-container[data-side="top"]:hover .arrow-bottom {
+  transform: translateX(calc(-50% + 17px)) rotateZ(10deg);
+}
+
+.arrow-container[data-side="top"].open:hover .arrow-top {
+  transform: translateX(calc(-50% - 17px)) rotateZ(10deg);
+}
+
+.arrow-container[data-side="top"].open:hover .arrow-bottom {
+  transform: translateX(calc(-50% + 17px)) rotateZ(-10deg);
+}
+
 
 /* Arrow style */
