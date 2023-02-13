@@ -42,18 +42,23 @@ const updateSizeViews = (parentDiv) => {
   circuitChart.style.width = circuitBody.style.width;
   circuitChart.style.height = getChartAreaHeight() + 'px';
   circuitChart.style.maxHeight = getChartAreaHeight() + 'px';
-  
+
   const commonGates = document.getElementById('common-gates');
   const advancedGates = document.getElementById('advanced-gates');
   const commonGatesGrid = document.getElementById('common-gates-grid');
   const advancedGatesGrid = document.getElementById('advanced-gates-grid');
-  commonGates.style.maxHeight = (
+  const sampleHeight = (
     parentDiv.clientHeight -
     SIZE_INFO.HEADER_HEIGHT -
     SIZE_INFO.GATE_AREA_HEADER_HEIGHT -
     SIZE_INFO.GATE_AREA_SECTION_LABEL_HEIGHT * 2 -
-    4 * SIZE_INFO.VERTICAL_SPACING) / 2.0 + 'px';
-  advancedGates.style.maxHeight = commonGates.style.maxHeight;
+    4 * SIZE_INFO.VERTICAL_SPACING) / 2.0;
+  commonGates.style.maxHeight = sampleHeight + 'px';
+  advancedGates.style.maxHeight = (parentDiv.clientHeight -
+    SIZE_INFO.HEADER_HEIGHT -
+    SIZE_INFO.GATE_AREA_HEADER_HEIGHT -
+    SIZE_INFO.GATE_AREA_SECTION_LABEL_HEIGHT * 2 -
+    sampleHeight / 2.0) + 'px';
   commonGatesGrid.style.maxHeight = commonGates.style.maxHeight;
   advancedGatesGrid.style.maxHeight = commonGates.style.maxHeight;
 
@@ -155,4 +160,4 @@ const initSizeViews = (parentDiv) => {
   updateSizeViews(parentDiv);
 }
 
-export {initSizeViews, updateSizeViews}
+export { initSizeViews, updateSizeViews }

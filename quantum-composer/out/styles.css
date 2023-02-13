@@ -97,7 +97,6 @@ body {
 .circuit-area,
 .code-area {
   height: 100vh;
-  transition: 0.2s;
 }
 
 .content .gate-area {
@@ -268,7 +267,6 @@ small.smaller {
 .gate-area-body-common-gates {
   margin: 10px 5px 10px 0px;
   border: 1px solid #EDECF3;
-  flex: 1;
   border-radius: 5px;
 }
 
@@ -993,7 +991,7 @@ input[type=number] {
 #text-code-qiskit {
   font-size: 0.8rem;
   width: 100%;
-  height: 95%;
+  height: 100%;
   padding: 0.5rem 0rem;
   white-space: normal;
   /* CSS3 */
