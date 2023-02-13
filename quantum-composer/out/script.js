@@ -433,6 +433,26 @@ const circuitEdit = {
         }
       });
 
+      $(".arrow-container").click(function () {
+        if (!$(this).hasClass("open")) {
+          $("#error-notice").show();
+          $("#text-code-qiskit").show();
+          $("#text-code").show();
+          $(".line-numbers-qasm").show();
+          $("#code-area-header").show();
+          $(this).removeClass("close");
+          $(this).addClass("open");
+        } else {
+          $("#error-notice").hide();
+          $("#text-code-qiskit").hide();
+          $("#text-code").hide();
+          $(".line-numbers-qasm").hide();
+          $("#code-area-header").hide();
+          $(this).addClass("close");
+          $(this).removeClass("open");
+        }
+      });
+
       //block shere api call
       $("#runButton").click(function () {
           if (document.getElementById("simSelectId").value != "qAer") {

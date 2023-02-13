@@ -15,7 +15,7 @@
  * limitations under the License.
  */
 
-import { axios, axios2, axios3 } from '@/service/service'
+import { axios, axios3 } from '@/service/service'
 import { ListReq, CircuitReq } from './types'
 
 export function getCircuit(id: number): any {
@@ -77,7 +77,7 @@ export function stateBarCalc(qStates: string[], qProb: string[]): any {
     method: 'post',
     headers: {
       'Content-Type': 'application/json',
-      'accept': '*/*'
+      accept: '*/*'
     },
     data: JSON.stringify({
       qStates: qStates,
@@ -87,25 +87,10 @@ export function stateBarCalc(qStates: string[], qProb: string[]): any {
 }
 
 export function exportQasm(id: number): any {
-  let headers
-  return axios2({
+  return axios({
     url: `/circuit/downloadQasm?circuitId=${id}`,
-    method: 'get',
-    responseType: 'blob'
+    method: 'get'
   })
-    .then((res) => {
-      headers = res.headers
-      return res.data.text()
-    })
-    .then((response) => {
-      const filename = headers['content-disposition']
-      const fileURL = window.URL.createObjectURL(new Blob([response]))
-      const fileLink = document.createElement('a')
-      fileLink.href = fileURL
-      fileLink.setAttribute('download', filename + '.txt')
-      document.body.appendChild(fileLink)
-      fileLink.click()
-    })
 }
 
 export function importQasmTxtFile(text: string): any {
@@ -113,7 +98,7 @@ export function importQasmTxtFile(text: string): any {
     url: '/qasm-to-json',
     headers: {
       'Content-Type': 'text/html',
-      'accept': '*/*'
+      accept: '*/*'
     },
     method: 'post',
     data: text

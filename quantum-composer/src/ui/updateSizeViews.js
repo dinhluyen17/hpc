@@ -125,6 +125,17 @@ const initSizeViews = (parentDiv) => {
     updateSizeViews(parentDiv);
   });
 
+  $(".arrow-container").click(function () {
+    viewState.getInstance().expandCodeArea = !viewState.getInstance().expandCodeArea;
+    if (viewState.getInstance().expandCodeArea) {
+      viewState.getInstance().codeAreaWidth = 300;
+    }
+    else {
+      viewState.getInstance().codeAreaWidth = 25;
+    }
+    updateSizeViews(parentDiv);
+  });
+
   const closeChartAreaBtn = document.getElementById('circuit-area-chart-close-btn');
   closeChartAreaBtn.addEventListener('click', () => {
     if (closeChartAreaBtn.getAttribute("data-gate") == "show") {

@@ -206,7 +206,7 @@ window.addEventListener('message', (e) => {
             detailData: postDetailData,
           })
           );
-        } else if (actionType == 'set_circuit_json') {
+        } else if (actionType == 'set_circuit_json' || actionType == 'set_circuit_qasm') {
           viewState.getInstance().wireNumber = undefined;
           revision.commit(obj.detailData);
         } else if (actionType == 'change_tab') {

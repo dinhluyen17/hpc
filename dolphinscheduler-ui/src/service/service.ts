@@ -75,7 +75,6 @@ const baseRequestConfigPython: AxiosRequestConfig = {
 }
 
 const service = axios.create(baseRequestConfig)
-const service2 = axios.create(baseRequestConfig)
 const service3 = axios.create(baseRequestConfigPython)
 
 const err = (err: AxiosError): Promise<AxiosError> => {
@@ -90,15 +89,6 @@ const err = (err: AxiosError): Promise<AxiosError> => {
 }
 
 service.interceptors.request.use((config: AxiosRequestConfig<any>) => {
-  config.headers && (config.headers.sessionId = userStore.getSessionId)
-  const language = cookies.get('language')
-  config.headers = config.headers || {}
-  if (language) config.headers.language = language
-
-  return config
-}, err)
-
-service2.interceptors.request.use((config: AxiosRequestConfig<any>) => {
   config.headers && (config.headers.sessionId = userStore.getSessionId)
   const language = cookies.get('language')
   config.headers = config.headers || {}
@@ -123,4 +113,4 @@ service.interceptors.response.use((res: AxiosResponse) => {
   }
 }, err)
 
-export { service as axios, service2 as axios2, service3 as axios3 }
+export { service as axios, service3 as axios3 }
