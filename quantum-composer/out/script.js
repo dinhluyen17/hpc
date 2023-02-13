@@ -25,6 +25,7 @@ document.D3_FUNCTION = {
       .append("svg")
       .attr("width", width + margin.left + margin.right)
       .attr("height", height + margin.top + margin.bottom)
+      .attr("class", "state-bar-char")
       .append("g")
       .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
     let x = d3.scaleBand()
@@ -519,7 +520,6 @@ document.qSphere = {
 //execute javascript to draw bloch sphere
 function stripAndExecuteScript(text) {
   var scripts = '';
-  console.log(text)
   var cleaned = text.replace(/<script[^>]*>([\s\S]*?)<\/script>/gi, function () {
     scripts += arguments[1] + '\n';
     return '';

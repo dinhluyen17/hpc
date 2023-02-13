@@ -1070,7 +1070,11 @@ canvasDiv.addEventListener('mousedown', ev => {
 canvasDiv.addEventListener('mousemove', ev => {
   resizeCodeArea(ev);
   resizeGateArea(ev);
-  const isChartResizableArea = ev.target.classList.contains('circuit-area-chart') || ev.target.nodeName === "svg" || ev.target.nodeName === "CANVAS";
+  const isChartResizableArea = ev.target.classList.contains('circuit-area-chart')
+    || ev.target.classList.contains('bar2')
+    || ev.target.classList.contains('circuit-area-body')
+    || ev.target.classList.contains('state-bar-char')
+    || ev.target.classList.contains('draw-canvas');
   if (isChartResizableArea)
     resizeChartArea(ev);
   viewState.getInstance().canShowGateMenu = false;
