@@ -34,6 +34,7 @@ import { viewState } from "./ui/viewState.js";
 import { Gates } from "./gates/AllGates.js";
 import backendApiConfig from "./configs/apiConfig.js";
 document.API_ADDRESS.qpshere(backendApiConfig.API_Q_SPHERE);
+document.API_ADDRESS.cirqQsphere(backendApiConfig.API_CIRQ_Q_SPHERE);
 document.API_ADDRESS.historyQSphere(backendApiConfig.API_HISTORY_Q_SPHERE);
 
 const codeArea = document.getElementById("code-area");
@@ -1308,6 +1309,9 @@ const qAerRun = () => {
 const cirqRun = () => {
   loader.classList.add("display");
   const jsonText = revision.getLatestCommit();
+  const qHeight = mostRecentStats.get().finalState.height();
+  document.JSON_DATA.jsonText(jsonText);
+  document.JSON_DATA.numWire(qHeight);
   fetch(backendApiConfig.API_CIRQ_SIM_DATA, {
     method: "POST",
     headers: {

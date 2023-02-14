@@ -10,6 +10,7 @@ const backendApiConfig = {
   API_HISTORY_Q_SPHERE: `${BACKEND_BASE_URL}/get-history/`,//Return latest saved qsphere of this circuit
   API_CIRQ_SIM_DATA: `${BACKEND_BASE_URL}/return-sim-data-cirq`,
   API_CIRQ_RETURN_HISTOGRAM: `${BACKEND_BASE_URL}/return-histogram-cirq`,
+  API_CIRQ_Q_SPHERE: `${BACKEND_BASE_URL}/return-qsphere-cirq`,
 };
 
 export default backendApiConfig;

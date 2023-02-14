@@ -126,13 +126,27 @@ function grabGate(gate) {
 }
 
 let API_QSPHERE;
+let API_CIRQ_QSPHERE;
 let API_HISTORY_QSPHERE;
+let JSON_TEXT;
+let NUM_WIRE;
 document.API_ADDRESS = {
   qpshere: (api) => {
     API_QSPHERE = api
   },
+  cirqQsphere: (api) => {
+    API_CIRQ_QSPHERE = api
+  },
   historyQSphere: (api) => {
     API_HISTORY_QSPHERE = api
+  }
+}
+document.JSON_DATA = {
+  jsonText: (data) => {
+    JSON_TEXT = data
+  },
+  numWire: (data) => {
+    NUM_WIRE = data
   }
 }
 const circuitEdit = {
@@ -443,28 +457,56 @@ const circuitEdit = {
 
     //block shere api call
     $("#runButton").click(function () {
-      if (document.getElementById("simSelectId").value != "qAer") {
-        return
+      // if (document.getElementById("simSelectId").value != "qAer") {
+      //   return
+      // }
+      let currentSim = document.getElementById("simSelectId").value;
+      switch (currentSim) {
+        case "qAer":
+          const qiskitCode = document.querySelectorAll(".line-content");
+          fetch(API_QSPHERE, {
+            method: "POST",
+            headers: {
+              "content-type": "text/plain",
+            },
+            body: getContentQiskit(qiskitCode) + importPythonLibrary,
+            })
+              .then((res) => {
+                  return res.text()
+                })
+              .then((data) => {
+                  const drawBlochSphere = document.getElementById("bloch-sphere");
+                  drawBlochSphere.innerHTML = data;
+                  stripAndExecuteScript(data);
+              })
+              .catch((error) => {
+                  console.error("Error:", error);
+              });
+          break;
+        case "cirq":
+          fetch(API_CIRQ_QSPHERE, {
+            method: "POST",
+            headers: {
+              "content-type": "application/json"
+            },
+            body: JSON.stringify({
+              "circuit": JSON_TEXT,
+              "numWire": NUM_WIRE
+            })
+          })
+              .then((res) => {
+                return res.text()
+              })
+              .then((data) => {
+                const drawBlochSphere = document.getElementById("bloch-sphere");
+                drawBlochSphere.innerHTML = data;
+                stripAndExecuteScript(data);
+              })
+              .catch((error) => {
+                console.error("Error:", error);
+              });
+          break;
       }
-      const qiskitCode = document.querySelectorAll(".line-content");
-      fetch(API_QSPHERE, {
-        method: "POST",
-        headers: {
-          "content-type": "text/plain",
-        },
-        body: getContentQiskit(qiskitCode) + importPythonLibrary,
-      })
-        .then((res) => {
-          return res.text()
-        })
-        .then((data) => {
-          const drawBlochSphere = document.getElementById("bloch-sphere");
-          drawBlochSphere.innerHTML = data;
-          stripAndExecuteScript(data);
-        })
-        .catch((error) => {
-          console.error("Error:", error);
-        });
     });
 
     //css line code count number qasm
