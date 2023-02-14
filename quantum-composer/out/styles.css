@@ -1069,8 +1069,17 @@ input[type=number] {
   border-color: #da1e28;
 }
 
+.inline-notification.warning[data-v-45f28762] {
+  background: #ffffe6;
+  border-color: #FFC107;
+}
+
 .inline-notification.error .icon[data-v-45f28762] {
   color: #da1e28;
+}
+
+.inline-notification.warning .icon[data-v-45f28762] {
+  color: #FFC107;
 }
 
 .inline-notification .icon[data-v-45f28762] {

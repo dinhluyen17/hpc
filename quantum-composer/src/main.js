@@ -1350,4 +1350,17 @@ const cirqRun = () => {
     .catch((error) => {
       console.error("Error: ", error);
     });
+  fetch(backendApiConfig.API_SAVE_HISTORY, {
+    method: "POST",
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify({
+      "circuitName": circuitName
+    })
+  }).then((res) => {
+    return res.json()
+  }).catch((error) => {
+    console.error("Error: ", error)
+  });
 };
