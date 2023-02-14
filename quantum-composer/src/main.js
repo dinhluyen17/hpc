@@ -67,6 +67,7 @@ let barDataFilterSwitch = true;
 let vectFilterSwitch = false;
 let clickDownGateButtonKey = undefined;
 let timmer;
+let codingTimeTimer;
 let qasmHistory = "";
 
 initSerializer(
@@ -1157,13 +1158,19 @@ setTimeout(() => {
   redrawThrottle.trigger();
 }, 500);
 
-const countDownForCodeIdleTime = (time) => {
-  let idleTimeSecond = Number(time) / 1000;
+// draw circuit whenever there is a change on qasm code
+textCode.addEventListener("keydown", () => {
+
+  const codingTime = localStorage.getItem("coding-idle-timeout") || 2000;
+  clearTimeout(timmer);
+  clearInterval(codingTimeTimer);
+
+  let idleTimeSecond = Number(codingTime) / 1000;
   $(".coding-time-option").hide();
   $(".countdown-idle-time").addClass("show");
   $(".countdown-idle-time .time").text(idleTimeSecond);
 
-  var codingTimeTimer = setInterval(function () {
+  codingTimeTimer = setInterval(() => {
     if (idleTimeSecond > 0) {
       idleTimeSecond = idleTimeSecond - 1;
       $(".countdown-idle-time .time").text(idleTimeSecond);
@@ -1174,13 +1181,7 @@ const countDownForCodeIdleTime = (time) => {
       $(".countdown-idle-time").removeClass("show");
     }
   }, 1000);
-}
 
-// draw circuit whenever there is a change on qasm code
-textCode.addEventListener("keydown", () => {
-  const codingTime = localStorage.getItem("coding-idle-timeout") || 2000;
-  countDownForCodeIdleTime(codingTime);
-  clearTimeout(timmer);
   timmer = setTimeout(() => {
     $("#circuit-area-body .loader").addClass("active");
     if (textCode && textCode.value.length > 0) {
