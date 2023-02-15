@@ -202,7 +202,7 @@ class WidgetPainter {
      * @private
      */
     static paintGateTooltipHelper(painter, w, gate, time) {
-        const [pad, dispSize] = [4, 65];
+        const [pad, dispSize] = [15, 65];
         let [maxX, maxY] = [0, pad];
         let pushRect = (rect, actualPad=pad) => {
             maxY = Math.max(maxY, rect.bottom() + actualPad);
@@ -247,9 +247,9 @@ class WidgetPainter {
         let w = area.w;
 
         let {maxX, maxY} = WidgetPainter.paintGateTooltipHelper(painter, w, gate, time);
-        let r = new Rect(0, 0, maxX, maxY);
+        let r = new Rect(1, 1, maxX, maxY);
         painter.fillRect(r, '#FFFFFF');
-        painter.strokeRect(r, 'black');
+        painter.strokeRect(r, '#CCCCCC');
         WidgetPainter.paintGateTooltipHelper(painter, w, gate, time);
 
         painter.ctx.restore();

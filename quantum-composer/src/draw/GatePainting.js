@@ -26,7 +26,7 @@ import {Util} from "../base/Util.js"
  */
 class GatePainting {}
 
-const GATE_SYMBOL_FONT = '18px myFirstFont';
+const GATE_SYMBOL_FONT = '18px v-sans, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol"';
 
 GatePainting.paintOutline = args => {
     if (args.isInToolbox) {

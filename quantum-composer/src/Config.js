@@ -87,7 +87,7 @@ Config.DEFAULT_FILL_COLOR = '#626c7a'; //grey
 Config.DEFAULT_STROKE_COLOR = '#00A895'; 
 Config.DEFAULT_TEXT_COLOR = 'black';
 Config.DEFAULT_FONT_SIZE = 13;
-Config.DEFAULT_FONT_FAMILY = 'myFirstFont';
+Config.DEFAULT_FONT_FAMILY = 'v-sans, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol"';
 Config.DEFAULT_STROKE_THICKNESS = 1;
 
 // Calling WebGLRenderingContext.getError forces a CPU/GPU sync. It's very expensive.
