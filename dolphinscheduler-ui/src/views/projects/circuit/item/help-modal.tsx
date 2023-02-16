@@ -91,17 +91,9 @@ const HelpModal = defineComponent({
                         </svg>
                         &nbsp; icon to display gates in a grid
                     </li>
-                    <li>Minimise views: Click on the &nbsp;
-                        <svg focusable="false" preserveAspectRatio="xMidYMid meet" xmlns="http://www.w3.org/2000/svg" fill="currentColor" width="20" height="20"
-                            viewBox="0 0 32 32" aria-hidden="true" style="transform: rotate(90deg);">
-                            <path
-                                d="M4 18L15 18 15 24.172 12.414 21.586 11 23 16 28 21 23 19.586 21.586 17 24.172 17 18 28 18 28 16 4 16 4 18zM26 4H6A2 2 0 004 6v4a2 2 0 002 2H26a2 2 0 002-2V6A2 2 0 0026 4zm0 6H6V6H26z">
-                            </path>
-                        </svg>
-                        &nbsp; icon to minimise the gate lists, the bar chart or the code display
+                    <li>Minimise views: Click on the arrow to minimise the gate lists, the bar chart or the code display
                     </li>
-                    <li>Change the initial qubit state: Click on the |0&gt; at the left of the circuit to cycle through qubit states</li>
-                    <li>Bar chart legibility: Click on the <b>Show all states</b> button to display all possible states. Click on the same button to revert the display</li>
+                    <li>Bar chart legibility: Click on the <b>Show all states</b> button to display all possible states. Click on the same button to revert the display (Only available in Client calculation)</li>
                     <li>View circuit simulation: Click the <b>Simulation</b> tab on the top of the screen to switch to the simulation screen</li>
                     <li>View circuit results: Hover mouse over the bar graph to see the qubit state and probability <b>OR</b> switch to the simulation tab to view the state, vector, probability and phase angle of qubits</li>
                     <li>Vector table actions:
@@ -154,12 +146,24 @@ const HelpModal = defineComponent({
                         <svg xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="xMidYMid meet" width="20" height="20" viewBox="0 0 32 32" style="transform: translateY(.45rem);"> <g> <path fill="none" d="M0 0h24v24H0z" /> <path fill-rule="nonzero" d="M10 8h4V6.5a3.5 3.5 0 1 1 3.5 3.5H16v4h1.5a3.5 3.5 0 1 1-3.5 3.5V16h-4v1.5A3.5 3.5 0 1 1 6.5 14H8v-4H6.5A3.5 3.5 0 1 1 10 6.5V8zM8 8V6.5A1.5 1.5 0 1 0 6.5 8H8zm0 8H6.5A1.5 1.5 0 1 0 8 17.5V16zm8-8h1.5A1.5 1.5 0 1 0 16 6.5V8zm0 8v1.5a1.5 1.5 0 1 0 1.5-1.5H16zm-6-6v4h4v-4h-4z" /> </g> </svg>
                         + shift + drag</b> in circuit</li>
                 </ul>
+                <h3>Code-editing Actions</h3>
+                <h4><b>Important: There are gates which are not supported by the code editor!</b></h4>
+                <ul>
+                    <li>Code display: Choose between <b>OpenQASM 2.0</b> or <b>Qiskit</b> (only Open QASM 2.0 can be edited)</li>
+                    <li>Code submission: After typing your code in, if it is valid, the editor will wait a few seconds before changing your circuit</li>
+                    <li>Auto-submit timer: Change how many seconds before your code affects the circuit</li>
+                </ul>
+                <h3>Simulation and results</h3>
+                <ul>
+                    <li>Simulators: Choose between <b>Client machine</b>, <b>Qiskit</b> or <b>Cirq</b> simulators</li>
+                    <li>Run: If the simulator is <b>Qiskit</b> or <b>Cirq</b>, clicking <b>Run</b> will simulate your code and return corresponding results</li>
+                </ul>
                 <h3>File Management</h3>
                 <ul>
                     <li>Save in database: Click the <b>Save</b> button</li>
                     <li>Export the circuit: Click the <b>Export</b> button</li>
                     <li>Import a circuit: Click the <b>Import</b> button. Currently support: JSON</li>
-                    <li>Share the circuit: Click the <b>Share</b> button. Share the circuit with a coworker with correct permission</li>
+                    {/*<li>Share the circuit: Click the <b>Share</b> button. Share the circuit with a coworker with correct permission</li>*/}
                     <li>Rename the circuit: Click the <b>name</b> of the circuit on the top left corner of the screen</li>
                 </ul>
                 <h3>Convention</h3>
