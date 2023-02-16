@@ -905,14 +905,13 @@ input[type=number] {
   display: flex;
   align-items: center;
   justify-content: center;
-  margin-right: 10px;
+  margin-right: 5px;
 }
 
 .countdown-idle-time .time {
   display: flex;
   align-items: center;
   justify-content: center;
-  font-size: 30px;
   color: blue;
 }
 
