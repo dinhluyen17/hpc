@@ -1253,7 +1253,7 @@ const qasmToJson = (qasm) => { //not used at this moment
 const qAerRun = () => {
   loader.classList.add("display");
   const qiskitCode = document.querySelectorAll(".line-content");
-  fetch(backendApiConfig.API_RETURN_HISTORY, {
+  fetch(backendApiConfig.API_RETURN_HISTOGRAM, {
     method: "POST",
     headers: {
       "content-type": "text/plain",
