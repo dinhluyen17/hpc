@@ -101,7 +101,7 @@ const initSizeViews = (parentDiv) => {
     } else if ($(this).data("side") === "right") {
       viewState.getInstance().expandGateArea = !viewState.getInstance().expandGateArea;
       if (viewState.getInstance().expandGateArea) {
-        viewState.getInstance().gateAreaWidth = 250;
+        viewState.getInstance().gateAreaWidth = 239;
         gridGateBtn.style.display = 'flex';
         listGateBtn.style.display = 'flex';
         searchGateBox.style.display = 'flex';
