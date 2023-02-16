@@ -314,7 +314,7 @@ const circuitItem = defineComponent({
           </div>
           {/* Button area */}
           <NSpace>
-            <input ref="importFileRef" type='file' onChange={handleImportFileJson} hidden />
+            <input ref="importFileRef" type='file' accept=".json" onChange={handleImportFileJson} hidden />
             <NButton size='small' type='primary' onClick={this.handleSaveCircuit}>
               {t('circuit.detail.save_circuit')}
             </NButton>
