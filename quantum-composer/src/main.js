@@ -376,15 +376,19 @@ document.getElementById("sortBar").addEventListener("click", function (e) {
   if (barDataFilterSwitch == false) {
     if (sortSwitch == false) {
       document.D3_FUNCTION.bar(stateBarCalc())
+      document.getElementById("sortBar").innerText = "Sort"
     } else {
       handleSortedData(barData)
+      document.getElementById("sortBar").innerText = "Un Sort"
     }
   } else {
     let barDataFilter = barData.filter(val => !val.Probability.match(/^0\.0+$/));
     if (sortSwitch == false) {
       document.D3_FUNCTION.bar(barDataFilter);
+      document.getElementById("sortBar").innerText = "Sort"
     } else {
       handleSortedData(barDataFilter)
+      document.getElementById("sortBar").innerText = "Un Sort"
     }
   }
 });

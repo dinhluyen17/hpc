@@ -433,7 +433,7 @@ button.circuit-area-header-right-lv2:hover {
   border-radius: 5px;
   position: absolute;
   top: 0px;
-  right: 80px;
+  right: 100px;
   height: 2rem;
   width: 7rem;
   background-color: #f5f6f8;
@@ -449,7 +449,7 @@ button.circuit-area-header-right-lv2:hover {
   top: 0px;
   right: 15px;
   height: 2rem;
-  width: 3rem;
+  width: 70px;
   background-color: #f5f6f8;
   color: #000000;
   border: none;
@@ -462,7 +462,7 @@ button.circuit-area-header-right-lv2:hover {
   position: absolute;
   text-align: center;
   top: 0px;
-  right: 210px;
+  right: 230px;
   height: 2rem;
   width: 6.5rem;
   background-color: #f5f6f8;
