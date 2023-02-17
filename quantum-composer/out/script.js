@@ -436,8 +436,10 @@ const circuitEdit = {
         }
       } else {
         if (!$(this).hasClass("open")) {
-          $(".circuit-area-chart button").show();
-          $(".circuit-area-chart select").show();
+          if ($(this).parent().hasClass("showable")) {
+            $(".circuit-area-chart button").show();
+            $(".circuit-area-chart select").show();
+          }
           $(".circuit-area-chart #loading").show();
           $("#stateBarChart").show();
           $("#barChartDes").show();
@@ -470,18 +472,18 @@ const circuitEdit = {
               "content-type": "text/plain",
             },
             body: getContentQiskit(qiskitCode) + importPythonLibrary,
+          })
+            .then((res) => {
+              return res.text()
             })
-              .then((res) => {
-                  return res.text()
-                })
-              .then((data) => {
-                  const drawBlochSphere = document.getElementById("bloch-sphere");
-                  drawBlochSphere.innerHTML = data;
-                  stripAndExecuteScript(data);
-              })
-              .catch((error) => {
-                  console.error("Error:", error);
-              });
+            .then((data) => {
+              const drawBlochSphere = document.getElementById("bloch-sphere");
+              drawBlochSphere.innerHTML = data;
+              stripAndExecuteScript(data);
+            })
+            .catch((error) => {
+              console.error("Error:", error);
+            });
           break;
         case "cirq":
           fetch(API_CIRQ_QSPHERE, {
@@ -494,17 +496,17 @@ const circuitEdit = {
               "numWire": NUM_WIRE
             })
           })
-              .then((res) => {
-                return res.text()
-              })
-              .then((data) => {
-                const drawBlochSphere = document.getElementById("bloch-sphere");
-                drawBlochSphere.innerHTML = data;
-                stripAndExecuteScript(data);
-              })
-              .catch((error) => {
-                console.error("Error:", error);
-              });
+            .then((res) => {
+              return res.text()
+            })
+            .then((data) => {
+              const drawBlochSphere = document.getElementById("bloch-sphere");
+              drawBlochSphere.innerHTML = data;
+              stripAndExecuteScript(data);
+            })
+            .catch((error) => {
+              console.error("Error:", error);
+            });
           break;
       }
     });

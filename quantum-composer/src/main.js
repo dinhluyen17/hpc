@@ -98,11 +98,17 @@ const isSupportBarChart = () => {
   if (currentWireNumber <= 10) {
     document.getElementById("barChartDes").style.visibility = 'hidden';
     document.getElementById("stateBarChart").style.visibility = 'visible';
+    $(".circuit-area-chart").addClass("showable");
+    $(".circuit-area-chart button").show();
+    $(".circuit-area-chart select").show();
     return true;
   } else {
     //NOT SUPPORT > 10 QUBITS
     document.getElementById("barChartDes").style.visibility = 'visible';
     document.getElementById("stateBarChart").style.visibility = 'hidden';
+    $(".circuit-area-chart").removeClass("showable");
+    $(".circuit-area-chart button").hide();
+    $(".circuit-area-chart select").hide();
     return false;
   }
 }
